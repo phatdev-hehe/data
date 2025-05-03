@@ -1,7 +1,7 @@
 ## kaomoji.ru
 
 ```bash
-npm install &&
+cd kaomoji.ru &&
 node . &&
 npx prettier --write json readme*.md
 ```
