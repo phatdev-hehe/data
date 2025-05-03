@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "fast-sort": "^3.4.1",
+    "jsdom": "^26.0.0",
+    "json2md": "^2.0.2",
+    "sort-keys": "^5.1.0"
+  }
+}
