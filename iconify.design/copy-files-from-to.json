@@ -1,0 +1,9 @@
+{
+  "copyFiles": [
+    {
+      "from": "../node_modules/@iconify/json/collections.md",
+      "to": "readme.md"
+    }
+  ],
+  "copyFilesSettings": { "whenFileExists": "overwrite" }
+}
