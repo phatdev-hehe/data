@@ -11,6 +11,7 @@ import { groupBy, isFunction, isPlainObject } from "es-toolkit";
 import mapObject from "map-obj";
 import { nanoid } from "nanoid";
 import fs from "node:fs";
+import _ from "../index.js";
 
 const iconsPath = "icons";
 
@@ -60,10 +61,7 @@ const buildIcons = async (
   );
 };
 
-fs.rmSync(iconsPath, {
-  force: true,
-  recursive: true,
-});
+_.mkEmptyDirSync(iconsPath);
 
 await buildIcons(
   groupCollections(

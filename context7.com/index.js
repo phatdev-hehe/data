@@ -64,12 +64,7 @@ const libraries = sort(
     })
   );
 
-  fs.rmSync(dataPath, {
-    recursive: true,
-    force: true,
-  });
-
-  fs.mkdirSync(dataPath);
+  _.mkEmptyDirSync(dataPath);
 
   for (const [index, library] of libraries.entries())
     if (index < limit)

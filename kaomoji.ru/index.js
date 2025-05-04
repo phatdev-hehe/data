@@ -12,7 +12,7 @@ const jsonPath = "json";
 const getReadMeFileName = (languageCode) =>
   ({ en: "readme.md", ru: "readme-ru.md" }[languageCode]);
 
-fs.mkdirSync(jsonPath, { recursive: true });
+_.mkEmptyDirSync(jsonPath);
 
 for (const languageCode of languageCodes) {
   let data = {};
