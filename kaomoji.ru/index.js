@@ -71,7 +71,7 @@ for (const languageCode of languageCodes) {
           p: document.querySelector(".updates_table td").childNodes[2]
             .textContent,
         },
-        { img: { source: `logo/${languageCode}.jpg` } },
+        { img: { source: `assets/logo-${languageCode}.jpg` } },
         ...Object.entries(data).map(([title, { count, description, list }]) => [
           { h2: `${title} <sup>${count}</sup>` },
           { p: description },

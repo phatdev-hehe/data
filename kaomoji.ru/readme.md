@@ -2,7 +2,7 @@
 
 Latest update: January 4, 2025
 
-![](logo/en.jpg)
+![](assets/logo-en.jpg)
 
 ## Anger <sup>34</sup>
 
