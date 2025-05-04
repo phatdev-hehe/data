@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 import json2md from "json2md";
 import fs from "node:fs";
 import sortKeys from "sort-keys";
-import { $ } from "../index.js";
+import _ from "../index.js";
 
 const languageCodes = ["en", "ru"];
 const jsonPath = "json";
@@ -20,9 +20,7 @@ for (const languageCode of languageCodes) {
   const {
     window: { document },
   } = new JSDOM(
-    await $.fetch(`https://kaomoji.ru/${{ en: "en", ru: "" }[languageCode]}`, {
-      responseType: "text",
-    })
+    await _.fetch(`https://kaomoji.ru/${{ en: "en", ru: "" }[languageCode]}`)
   );
 
   for (const element of document.querySelectorAll("h3 > a[name]")) {

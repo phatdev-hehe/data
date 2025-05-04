@@ -2,13 +2,13 @@ import { sort } from "fast-sort";
 import { formatNumber } from "intl-number-helper";
 import json2md from "json2md";
 import fs from "node:fs";
-import { $ } from "../index.js";
+import _ from "../index.js";
 
 const context7ApiBaseUrl = "https://context7.com/api";
 
-const libraries = sort(await $.fetch(`${context7ApiBaseUrl}/libraries`)).desc(
-  (library) => library.settings.stars
-);
+const libraries = sort(
+  await _.fetch(`${context7ApiBaseUrl}/libraries`, { responseType: "json" })
+).desc((library) => library.settings.stars);
 
 {
   const dataPath = "data";
@@ -75,8 +75,7 @@ const libraries = sort(await $.fetch(`${context7ApiBaseUrl}/libraries`)).desc(
     if (index < limit)
       fs.writeFileSync(
         `${dataPath}/${index + 1}.txt`,
-        await $.fetch(getLibraryApiUrl(library), {
-          responseType: "text",
+        await _.fetch(getLibraryApiUrl(library), {
           delayMs: 20000,
           headers: { "X-Context7-Source": "mcp-server" },
         })
