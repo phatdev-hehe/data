@@ -3,7 +3,7 @@
   "devDependencies": {
     "@iconify/json": "^2.2.334",
     "@iconify/utils": "^2.3.0",
-    "es-toolkit": "^1.37.1",
+    "es-toolkit": "^1.37.2",
     "fast-sort": "^3.4.1",
     "intl-number-helper": "^1.2.3",
     "jsdom": "^26.1.0",
