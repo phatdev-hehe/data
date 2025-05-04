@@ -6,6 +6,9 @@
     "iconify.design/icons": true,
 
     "kaomoji.ru/*.md": true,
-    "kaomoji.ru/json": true
+    "kaomoji.ru/json": true,
+
+    "context7.com/*.md": true,
+    "context7.com/data": true
   }
 }
