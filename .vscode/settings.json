@@ -1,0 +1,11 @@
+{
+  "search.exclude": {
+    "package*": true,
+
+    "iconify.design/*.md": true,
+    "iconify.design/icons": true,
+
+    "kaomoji.ru/*.md": true,
+    "kaomoji.ru/json": true
+  }
+}

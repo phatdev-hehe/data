@@ -15,7 +15,7 @@ const getReadMeFileName = (languageCode) =>
 fs.mkdirSync(jsonPath, { recursive: true });
 
 for (const languageCode of languageCodes) {
-  let result = {};
+  let data = {};
 
   const {
     window: { document },
@@ -38,19 +38,19 @@ for (const languageCode of languageCodes) {
       )
     ).asc();
 
-    result[element.textContent] = {
+    data[element.textContent] = {
       description: element.parentElement.nextElementSibling.textContent,
       count: list.length,
       list,
     };
   }
 
-  result = sortKeys(result, { deep: true });
+  data = sortKeys(data, { deep: true });
 
   await Promise.all([
     fs.promises.writeFile(
       `${jsonPath}/${languageCode}.json`,
-      JSON.stringify(result)
+      JSON.stringify(data)
     ),
     fs.promises.writeFile(
       getReadMeFileName(languageCode),
@@ -72,13 +72,11 @@ for (const languageCode of languageCodes) {
             .textContent,
         },
         { img: { source: `logo/${languageCode}.jpg` } },
-        ...Object.entries(result).map(
-          ([title, { count, description, list }]) => [
-            { h2: `${title} <sup>${count}</sup>` },
-            { p: description },
-            { code: { content: list.join("\n\n") } },
-          ]
-        ),
+        ...Object.entries(data).map(([title, { count, description, list }]) => [
+          { h2: `${title} <sup>${count}</sup>` },
+          { p: description },
+          { code: { content: list.join("\n\n") } },
+        ]),
       ])
     ),
   ]);

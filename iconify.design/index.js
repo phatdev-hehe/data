@@ -7,28 +7,31 @@ import {
   parseIconSet,
   replaceIDs,
 } from "@iconify/utils";
-import { isFunction, isPlainObject } from "es-toolkit";
+import { groupBy, isFunction, isPlainObject } from "es-toolkit";
 import mapObject from "map-obj";
 import { nanoid } from "nanoid";
 import fs from "node:fs";
 
-const dataPath = "data";
+const iconsPath = "icons";
 
-const groupCollections = (collections, [fn, ...rest]) =>
-  isFunction(fn)
-    ? mapObject(Object.groupBy(collections, fn), (key, value) => [
+const groupCollections = (collections, [getKeyFromItem, ...rest]) =>
+  isFunction(getKeyFromItem)
+    ? mapObject(groupBy(collections, getKeyFromItem), (key, value) => [
         key.replace("/", "-"),
         groupCollections(value, rest),
       ])
     : collections;
 
-const buildData = async (groupedCollections, iconPathSegments = [dataPath]) => {
+const buildIcons = async (
+  groupedCollections,
+  iconPathSegments = [iconsPath]
+) => {
   if (isPlainObject(groupedCollections))
     return Object.fromEntries(
       await Promise.all(
         Object.entries(groupedCollections).map(async ([key, value]) => [
           key,
-          await buildData(value, [...iconPathSegments, key]),
+          await buildIcons(value, [...iconPathSegments, key]),
         ])
       )
     );
@@ -57,12 +60,12 @@ const buildData = async (groupedCollections, iconPathSegments = [dataPath]) => {
   );
 };
 
-fs.rmSync(dataPath, {
+fs.rmSync(iconsPath, {
   force: true,
   recursive: true,
 });
 
-await buildData(
+await buildIcons(
   groupCollections(
     Object.entries(await lookupCollections()).map(([key, value]) => ({
       prefix: key,
