@@ -7,17 +7,19 @@ import _ from "../index.js";
 const context7ApiBaseUrl = "https://context7.com/api";
 
 const libraries = sort(
-  await _.fetch(`${context7ApiBaseUrl}/libraries`, { responseType: "json" })
+  (
+    await _.fetch(`${context7ApiBaseUrl}/libraries`, { responseType: "json" })
+  ).filter((library) => library.settings.stars > 100)
 ).desc((library) => library.settings.stars);
 
 {
   const dataPath = "data";
-  const limit = 1000;
+  const limit = 100;
 
   const getLibraryApiUrl = (library) => {
     const url = new URL(`${context7ApiBaseUrl}/v1${library.settings.project}`);
 
-    url.searchParams.set("tokens", 999999999999);
+    url.searchParams.set("tokens", 999_999_999_999_999);
     url.searchParams.set("type", "txt");
 
     return url;
