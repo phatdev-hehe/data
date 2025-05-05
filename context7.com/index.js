@@ -33,31 +33,34 @@ const libraries = sort(
           index += 1;
 
           const exceedsLimit = index > limit;
+          const withinLimit = (content) => (exceedsLimit ? "" : content);
 
           return [
-            exceedsLimit ? "" : index,
+            index,
             `<a href='${
               exceedsLimit
                 ? getLibraryApiUrl(library).href
                 : `${dataPath}/${index}.txt`
             }'>${library.settings.title}</a>`,
             `<a href=${library.settings.docsRepoUrl}>${library.settings.project}</a>`,
-            formatNumber(library.version.totalTokens),
-            formatNumber(library.version.totalSnippets),
-            library.version.lastUpdate ?? "",
-            `<img src=${
-              {
-                finalized: "assets/completed-icon.svg",
-                initial: "assets/processing-icon.svg",
-                error: "assets/error-icon.svg",
-                get parsed() {
-                  return this.initial;
-                },
-                get delete() {
-                  return this.error;
-                },
-              }[library.version.state]
-            }/>`,
+            withinLimit(formatNumber(library.version.totalTokens)),
+            withinLimit(formatNumber(library.version.totalSnippets)),
+            withinLimit(library.version.lastUpdate ?? ""),
+            withinLimit(
+              `<img src=${
+                {
+                  finalized: "assets/completed-icon.svg",
+                  initial: "assets/processing-icon.svg",
+                  error: "assets/error-icon.svg",
+                  get parsed() {
+                    return this.initial;
+                  },
+                  get delete() {
+                    return this.error;
+                  },
+                }[library.version.state]
+              }/>`
+            ),
           ];
         }),
       },
