@@ -15,6 +15,7 @@ const libraries = sort(
   const dataPath = "data";
   const limit = 100;
 
+  // https://github.com/upstash/context7/blob/171b298f7a049f5ebd773d42f18433f61cb567cb/src/lib/api.ts#L33
   const getLibraryApiUrl = (library) => {
     const url = new URL(`${context7ApiBaseUrl}/v1${library.settings.project}`);
 

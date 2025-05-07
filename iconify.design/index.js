@@ -11,6 +11,7 @@ import { groupBy, isFunction, isPlainObject } from "es-toolkit";
 import mapObject from "map-obj";
 import { nanoid } from "nanoid";
 import fs from "node:fs";
+import path from "node:path";
 import _ from "../index.js";
 
 const iconsPath = "icons";
@@ -39,7 +40,7 @@ const buildIcons = async (
 
   await Promise.all(
     groupedCollections.map(async (iconSet) => {
-      const iconPath = [...iconPathSegments, iconSet.name].join("/");
+      const iconPath = path.join(...iconPathSegments, iconSet.name);
 
       // https://github.com/phatdev-hehe/icon-sets/blob/dev/src/components/icon-grid/build-icon.js
       parseIconSet(
