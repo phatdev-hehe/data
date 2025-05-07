@@ -1,6 +1,5 @@
 import { sort } from "fast-sort";
 import { formatNumber } from "intl-number-helper";
-import json2md from "json2md";
 import fs from "node:fs";
 import _ from "../index.js";
 
@@ -27,46 +26,56 @@ const libraries = sort(
 
   fs.writeFileSync(
     "readme.md",
-    json2md({
-      img: { source: "assets/favicon.ico" },
-      table: {
-        headers: ["", "NAME", "REPO", "TOKENS", "SNIPPETS", "UPDATE", ""],
-        rows: libraries.map((library, index) => {
-          index += 1;
+    _.json2md([
+      { img: { source: "assets/favicon.ico" } },
+      {
+        table: {
+          headers: [
+            undefined,
+            "NAME",
+            "REPO",
+            "TOKENS",
+            "SNIPPETS",
+            "UPDATE",
+            undefined,
+          ],
+          rows: libraries.map((library, index) => {
+            index += 1;
 
-          const exceedsLimit = index > limit;
-          const withinLimit = (content) => (exceedsLimit ? "" : content);
+            const exceedsLimit = index > limit;
+            const withinLimit = (content) => !exceedsLimit && content;
 
-          return [
-            index,
-            `<a href='${
-              exceedsLimit
-                ? getLibraryApiUrl(library).href
-                : `${dataPath}/${index}.txt`
-            }'>${library.settings.title}</a>`,
-            `<a href=${library.settings.docsRepoUrl}>${library.settings.project}</a>`,
-            withinLimit(formatNumber(library.version.totalTokens)),
-            withinLimit(formatNumber(library.version.totalSnippets)),
-            withinLimit(library.version.lastUpdate ?? ""),
-            withinLimit(
-              `<img src=${
-                {
-                  finalized: "assets/completed-icon.svg",
-                  initial: "assets/processing-icon.svg",
-                  error: "assets/error-icon.svg",
-                  get parsed() {
-                    return this.initial;
-                  },
-                  get delete() {
-                    return this.error;
-                  },
-                }[library.version.state]
-              }/>`
-            ),
-          ];
-        }),
+            return [
+              index,
+              `<a href='${
+                exceedsLimit
+                  ? getLibraryApiUrl(library).href
+                  : `${dataPath}/${index}.txt`
+              }'>${library.settings.title}</a>`,
+              `<a href=${library.settings.docsRepoUrl}>${library.settings.project}</a>`,
+              withinLimit(formatNumber(library.version.totalTokens)),
+              withinLimit(formatNumber(library.version.totalSnippets)),
+              withinLimit(library.version.lastUpdate),
+              withinLimit(
+                `<img src=${
+                  {
+                    finalized: "assets/completed-icon.svg",
+                    initial: "assets/processing-icon.svg",
+                    error: "assets/error-icon.svg",
+                    get parsed() {
+                      return this.initial;
+                    },
+                    get delete() {
+                      return this.error;
+                    },
+                  }[library.version.state]
+                }/>`
+              ),
+            ];
+          }),
+        },
       },
-    })
+    ])
   );
 
   _.mkEmptyDirSync(dataPath);

@@ -1,7 +1,6 @@
 import { uniq } from "es-toolkit";
 import { sort } from "fast-sort";
 import { JSDOM } from "jsdom";
-import json2md from "json2md";
 import fs from "node:fs";
 import sortKeys from "sort-keys";
 import _ from "../index.js";
@@ -52,7 +51,7 @@ for (const languageCode of languageCodes) {
     ),
     fs.promises.writeFile(
       getReadMeFileName(languageCode),
-      json2md([
+      _.json2md([
         {
           ul: languageCodes
             .filter(
