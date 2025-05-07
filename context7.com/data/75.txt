@@ -1,0 +1,147 @@
+TITLE: Defining Home Assistant Automation YAML (Corrected Example)
+DESCRIPTION: This snippet defines a Home Assistant automation similar to the previous one, triggered at the same time. It calls the same script service `script.notify_admin` but uses a title without the problematic single quote (`'`). This version is likely intended to pass stricter configuration validation or avoid rendering issues.
+SOURCE: https://github.com/home-assistant/core/blob/dev/tests/util/yaml/fixtures/bad.yaml.txt#_snippet_1
+
+LANGUAGE: yaml
+CODE:
+```
+- id: '165808523911590'
+alias: Config validation test FIXED
+description: ''
+trigger:
+- platform: time
+  at: 00:02:03
+condition: []
+action:
+- service: script.notify_admin
+  data:
+    title: 'Here is something that should work...!'
+    message: fixed?
+mode: single
+```
+
+----------------------------------------
+
+TITLE: Defining Home Assistant Automation YAML (Issue Example)
+DESCRIPTION: This snippet defines a Home Assistant automation triggered at a specific time. It attempts to call a script service `script.notify_admin` with a title containing a single quote, which is valid YAML but might interact negatively with certain configuration validation or rendering processes depending on the context.
+SOURCE: https://github.com/home-assistant/core/blob/dev/tests/util/yaml/fixtures/bad.yaml.txt#_snippet_0
+
+LANGUAGE: yaml
+CODE:
+```
+- id: '1658085239190'
+alias: Config validation test
+description: ''
+trigger:
+- platform: time
+  at: 00:02:03
+condition: []
+action:
+- service: script.notify_admin
+  data:
+    title: 'Here\'s something that does not work...!'
+    message: failing
+mode: single
+```
+
+----------------------------------------
+
+TITLE: Calling Home Assistant Service and Asserting KNX Write (Python)
+DESCRIPTION: Shows how to trigger a state change in Home Assistant by calling a service (`switch.turn_on`) and then verify that the expected outgoing KNX GroupValueWrite telegram was sent using the `KNXTestKit.assert_write` method. It requires `hass` and `knx` fixtures. The `assert_write` method checks for a specific group address and payload (`True` for ON).
+SOURCE: https://github.com/home-assistant/core/blob/dev/tests/components/knx/README.md#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+    # turn on switch
+    await hass.services.async_call(
+        "switch", "turn_on", {"entity_id": "switch.test_switch"}, blocking=True
+    )
+    # assert ON telegram
+    await knx.assert_write("1/2/3", True)
+```
+
+----------------------------------------
+
+TITLE: Receiving KNX Write and Asserting Home Assistant State (Python)
+DESCRIPTION: Demonstrates simulating an incoming KNX telegram using `KNXTestKit.receive_write` and then asserting that the corresponding entity state in Home Assistant has updated correctly. It requires `hass` and `knx` fixtures. The `receive_write` method injects a GroupValueWrite telegram, and the code then verifies the switch entity's state is `STATE_OFF`.
+SOURCE: https://github.com/home-assistant/core/blob/dev/tests/components/knx/README.md#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+    # receive OFF telegram
+    await knx.receive_write("1/2/3", False)
+    # assert OFF state
+    state = hass.states.get("switch.test_switch")
+    assert state.state is STATE_OFF
+```
+
+----------------------------------------
+
+TITLE: Setting up KNX Integration with Config Store Fixture (Python)
+DESCRIPTION: Illustrates initializing the KNX integration in a test by referencing a configuration stored in a fixture file. It requires the `hass` and `knx` fixtures. The fixture file should be located in the `tests/components/knx/fixtures` directory and its filename is passed to `setup_integration`.
+SOURCE: https://github.com/home-assistant/core/blob/dev/tests/components/knx/README.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+async def test_some_config_store(hass: HomeAssistant, knx: KNXTestKit):
+    await knx.setup_integration(config_store_fixture="config_store_filename.json")
+```
+
+----------------------------------------
+
+TITLE: Setting up KNX Integration with YAML config (Python)
+DESCRIPTION: Demonstrates how to initialize the Home Assistant KNX integration within a test environment using a Python dictionary representing the YAML configuration. It requires the `hass` (HomeAssistant instance) and `knx` (KNXTestKit instance) fixtures. The dictionary defines the basic configuration for a switch entity.
+SOURCE: https://github.com/home-assistant/core/blob/dev/tests/components/knx/README.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+async def test_some_yaml(hass: HomeAssistant, knx: KNXTestKit):
+    await knx.setup_integration(
+        yaml_config={
+            "switch": {
+                "name": "test_switch",
+                "address": "1/2/3",
+            }
+        }
+    )
+```
+
+----------------------------------------
+
+TITLE: Generating Z-Wave Fixture File Directly with Script Flag
+DESCRIPTION: This command executes the fixture conversion script using the --file command-line argument. This flag signals the script to manage the file creation and placement of the fixture data directly within the designated fixtures folder, providing a more automated approach than using shell redirection.
+SOURCE: https://github.com/home-assistant/core/blob/dev/homeassistant/components/zwave_js/README.md#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+python homeassistant/components/zwave_js/scripts/convert_device_diagnostics_to_fixture.py <path/to/diagnostics/dump> --file
+```
+
+----------------------------------------
+
+TITLE: Generating Z-Wave Fixture File using Python Script and Redirection
+DESCRIPTION: This command runs the Z-Wave fixture conversion script, similar to the previous example, but uses shell redirection (>) to save the standard output directly into a specified file. This is useful for easily creating the fixture file without manual copying.
+SOURCE: https://github.com/home-assistant/core/blob/dev/homeassistant/components/zwave_js/README.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+python homeassistant/components/zwave_js/scripts/convert_device_diagnostics_to_fixture.py <path/to/diagnostics/dump> > <path_to_fixture_output>
+```
+
+----------------------------------------
+
+TITLE: Generating Z-Wave Fixture Data via Stdout using Python Script
+DESCRIPTION: This command executes a Python script provided by the Home Assistant Z-Wave integration to transform a Z-Wave device diagnostics dump into a test fixture format. The script takes the path to the dump file as an argument and prints the resulting fixture data directly to standard output.
+SOURCE: https://github.com/home-assistant/core/blob/dev/homeassistant/components/zwave_js/README.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+python homeassistant/components/zwave_js/scripts/convert_device_diagnostics_to_fixture.py <path/to/diagnostics/dump>
+```

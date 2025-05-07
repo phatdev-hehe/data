@@ -1,0 +1,3215 @@
+TITLE: Simple Deno Server (TypeScript)
+DESCRIPTION: This TypeScript code creates a basic HTTP server that responds with "Hello, world!". It demonstrates the fundamental structure of a Deno server application, using the `Deno.serve` function to handle incoming requests and return a `Response` object.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_5
+
+LANGUAGE: ts
+CODE:
+```
+Deno.serve((_req: Request) => {
+  return new Response("Hello, world!");
+});
+```
+
+----------------------------------------
+
+TITLE: Run Deno Server
+DESCRIPTION: This command executes the Deno server file `server.ts` with network access enabled. The `--allow-net` flag is required to grant the program permission to listen for and accept network connections.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_6
+
+LANGUAGE: sh
+CODE:
+```
+deno run --allow-net server.ts
+```
+
+----------------------------------------
+
+TITLE: Defining Deno Runtime Tests (TypeScript)
+DESCRIPTION: This code snippet demonstrates how to define Deno runtime tests using the `Deno.test()` function.  The first example shows a simple test function, while the second demonstrates a more complex test with ignore conditions based on the OS and permission requirements for read and write access.  These tests exercise the Deno runtime under different permission scenarios.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/unit/README.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+import {} from "./test_util.ts";
+
+Deno.test(function simpleTestFn(): void {
+  // test code here
+});
+
+Deno.test(
+  {
+    ignore: Deno.build.os === "windows",
+    permissions: { read: true, write: true },
+  },
+  function complexTestFn(): void {
+    // test code here
+  },
+);
+```
+
+----------------------------------------
+
+TITLE: Simple TypeScript Function
+DESCRIPTION: This TypeScript function `hello` takes a string `name` as input and prints it to the console. It showcases type annotations and basic function definition in TypeScript.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+function hello(name: string) {
+  console.log(name);
+}
+
+hello("alice");
+```
+
+----------------------------------------
+
+TITLE: Install Deno (Shell)
+DESCRIPTION: This command uses curl to download and execute the Deno installation script. It's designed for Mac and Linux environments.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+curl -fsSL https://deno.land/install.sh | sh
+```
+
+----------------------------------------
+
+TITLE: Import and Assign Fetch API in JavaScript
+DESCRIPTION: This snippet imports modules from the `deno_fetch` extension and assigns them to the global scope. It sets up the callback for Wasm streaming operations and defines `fetch`, `Request`, `Response`, `Headers`, and `FormData` as properties of the global object, making the Fetch API available in JavaScript.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/fetch/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as headers from "ext:deno_fetch/20_headers.js";
+import * as formData from "ext:deno_fetch/21_formdata.js";
+import * as request from "ext:deno_fetch/23_request.js";
+import * as response from "ext:deno_fetch/23_response.js";
+import * as fetch from "ext:deno_fetch/26_fetch.js";
+import * as eventSource from "ext:deno_fetch/27_eventsource.js";
+
+// Set up the callback for Wasm streaming ops
+Deno.core.setWasmStreamingCallback(fetch.handleWasmStreaming);
+
+Object.defineProperty(globalThis, "fetch", {
+  value: fetch.fetch,
+  enumerable: true,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "Request", {
+  value: request.Request,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "Response", {
+  value: response.Response,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "Headers", {
+  value: headers.Headers,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "FormData", {
+  value: formData.FormData,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Basic Hono App in TypeScript
+DESCRIPTION: This code snippet demonstrates a basic Hono application setup. It imports the `Hono` class, creates a new instance, defines a route that returns 'Hono!!' as text, and exports the app. This is the minimal setup required to run a Hono application.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/testdata/npm/hono/README.md#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { Hono } from 'hono'
+const app = new Hono()
+
+app.get('/', (c) => c.text('Hono!!'))
+
+export default app
+```
+
+----------------------------------------
+
+TITLE: Configuring Domain Name Certificate with OpenSSL
+DESCRIPTION: This configures the domains.txt file which is used by openssl to setup the domain name certificate.  The file specifies the authority key identifier, basic constraints, key usage and subject alternative names used when generating the domain certificate.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/tls/README.md#_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = localhost
+```
+
+----------------------------------------
+
+TITLE: Initialize Fetch API ops in Rust
+DESCRIPTION: This snippet initializes the `deno_fetch` ops and ESM within a Deno runtime extension. It requires a struct implementing `deno_fetch::FetchPermissions` and an options struct `deno_fetch::Options` which implements `Default`. It adds the necessary ops to the runtime for fetch functionality.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/fetch/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+deno_fetch::deno_fetch::init_ops_and_esm<Permissions>(Default::default())
+```
+
+----------------------------------------
+
+TITLE: Importing deno_net extension in JavaScript
+DESCRIPTION: This JavaScript code snippet shows how to import the networking extension's source within a JavaScript module in Deno. It imports `deno_webidl`, `deno_net`, and `deno_tls` modules, making their functionalities available for use. The `ext:` specifier indicates that these modules are provided by Deno's internal extensions system.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/net/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as webidl from "ext:deno_webidl/00_webidl.js";
+import * as net from "ext:deno_net/01_net.js";
+import * as tls from "ext:deno_net/02_tls.js";
+```
+
+----------------------------------------
+
+TITLE: Add a test case in JavaScript
+DESCRIPTION: This JavaScript code snippet demonstrates how to add a test case for the new Node-API function. It imports necessary modules, loads the test library, and uses `Deno.test` to assert the expected behavior of `lib.test_get_boolean` with true and false inputs.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/napi/README.md#_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+// tests/napi/boolean_test.js
+import { assertEquals, loadTestLibrary } from "./common.js";
+const lib = loadTestLibrary();
+Deno.test("napi get boolean", function () {
+  assertEquals(lib.test_get_boolean(true), true);
+  assertEquals(lib.test_get_boolean(false), false);
+});
+```
+
+----------------------------------------
+
+TITLE: SQL Query Example
+DESCRIPTION: This SQL snippet demonstrates a simple SELECT query, retrieving all columns and the 'biz' and 'buz' columns from the 'baz' table.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_10
+
+LANGUAGE: SQL
+CODE:
+```
+  seLect * , biz, buz
+from baz;
+```
+
+----------------------------------------
+
+TITLE: Deno Assertion with assertEquals
+DESCRIPTION: This TypeScript snippet uses the `assertEquals` function from the `@std/assert` module (Deno's standard library) to assert that 1 + 2 equals 3.  It requires Deno with read permissions. The script begins with a shebang to execute it directly with Deno.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/test_with_shebang/markdown.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+#!/usr/bin/env -S deno run --allow-read
+import { assertEquals } from "@std/assert";
+assertEquals(1 + 2, 3);
+```
+
+----------------------------------------
+
+TITLE: Benchmarking Deno Core Op (op_nop) in Rust
+DESCRIPTION: This code defines a benchmark for a simple no-operation (nop) using the `deno_bench_util` crate. It includes setting up a Deno extension with a single op implemented in Rust, then benchmarking the corresponding JavaScript call to that op. It uses `bench_js_sync` to execute the JavaScript code and measure its performance. The `op_nop` function is a simple function that returns a number.
+SOURCE: https://github.com/denoland/deno/blob/main/bench_util/README.md#_snippet_0
+
+LANGUAGE: rust
+CODE:
+```
+use deno_bench_util::bench_js_sync;
+use deno_bench_util::bench_or_profile;
+use deno_bench_util::bencher::benchmark_group;
+use deno_bench_util::bencher::Bencher;
+use deno_core::Extension;
+
+#[op2]
+#[number]
+fn op_nop() -> usize {
+  9
+}
+
+fn setup() -> Vec<Extension> {
+  vec![Extension {
+    name: "my_ext",
+    ops: std::borrow::Cow::Borrowed(&[op_nop::DECL]),
+  }]
+}
+
+fn bench_op_nop(b: &mut Bencher) {
+  bench_js_sync(b, r#"Deno.core.ops.op_nop();"#, setup);
+}
+
+benchmark_group!(benches, bench_op_nop);
+bench_or_profile!(benches);
+```
+
+----------------------------------------
+
+TITLE: TypeScript Lib Entries Map
+DESCRIPTION: This JavaScript snippet shows an example of the `libEntries` map within the TypeScript compiler (`deno/cli/tsc/00_typescript.js`).  It maps library names to their corresponding .d.ts file names, allowing the compiler to locate the necessary type definitions. The entries must match the files present on disk.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/update_typescript.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+var libEntries = [
+  // JavaScript only
+  ["es5", "lib.es5.d.ts"],
+  ["es6", "lib.es2015.d.ts"],
+  ["es2015", "lib.es2015.d.ts"],
+  ["es7", "lib.es2016.d.ts"],
+  // ...
+];
+```
+
+----------------------------------------
+
+TITLE: Import and Assign URL APIs to Global Scope (JavaScript)
+DESCRIPTION: This JavaScript code imports the URL, URLPattern, and URLSearchParams APIs from the `ext:deno_url` extension and assigns them to the global scope. This makes these APIs available for use in Deno JavaScript code.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/url/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as url from "ext:deno_url/00_url.js";
+import * as urlPattern from "ext:deno_url/01_urlpattern.js";
+
+Object.defineProperty(globalThis, "URL", {
+  value: url.URL,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "URLPattern", {
+  value: url.URLPattern,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "URLSearchParams", {
+  value: url.URLSearchParams,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Basic __test__.json Example
+DESCRIPTION: A simple example of a `__test__.json` file that runs `deno run main.js` and asserts that the output matches `main.out`.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_3
+
+LANGUAGE: json
+CODE:
+```
+{
+  "args": "run main.js",
+  "output": "main.out"
+}
+```
+
+----------------------------------------
+
+TITLE: Running All WPT Tests (Shell)
+DESCRIPTION: This command executes all available Web Platform Tests defined in the `expectation.json` file. The test runner compares the actual output of each test with the expected output, indicating whether the tests passed or failed. No specific dependencies are required other than a correctly set up WPT environment using the setup command.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/wpt/README.md#_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+./tests/wpt/wpt.ts run
+```
+
+----------------------------------------
+
+TITLE: SQL Select Statement
+DESCRIPTION: This SQL snippet selects all columns, 'biz', and 'buz' from the table 'baz'. It demonstrates a basic SQL SELECT statement.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_10
+
+LANGUAGE: sql
+CODE:
+```
+SELECT
+  *,
+  biz,
+  buz
+FROM
+  baz;
+```
+
+----------------------------------------
+
+TITLE: Initializing Console API in JavaScript
+DESCRIPTION: This JavaScript snippet demonstrates how to import the deno_console extension and assign a console object to the global scope. It uses the Deno.core.print function to handle console messages. The snippet defines the console object as non-enumerable, configurable, and writable.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/console/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as console from "ext:deno_console/01_console.js";
+Object.defineProperty(globalThis, "console", {
+  value: new console.Console((msg, level) =>
+    globalThis.Deno.core.print(msg, level > 1)
+  ),
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Ignoring Type Errors in TypeScript
+DESCRIPTION: This snippet demonstrates how to use the `ignore` flag within a TypeScript code block embedded in an HTML comment. This tells the type checker to ignore any errors within the block.  It is useful for documentation and testing when showcasing invalid code without causing build failures.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_ignore_html_comment/main.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+const value: Invalid = "ignored";
+```
+
+----------------------------------------
+
+TITLE: Logging to Console TypeScript
+DESCRIPTION: This TypeScript snippet demonstrates how to log a message to the console using `console.log()`. It showcases a simple TypeScript code example for outputting information during script execution. No dependencies or prerequisites are required beyond a TypeScript environment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown/main.md#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+console.log("ts");
+```
+
+----------------------------------------
+
+TITLE: Script Snapshot Management
+DESCRIPTION: The `ScriptSnapshot` class manages the state of a script for incremental compilation.  It fetches and disposes of the text, gets the text length, and calculates change ranges by interacting with the Deno core via `core.jsonOpSync` to perform operations like `op_get_text`, `op_get_length`, `op_get_change_range`, and `op_dispose`.  The `dispose` method releases resources associated with the snapshot.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_5
+
+LANGUAGE: typescript
+CODE:
+```
+  class ScriptSnapshot {
+    /** @type {string} */
+    specifier;
+    /** @type {string} */
+    version;
+    /**
+     * @param {string} specifier
+     * @param {string} version 
+     */
+    constructor(specifier, version) {
+      this.specifier = specifier;
+      this.version = version;
+    }
+    /**
+     * @param {number} start 
+     * @param {number} end 
+     * @returns {string}
+     */
+    getText(start, end) {
+      const { specifier, version } = this;
+      debug(
+        `snapshot.getText(${start}, ${end}) specifier: ${specifier} version: ${version}`,
+      );
+      return core.jsonOpSync("op_get_text", { specifier, version, start, end });
+    }
+    /**
+     * @returns {number}
+     */
+    getLength() {
+      const { specifier, version } = this;
+      debug(`snapshot.getLength() specifier: ${specifier} version: ${version}`);
+      return core.jsonOpSync("op_get_length", { specifier, version });
+    }
+    /**
+     * @param {ScriptSnapshot} oldSnapshot
+     * @returns {ts.TextChangeRange | undefined}
+     */
+    getChangeRange(oldSnapshot) {
+      const { specifier, version } = this;
+      const { version: oldVersion } = oldSnapshot;
+      const oldLength = oldSnapshot.getLength();
+      debug(
+        `snapshot.getLength() specifier: ${specifier} oldVersion: ${oldVersion} version: ${version}`,
+      );
+      return core.jsonOpSync(
+        "op_get_change_range",
+        { specifier, oldLength, oldVersion, version },
+      );
+    }
+    dispose() {
+      const { specifier, version } = this;
+      debug(`snapshot.dispose() specifier: ${specifier} version: ${version}`);
+      core.jsonOpSync("op_dispose", { specifier, version });
+    }
+  }
+```
+
+----------------------------------------
+
+TITLE: Running stdio Benchmark with Deno
+DESCRIPTION: This command measures the time it takes for the Deno script `stdio.js` to process input from `/dev/zero` using the `dd` command. Deno executes the script using the `deno run` command, with input piped from `dd`.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/stdio/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+time dd if=/dev/zero bs=65536 count=500000 | deno run stdio.js
+```
+
+----------------------------------------
+
+TITLE: Console log with CSS styling
+DESCRIPTION: This test uses `console.log` to output a styled message to the console, demonstrating the ability to apply CSS styles to console output within the Jupyter environment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_17
+
+LANGUAGE: python
+CODE:
+```
+console.log("%c Hello Deno ", "background-color: #15803d; color: white;");
+```
+
+----------------------------------------
+
+TITLE: Running FFI Benchmarks in Deno
+DESCRIPTION: This command is used to execute performance benchmarks for the Deno FFI implementation. It requires `--allow-ffi` to enable FFI functionality, `--allow-read` to permit reading necessary files, and `--unstable-ffi` because it uses the unstable FFI API. The script `tests/ffi/tests/bench.js` contains the actual benchmark code.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/ffi/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+target/release/deno bench --allow-ffi --allow-read --unstable-ffi ./tests/ffi/tests/bench.js
+```
+
+----------------------------------------
+
+TITLE: Handle Language Server Request
+DESCRIPTION: The `serverRequest` function handles incoming requests from the language server. It uses a switch statement to route different method calls to their corresponding language service functions, like getting diagnostics, quick info, completions, etc. The results are then sent back to the language server via the `respond` function.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_17
+
+LANGUAGE: typescript
+CODE:
+```
+function serverRequest({ id, ...request }) {
+  debug(`serverRequest()`, { id, ...request });
+  switch (request.method) {
+    case "configure": {
+      const { options, errors } = ts
+        .convertCompilerOptionsFromJson(request.compilerOptions, "");
+      Object.assign(options, { allowNonTsExtensions: true });
+      if (errors.length) {
+        debug(ts.formatDiagnostics(errors, host));
+      }
+      compilationSettings = options;
+      return respond(id, true);
+    }
+    case "getAsset": {
+      const sourceFile = host.getSourceFile(
+        request.specifier,
+        ts.ScriptTarget.ESNext,
+      );
+      return respond(id, sourceFile && sourceFile.text);
+    }
+    case "getDiagnostics": {
+      try {
+        /** @type {Record<string, any[]>} */
+        const diagnosticMap = {};
+        for (const specifier of request.specifiers) {
+          diagnosticMap[specifier] = fromTypeScriptDiagnostic([
+            ...languageService.getSemanticDiagnostics(specifier),
+            ...languageService.getSuggestionDiagnostics(specifier),
+            ...languageService.getSyntacticDiagnostics(specifier),
+          ].filter(({ code }) => !IGNORED_DIAGNOSTICS.includes(code)));
+        }
+        return respond(id, diagnosticMap);
+      } catch (e) {
+        if ("stack" in e) {
+          error(e.stack);
+        } else {
+          error(e);
+        }
+        return respond(id, {});
+      }
+    }
+    case "getQuickInfo": {
+      return respond(
+        id,
+        languageService.getQuickInfoAtPosition(
+          request.specifier,
+          request.position,
+        ),
+      );
+    }
+    case "getCompletions": {
+      return respond(
+        id,
+        languageService.getCompletionsAtPosition(
+          request.specifier,
+          request.position,
+          request.preferences,
+        ),
+      );
+    }
+    case "getDocumentHighlights": {
+      return respond(
+        id,
+        languageService.getDocumentHighlights(
+          request.specifier,
+          request.position,
+          request.filesToSearch,
+        ),
+      );
+    }
+    case "getReferences": {
+      return respond(
+        id,
+        languageService.getReferencesAtPosition(
+          request.specifier,
+          request.position,
+        ),
+      );
+    }
+    case "getDefinition": {
+      return respond(
+        id,
+        languageService.getDefinitionAndBoundSpan(
+          request.specifier,
+          request.position,
+        ),
+      );
+    }
+    case "getImplementation": {
+      return respond(
+        id,
+        languageService.getImplementationAtPosition(
+          request.specifier,
+          request.position,
+        ),
+      );
+    }
+    case "findRenameLocations": {
+      return respond(
+        id,
+        languageService.findRenameLocations(
+          request.specifier,
+          request.position,
+          request.findInStrings,
+          request.findInComments,
+          request.providePrefixAndSuffixTextForRename,
+        ),
+      );
+    }
+    default:
+      throw new TypeError(
+        // @ts-ignore exhausted case statement sets type to never
+        `Invalid request method for request: "${request.method}" (${id})`,
+      );
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Type Checking Error TypeScript
+DESCRIPTION: This TypeScript snippet is designed to trigger a type checking error. It attempts to assign a number to a string variable, which will cause the TypeScript compiler to report an error. This is used to demonstrate TypeScript's type safety features.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown/main.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Benchmarking copyFileSync in Deno
+DESCRIPTION: This JavaScript snippet demonstrates how to benchmark the `copyFileSync` function within the Deno environment. It retrieves the function using `getFunction`, benchmarks its execution, and then cleans up the created file using `removeSync` to avoid side effects in subsequent benchmark runs.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/fs/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+const copyFileSync = getFunction("copyFileSync");
+bench(() => copyFileSync("test", "test2"));
+
+// For functions with side-effects, clean up after `bench` like so:
+const removeSync = getFunction("removeSync");
+removeSync("test2");
+```
+
+----------------------------------------
+
+TITLE: TypeScript Type Error Example
+DESCRIPTION: This snippet demonstrates a simple TypeScript type error.  It attempts to assign a number (42) to a variable declared as a string. This will cause a type error during compilation or type checking. It is embedded within an HTML comment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_ignore_html_comment/main.md#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Multi-Step __test__.json Example
+DESCRIPTION: Demonstrates a `__test__.json` configuration with multiple steps, each running a different Deno command and asserting its output and exit code. Uses a temporary directory.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_4
+
+LANGUAGE: json
+CODE:
+```
+{
+  "tempDir": true,
+  "steps": [{
+    "args": "cache main.ts",
+    "output": "cache.out"
+  }, {
+    "args": "run main.ts",
+    "output": "error.out",
+    "exitCode": 1
+  }]
+}
+```
+
+----------------------------------------
+
+TITLE: Return number
+DESCRIPTION: This test confirms that a numerical value (42) is accurately returned in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_6
+
+LANGUAGE: python
+CODE:
+```
+42
+```
+
+----------------------------------------
+
+TITLE: Import Deno IO Extension in JavaScript
+DESCRIPTION: This snippet shows how to import the `deno_io` extension's source in JavaScript. It uses the `ext:` specifier to load the module from the extension.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/io/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as io from "ext:deno_io/12_io.js";
+```
+
+----------------------------------------
+
+TITLE: Return boolean
+DESCRIPTION: This test checks if the boolean value `true` is correctly returned in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_5
+
+LANGUAGE: python
+CODE:
+```
+true
+```
+
+----------------------------------------
+
+TITLE: Compiler Host Setup
+DESCRIPTION: This code defines the `host` object, which implements the `ts.CompilerHost` and `ts.LanguageServiceHost` interfaces. It provides the TypeScript compiler with the necessary functions to interact with the Deno environment, including file existence checks, file reading, source file retrieval, writing output files, and resolving module names using `core.jsonOpSync` to call Deno core ops such as `op_load`, `op_emit`, and `op_resolve`.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_6
+
+LANGUAGE: typescript
+CODE:
+```
+  /** @type {ts.CompilerOptions} */
+  let compilationSettings = {};
+
+  /** @type {ts.LanguageService} */
+  let languageService;
+
+  /** An object literal of the incremental compiler host, which provides the
+   * specific "bindings" to the Deno environment that tsc needs to work.
+   *
+   * @type {ts.CompilerHost & ts.LanguageServiceHost} */
+  const host = {
+    fileExists(fileName) {
+      debug(`host.fileExists("${fileName}")`);
+      return false;
+    },
+    readFile(specifier) {
+      debug(`host.readFile("${specifier}")`);
+      return core.jsonOpSync("op_load", { specifier }).data;
+    },
+    getSourceFile(
+      specifier,
+      languageVersion,
+      _onError,
+      _shouldCreateNewSourceFile,
+    ) {
+      debug(
+        `host.getSourceFile("${specifier}", ${
+          ts.ScriptTarget[languageVersion]
+        })`,
+      );
+      let sourceFile = sourceFileCache.get(specifier);
+      if (sourceFile) {
+        return sourceFile;
+      }
+
+      /** @type {{ data: string; hash?: string; scriptKind: ts.ScriptKind }} */
+      const { data, hash, scriptKind } = core.jsonOpSync(
+        "op_load",
+        { specifier },
+      );
+      assert(
+        data != null,
+        `"data" is unexpectedly null for "${specifier}".`,
+      );
+      sourceFile = ts.createSourceFile(
+        specifier,
+        data,
+        languageVersion,
+        false,
+        scriptKind,
+      );
+      sourceFile.moduleName = specifier;
+      sourceFile.version = hash;
+      sourceFileCache.set(specifier, sourceFile);
+      return sourceFile;
+    },
+    getDefaultLibFileName() {
+      return `${ASSETS}/lib.esnext.d.ts`;
+    },
+    getDefaultLibLocation() {
+      return ASSETS;
+    },
+    writeFile(fileName, data, _writeByteOrderMark, _onError, sourceFiles) {
+      debug(`host.writeFile("${fileName}")`);
+      let maybeSpecifiers;
+      if (sourceFiles) {
+        maybeSpecifiers = sourceFiles.map((sf) => sf.moduleName);
+      }
+      return core.jsonOpSync(
+        "op_emit",
+        { maybeSpecifiers, fileName, data },
+      );
+    },
+    getCurrentDirectory() {
+      return CACHE;
+    },
+    getCanonicalFileName(fileName) {
+      return fileName;
+    },
+    useCaseSensitiveFileNames() {
+      return true;
+    },
+    getNewLine() {
+      return "\n";
+    },
+    resolveModuleNames(specifiers, base) {
+      debug(`host.resolveModuleNames()`);
+      debug(`  base: ${base}`);
+      debug(`  specifiers: ${specifiers.join(", ")}`);
+      /** @type {Array<[string, ts.Extension] | undefined>} */
+      const resolved = core.jsonOpSync("op_resolve", {
+        specifiers,
+        base,
+      });
+      if (resolved) {
+        const result = resolved.map((item) => {
+          if (item) {
+            const [resolvedFileName, extension] = item;
+            return {
+              resolvedFileName,
+              extension,
+              isExternalLibraryImport: false,
+            };
+          }
+```
+
+----------------------------------------
+
+TITLE: Building Deno with Cargo
+DESCRIPTION: This command builds the Deno project using Cargo. The `-p deno` flag specifies the package to build, and the optional `--release` flag builds a release version. This is the first step before using `cargo plonk`.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/faster-rebuilds.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+cargo build -p deno [--release]
+```
+
+----------------------------------------
+
+TITLE: Execute TypeScript Compilation
+DESCRIPTION: The function `exec` is the entry point for executing TypeScript compilation within Deno. It receives configuration, debugging flags, and root file names as input. It configures the TypeScript compiler, performs compilation, gathers diagnostics, and responds to the Deno runtime with the results.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_15
+
+LANGUAGE: typescript
+CODE:
+```
+function exec({ config, debug: debugFlag, rootNames }) {
+  setLogDebug(debugFlag, "TS");
+  performanceStart();
+  debug(">>> exec start", { rootNames });
+  debug(config);
+
+  const { options, errors: configFileParsingDiagnostics } = ts
+    .convertCompilerOptionsFromJson(config, "");
+  // The `allowNonTsExtensions` is a "hidden" compiler option used in VSCode
+  // which is not allowed to be passed in JSON, we need it to allow special
+  // URLs which Deno supports. So we need to either ignore the diagnostic, or
+  // inject it ourselves.
+  Object.assign(options, { allowNonTsExtensions: true });
+  const program = ts.createIncrementalProgram({
+    rootNames,
+    options,
+    host,
+    configFileParsingDiagnostics,
+  });
+
+  const { diagnostics: emitDiagnostics } = program.emit();
+
+  const diagnostics = [
+    ...program.getConfigFileParsingDiagnostics(),
+    ...program.getSyntacticDiagnostics(),
+    ...program.getOptionsDiagnostics(),
+    ...program.getGlobalDiagnostics(),
+    ...program.getSemanticDiagnostics(),
+    ...emitDiagnostics,
+  ].filter(({ code }) => !IGNORED_DIAGNOSTICS.includes(code));
+  performanceProgram({ program });
+
+  core.jsonOpSync("op_respond", {
+    diagnostics: fromTypeScriptDiagnostic(diagnostics),
+    stats: performanceEnd(),
+  });
+  debug("<<< exec stop");
+}
+```
+
+----------------------------------------
+
+TITLE: Rich class display
+DESCRIPTION: This test demonstrates the creation of a class with a custom display representation using Symbol.for("Jupyter.display"). The class generates HTML to display a colored square.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_25
+
+LANGUAGE: python
+CODE:
+```
+class SuperColor {
+  constructor() {
+      this.color = "#ff5398"
+  }
+  hex() {
+      return this.color
+  }
+    
+  [Symbol.for("Jupyter.display")]() {
+      return {
+          "text/html": `<div style="width: 32px; height: 32px; background-color: ${this.hex()}" />`
+      }
+  }
+}
+
+let sc = new SuperColor()
+sc
+```
+
+----------------------------------------
+
+TITLE: Install Deno (Homebrew)
+DESCRIPTION: This command uses Homebrew to install Deno. It's specific to macOS systems with Homebrew installed.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+brew install deno
+```
+
+----------------------------------------
+
+TITLE: Import and Configure WebIDL in JavaScript
+DESCRIPTION: This JavaScript code snippet imports the webidl module from the Deno extension and defines a property on the globalThis object using Object.defineProperty. This property makes the WebIDL brand available and configurable.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/webidl/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as webidl from "ext:deno_webidl/00_webidl.js";
+Object.defineProperty(globalThis, webidl.brand, {
+  value: webidl.brand,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Install Deno (WinGet)
+DESCRIPTION: This command uses WinGet to install Deno. It's specific to Windows systems with WinGet installed.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_4
+
+LANGUAGE: powershell
+CODE:
+```
+winget install --id=DenoLand.Deno
+```
+
+----------------------------------------
+
+TITLE: Initialize Build Environment and Load Libraries
+DESCRIPTION: This snippet initializes the build environment by registering core ops, error class, and fetching build info. It retrieves a list of libraries (`libs`) from `core.jsonOpSync("op_build_info", {})` and adds them to the TypeScript compiler's internal library list (`ts.libs`). It ensures common type libraries are cached in memory for re-use by tsc.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_20
+
+LANGUAGE: typescript
+CODE:
+```
+// Setup the compiler runtime during the build process.
+core.ops();
+core.registerErrorClass("Error", Error);
+
+// A build time only op that provides some setup information that is used to
+// ensure the snapshot is setup properly.
+/** @type {{ buildSpecifier: string; libs: string[] }} */
+const { buildSpecifier, libs } = core.jsonOpSync("op_build_info", {});
+for (const lib of libs) {
+  const specifier = `lib.${lib}.d.ts`;
+  // we are using internal APIs here to "inject" our custom libraries into
+  // tsc, so things like `"lib": [ "deno.ns" ]` are supported.
+  if (!ts.libs.includes(lib)) {
+    ts.libs.push(lib);
+    ts.libMap.set(lib, `lib.${lib}.d.ts`);
+  }
+  // we are caching in memory common type libraries that will be re-used by
+  // tsc on when the snapshot is restored
+  assert(
+    host.getSourceFile(`${ASSETS}${specifier}`, ts.ScriptTarget.ESNext),
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Import Deno Web Extension Modules - JavaScript
+DESCRIPTION: Imports various modules from the Deno web extension. This is the first step to use the functionality provided by the Deno web extension in JavaScript. Each module represents a specific web API implementation.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/web/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as infra from "ext:deno_web/00_infra.js";
+import * as DOMException from "ext:deno_web/01_dom_exception.js";
+import * as mimesniff from "ext:deno_web/01_mimesniff.js";
+import * as event from "ext:deno_web/02_event.js";
+import * as structuredClone from "ext:deno_web/02_structured_clone.js";
+import * as timers from "ext:deno_web/02_timers.js";
+import * as abortSignal from "ext:deno_web/03_abort_signal.js";
+import * as globalInterfaces from "ext:deno_web/04_global_interfaces.js";
+import * as base64 from "ext:deno_web/05_base64.js";
+import * as streams from "ext:deno_web/06_streams.js";
+import * as encoding from "ext:deno_web/08_text_encoding.js";
+import * as file from "ext:deno_web/09_file.js";
+import * as fileReader from "ext:deno_web/10_filereader.js";
+import * as location from "ext:deno_web/12_location.js";
+import * as messagePort from "ext:deno_web/13_message_port.js";
+import * as compression from "ext:deno_web/14_compression.js";
+import * as performance from "ext:deno_web/15_performance.js";
+import * as imageData from "ext:deno_web/16_image_data.js";
+```
+
+----------------------------------------
+
+TITLE: Running Deno and Node.js Benchmarks
+DESCRIPTION: These bash commands are used to execute the benchmark scripts for both Deno and Node.js. The Deno command uses the `-A` flag to grant all permissions and `--unstable` to enable unstable features, while the Node.js command simply executes the `run.js` script using the `node` runtime.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/fs/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+deno run -A --unstable run.mjs
+node run.js
+```
+
+----------------------------------------
+
+TITLE: Using left-pad to pad strings in JavaScript
+DESCRIPTION: This JavaScript code demonstrates how to use the left-pad library to pad strings. It showcases different scenarios, including padding with spaces and zeros. The module requires left-pad to be installed. It can be used to format strings to a fixed length.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/commonjs/node_modules/left-pad/README.md#_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+const leftPad = require("left-pad");
+
+leftPad("foo", 5);
+// => "  foo"
+
+leftPad("foobar", 6);
+// => "foobar"
+
+leftPad(1, 2, "0");
+// => "01"
+
+leftPad(17, 5, 0);
+// => "00017"
+```
+
+----------------------------------------
+
+TITLE: Diagnostic transformation
+DESCRIPTION: These functions transform TypeScript diagnostics into a format suitable for Deno. `fromRelatedInformation` converts `ts.DiagnosticRelatedInformation` to a simplified object. `fromTypeScriptDiagnostic` maps an array of `ts.Diagnostic` objects, applying the `fromRelatedInformation` transformation to each.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+  /** @type {Map<string, ts.SourceFile>} */
+  const sourceFileCache = new Map();
+
+  /** @param {ts.DiagnosticRelatedInformation} diagnostic */
+  function fromRelatedInformation({
+    start,
+    length,
+    file,
+    messageText: msgText,
+    ...ri
+  }) {
+    let messageText;
+    let messageChain;
+    if (typeof msgText === "object") {
+      messageChain = msgText;
+    } else {
+      messageText = msgText;
+    }
+    if (start !== undefined && length !== undefined && file) {
+      const startPos = file.getLineAndCharacterOfPosition(start);
+      const sourceLine = file.getFullText().split("\n")[startPos.line];
+      const fileName = file.fileName;
+      return {
+        start: startPos,
+        end: file.getLineAndCharacterOfPosition(start + length),
+        fileName,
+        messageChain,
+        messageText,
+        sourceLine,
+        ...ri,
+      };
+    } else {
+      return {
+        messageChain,
+        messageText,
+        ...ri,
+      };
+    }
+  }
+
+  /** @param {ts.Diagnostic[]} diagnostics */
+  function fromTypeScriptDiagnostic(diagnostics) {
+    return diagnostics.map(({ relatedInformation: ri, source, ...diag }) => {
+      /** @type {any} */
+      const value = fromRelatedInformation(diag);
+      value.relatedInformation = ri
+        ? ri.map(fromRelatedInformation)
+        : undefined;
+      value.source = source;
+      return value;
+    });
+  }
+```
+
+----------------------------------------
+
+TITLE: Running WPT Tests with Filters and Update Expectations (Shell)
+DESCRIPTION: This command combines the functionality of running filtered tests with updating the `expectation.json` file. It executes a subset of tests defined by the filters and then updates the expectation file with the results. Requires the WPT environment setup and Deno to be built.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/wpt/README.md#_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+./tests/wpt/wpt.ts update -- hr-time streams/piping/general
+```
+
+----------------------------------------
+
+TITLE: Get Script Snapshot for TypeScript Analysis
+DESCRIPTION: This function `getScriptSnapshot` retrieves a snapshot of a script file's content. It checks the `sourceFileCache` first. If the file is cached, it creates a snapshot from the cached text; otherwise, it fetches the script's content using the `op_script_version` Deno core op and creates a `ScriptSnapshot` instance.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_11
+
+LANGUAGE: typescript
+CODE:
+```
+getScriptSnapshot(specifier) {
+  debug(`host.getScriptSnapshot("${specifier}")`);
+  const sourceFile = sourceFileCache.get(specifier);
+  if (sourceFile) {
+    return {
+      getText(start, end) {
+        return sourceFile.text.substring(start, end);
+      },
+      getLength() {
+        return sourceFile.text.length;
+      },
+      getChangeRange() {
+        return undefined;
+      },
+    };
+  }
+  /** @type {string | undefined} */
+  const version = core.jsonOpSync("op_script_version", { specifier });
+  if (version != null) {
+    return new ScriptSnapshot(specifier, version);
+  }
+  return undefined;
+}
+```
+
+----------------------------------------
+
+TITLE: Integration with nodejs-polars
+DESCRIPTION: This test demonstrates integration with the nodejs-polars library. It fetches data from a URL, reads it as a CSV, and displays the resulting DataFrame.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_27
+
+LANGUAGE: python
+CODE:
+```
+import pl from "npm:nodejs-polars";
+
+let response = await fetch(
+  "https://cdn.jsdelivr.net/npm/world-atlas@1/world/110m.tsv",
+);
+let data = await response.text();
+let df = pl.readCSV(data, { sep: "\t" });
+
+df
+```
+
+----------------------------------------
+
+TITLE: Exposing Functions to Global Scope
+DESCRIPTION: This snippet exposes functions `startup` and `exec` to the global scope. These functions are intended to be called by `tsc::exec()` during TypeScript type checking. Additionally, `serverInit` and `serverRequest` are exposed for language service usage.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_22
+
+LANGUAGE: typescript
+CODE:
+```
+// exposes the two functions that are called by `tsc::exec()` when type
+  // checking TypeScript.
+  globalThis.startup = startup;
+  globalThis.exec = exec;
+
+  // exposes the functions that are called when the compiler is used as a
+  // language service.
+  globalThis.serverInit = serverInit;
+  globalThis.serverRequest = serverRequest;
+```
+
+----------------------------------------
+
+TITLE: Initialize Crypto Ops and ESM in Rust
+DESCRIPTION: This snippet describes how to initialize the cryptographic operations and ESM integration in Rust using `deno_crypto::deno_crypto::init_ops_and_esm(Option<u64>)` within the `extensions` field of `RuntimeOptions`.  The `Option<u64>` argument represents an optional seed for initialization.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/crypto/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+deno_crypto::deno_crypto::init_ops_and_esm(Option<u64>)
+```
+
+----------------------------------------
+
+TITLE: Record Program Performance Metrics
+DESCRIPTION: The function `performanceProgram` captures and records performance metrics related to the TypeScript program compilation process. It gathers data on the number of files, nodes, identifiers, symbols, and types, as well as the duration of parsing, binding, checking, and emitting phases.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_13
+
+LANGUAGE: typescript
+CODE:
+```
+function performanceProgram({ program, fileCount }) {
+  if (program) {
+    if ("getProgram" in program) {
+      program = program.getProgram();
+    }
+    stats.push(["Files", program.getSourceFiles().length]);
+    stats.push(["Nodes", program.getNodeCount()]);
+    stats.push(["Identifiers", program.getIdentifierCount()]);
+    stats.push(["Symbols", program.getSymbolCount()]);
+    stats.push(["Types", program.getTypeCount()]);
+    stats.push(["Instantiations", program.getInstantiationCount()]);
+  } else if (fileCount != null) {
+    stats.push(["Files", fileCount]);
+  }
+  const programTime = ts.performance.getDuration("Program");
+  const bindTime = ts.performance.getDuration("Bind");
+  const checkTime = ts.performance.getDuration("Check");
+  const emitTime = ts.performance.getDuration("Emit");
+  stats.push(["Parse time", programTime]);
+  stats.push(["Bind time", bindTime]);
+  stats.push(["Check time", checkTime]);
+  stats.push(["Emit time", emitTime]);
+  stats.push(
+    ["Total TS time", programTime + bindTime + checkTime + emitTime],
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Running Deno Test by Name
+DESCRIPTION: Shows how to run a Deno integration test by name, which might run other tests as well. Also includes how to show output of every test with `-- --nocapture`.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_2
+
+LANGUAGE: text
+CODE:
+```
+cargo test test_name
+```
+
+LANGUAGE: text
+CODE:
+```
+cargo test test_name -- --nocapture
+```
+
+----------------------------------------
+
+TITLE: Basic Function with Return Type in TypeScript
+DESCRIPTION: This TypeScript snippet defines a simple function named 'foo' that returns a number (2). It demonstrates the usage of type annotations for the return value of a function.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_3
+
+LANGUAGE: TypeScript
+CODE:
+```
+function foo(): number {
+  return       2;
+}
+```
+
+----------------------------------------
+
+TITLE: Running Code Formatter
+DESCRIPTION: This command executes the code formatter script, format.js, using Deno. It requires read, write, and run permissions to format the codebase.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/README.md#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+deno run --allow-read --allow-write --allow-run ./tools/format.js
+```
+
+----------------------------------------
+
+TITLE: Setting up logging
+DESCRIPTION: These functions configure debug and error logging within the compiler isolate. `setLogDebug` enables/disables debug logging and sets the source identifier. `debug` and `error` functions format and print log messages to stderr using `core.print`. The `AssertionError` class and `assert` function provide assertion capabilities.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+  let logDebug = false;
+  let logSource = "JS";
+
+  function setLogDebug(debug, source) {
+    logDebug = debug;
+    if (source) {
+      logSource = source;
+    }
+  }
+
+  function debug(...args) {
+    if (logDebug) {
+      const stringifiedArgs = args.map((arg) =>
+        typeof arg === "string" ? arg : JSON.stringify(arg)
+      ).join(" ");
+      // adding a non-zero integer value to the end of the debug string causes
+      // the message to be printed to stderr instead of stdout, which is better
+      // aligned to the behaviour of debug messages
+      core.print(`DEBUG ${logSource} - ${stringifiedArgs}\n`, 1);
+    }
+  }
+
+  function error(...args) {
+    const stringifiedArgs = args.map((arg) =>
+      typeof arg === "string" || arg instanceof Error
+        ? String(arg)
+        : JSON.stringify(arg)
+    ).join(" ");
+    core.print(`ERROR ${logSource} = ${stringifiedArgs}\n`, 1);
+  }
+
+  class AssertionError extends Error {
+    constructor(msg) {
+      super(msg);
+      this.name = "AssertionError";
+    }
+  }
+
+  function assert(cond, msg = "Assertion failed.") {
+    if (!cond) {
+      throw new AssertionError(msg);
+    }
+  }
+```
+
+----------------------------------------
+
+TITLE: Upgrading TypeScript using Git and Rsync
+DESCRIPTION: This shell script demonstrates the commands used to upgrade TypeScript in the Deno project. It involves cloning the Deno TypeScript repo, adding the Microsoft TypeScript repo as a remote, fetching the latest tags, checking out a new branch based on a specific tag, cherry-picking custom commits, installing dependencies, and using rsync to copy the updated TypeScript files into the Deno project's `cli/tsc` directory. The script also excludes certain `.d.ts` files during the rsync operation.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/tsc/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git clone https://github.com/denoland/TypeScript.git
+cd typescript
+git remote add upstream https://github.com/Microsoft/TypeScript
+git fetch upstream
+git checkout v3.9.7
+git checkout -b branch_v3.9.7
+git cherry pick <previous-release-branch-commit-we-did>
+npm install
+npx hereby
+rsync built/local/typescript.js ~/src/deno/cli/tsc/00_typescript.js
+rsync --exclude=protocol.d.ts --exclude=tsserverlibrary.d.ts --exclude=typescriptServices.d.ts built/local/*.d.ts ~/src/deno/cli/tsc/dts/
+```
+
+----------------------------------------
+
+TITLE: JSON with Comments
+DESCRIPTION: This snippet shows a JSON object with comments, as allowed in JSONC.  It defines a simple JSON structure with key-value pairs and inline comments.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_4
+
+LANGUAGE: jsonc
+CODE:
+```
+{
+  // Comment in JSON
+  "key": "value",
+  "key2": "value2"
+}
+```
+
+----------------------------------------
+
+TITLE: Defining a Node-API function with napi_sym in Rust
+DESCRIPTION: This code snippet demonstrates how to use the `napi_sym` proc_macro to define a Node-API function in Rust. The macro handles the `#[no_mangle]` attribute, symbol export assertions, and result type conversions. It takes `Env`, a boolean value, and a result pointer as input and returns a `deno_napi::Result`.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/napi/sym/README.md#_snippet_0
+
+LANGUAGE: rust
+CODE:
+```
+use deno_napi::napi_value;
+use deno_napi::Env;
+use deno_napi::Error;
+use deno_napi::Result;
+
+#[napi_sym::napi_sym]
+fn napi_get_boolean(
+  env: *mut Env,
+  value: bool,
+  result: *mut napi_value,
+) -> Result {
+  let _env: &mut Env = env.as_mut().ok_or(Error::InvalidArg)?;
+  // *result = ...
+  Ok(())
+}
+```
+
+----------------------------------------
+
+TITLE: Broadcast display updates
+DESCRIPTION: This test showcases the ability to broadcast display updates from the Deno kernel to the Jupyter notebook. It sends a series of messages to update a display with a specific ID, creating a basic animation effect.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_23
+
+LANGUAGE: python
+CODE:
+```
+await Deno.jupyter.broadcast("display_data", {
+    data: { "text/html": "<b>Processing.</b>" },
+    metadata: {},
+    transient: { display_id: "progress" }
+});
+
+await new Promise((resolve) => setTimeout(resolve, 500));
+
+await Deno.jupyter.broadcast("update_display_data", {
+    data: { "text/html": "<b>Processing..</b>" },
+    metadata: {},
+    transient: { display_id: "progress" }
+});
+
+await new Promise((resolve) => setTimeout(resolve, 500));
+
+await Deno.jupyter.broadcast("update_display_data", {
+    data: { "text/html": "<b>Processing...</b>" },
+    metadata: {},
+    transient: { display_id: "progress" }
+});
+
+await new Promise((resolve) => setTimeout(resolve, 500));
+
+await Deno.jupyter.broadcast("update_display_data", {
+    data: { "text/html": "<b>Complete ✅</b>" },
+    metadata: {},
+    transient: { display_id: "progress" }
+});
+```
+
+----------------------------------------
+
+TITLE: Generating ECC Localhost Certificate with OpenSSL
+DESCRIPTION: This command generates a localhost certificate, key, and certificate signing request (CSR) using OpenSSL with ECC. It uses the prime256v1 curve and signs the CSR with the root CA. The certificate is valid for 36135 days and configured via the domains.txt file.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/tls/README.md#_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+openssl ecparam -genkey -name prime256v1 -noout --out localhost_ecc.key
+openssl req -new -key localhost_ecc.key -out localhost_ecc.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost.local"
+openssl x509 -req -sha256 -days 36135 -in localhost_ecc.csr -CA RootCA.pem -CAkey RootCA.key -CAcreateserial -extfile domains.txt -out localhost_ecc.crt
+```
+
+----------------------------------------
+
+TITLE: Initialize Deno IO Ops and ESM in Rust
+DESCRIPTION: This snippet demonstrates how to initialize the Deno IO ops and ESM from Rust. It uses the `deno_io::deno_io::init_ops_and_esm` function and provides the `deno_io::Stdio` struct as an argument. This function needs to be placed within the `extensions` field of `RuntimeOptions`.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/io/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+deno_io::deno_io::init_ops_and_esm(Option<deno_io::Stdio>)
+```
+
+----------------------------------------
+
+TITLE: Generating RSA Localhost Certificate with OpenSSL
+DESCRIPTION: This command generates a localhost certificate, key, and certificate signing request (CSR) using OpenSSL. It uses an RSA 2048-bit key and signs the CSR with the root CA. The certificate is valid for 36135 days and configured via the domains.txt file.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/tls/README.md#_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+openssl req -new -nodes -newkey rsa:2048 -keyout localhost.key -out localhost.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost.local"
+openssl x509 -req -sha256 -days 36135 -in localhost.csr -CA RootCA.pem -CAkey RootCA.key -CAcreateserial -extfile domains.txt -out localhost.crt
+```
+
+----------------------------------------
+
+TITLE: Modify lib.rs to include the new module (diff)
+DESCRIPTION: This diff snippet shows how to modify the `lib.rs` file to include the new `boolean` module and initialize it. This ensures that the test function is registered when the module is loaded.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/napi/README.md#_snippet_4
+
+LANGUAGE: diff
+CODE:
+```
+// tests/napi/src/lib.rs
+
++ mod boolean;
+
+...
+
+#[no_mangle]
+unsafe extern "C" fn napi_register_module_v1(
+  env: napi_env,
+  exports: napi_value,
+) -> napi_value {
+  ...
++ boolean::init(env, exports);
+
+  exports
+}
+```
+
+----------------------------------------
+
+TITLE: Return object
+DESCRIPTION: This test ensures that an object is correctly inspected and its properties are displayed in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_10
+
+LANGUAGE: python
+CODE:
+```
+{foo: "bar"}
+```
+
+----------------------------------------
+
+TITLE: Import Crypto API into Global Scope JavaScript
+DESCRIPTION: This snippet demonstrates how to import the deno_crypto extension in JavaScript and assign the `CryptoKey`, `crypto`, `Crypto`, and `SubtleCrypto` objects to the global scope, making them accessible for cryptographic operations.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/crypto/README.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import * as crypto from "ext:deno_crypto/00_crypto.js";
+
+Object.defineProperty(globalThis, "CryptoKey", {
+  value: crypto.CryptoKey,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "crypto", {
+  value: crypto.crypto,
+  enumerable: false,
+  configurable: true,
+  writable: false,
+});
+
+Object.defineProperty(globalThis, "Crypto", {
+  value: crypto.Crypto,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(globalThis, "SubtleCrypto", {
+  value: crypto.SubtleCrypto,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Generating Root CA Certificate with OpenSSL
+DESCRIPTION: This command generates a root certificate authority (CA) certificate, key, and PEM file using OpenSSL. It creates a self-signed certificate valid for 36135 days with RSA 2048-bit key. The subject includes country (C) and common name (CN).
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/tls/README.md#_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+openssl req -x509 -nodes -new -sha256 -days 36135 -newkey rsa:2048 -keyout RootCA.key -out RootCA.pem -subj "/C=US/CN=Example-Root-CA"
+openssl x509 -outform pem -in RootCA.pem -out RootCA.crt
+```
+
+----------------------------------------
+
+TITLE: Startup Compiler Runtime
+DESCRIPTION: The `startup` function initializes the compiler runtime environment by registering core Deno ops and setting the debug flag. It ensures that the runtime is only started once.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_19
+
+LANGUAGE: typescript
+CODE:
+```
+function startup({ debugFlag = false }) {
+  if (hasStarted) {
+    throw new Error("The compiler runtime already started.");
+  }
+  hasStarted = true;
+  core.ops();
+  setLogDebug(!!debugFlag, "TS");
+}
+```
+
+----------------------------------------
+
+TITLE: Console table
+DESCRIPTION: This test uses `console.table` to render a table from a simple array.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_19
+
+LANGUAGE: python
+CODE:
+```
+console.table([1, 2, 3])
+```
+
+----------------------------------------
+
+TITLE: Broadcast comm messages
+DESCRIPTION: This test demonstrates sending comm messages using `Deno.jupyter.broadcast`. It sends comm_open and comm_msg messages to simulate Jupyter Widgets communication with additional context and buffers.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_24
+
+LANGUAGE: python
+CODE:
+```
+// Smoke test: Send example Jupyter Widgets messages with "extra" context.
+// No return because we don't have a front-end widget to get the message from.
+await Deno.jupyter.broadcast(
+    "comm_open",
+    {
+        "comm_id": "foo",
+        "target_name": "jupyter.widget",
+        "data": {
+            "state": {},
+        },
+    },
+    {
+        "metadata": { "version": "2.1.0" },
+    },
+);
+
+await Deno.jupyter.broadcast(
+    "comm_msg",
+    {
+        "comm_id": "foo",
+        "data": {
+            "method": "update",
+            "state": { "answer": null },
+            "buffer_paths": [["answer"]]
+        },
+    },
+    {
+        "buffers": [new Uint8Array([42])],
+    },
+);
+```
+
+----------------------------------------
+
+TITLE: Rerunning commands with cargo-plonk on changes
+DESCRIPTION: This command uses `cargo plonk run` to re-run commands on changes in the specified package. It includes flags for verbosity (`-v`), package (`-p`), symbol (`-s`), binary (`-b`), watch mode (`--watch`), and an evaluation command with an unstable flag.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/faster-rebuilds.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+cargo plonk run -v \
+  -p deno_webgpu \
+  -s init_ops_and_esm \
+  -b deno \
+  --watch \
+  -- eval "await navigator.gpu.requestAdapter()" --unstable
+```
+
+----------------------------------------
+
+TITLE: Define Global Properties for Deno Web APIs - JavaScript
+DESCRIPTION: Demonstrates how to assign Deno web extension properties to the global scope using `Object.defineProperty`.  This makes the imported web APIs available for use in the global context, enabling their usage as standard web APIs. It configures properties like `AbortController` making them non-enumerable, configurable and writable.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/web/README.md#_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+Object.defineProperty(globalThis, "AbortController", {
+  value: abortSignal.AbortController,
+  enumerable: false,
+  configurable: true,
+  writable: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Initialize ops and ESM for deno_url (Rust)
+DESCRIPTION: This Rust code snippet explains the need to call `deno_url::deno_url::init_ops_and_esm()` in the `extensions` field of your `RuntimeOptions` when using the `deno_url` crate in Rust. This initializes the necessary ops and ESM for the crate to function correctly within the Deno runtime.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/url/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+// Then from rust, provide `deno_url::deno_url::init_ops_and_esm()` in the
+// `extensions` field of your `RuntimeOptions`
+```
+
+----------------------------------------
+
+TITLE: Get Script Version in Deno
+DESCRIPTION: This function `getScriptVersion` retrieves the version of a script file. It first checks if the script is in the `sourceFileCache`. If not, it uses the `op_script_version` Deno core op to get the version.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_10
+
+LANGUAGE: typescript
+CODE:
+```
+getScriptVersion(specifier) {
+  debug(`host.getScriptVersion("${specifier}")`);
+  const sourceFile = sourceFileCache.get(specifier);
+  if (sourceFile) {
+    return sourceFile.version ?? "1";
+  }
+  return core.jsonOpSync("op_script_version", { specifier });
+}
+```
+
+----------------------------------------
+
+TITLE: Resolve returned promise
+DESCRIPTION: This test verifies that a resolved promise returns its value correctly in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_11
+
+LANGUAGE: python
+CODE:
+```
+Promise.resolve("it worked!")
+```
+
+----------------------------------------
+
+TITLE: Running Node.js Compat Tests
+DESCRIPTION: This snippet shows how to run specific Node.js compatibility tests within the Deno environment. The command uses the `deno task test` runner, specifying a filter to include only tests containing 'buffer' in their filename. This allows for targeted testing of specific modules or functionalities.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/node_compat/runner/README.md#_snippet_0
+
+LANGUAGE: shellsession
+CODE:
+```
+/path/to/deno/tests/node_compat/runner
+$ deno task test buffer
+```
+
+----------------------------------------
+
+TITLE: Cherry-picking Commits for Patch Release
+DESCRIPTION: This snippet describes the git commands to create and push a branch for a patch release. It checks out the latest minor release, creates a new branch, and pushes it to the 'denoland/deno' repository.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/release/release_doc_template.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# checkout latest minor release
+$ git checkout v$PAST_VERSION
+
+# create a branch
+$ git checkout v$MINOR_VERSION
+
+# push the branch to the `denoland/deno` repository
+$ git push upstream v$MINOR_VERSION
+```
+
+----------------------------------------
+
+TITLE: Upgrading WPT Submodule (Shell)
+DESCRIPTION: These commands upgrade the wpt submodule to the latest version. It fetches the latest changes from the remote repository, checks out the `epochs/daily` branch, and then adds the changed files to the git index. Requires git to be installed and configured.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/wpt/README.md#_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+cd tests/wpt/suite
+git fetch origin
+git checkout origin/epochs/daily
+cd ../../../
+git add ./tests/wpt/suite
+```
+
+----------------------------------------
+
+TITLE: Running Copyright Checker
+DESCRIPTION: This command executes the copyright checker script, copyright_checker.js, using Deno. It needs read and run permissions to check copyright headers in code files.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/README.md#_snippet_3
+
+LANGUAGE: sh
+CODE:
+```
+deno run --allow-read --allow-run  ./tools/copyright_checker.js
+```
+
+----------------------------------------
+
+TITLE: Initialize WebIDL in Rust
+DESCRIPTION: This Rust code snippet shows how to initialize the WebIDL functionality within a Deno runtime using the `init_webidl::init_webidl::init_ops_and_esm()` function. It should be included in the extensions field of your RuntimeOptions.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/webidl/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+init_webidl::init_webidl::init_ops_and_esm()
+```
+
+----------------------------------------
+
+TITLE: Snapshot compile options
+DESCRIPTION: Defines the compiler options used when creating a snapshot of the compiler. These options ensure that the snapshot is created with specific settings for ES module interop, JSX compilation, module kind, strict mode, and target ECMAScript version.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+  const SNAPSHOT_COMPILE_OPTIONS = {
+    esModuleInterop: true,
+    jsx: ts.JsxEmit.React,
+    module: ts.ModuleKind.ESNext,
+    noEmit: true,
+    strict: true,
+    target: ts.ScriptTarget.ESNext,
+  };
+```
+
+----------------------------------------
+
+TITLE: Updating WPT Test Expectations (Shell)
+DESCRIPTION: This command updates the `expectation.json` file to match the current output of the executed tests. It can be used after changes to the tests or Deno itself to ensure that the test expectations reflect the new reality. Requires a correctly configured WPT environment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/wpt/README.md#_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+./tests/wpt/wpt.ts update -- hr-time
+```
+
+----------------------------------------
+
+TITLE: Running Filtered WPT Tests (Shell)
+DESCRIPTION: This command runs a subset of Web Platform Tests, filtered by specifying test file names or patterns after the `--` separator. This allows for focused testing on specific features or areas. Requires the WPT environment to be set up.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/wpt/README.md#_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+./tests/wpt/wpt.ts run -- streams/piping/general hr-time
+```
+
+----------------------------------------
+
+TITLE: Initializing deno_net ops in Rust
+DESCRIPTION: This Rust code snippet demonstrates how to initialize the networking ops and ESM within the Deno runtime. It requires a root certificate store provider, a list of certificates to ignore, and a Permissions struct implementing `deno_net::NetPermissions`. This function connects the Rust networking implementation with the JavaScript environment.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/net/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+deno_net::deno_net::init_ops_and_esm::<Permissions>(root_cert_store_provider, unsafely_ignore_certificate_errors)
+```
+
+----------------------------------------
+
+TITLE: Return string
+DESCRIPTION: This test validates that a string is correctly returned as output from the Jupyter cell.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_7
+
+LANGUAGE: python
+CODE:
+```
+"this is a test of the emergency broadcast system"
+```
+
+----------------------------------------
+
+TITLE: Running stdio Benchmark with C
+DESCRIPTION: This command measures the time it takes for the compiled C program (`./stdio`) to process input from `/dev/zero` using the `dd` command.  `dd` reads blocks of 65536 bytes from `/dev/zero` and sends 500000 such blocks as input to the compiled C program.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/stdio/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+time dd if=/dev/zero bs=65536 count=500000 | ./stdio
+```
+
+----------------------------------------
+
+TITLE: Initialize Language Server
+DESCRIPTION: The function `serverInit` initializes the TypeScript language service. It creates a language service instance, registers core Deno ops, and sets the debug flag. It throws an error if the server has already been initialized.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_18
+
+LANGUAGE: typescript
+CODE:
+```
+function serverInit({ debug: debugFlag }) {
+  if (hasStarted) {
+    throw new Error("The language server has already been initialized.");
+  }
+  hasStarted = true;
+  languageService = ts.createLanguageService(host);
+  core.ops();
+  setLogDebug(debugFlag, "TSLS");
+  debug("serverInit()");
+}
+```
+
+----------------------------------------
+
+TITLE: Serving Benchmark Report in Deno
+DESCRIPTION: This command starts a server using Deno to serve the generated benchmark report. The `--allow-net` flag specifies the allowed network address (127.0.0.1:9000), ensuring that the server can only be accessed locally, and the report is rendered by `serve.jsx`.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/fs/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+deno run --allow-net=127.0.0.1:9000 serve.jsx
+# View rendered report at http://127.0.0.1:9000/
+```
+
+----------------------------------------
+
+TITLE: Initializing Console API in Rust
+DESCRIPTION: This Rust snippet shows how to initialize the ops and ESM required by the deno_console crate. It requires access to the `RuntimeOptions` and the `deno_console::deno_console::init_ops_and_esm()` function. This initialization provides the necessary functionality for the JavaScript console object to function correctly.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/console/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+deno_console::deno_console::init_ops_and_esm()
+```
+
+----------------------------------------
+
+TITLE: TypeScript transpiling
+DESCRIPTION: This test showcases TypeScript transpiling within the Jupyter environment. It defines a TypeScript interface and function, demonstrating that the kernel can handle TypeScript code and convert it to JavaScript for execution.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+ 
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+ 
+createSquare({ colour: "red", width: 100 });
+```
+
+----------------------------------------
+
+TITLE: Implement Node-API function in Rust
+DESCRIPTION: This code snippet shows an example of implementing a Node-API function in Rust using the `napi_sym` attribute macro.  It defines the `napi_get_boolean` function, taking an environment, boolean value, and a pointer to store the result.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/napi/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+#[napi_sym::napi_sym]
+fn napi_get_boolean(
+  env: *mut Env,
+  value: bool,
+  result: *mut napi_value,
+) -> Result {
+  // ...
+  Ok(())
+}
+```
+
+----------------------------------------
+
+TITLE: Creating TypeScript Snapshot Program
+DESCRIPTION: This snippet creates a TypeScript program using `ts.createProgram`. It initializes the program with a build specifier, snapshot compile options, and a host. This is used to prepare a snapshot of the TypeScript compiler for faster startup in Deno.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_21
+
+LANGUAGE: typescript
+CODE:
+```
+const TS_SNAPSHOT_PROGRAM = ts.createProgram({
+    rootNames: [buildSpecifier],
+    options: SNAPSHOT_COMPILE_OPTIONS,
+    host,
+  });
+ts.getPreEmitDiagnostics(TS_SNAPSHOT_PROGRAM);
+```
+
+----------------------------------------
+
+TITLE: WPT Setup Command (Shell)
+DESCRIPTION: This command is used to set up the Web Platform Test environment. It should be run before the first test execution and after any updates to the `./test_util/wpt` submodule. It validates the environment and can optionally rebuild the manifest or auto-configure /etc/hosts.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/wpt/README.md#_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+./tests/wpt/wpt.ts setup
+```
+
+----------------------------------------
+
+TITLE: Async rich class display
+DESCRIPTION: This test demonstrates the creation of an asynchronous class with a custom display representation using Symbol.for("Jupyter.display"). The class generates HTML to display a colored square.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_26
+
+LANGUAGE: python
+CODE:
+```
+class SuperColorAsync {
+  constructor() {
+      this.color = "#5398ff"
+  }
+  hex() {
+      return this.color
+  }
+    
+  async [Symbol.for("Jupyter.display")]() {
+      return {
+          "text/html": `<div style="width: 32px; height: 32px; background-color: ${this.hex()}" />`
+      }
+  }
+}
+
+let sc = new SuperColorAsync()
+sc
+```
+
+----------------------------------------
+
+TITLE: Define and Call TypeScript Function
+DESCRIPTION: This snippet defines a TypeScript function named 'bar' that returns the integer 42. The return type is explicitly specified as 'number'. It then calls the function, demonstrating its basic usage with type annotations.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/regular/formatted3.markdown#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+function bar(): number {
+  return 42;
+}
+
+bar();
+```
+
+----------------------------------------
+
+TITLE: Running Specific Deno Test
+DESCRIPTION: Demonstrates how to run a specific Deno integration test using `cargo test` by specifying the category and test name.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_1
+
+LANGUAGE: text
+CODE:
+```
+cargo test specs::category_name::test_name
+```
+
+----------------------------------------
+
+TITLE: Installing left-pad using npm
+DESCRIPTION: This command installs the left-pad package using the Node Package Manager (npm). It downloads and installs the library and its dependencies, making it available for use in JavaScript projects.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/commonjs/node_modules/left-pad/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install left-pad
+```
+
+----------------------------------------
+
+TITLE: Deno.test passing test with steps
+DESCRIPTION: This test demonstrates the use of `Deno.test()` with `t.step()` to define multiple steps within a test case. Each step is awaited to ensure sequential execution.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_21
+
+LANGUAGE: python
+CODE:
+```
+Deno.test("passing test with steps", async (t) => {
+  await t.step("step 1", () => {});
+  await t.step("step 2", () => {});
+});
+```
+
+----------------------------------------
+
+TITLE: Print to console
+DESCRIPTION: This test prints "hi" to the console, serving as a basic sanity check to ensure the Jupyter kernel is functioning. If this test fails, it's likely that the entire environment is not set up correctly.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+console.log("hi")
+```
+
+----------------------------------------
+
+TITLE: Installing cargo-plonk using cargo
+DESCRIPTION: This command installs the `cargo-plonk` crate using the `cargo install` command. `cargo-plonk` is used to speed up Deno rebuilds by hot-swapping symbols using a fresh dynamic library of the local crates.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/faster-rebuilds.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+cargo install cargo-plonk
+```
+
+----------------------------------------
+
+TITLE: Running Script with Cargo
+DESCRIPTION: This command executes a script using the current or pending build of the Deno executable via Cargo. It requires read, write, and run permissions.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/README.md#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+cargo run -- run --allow-read --allow-write --allow-run ./tools/<script>
+```
+
+----------------------------------------
+
+TITLE: Implement test functionality in Rust
+DESCRIPTION: This Rust code snippet shows the implementation of the test functionality for the new Node-API function. It defines a `test_boolean` function that checks the argument type and (presumably) uses `napi_get_boolean`.  It also includes an `init` function to register the test function.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/napi/README.md#_snippet_3
+
+LANGUAGE: rust
+CODE:
+```
+// tests/napi/src/boolean.rs
+
+use napi_sys::Status::napi_ok;
+use napi_sys::ValueType::napi_boolean;
+use napi_sys::*;
+
+extern "C" fn test_boolean(
+  env: napi_env,
+  info: napi_callback_info,
+) -> napi_value {
+  let (args, argc, _) = crate::get_callback_info!(env, info, 1);
+  assert_eq!(argc, 1);
+
+  let mut ty = -1;
+  assert!(unsafe { napi_typeof(env, args[0], &mut ty) } == napi_ok);
+  assert_eq!(ty, napi_boolean);
+
+  // Use napi_get_boolean here...
+
+  value
+}
+
+pub fn init(env: napi_env, exports: napi_value) {
+  let properties = &[crate::new_property!(env, "test_boolean\0", test_boolean)];
+
+  unsafe {
+    napi_define_properties(env, exports, properties.len(), properties.as_ptr())
+  };
+}
+```
+
+----------------------------------------
+
+TITLE: Finalize Performance Monitoring
+DESCRIPTION: This function `performanceEnd` finalizes the performance monitoring process. It calculates the total compilation time, adds it to the `stats` array, and returns the accumulated performance statistics.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_14
+
+LANGUAGE: typescript
+CODE:
+```
+function performanceEnd() {
+  const duration = Date.now() - statsStart;
+  stats.push(["Compile time", duration]);
+  return stats;
+}
+```
+
+----------------------------------------
+
+TITLE: Logging to Console JavaScript
+DESCRIPTION: This JavaScript snippet demonstrates how to log a message to the console using `console.log()`. It is a basic example for outputting information during script execution. No dependencies or prerequisites are required.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown/main.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+console.log("js");
+```
+
+----------------------------------------
+
+TITLE: SQL Select Statement (fmt-ignore)
+DESCRIPTION: This SQL snippet shows a `SELECT` statement similar to the above example. The `-- deno-fmt-ignore-file` comment indicates that the file should not be formatted.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_11
+
+LANGUAGE: sql
+CODE:
+```
+-- deno-fmt-ignore-file
+  seLect * , biz, buz
+from baz;
+```
+
+----------------------------------------
+
+TITLE: Simple Function in TypeScript
+DESCRIPTION: This TypeScript snippet defines a function named 'hello' that takes a string as input and prints it to the console. The function is then called with the argument 'alice'.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_2
+
+LANGUAGE: TypeScript
+CODE:
+```
+
+function hello(name: string    ) {
+                  console.log(name);
+};
+
+hello(        "alice");
+```
+
+----------------------------------------
+
+TITLE: TypeScript Type Error Example
+DESCRIPTION: This TypeScript code snippet demonstrates a type error by assigning a number to a string variable. This example is used to trigger the type-checker and verify that errors are detected during documentation processing.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_full_block_names/main.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Start Performance Monitoring for Compilation
+DESCRIPTION: This function `performanceStart` initializes the performance monitoring system. It resets the `stats` array, records the start time, and enables TypeScript's performance API.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_12
+
+LANGUAGE: typescript
+CODE:
+```
+function performanceStart() {
+  stats.length = 0;
+  statsStart = Date.now();
+  ts.performance.enable();
+}
+```
+
+----------------------------------------
+
+TITLE: Get Script File Names for Compilation
+DESCRIPTION: This function `getScriptFileNames` retrieves the names of the script files to be compiled. It uses the `op_script_names` Deno core op to fetch the script names.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_9
+
+LANGUAGE: typescript
+CODE:
+```
+getScriptFileNames() {
+  debug("host.getScriptFileNames()");
+  return core.jsonOpSync("op_script_names", undefined);
+}
+```
+
+----------------------------------------
+
+TITLE: Console Output JavaScript (variant)
+DESCRIPTION: This snippet prints 'Hello World2' to the console using JavaScript's `console.log()` function. It demonstrates basic output functionality with a slightly different string.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+console.log("Hello World2");
+```
+
+----------------------------------------
+
+TITLE: Deno.test passing test
+DESCRIPTION: This test demonstrates a basic passing test case using `Deno.test()`. It asserts that the test function executes without throwing an error.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_20
+
+LANGUAGE: python
+CODE:
+```
+Deno.test("passing test", () => {});
+```
+
+----------------------------------------
+
+TITLE: Top-level await usage
+DESCRIPTION: This test demonstrates the use of top-level await in the Jupyter environment. It resolves a promise and assigns the result to a variable, then logs the value to the console.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+let x = await Promise.resolve(42);
+console.log("x is", x);
+```
+
+----------------------------------------
+
+TITLE: Filtering Deno Benchmarks with Cargo
+DESCRIPTION: This command filters Deno benchmarks using the cargo bench command. It specifies the 'deno_bench' benchmark and includes the 'bundle' feature.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/README.md#_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+cargo bench --bench deno_bench -- bundle
+```
+
+----------------------------------------
+
+TITLE: ts-expect-error Usage in Deno (TypeScript)
+DESCRIPTION: This code snippet demonstrates the usage of the `@ts-expect-error` comment in Deno TypeScript. It's used to suppress the type error that would normally be raised when assigning a number to a string variable. This allows for testing error handling and documenting intentional type mismatches.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_ts_expect_error/main.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+// @ts-expect-error
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Define and Call JavaScript Function
+DESCRIPTION: This snippet defines a JavaScript function named 'foo' that returns the integer 42. It then calls the function, demonstrating its basic usage.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/regular/formatted3.markdown#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+function foo() {
+  return 42;
+}
+
+foo();
+```
+
+----------------------------------------
+
+TITLE: Type Checking with TypeScript
+DESCRIPTION: This snippet demonstrates a TypeScript code example that intentionally causes a type error. It serves to illustrate how the type checker will behave in such scenarios.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/check/typecheck_doc_in_markdown/markdown.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Retrieve TypeScript Compilation Settings
+DESCRIPTION: This function `getCompilationSettings` retrieves the TypeScript compilation settings. It returns the `compilationSettings` object which contains the configuration options for the TypeScript compiler.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_8
+
+LANGUAGE: typescript
+CODE:
+```
+getCompilationSettings() {
+  debug("host.getCompilationSettings()");
+  return compilationSettings;
+}
+```
+
+----------------------------------------
+
+TITLE: Compiling C Baseline for stdio Benchmark
+DESCRIPTION: Compiles the C implementation of `stdio` to create an executable file named `stdio`. The `-O3` flag enables aggressive optimization during compilation.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/stdio/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+cc stdio.c -o stdio -O3
+```
+
+----------------------------------------
+
+TITLE: CSS Styling
+DESCRIPTION: This CSS snippet styles an element with the class 'btn' that is a direct child of an element with the id 'app'. It sets the text color to black.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_7
+
+LANGUAGE: css
+CODE:
+```
+#app > .btn {
+  color: #000;
+}
+```
+
+----------------------------------------
+
+TITLE: JSON Array of Strings
+DESCRIPTION: This snippet showcases a JSON object containing an array of strings. It defines a simple JSON structure with a key 'numbers' associated with an array of string values.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_5
+
+LANGUAGE: json
+CODE:
+```
+{
+  "numbers": ["1", "2"]
+}
+```
+
+----------------------------------------
+
+TITLE: Basic HTML Structure
+DESCRIPTION: This HTML snippet represents a simple div element with the class 'container' containing the text 'content'. It demonstrates basic HTML markup.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_8
+
+LANGUAGE: HTML
+CODE:
+```
+<div class=container > content </div>
+```
+
+----------------------------------------
+
+TITLE: HTML Container
+DESCRIPTION: This HTML snippet creates a simple div element with the class 'container' and the text 'content'. It demonstrates basic HTML structure.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_8
+
+LANGUAGE: html
+CODE:
+```
+<div class="container">content</div>
+```
+
+----------------------------------------
+
+TITLE: Logging to Console JavaScript
+DESCRIPTION: This JavaScript code snippet demonstrates a simple console log statement. It serves as a basic example for documentation processing, intended to be extracted and displayed as JavaScript code.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_full_block_names/main.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+console.log("js");
+```
+
+----------------------------------------
+
+TITLE: Running cargo-plonk to hot-swap symbols
+DESCRIPTION: This command runs `cargo plonk` to watch for changes in the `ext/webgpu` crate and hot-swap the `init_ops_and_esm` function into the previously built `deno` binary. It uses the `--package`, `--symbol`, `--bin`, and `--watch` flags.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/faster-rebuilds.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+cargo plonk run \
+  --package deno_webgpu \
+  --symbol init_ops_and_esm \
+  --bin deno \
+  --watch
+```
+
+----------------------------------------
+
+TITLE: Return symbol
+DESCRIPTION: This test validates that a symbol is returned as a string describing the symbol in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_9
+
+LANGUAGE: python
+CODE:
+```
+Symbol("foo")
+```
+
+----------------------------------------
+
+TITLE: Logging to console with JavaScript
+DESCRIPTION: This JavaScript snippet demonstrates a simple console log statement. It showcases how JavaScript code can be embedded within documentation and executed or tested.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_windows/main.md#_snippet_0
+
+LANGUAGE: js
+CODE:
+```
+console.log("js");
+```
+
+----------------------------------------
+
+TITLE: VS Code Autocomplete Configuration
+DESCRIPTION: Configuration snippet for `.vscode/settings.json` to enable auto-completion for `__test__.jsonc` files using a schema.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_6
+
+LANGUAGE: json
+CODE:
+```
+{
+  "json.schemas": [{
+    "fileMatch": [
+      "__test__.jsonc"
+    ],
+    "url": "./tests/specs/schema.json"
+  }]
+}
+```
+
+----------------------------------------
+
+TITLE: Running Deno Runtime Tests (Shell)
+DESCRIPTION: These shell commands illustrate how to run Deno runtime unit tests using `cargo run`. The first command runs all tests in the specified directory with `--allow-all` permissions and a specified location. The second command runs a specific test module, `files_test.ts`, with the same permissions and location. These commands are essential for executing and verifying the functionality of the Deno runtime.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/unit/README.md#_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+# Run all tests.
+cargo run --bin deno -- test --allow-all --location=http://js-unit-tests/foo/bar cli/tests/unit/
+
+# Run a specific test module
+cargo run --bin deno -- test --allow-all --location=http://js-unit-tests/foo/bar cli/tests/unit/files_test.ts
+```
+
+----------------------------------------
+
+TITLE: Running Code Linter
+DESCRIPTION: This command executes the linter script, lint.js, using Deno. It requires read, write, and run permissions to lint the codebase.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/README.md#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+deno run --allow-read --allow-write --allow-run ./tools/lint.js
+```
+
+----------------------------------------
+
+TITLE: Return a string with emoji
+DESCRIPTION: This test confirms that a string containing an emoji is correctly returned as output from the Jupyter cell.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_18
+
+LANGUAGE: python
+CODE:
+```
+"Cool 🫡"
+```
+
+----------------------------------------
+
+TITLE: Console log
+DESCRIPTION: This test demonstrates using `console.log` to print a message from within Deno's environment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_16
+
+LANGUAGE: python
+CODE:
+```
+console.log("Hello from Deno!")
+```
+
+----------------------------------------
+
+TITLE: Return undefined
+DESCRIPTION: This test verifies that returning `undefined` does not produce a value in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+undefined
+```
+
+----------------------------------------
+
+TITLE: Return null
+DESCRIPTION: This test verifies that returning `null` results in the string "null" in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+null
+```
+
+----------------------------------------
+
+TITLE: Deno.test failing test
+DESCRIPTION: This test demonstrates a failing test case using `Deno.test()`. It asserts that the test function throws an error, indicating a failure.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_22
+
+LANGUAGE: python
+CODE:
+```
+Deno.test("failing test", () => {
+  throw new Error("some message");
+});
+```
+
+----------------------------------------
+
+TITLE: Throwing a string
+DESCRIPTION: This test validates that throwing a string results in the string being displayed as an error in the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_14
+
+LANGUAGE: python
+CODE:
+```
+throw "a party"
+```
+
+----------------------------------------
+
+TITLE: Install Deno (Chocolatey)
+DESCRIPTION: This command uses Chocolatey to install Deno. It's specific to Windows systems with Chocolatey installed.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_3
+
+LANGUAGE: powershell
+CODE:
+```
+choco install deno
+```
+
+----------------------------------------
+
+TITLE: Multiple Tests in __test__.json
+DESCRIPTION: Illustrates how to define multiple tests within a single `__test__.json` file, each with its own arguments and expected output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_5
+
+LANGUAGE: json
+CODE:
+```
+{
+  "tests": {
+    "ignore_dir": {
+      "args": "run script.ts",
+      "output": "script.out"
+    },
+    "some_other_test": {
+      "args": "run other.ts",
+      "output": "other.out"
+    }
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Add symbol name to symbol_exports.json (diff)
+DESCRIPTION: This code snippet demonstrates how to add a new symbol name to the `symbol_exports.json` file, which is necessary for making the new Node-API function available. The snippet shows a diff format, adding `napi_get_boolean`.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/napi/README.md#_snippet_0
+
+LANGUAGE: diff
+CODE:
+```
+{
+  "symbols": [
+    ...
+    "napi_get_undefined",
+-   "napi_get_null"
++   "napi_get_null",
++   "napi_get_boolean"
+  ]
+}
+```
+
+----------------------------------------
+
+TITLE: Return bigint
+DESCRIPTION: This test checks if a bigint value is returned in literal format within the Jupyter output.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_8
+
+LANGUAGE: python
+CODE:
+```
+31337n
+```
+
+----------------------------------------
+
+TITLE: Hash Creation in Deno
+DESCRIPTION: This function `createHash` creates a hash of the provided data using a Deno core operation. It calls the `op_create_hash` op and returns the resulting hash value.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_7
+
+LANGUAGE: typescript
+CODE:
+```
+createHash(data) {
+  return core.jsonOpSync("op_create_hash", { data }).hash;
+}
+```
+
+----------------------------------------
+
+TITLE: SQL Query with Deno fmt Ignore
+DESCRIPTION: This SQL snippet demonstrates a SELECT query, retrieving all columns and the 'biz' and 'buz' columns from the 'baz' table. It includes a deno-fmt-ignore-file comment which disables formatting for the entire file.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_11
+
+LANGUAGE: SQL
+CODE:
+```
+-- deno-fmt-ignore-file
+  seLect * , biz, buz
+from baz;
+```
+
+----------------------------------------
+
+TITLE: TypeScript Type Error Example
+DESCRIPTION: This TypeScript snippet demonstrates an intentional type error.  The code attempts to assign a number to a string variable, causing a type-checking failure. This illustrates how errors are caught and displayed during documentation generation.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_windows/main.md#_snippet_3
+
+LANGUAGE: ts
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Standalone TypeScript Type Error
+DESCRIPTION: This standalone TypeScript snippet replicates the type error of assigning a number (42) to a variable of type string. Unlike the previous snippets, this one is not within an HTML comment, meaning it will actively trigger a type error when processed by the TypeScript compiler.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_ignore_html_comment/main.md#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Deno.readFile error
+DESCRIPTION: This test checks error handling for `Deno.readFile` function when passed an invalid file descriptor. It validates if it throws an appropriate error.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_15
+
+LANGUAGE: python
+CODE:
+```
+Deno.readFile(1)
+```
+
+----------------------------------------
+
+TITLE: Install Deno (PowerShell)
+DESCRIPTION: This command uses PowerShell to download and execute the Deno installation script. It is designed for Windows environments.
+SOURCE: https://github.com/denoland/deno/blob/main/README.md#_snippet_1
+
+LANGUAGE: powershell
+CODE:
+```
+irm https://deno.land/install.ps1 | iex
+```
+
+----------------------------------------
+
+TITLE: TypeScript Function Returning Number
+DESCRIPTION: This TypeScript function `foo` returns a number. It demonstrates a simple function definition with a return type annotation in TypeScript.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+function foo(): number {
+  return 2;
+}
+```
+
+----------------------------------------
+
+TITLE: Logging with JavaScript
+DESCRIPTION: This snippet demonstrates basic console logging in JavaScript. It is a simple example to illustrate the use of JavaScript within the Deno documentation.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/check/typecheck_doc_in_markdown/markdown.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+console.log("js");
+```
+
+----------------------------------------
+
+TITLE: TypeScript Type Error Example (Multiple HTML Comments)
+DESCRIPTION: This snippet replicates the type error example, again assigning a number to a string variable. It exists within a different HTML comment block to showcase multiple instances within the same document. The snippet is designed to produce a type error during type checking.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_ignore_html_comment/main.md#_snippet_2
+
+LANGUAGE: typescript
+CODE:
+```
+const a: string = 42;
+```
+
+----------------------------------------
+
+TITLE: Svelte Script Block with TypeScript
+DESCRIPTION: This Svelte snippet defines a script block with TypeScript, declaring a variable 'a' of type number. It demonstrates the integration of TypeScript within a Svelte component.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_9
+
+LANGUAGE: Svelte
+CODE:
+```
+<script lang=ts>
+let a:number
+</script>
+```
+
+----------------------------------------
+
+TITLE: Logging to Console in JavaScript (Variant)
+DESCRIPTION: This JavaScript snippet demonstrates another console log statement, printing 'Hello World2' to the console. This serves as a simple variation of the previous logging example.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+console.log("Hello World2"
+
+)
+```
+
+----------------------------------------
+
+TITLE: Logging to console with TypeScript
+DESCRIPTION: This TypeScript snippet demonstrates a simple console log statement. It showcases how TypeScript code can be embedded within documentation and executed or tested. It uses TypeScript's type system.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_windows/main.md#_snippet_1
+
+LANGUAGE: ts
+CODE:
+```
+console.log("ts");
+```
+
+----------------------------------------
+
+TITLE: JSON Array Example
+DESCRIPTION: This JSON snippet demonstrates a simple JSON object containing an array of strings. It shows how to represent a list of values within a JSON structure.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_5
+
+LANGUAGE: JSON
+CODE:
+```
+{
+  "numbers":
+  ["1",      "2"]
+}
+```
+
+----------------------------------------
+
+TITLE: Directory Structure for Deno Specs
+DESCRIPTION: Shows the required directory structure for Deno integration tests, which includes category name, test name, and the `__test__.json` file.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/README.md#_snippet_0
+
+LANGUAGE: text
+CODE:
+```
+tests/specs/<category_name>/<test_name>/__test__.json
+```
+
+----------------------------------------
+
+TITLE: YAML List
+DESCRIPTION: This snippet demonstrates a simple YAML list. It contains a list of two items, 'item1' and 'item2', represented in YAML syntax.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_6
+
+LANGUAGE: yaml
+CODE:
+```
+- item1
+- item2
+```
+
+----------------------------------------
+
+TITLE: Logging with TypeScript
+DESCRIPTION: This snippet showcases basic console logging using TypeScript. It provides a simple example of how TypeScript is used within the Deno documentation.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/check/typecheck_doc_in_markdown/markdown.md#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+console.log("ts");
+```
+
+----------------------------------------
+
+TITLE: Throwing an error
+DESCRIPTION: This test checks if throwing an error from a function is properly handled within the Jupyter environment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_13
+
+LANGUAGE: python
+CODE:
+```
+(function foo() {
+    throw new Error("this is a test")
+})()
+```
+
+----------------------------------------
+
+TITLE: Defining ignored diagnostics
+DESCRIPTION: This code defines an array of TypeScript diagnostic codes that are intentionally ignored by the Deno compiler. These diagnostics often provide misleading or incorrect information in the context of Deno's compilation environment.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+  /** Diagnostics that are intentionally ignored when compiling TypeScript in
+   * Deno, as they provide misleading or incorrect information. */
+  const IGNORED_DIAGNOSTICS = [
+    // TS1208: All files must be modules when the '--isolatedModules' flag is
+    // provided.  We can ignore because we guarantee that all files are
+    // modules.
+    1208,
+    // TS1375: 'await' expressions are only allowed at the top level of a file
+    // when that file is a module, but this file has no imports or exports.
+    // Consider adding an empty 'export {}' to make this file a module.
+    1375,
+    // TS1103: 'for-await-of' statement is only allowed within an async function
+    // or async generator.
+    1103,
+    // TS2306: File 'file:///Users/rld/src/deno/subdir/amd_like.js' is
+    // not a module.
+    2306,
+    // TS2691: An import path cannot end with a '.ts' extension. Consider
+    // importing 'bad-module' instead.
+    2691,
+    // TS2792: Cannot find module. Did you mean to set the 'moduleResolution'
+    // option to 'node', or to add aliases to the 'paths' option?
+    2792,
+    // TS5009: Cannot find the common subdirectory path for the input files.
+    5009,
+    // TS5055: Cannot write file
+    // 'http://localhost:4545/subdir/mt_application_x_javascript.j4.js'
+    // because it would overwrite input file.
+    5055,
+    // TypeScript is overly opinionated that only CommonJS modules kinds can
+    // support JSON imports.  Allegedly this was fixed in
+    // Microsoft/TypeScript#26825 but that doesn't seem to be working here,
+    // so we will ignore complaints about this compiler setting.
+    5070,
+    // TS7016: Could not find a declaration file for module '...'. '...'
+    // implicitly has an 'any' type.  This is due to `allowJs` being off by
+    // default but importing of a JavaScript module.
+    7016,
+  ];
+```
+
+----------------------------------------
+
+TITLE: TypeScript Type Error Example (Boolean Assignment)
+DESCRIPTION: This TypeScript snippet demonstrates assigning a string value to a boolean variable. This will result in a type error, indicating a mismatch between the expected and provided data types. The snippet is wrapped in HTML comments.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_ignore_html_comment/main.md#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+const a: boolean = "true";
+```
+
+----------------------------------------
+
+TITLE: Respond to Deno Runtime
+DESCRIPTION: This function `respond` sends a response to the Deno runtime using the `op_respond` core op. It takes an ID and optional data as input.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_16
+
+LANGUAGE: typescript
+CODE:
+```
+function respond(id, data = null) {
+  core.jsonOpSync("op_respond", { id, data });
+}
+```
+
+----------------------------------------
+
+TITLE: CLI Release Unlock Message
+DESCRIPTION: This snippet shows the message to be posted in the company's #cli channel after a Deno release is complete. It informs the team that the 'denoland/deno' repository is unlocked and that PRs can now be landed.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/release/release_doc_template.md#_snippet_2
+
+LANGUAGE: text
+CODE:
+```
+:unlock:
+
+@here 
+
+`denoland/deno` is now unlocked.
+
+*You can land PRs now*
+
+Deno v$VERSION has been released.
+```
+
+----------------------------------------
+
+TITLE: Removing __proto__ for security
+DESCRIPTION: This code snippet removes the `__proto__` property from `Object.prototype` for security reasons, intentionally making Deno non-compliant with ECMA-262 Annex B.2.2.1. This prevents prototype pollution vulnerabilities.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/lsp/large_file.txt#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+// Removes the `__proto__` for security reasons.  This intentionally makes
+// Deno non compliant with ECMA-262 Annex B.2.2.1
+delete Object.prototype.__proto__;
+```
+
+----------------------------------------
+
+TITLE: Hono Benchmarks
+DESCRIPTION: This code snippet presents benchmark results comparing Hono's performance with other routers for Cloudflare Workers. It shows operations per second (ops/sec) for different routers including hono (trie-router and regexp-router), itty-router, sunder, and worktop.
+SOURCE: https://github.com/denoland/deno/blob/main/cli/bench/testdata/npm/hono/README.md#_snippet_1
+
+LANGUAGE: Plain Text
+CODE:
+```
+hono - trie-router(default) x 424,449 ops/sec ±4.98% (77 runs sampled)
+hono - regexp-router x 516,228 ops/sec ±4.79% (81 runs sampled)
+itty-router x 206,641 ops/sec ±3.59% (87 runs sampled)
+sunder x 319,500 ops/sec ±1.33% (93 runs sampled)
+worktop x 187,280 ops/sec ±3.09% (87 runs sampled)
+Fastest is hono - regexp-router
+✨  Done in 38.32s.
+```
+
+----------------------------------------
+
+TITLE: Console Output JavaScript
+DESCRIPTION: This snippet prints 'Hello World' to the console using JavaScript's `console.log()` function. It demonstrates basic output functionality.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+console.log("Hello World");
+```
+
+----------------------------------------
+
+TITLE: Ignored TypeScript Constant Declaration
+DESCRIPTION: This TypeScript code declares a constant with an invalid type assignment. The 'ignore' attribute is used to prevent this snippet from being type-checked or included in the final documentation.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_full_block_names/main.md#_snippet_1
+
+LANGUAGE: typescript
+CODE:
+```
+const value: Invalid = "ignored";
+```
+
+----------------------------------------
+
+TITLE: YAML List Example
+DESCRIPTION: This YAML snippet demonstrates a basic list structure. It showcases the simple syntax of YAML for representing a sequence of items.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_6
+
+LANGUAGE: YAML
+CODE:
+```
+-  item1
+-  item2
+```
+
+----------------------------------------
+
+TITLE: CLI Release Lock Message
+DESCRIPTION: This snippet shows the message to be posted in the company's #cli channel when a Deno release is in progress. It informs the team that the 'denoland/deno' repository is locked and that no PRs should be landed until the release is complete.
+SOURCE: https://github.com/denoland/deno/blob/main/tools/release/release_doc_template.md#_snippet_0
+
+LANGUAGE: text
+CODE:
+```
+:lock:
+
+@here
+
+Deno v$VERSION is now getting released.
+
+`denoland/deno` is now locked.
+
+*DO NOT LAND ANY PRs*
+
+Release checklist: <LINK TO THIS FORKED GIST GOES HERE>
+```
+
+----------------------------------------
+
+TITLE: Logging to Console in JavaScript
+DESCRIPTION: This JavaScript snippet demonstrates a simple console log statement, printing 'Hello World' to the console. It serves as a basic example for outputting information during script execution.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+console.log("Hello World"
+
+)
+```
+
+----------------------------------------
+
+TITLE: Reject returned promise
+DESCRIPTION: This test confirms that a rejected promise throws an error and is properly handled by the Jupyter kernel.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/jupyter/integration_test.ipynb#_snippet_12
+
+LANGUAGE: python
+CODE:
+```
+Promise.reject(new Error("it failed!"));
+```
+
+----------------------------------------
+
+TITLE: CSS Styling Example
+DESCRIPTION: This CSS snippet defines a style rule for a button element within an app container. It sets the text color to black.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_7
+
+LANGUAGE: CSS
+CODE:
+```
+#app>.btn{ color : #000 }
+```
+
+----------------------------------------
+
+TITLE: JSON with Comments
+DESCRIPTION: This JSON snippet contains comments (using JSONC syntax) and demonstrates a key-value pair structure. It showcases the basic format of a JSON object with string values.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted.md#_snippet_4
+
+LANGUAGE: JSONC
+CODE:
+```
+{
+  // Comment in JSON
+  "key":          "value",
+                "key2":
+                "value2",
+}
+```
+
+----------------------------------------
+
+TITLE: Ignored TypeScript Constant Declaration
+DESCRIPTION: This TypeScript snippet demonstrates the use of the 'ignore' attribute. The code, which would typically cause a type error, is ignored by the documentation tooling.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/specs/test/markdown_windows/main.md#_snippet_2
+
+LANGUAGE: ts
+CODE:
+```
+const value: Invalid = "ignored";
+```
+
+----------------------------------------
+
+TITLE: Svelte Script (TypeScript)
+DESCRIPTION: This Svelte component snippet declares a TypeScript variable 'a' of type number within the `<script>` tag. It demonstrates the usage of TypeScript in Svelte components.
+SOURCE: https://github.com/denoland/deno/blob/main/tests/testdata/fmt/badly_formatted_fixed.md#_snippet_9
+
+LANGUAGE: svelte
+CODE:
+```
+<script lang="ts">
+  let a: number;
+</script>
+```
+
+----------------------------------------
+
+TITLE: Image Processing Flowchart
+DESCRIPTION: This Mermaid flowchart visualizes the data flow in the image processing architecture. It shows how input binary data is converted to an intermediate image, processed, and then converted to output binary data.
+SOURCE: https://github.com/denoland/deno/blob/main/ext/canvas/README.md#_snippet_0
+
+LANGUAGE: mermaid
+CODE:
+```
+flowchart LR
+  Input["input binary<br/>( &[u8] )"]
+  II["intermediate image<br/>( DynamicImage )"]
+  Ops["processing pixel<br/>( ImageBuffer< P, S > )"]
+  Output["output binary<br/>( Box<[u8]> )"]
+  Input --> II
+  II --> Ops --> II
+  II --> Output
+```

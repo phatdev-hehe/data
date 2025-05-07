@@ -1,0 +1,193 @@
+TITLE: Creating a Search Form HTML
+DESCRIPTION: This HTML snippet creates a simple form centered on the page, allowing users to search for books or authors on the free-programming-books search site. It includes a text input field for the search query and a submit button.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/README.md#_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+<div align="center">
+  <form action="https://ebookfoundation.github.io/free-programming-books-search">
+    <input type="text" id="fpbSearch" name="search" required placeholder="Search Book or Author"/>
+    <label for="submit"> </label>
+    <input type="submit" id="submit" name="submit" value="Search" />
+  </form>
+</div>
+```
+
+----------------------------------------
+
+TITLE: Triggering URL Validation via Commit Message (Properties)
+DESCRIPTION: Explains how to trigger the automated URL validation process by including a specific key-value pair in a Git commit message. The `check_urls` key is followed by a list of markdown files to validate, separated by spaces. This action is processed by GitHub Actions.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_11
+
+LANGUAGE: properties
+CODE:
+```
+check_urls=free-programming-books.md free-programming-books-en.md
+```
+
+----------------------------------------
+
+TITLE: Triggering URL Validation via Commit Message
+DESCRIPTION: This configuration line, when included in a commit message, triggers the automated URL validation process using `awesome_bot` for the specified files. Multiple files can be listed separated by spaces.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING-zh_TW.md#_snippet_0
+
+LANGUAGE: Configuration
+CODE:
+```
+check_urls=free-programming-books.md free-programming-books-zh.md
+```
+
+----------------------------------------
+
+TITLE: Triggering Link Validation via Commit Message (Config)
+DESCRIPTION: To trigger the automated link validation using `awesome_bot` for specific files, include this line in the body of your commit message. You can specify multiple files separated by a single space. Note that the final build status will reflect the result of the last file checked.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING-fa_IR.md#_snippet_0
+
+LANGUAGE: Config
+CODE:
+```
+check_urls=free-programming-books.md free-programming-books-fa_IR.md
+```
+
+----------------------------------------
+
+TITLE: Handling Multiple Formats in Text Lists
+DESCRIPTION: Provides the preferred method for listing multiple formats, using a single primary link followed by additional formats and their links in parentheses, rather than separate list items for each format.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_5
+
+LANGUAGE: text
+CODE:
+```
+BAD : * [Another Awesome Book](http://example.com/)- John Doe (HTML)
+BAD : * [Another Awesome Book](https://downloads.example.org/book.html)- John Doe (download site)
+GOOD: * [Another Awesome Book](http://example.com/) - John Doe (HTML) [(PDF, EPUB)](https://downloads.example.org/book.html)
+```
+
+----------------------------------------
+
+TITLE: Including License Information in Text Lists
+DESCRIPTION: Shows how to include license information, such as Creative Commons licenses, in parentheses after the format specification in a list item.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_9
+
+LANGUAGE: text
+CODE:
+```
+GOOD: * [A Very Awesome Book](https://example.org/book.pdf) - Jane Roe (PDF) (CC BY-SA)
+```
+
+----------------------------------------
+
+TITLE: Including Publication Year in Text Lists
+DESCRIPTION: Explains that for older books, the publication year should be included within parentheses as part of the book title itself, rather than after the author or link.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_6
+
+LANGUAGE: text
+CODE:
+```
+BAD : * [A Very Awesome Book](https://example.org/book.html) - Jane Roe - 1970
+GOOD: * [A Very Awesome Book (1970)](https://example.org/book.html) - Jane Roe
+```
+
+----------------------------------------
+
+TITLE: Markdown Example for Crediting Translator
+DESCRIPTION: This snippet demonstrates how to credit a translator for a translated work within a markdown list item using the MARC relator code 'trl.:'. The original author is listed first, followed by the translator with the relator annotation.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_10
+
+LANGUAGE: Markdown
+CODE:
+```
+* [A Translated Book](http://example.com/book.html) - John Doe, `trl.:` Mike The Translator
+```
+
+----------------------------------------
+
+TITLE: Ordering Author and Format in Text Lists
+DESCRIPTION: Specifies that the author should be listed before the format specification in a list item entry.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_4
+
+LANGUAGE: text
+CODE:
+```
+BAD : * [A Very Awesome Book](https://example.org/book.pdf)- (PDF) Jane Roe
+GOOD: * [A Very Awesome Book](https://example.org/book.pdf) - Jane Roe (PDF)
+```
+
+----------------------------------------
+
+TITLE: Formatting Author Separator in Text Lists
+DESCRIPTION: Shows the correct use of ' - ' (a dash surrounded by single spaces) to separate the author from the book title and link in a list item.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_2
+
+LANGUAGE: text
+CODE:
+```
+BAD : * [Another Awesome Book](http://example.com/book.html)- John Doe
+GOOD: * [Another Awesome Book](http://example.com/book.html) - John Doe
+```
+
+----------------------------------------
+
+TITLE: Formatting Format Separator in Text Lists
+DESCRIPTION: Illustrates the requirement for a single space between the closing parenthesis of the link ')' and the format specification (e.g., '(PDF)') in a list item.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_3
+
+LANGUAGE: text
+CODE:
+```
+BAD : * [A Very Awesome Book](https://example.org/book.pdf)(PDF)
+GOOD: * [A Very Awesome Book](https://example.org/book.pdf) (PDF)
+```
+
+----------------------------------------
+
+TITLE: Formatting Link and Title in Text Lists
+DESCRIPTION: Demonstrates the correct way to format the link immediately following the title in a list item, without spaces between the closing bracket ']' and the opening parenthesis '('.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_1
+
+LANGUAGE: text
+CODE:
+```
+BAD : * [Another Awesome Book] (http://example.com/book.html)
+GOOD: * [Another Awesome Book](http://example.com/book.html)
+```
+
+----------------------------------------
+
+TITLE: Marking Archived Links in Text Lists
+DESCRIPTION: Demonstrates the format for marking an entry where the link points to an archived version using the ':card_file_box: archived' marker.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_8
+
+LANGUAGE: text
+CODE:
+```
+GOOD: * [A Way-backed Interesting Book](https://web.archive.org/web/20211016123456/http://example.com/) - John Doe (HTML) *(:card_file_box: archived)*
+```
+
+----------------------------------------
+
+TITLE: Marking In-Process Books in Text Lists
+DESCRIPTION: Shows the correct format for indicating that a book is currently in process using the ':construction: in process' marker after the entry details.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_7
+
+LANGUAGE: text
+CODE:
+```
+GOOD: * [Will Be An Awesome Book Soon](http://example.com/book2.html) - John Doe (HTML) *(:construction: in process)*
+```
+
+----------------------------------------
+
+TITLE: Markdown List Formatting Example
+DESCRIPTION: This snippet illustrates the required spacing format within Markdown lists in the repository, showing two blank lines between the last link of a section and the start of a new section, as described in the formatting guidelines.
+SOURCE: https://github.com/ebookfoundation/free-programming-books/blob/main/docs/CONTRIBUTING.md#_snippet_0
+
+LANGUAGE: Text
+CODE:
+```
+[...]
+* [An Awesome Book](http://example.com/example.html)
+                                (blank line)
+                                (blank line)
+```

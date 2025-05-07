@@ -1,0 +1,1878 @@
+TITLE: Start frps Server (Shell)
+DESCRIPTION: Command to start the frp server process using the specified configuration file.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+./frps -c ./frps.toml
+```
+
+----------------------------------------
+
+TITLE: Configure frps Server Bind Port (TOML)
+DESCRIPTION: Sets the port on the frp server where frp clients will connect. This configuration is placed in the frps.toml file.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_0
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+bindPort = 7000
+```
+
+----------------------------------------
+
+TITLE: Start frpc Client (Shell)
+DESCRIPTION: Command to start the frp client process using the specified configuration file.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_3
+
+LANGUAGE: Shell
+CODE:
+```
+./frpc -c ./frpc.toml
+```
+
+----------------------------------------
+
+TITLE: Starting the frpc Client (Shell)
+DESCRIPTION: Command to start the frp client executable, specifying the path to its configuration file. This connects the client to the frp server and registers the configured proxies.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_13
+
+LANGUAGE: Shell
+CODE:
+```
+./frpc -c ./frpc.toml
+```
+
+----------------------------------------
+
+TITLE: Access LAN Machine via SSH through frp (Shell)
+DESCRIPTION: Command used from another machine to connect via SSH to the LAN machine (Server B) by connecting to the frp server's (Server A) public IP address and the remote port configured for the SSH proxy.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_4
+
+LANGUAGE: Shell
+CODE:
+```
+ssh -oPort=6000 test@x.x.x.x
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc for HTTP Proxy (TOML)
+DESCRIPTION: Configures the frp client to connect to the server and define an HTTP proxy named "web". It specifies the local web service port (80) and the custom domain name that will be used to access it remotely.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_12
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 80
+customDomains = ["www.example.com"]
+```
+
+----------------------------------------
+
+TITLE: Configuring Environment Variables frpc TOML
+DESCRIPTION: This frpc configuration demonstrates how to reference environment variables within the TOML file using Go's standard template format `{{ .Envs.VAR_NAME }}`. This allows dynamic configuration of server address and remote ports.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_27
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "{{ .Envs.FRP_SERVER_ADDR }}"
+serverPort = 7000
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = "{{ .Envs.FRP_SSH_REMOTE_PORT }}"
+```
+
+----------------------------------------
+
+TITLE: Configure frpc Client for SSH Proxy (TOML)
+DESCRIPTION: Configures the frp client to connect to the server, specifying the server address and port. It sets up a TCP proxy named 'ssh' that forwards traffic from a remote port on the server to the local SSH port (22) on the client machine.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_2
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000
+```
+
+----------------------------------------
+
+TITLE: Configuring HTTP URL Routing in frpc (TOML)
+DESCRIPTION: Sets up multiple HTTP proxies in frpc that share the same custom domain but route requests to different local ports based on the URL path prefix. Requests matching `/news` or `/about` go to `web02` (port 81), while others go to `web01` (port 80).
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_62
+
+LANGUAGE: toml
+CODE:
+```
+[[proxies]]
+name = "web01"
+type = "http"
+localPort = 80
+customDomains = ["web.example.com"]
+locations = ["/"]
+
+[[proxies]]
+name = "web02"
+type = "http"
+localPort = 81
+customDomains = ["web.example.com"]
+locations = ["/news", "/about"]
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc TLS Settings (TOML)
+DESCRIPTION: Configures the frpc client to enable TLS encryption for connections to the frps server. Specifies the client's certificate file, private key file, and the trusted CA certificate file for verifying the server's certificate. Requires valid certificate files.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_37
+
+LANGUAGE: TOML
+CODE:
+```
+transport.tls.enable = true
+transport.tls.certFile = "certificate.crt"
+transport.tls.keyFile = "certificate.key"
+transport.tls.trustedCaFile = "ca.crt"
+```
+
+----------------------------------------
+
+TITLE: Configuring Server OIDC Authentication - TOML
+DESCRIPTION: Configures the frp server (frps) to use OIDC authentication. Specifies the authentication method as "oidc", the OIDC issuer URL, and the audience identifier for the token validation.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_34
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+auth.method = "oidc"
+auth.oidc.issuer = "https://example-oidc-issuer.com/"
+auth.oidc.audience = "https://oidc-audience.com/.default"
+```
+
+----------------------------------------
+
+TITLE: Configuring frps TLS Settings (TOML)
+DESCRIPTION: Configures the frps server to enforce and use TLS encryption for incoming client connections. Specifies the server's certificate file, private key file, and the trusted CA certificate file for verifying client certificates (if mutual TLS is used, though not explicitly shown here). Requires valid certificate files.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_38
+
+LANGUAGE: TOML
+CODE:
+```
+transport.tls.force = true
+transport.tls.certFile = "certificate.crt"
+transport.tls.keyFile = "certificate.key"
+transport.tls.trustedCaFile = "ca.crt"
+```
+
+----------------------------------------
+
+TITLE: Configuring Server Dashboard (HTTP) - TOML
+DESCRIPTION: Sets up the web server for the frp server dashboard. Specifies the listening address (0.0.0.0 for public access), port (7500), and optional basic authentication credentials (admin/admin).
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_31
+
+LANGUAGE: TOML
+CODE:
+```
+# The default value is 127.0.0.1. Change it to 0.0.0.0 when you want to access it from a public network.
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+# dashboard's username and password are both optional
+webServer.user = "admin"
+webServer.password = "admin"
+```
+
+----------------------------------------
+
+TITLE: Use SSH Client for TCP Proxying via frps SSH Gateway (Bash)
+DESCRIPTION: This bash command uses the standard SSH client to establish a reverse tunnel (`-R`) through the frps SSH Tunnel Gateway. It forwards the local port 8080 to the remote port 9090 on the frps server, effectively creating a TCP proxy without needing a separate frpc instance.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_69
+
+LANGUAGE: Bash
+CODE:
+```
+ssh -R :80:127.0.0.1:8080 v0@{frp address} -p 2200 tcp --proxy_name "test-tcp" --remote_port 9090
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc Proxy with Custom Subdomain (TOML)
+DESCRIPTION: Configures an HTTP proxy in frpc to use a specific subdomain (`test`) under the `subDomainHost` configured on the frps server. This makes the local service accessible via `test.frps.com`.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_61
+
+LANGUAGE: toml
+CODE:
+```
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 80
+subdomain = "test"
+```
+
+----------------------------------------
+
+TITLE: Configure HTTP Health Check (TOML)
+DESCRIPTION: Enables HTTP health checks for a proxy. frpc will send an HTTP request to a specified path and expect a 2xx response. The proxy is removed from frps on consecutive failures.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_55
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+
+[[proxies]]
+name = "web"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 80
+customDomains = ["test.example.com"]
+# Enable HTTP health check
+healthCheck.type = "http"
+# frpc will send a GET request to '/status'
+# and expect an HTTP 2xx OK response
+healthCheck.path = "/status"
+healthCheck.timeoutSeconds = 3
+healthCheck.maxFailed = 3
+healthCheck.intervalSeconds = 10
+```
+
+----------------------------------------
+
+TITLE: Configuring frps for Custom Subdomains (TOML)
+DESCRIPTION: Sets the base domain for subdomain routing on the frps server. This requires a wildcard DNS record pointing `*.frps.com` to the frps server's IP address, allowing frpc clients to register proxies under specific subdomains.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_60
+
+LANGUAGE: toml
+CODE:
+```
+subDomainHost = "frps.com"
+```
+
+----------------------------------------
+
+TITLE: Configuring HTTP Host Header Rewrite in frpc (TOML)
+DESCRIPTION: Configures an HTTP proxy in frpc to rewrite the `Host` header of incoming requests before forwarding them to the local service. This allows the backend service to receive a different `Host` header than the one sent by the client.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_56
+
+LANGUAGE: toml
+CODE:
+```
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 80
+customDomains = ["test.example.com"]
+hostHeaderRewrite = "dev.example.com"
+```
+
+----------------------------------------
+
+TITLE: Configuring frps for Vhost HTTP (TOML)
+DESCRIPTION: Sets the main binding port and the specific port for virtual host HTTP routing on the frp server. This allows frp to handle incoming HTTP requests and route them based on the domain name.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_10
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+bindPort = 7000
+vhostHTTPPort = 8080
+```
+
+----------------------------------------
+
+TITLE: Configuring Server Dashboard (HTTPS) - TOML
+DESCRIPTION: Configures the frp server dashboard for secure HTTPS access. Sets the port (7500), optional basic authentication, and specifies the paths to the TLS certificate (server.crt) and private key (server.key) files.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_32
+
+LANGUAGE: TOML
+CODE:
+```
+webServer.port = 7500
+# dashboard's username and password are both optional
+webServer.user = "admin"
+webServer.password = "admin"
+webServer.tls.certFile = "server.crt"
+webServer.tls.keyFile = "server.key"
+```
+
+----------------------------------------
+
+TITLE: Configure TCP Health Check (TOML)
+DESCRIPTION: Enables TCP health checks for a proxy. frpc will periodically ping the local service port and remove the proxy from frps if checks fail consecutively.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_54
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+
+[[proxies]]
+name = "test1"
+type = "tcp"
+localPort = 22
+remotePort = 6000
+# Enable TCP health check
+healthCheck.type = "tcp"
+# TCPing timeout seconds
+healthCheck.timeoutSeconds = 3
+# If health check failed 3 times in a row, the proxy will be removed from frps
+healthCheck.maxFailed = 3
+# A health check every 10 seconds
+healthCheck.intervalSeconds = 10
+```
+
+----------------------------------------
+
+TITLE: Configuring Included Files frpc TOML
+DESCRIPTION: This main frpc configuration file demonstrates how to include other configuration files using the `includes` directive. This allows splitting proxy definitions or other configurations into separate files for modularity.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_29
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+includes = ["./confd/*.toml"]
+```
+
+----------------------------------------
+
+TITLE: Setting Custom HTTP Headers in frpc (TOML)
+DESCRIPTION: Demonstrates how to set custom headers on both the request and response for an HTTP proxy in frpc. The `requestHeaders.set` and `responseHeaders.set` options allow adding or overriding headers.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_57
+
+LANGUAGE: toml
+CODE:
+```
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 80
+customDomains = ["test.example.com"]
+hostHeaderRewrite = "dev.example.com"
+requestHeaders.set."x-from-where" = "frp"
+responseHeaders.set.foo = "bar"
+```
+
+----------------------------------------
+
+TITLE: Configure Load Balancing Group (TOML)
+DESCRIPTION: Configures multiple proxies to be part of a load balancing group. Connections to the remote port will be distributed among proxies in the same group. A groupKey is used for authentication.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_53
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+
+[[proxies]]
+name = "test1"
+type = "tcp"
+localPort = 8080
+remotePort = 80
+loadBalancer.group = "web"
+loadBalancer.groupKey = "123"
+
+[[proxies]]
+name = "test2"
+type = "tcp"
+localPort = 8081
+remotePort = 80
+loadBalancer.group = "web"
+loadBalancer.groupKey = "123"
+```
+
+----------------------------------------
+
+TITLE: Configuring frps for TCPMUX (TOML)
+DESCRIPTION: Sets the main binding port and the specific port for tcpmux using the HTTP Connect method on the frp server. This allows multiple services to share a single public port.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_5
+
+LANGUAGE: TOML
+CODE:
+```
+bindPort = 7000
+tcpmuxHTTPConnectPort = 5002
+```
+
+----------------------------------------
+
+TITLE: Enabling Proxy Encryption and Compression - TOML
+DESCRIPTION: Configures a specific client proxy (named "ssh" in this example) to use encryption and compression for its transport layer. Sets `transport.useEncryption` and `transport.useCompression` to `true` within the proxy definition.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_36
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localPort = 22
+remotePort = 6000
+transport.useEncryption = true
+transport.useCompression = true
+```
+
+----------------------------------------
+
+TITLE: Configure Connection Pool Limit on frps (TOML)
+DESCRIPTION: Sets the maximum number of pre-established connections that each proxy can use on the frps server side. This helps reduce connection setup time for short connections.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_51
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+transport.maxPoolCount = 5
+```
+
+----------------------------------------
+
+TITLE: Enable Connection Pooling on frpc (TOML)
+DESCRIPTION: Enables connection pooling for the frpc client and specifies the number of connections to keep in the pool. This works in conjunction with the server-side maxPoolCount setting.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_52
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+transport.poolCount = 1
+```
+
+----------------------------------------
+
+TITLE: Configuring HTTPS to HTTP Plugin frpc TOML
+DESCRIPTION: This frpc configuration sets up an HTTPS proxy that terminates SSL/TLS and forwards requests to a local HTTP service. It uses the `https2http` plugin, specifies the local address, SSL certificate/key paths, and rewrites the Host header.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_20
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "test_https2http"
+type = "https"
+customDomains = ["test.example.com"]
+
+[proxies.plugin]
+type = "https2http"
+localAddr = "127.0.0.1:80"
+crtPath = "./server.crt"
+keyPath = "./server.key"
+hostHeaderRewrite = "127.0.0.1"
+requestHeaders.set."x-from-where" = "frp"
+```
+
+----------------------------------------
+
+TITLE: Configure HTTP Proxy Client Plugin (TOML)
+DESCRIPTION: This TOML configuration demonstrates how to set up the built-in `http_proxy` client plugin for a TCP proxy. It specifies the remote port and includes plugin-specific parameters like `httpUser` and `httpPassword` for basic authentication.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_67
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+
+[[proxies]]
+name = "http_proxy"
+type = "tcp"
+remotePort = 6000
+[proxies.plugin]
+type = "http_proxy"
+httpUser = "abc"
+httpPassword = "abc"
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc for Unix Domain Socket Forwarding (TOML)
+DESCRIPTION: Configures the frp client to create a TCP proxy that forwards traffic to a local Unix domain socket. This example specifically targets the Docker daemon socket, making it accessible remotely via TCP on port 6000.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_17
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "unix_domain_socket"
+type = "tcp"
+remotePort = 6000
+[proxies.plugin]
+type = "unix_domain_socket"
+unixPath = "/var/run/docker.sock"
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc for Static File Server (TOML)
+DESCRIPTION: Configures the frp client to expose a local directory (`/tmp/files`) as a static file server accessible via TCP on remote port 6000. It uses the `static_file` plugin, specifies a path prefix to strip, and sets basic HTTP authentication credentials.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_19
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "test_static_file"
+type = "tcp"
+remotePort = 6000
+[proxies.plugin]
+type = "static_file"
+localPath = "/tmp/files"
+stripPrefix = "static"
+httpUser = "abc"
+httpPassword = "abc"
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc Proxies for TCP Port Multiplexing (TOML)
+DESCRIPTION: Configures multiple frpc proxies to use the `tcpmux` type with the `httpconnect` multiplexer. These proxies will connect to the frps server's `tcpmuxHTTPConnectPort` and be routed based on the `customDomains` specified in the HTTP CONNECT request.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_64
+
+LANGUAGE: toml
+CODE:
+```
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "proxy1"
+type = "tcpmux"
+multiplexer = "httpconnect"
+customDomains = ["test1"]
+localPort = 80
+
+[[proxies]]
+name = "proxy2"
+type = "tcpmux"
+multiplexer = "httpconnect"
+customDomains = ["test2"]
+localPort = 8080
+```
+
+----------------------------------------
+
+TITLE: Configure frpc to use QUIC Protocol (TOML)
+DESCRIPTION: Configures the frpc client to connect to the frps server using the QUIC protocol. The serverPort must match the quicBindPort configured on the server.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_50
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+# Same as the 'quicBindPort' in frps.toml
+serverPort = 7000
+transport.protocol = "quic"
+```
+
+----------------------------------------
+
+TITLE: Configuring frps for TCP Port Multiplexing (TOML)
+DESCRIPTION: Configures the frps server to listen for HTTP CONNECT requests on a dedicated port (`1337`) for TCP multiplexing. This allows multiple frpc proxies using the `httpconnect` multiplexer to share a single port on the server.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_63
+
+LANGUAGE: toml
+CODE:
+```
+bindPort = 7000
+tcpmuxHTTPConnectPort = 1337
+```
+
+----------------------------------------
+
+TITLE: Enable KCP Protocol on frps (TOML)
+DESCRIPTION: Configures the frps server to listen for KCP connections on a specified UDP port. The KCP port can be the same as the TCP bind port.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_47
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+bindPort = 7000
+# Specify a UDP port for KCP.
+kcpBindPort = 7000
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc Metadata and Proxy (TOML)
+DESCRIPTION: This example demonstrates how to configure global metadata and proxy-specific metadata in the frp client configuration file (frpc.toml). Global metadata is sent during the Login operation, while proxy-specific metadata is sent during the NewProxy operation for that specific proxy. It also includes a basic TCP proxy configuration.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_12
+
+LANGUAGE: TOML
+CODE:
+```
+serverAddr = "127.0.0.1"
+serverPort = 7000
+user = "fake"
+metadatas.token = "fake"
+metadatas.version = "1.0.0"
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localPort = 22
+remotePort = 6000
+metadatas.id = "123"
+```
+
+----------------------------------------
+
+TITLE: Configure frpc to use KCP Protocol (TOML)
+DESCRIPTION: Configures the frpc client to connect to the frps server using the KCP protocol. The serverPort must match the kcpBindPort configured on the server.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_48
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+# Same as the 'kcpBindPort' in frps.toml
+serverPort = 7000
+transport.protocol = "kcp"
+```
+
+----------------------------------------
+
+TITLE: Requiring HTTP Basic Auth in frpc (TOML)
+DESCRIPTION: Configures an HTTP proxy in frpc to enforce HTTP Basic Authentication for all incoming requests. Users attempting to access the proxied service will be prompted for the specified username and password before the request is forwarded.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_59
+
+LANGUAGE: toml
+CODE:
+```
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 80
+customDomains = ["test.example.com"]
+httpUser = "abc"
+httpPassword = "abc"
+```
+
+----------------------------------------
+
+TITLE: Enabling frpc HTTP API (TOML)
+DESCRIPTION: Configures the frpc client to enable its built-in HTTP API by specifying the listening address and port. This API is required for features like hot-reloading configuration and checking proxy status. Add these lines to the `frpc.toml` file.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_43
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+webServer.addr = "127.0.0.1"
+webServer.port = 7400
+```
+
+----------------------------------------
+
+TITLE: Testing DNS Resolution via frp Proxy (Shell)
+DESCRIPTION: Uses the `dig` command to perform a DNS lookup for `www.google.com`. It explicitly directs the query to the frp server's IP address and the remote port (6000) configured for the DNS proxy.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_16
+
+LANGUAGE: Shell
+CODE:
+```
+dig @x.x.x.x -p 6000 www.google.com
+```
+
+----------------------------------------
+
+TITLE: Enabling Proxy Protocol in frpc (TOML)
+DESCRIPTION: Configures an HTTPS proxy in frpc to enable the Proxy Protocol, specifically version 2. This allows the frps server to forward the client's real IP address to the local service, which can then be processed by the backend application or a web server like Nginx.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_58
+
+LANGUAGE: toml
+CODE:
+```
+[[proxies]]
+name = "web"
+type = "https"
+localPort = 443
+customDomains = ["test.example.com"]
+
+# now v1 and v2 are supported
+transport.proxyProtocolVersion = "v2"
+```
+
+----------------------------------------
+
+TITLE: Configure Bandwidth Limit for TCP Proxy (TOML)
+DESCRIPTION: Sets a bandwidth limit for a specific TCP proxy. The limit is applied per proxy connection. Supported units are MB and KB.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_45
+
+LANGUAGE: TOML
+CODE:
+```
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localPort = 22
+remotePort = 6000
+transport.bandwidthLimit = "1MB"
+```
+
+----------------------------------------
+
+TITLE: Running frpc with Environment Variables Shell
+DESCRIPTION: These shell commands show how to set environment variables (`FRP_SERVER_ADDR`, `FRP_SSH_REMOTE_PORT`) before running the `frpc` client. The client will then use these variables to populate the configuration file template.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_28
+
+LANGUAGE: Shell
+CODE:
+```
+export FRP_SERVER_ADDR=x.x.x.x
+export FRP_SSH_REMOTE_PORT=6000
+./frpc -c ./frpc.toml
+```
+
+----------------------------------------
+
+TITLE: Configuring SSH Gateway to Reuse Existing Private Key
+DESCRIPTION: Shows how to configure the frps SSH Tunnel Gateway to use an existing SSH private key file on the server machine instead of automatically generating one. This is done by specifying the path in the `privateKeyFile` field.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_8
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+sshTunnelGateway.bindPort = 2200
+sshTunnelGateway.privateKeyFile = "/home/user/.ssh/id_rsa"
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc for DNS Forwarding (TOML)
+DESCRIPTION: Configures the frp client to forward UDP traffic for DNS queries. It targets Google's Public DNS server (8.8.8.8:53) and exposes this service on the frp server's remote port 6000.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_15
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "dns"
+type = "udp"
+localIP = "8.8.8.8"
+localPort = 53
+remotePort = 6000
+```
+
+----------------------------------------
+
+TITLE: Accessing another SSH via TCPMUX Proxy (Shell)
+DESCRIPTION: Shows the command to connect to the second proxied SSH service on machine B. The command is identical to the first, except for the target custom domain, highlighting the domain-based routing via tcpmux.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_9
+
+LANGUAGE: Shell
+CODE:
+```
+ssh -o 'proxycommand socat - PROXY:x.x.x.x:%h:%p,proxyport=5002' test@machine-b.example.com
+```
+
+----------------------------------------
+
+TITLE: Generating frps Server Certificates with OpenSSL (Shell)
+DESCRIPTION: Generates a private key (`server.key`), a certificate signing request (`server.csr`), and the final server certificate (`server.crt`) for the frps server using OpenSSL. It signs the server certificate with the previously generated CA and includes Subject Alternative Names (SAN) for localhost, 127.0.0.1, and example.server.com. Requires OpenSSL and the CA certificates (`ca.key`, `ca.crt`).
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_41
+
+LANGUAGE: Shell
+CODE:
+```
+openssl genrsa -out server.key 2048
+
+openssl req -new -sha256 -key server.key \
+    -subj "/C=XX/ST=DEFAULT/L=DEFAULT/O=DEFAULT/CN=server.com" \
+    -reqexts SAN \
+    -config <(cat my-openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:example.server.com")) \
+    -out server.csr
+
+openssl x509 -req -days 365 -sha256 \
+	-in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+	-extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,DNS:example.server.com") \
+	-out server.crt
+```
+
+----------------------------------------
+
+TITLE: Configuring another frpc for SSH via TCPMUX (TOML)
+DESCRIPTION: Configures a second frp client instance for another SSH service, similar to the first but with a different proxy name and custom domain. This demonstrates sharing the same server port for multiple SSH services.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_7
+
+LANGUAGE: TOML
+CODE:
+```
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "ssh2"
+type = "tcpmux"
+multiplexer = "httpconnect"
+customDomains = ["machine-b.example.com"]
+localIP = "127.0.0.1"
+localPort = 22
+```
+
+----------------------------------------
+
+TITLE: Configuring frps for DNS Forwarding (TOML)
+DESCRIPTION: Sets the main binding port for the frp server, which is necessary for the client to connect and register the DNS forwarding proxy. This is a minimal server configuration for this use case.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_14
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+bindPort = 7000
+```
+
+----------------------------------------
+
+TITLE: Generating Root CA Certificates with OpenSSL (Shell)
+DESCRIPTION: Generates a 2048-bit RSA private key (`ca.key`) and a self-signed root CA certificate (`ca.crt`) using OpenSSL. The certificate is valid for 5000 days and includes a common name. Requires OpenSSL installed.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_40
+
+LANGUAGE: Shell
+CODE:
+```
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -subj "/CN=example.ca.com" -days 5000 -out ca.crt
+```
+
+----------------------------------------
+
+TITLE: Configuring SSH Tunnel Gateway in frps (Initial)
+DESCRIPTION: Defines the basic configuration options available for the SSH Tunnel Gateway feature in the frps server configuration file (frps.toml). These settings control the SSH server port, private key handling, and authorized keys.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_0
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+sshTunnelGateway.bindPort = 0
+sshTunnelGateway.privateKeyFile = ""
+sshTunnelGateway.autoGenPrivateKeyPath = ""
+sshTunnelGateway.authorizedKeysFile = ""
+```
+
+----------------------------------------
+
+TITLE: Generating frpc Client Certificates with OpenSSL (Shell)
+DESCRIPTION: Generates a private key (`client.key`), a certificate signing request (`client.csr`), and the final client certificate (`client.crt`) for the frpc client using OpenSSL. It signs the client certificate with the CA and includes Subject Alternative Names (SAN) for client.com and example.client.com. Requires OpenSSL and the CA certificates (`ca.key`, `ca.crt`).
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_42
+
+LANGUAGE: Shell
+CODE:
+```
+openssl genrsa -out client.key 2048
+openssl req -new -sha256 -key client.key \
+    -subj "/C=XX/ST=DEFAULT/L=DEFAULT/O=DEFAULT/CN=client.com" \
+    -reqexts SAN \
+    -config <(cat my-openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:client.com,DNS:example.client.com")) \
+    -out client.csr
+
+openssl x509 -req -days 365 -sha256 \
+    -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+	-extfile <(printf "subjectAltName=DNS:client.com,DNS:example.client.com") \
+	-out client.crt
+```
+
+----------------------------------------
+
+TITLE: Creating Custom OpenSSL Configuration (Shell)
+DESCRIPTION: Creates a custom OpenSSL configuration file (`my-openssl.cnf`) used for generating certificates with specific extensions like Subject Alternative Names (SAN). This configuration defines certificate policies, key usage, and basic constraints for both CA and user certificates. Requires a shell environment with `cat`.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_39
+
+LANGUAGE: Shell
+CODE:
+```
+cat > my-openssl.cnf << EOF
+[ ca ]
+default_ca = CA_default
+[ CA_default ]
+x509_extensions = usr_cert
+[ req ]
+default_bits        = 2048
+default_md          = sha256
+default_keyfile     = privkey.pem
+distinguished_name  = req_distinguished_name
+attributes          = req_attributes
+x509_extensions     = v3_ca
+string_mask         = utf8only
+[ req_distinguished_name ]
+[ req_attributes ]
+[ usr_cert ]
+basicConstraints       = CA:FALSE
+nsComment              = "OpenSSL Generated Certificate"
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid,issuer
+[ v3_ca ]
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints       = CA:true
+EOF
+```
+
+----------------------------------------
+
+TITLE: Establishing TCP Proxy via SSH Tunnel Gateway
+DESCRIPTION: Demonstrates how to use the SSH client command to create a TCP reverse proxy through the frps SSH Tunnel Gateway. This example maps a local service on port 8080 to a remote port 9090 on the frps server.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_3
+
+LANGUAGE: Bash
+CODE:
+```
+ssh -R :80:127.0.0.1:8080 v0@{frp_address} -p 2200 tcp --proxy_name "test-tcp" --remote_port 9090
+```
+
+----------------------------------------
+
+TITLE: Equivalent frpc Command for TCP Proxy
+DESCRIPTION: Shows the equivalent frpc command-line configuration that achieves the same TCP proxying result as the SSH client command example. This highlights the similarity in functionality between using the SSH gateway and a standard frpc client.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_4
+
+LANGUAGE: Bash
+CODE:
+```
+frpc tcp --proxy_name "test-tcp" --local_ip 127.0.0.1 --local_port 8080 --remote_port 9090
+```
+
+----------------------------------------
+
+TITLE: Configure Port Range Mapping with Go Template
+DESCRIPTION: This TOML configuration snippet uses Go template syntax and the built-in `parseNumberRangePair` function to dynamically create multiple TCP proxy configurations based on specified port ranges. It maps a range of remote ports to a corresponding range of local ports.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_66
+
+LANGUAGE: Go Template
+CODE:
+```
+{{- range $_, $v := parseNumberRangePair "6000-6006,6007" "6000-6006,6007" }}
+[[proxies]]
+name = "tcp-{{ $v.First }}"
+type = "tcp"
+localPort = {{ $v.First }}
+remotePort = {{ $v.Second }}
+{{- end }}
+```
+
+----------------------------------------
+
+TITLE: Configuring STCP Visitor frpc TOML
+DESCRIPTION: This frpc configuration sets up an STCP visitor on machine C to access a service exposed via an STCP proxy (named "secret_ssh"). It uses the same `secretKey` as the proxy and binds a local port (6000) for the client to connect to.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_22
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[visitors]]
+name = "secret_ssh_visitor"
+type = "stcp"
+serverName = "secret_ssh"
+secretKey = "abcdefg"
+bindAddr = "127.0.0.1"
+bindPort = 6000
+```
+
+----------------------------------------
+
+TITLE: Configure SSH Tunnel Gateway Server Bind Port (TOML)
+DESCRIPTION: This TOML configuration snippet sets the bind port for the SSH Tunnel Gateway feature on the frps server. When the server runs with this configuration, it will listen for SSH connections on the specified port.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_68
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+sshTunnelGateway.bindPort = 2200
+```
+
+----------------------------------------
+
+TITLE: Configure SSH Public Key Authentication with Custom authorized_keys (TOML)
+DESCRIPTION: Configures the bind port for the SSH tunnel gateway and specifies the path to a custom authorized_keys file. This file is used for SSH public key authentication for clients connecting to the gateway. Changes to this file may require clients to update their known_hosts.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_11
+
+LANGUAGE: toml
+CODE:
+```
+sshTunnelGateway.bindPort = 2200
+sshTunnelGateway.authorizedKeysFile = "/var/frps/custom_authorized_keys_file"
+```
+
+----------------------------------------
+
+TITLE: Configure Auto Private Key Generation for SSH Tunnel Gateway (TOML)
+DESCRIPTION: Configures the bind port for the SSH tunnel gateway and specifies a path where frps will automatically generate and store the SSH private key file. Note that changing this file can affect SSH client logins.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_9
+
+LANGUAGE: toml
+CODE:
+```
+sshTunnelGateway.bindPort = 2200
+sshTunnelGateway.autoGenPrivateKeyPath = "/var/frp/ssh-private-key-file"
+```
+
+----------------------------------------
+
+TITLE: Configuring STCP Proxy frpc TOML
+DESCRIPTION: This frpc configuration sets up a Secret TCP (STCP) proxy on machine B to expose a local service (SSH on port 22) privately. It requires a `secretKey` for access and omits the `remotePort` as the connection is initiated by a visitor.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_21
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "secret_ssh"
+type = "stcp"
+secretKey = "abcdefg"
+localIP = "127.0.0.1"
+localPort = 22
+```
+
+----------------------------------------
+
+TITLE: Getting Help for Other Proxy Types via SSH Gateway
+DESCRIPTION: Provides the SSH client command format to retrieve help and usage instructions for establishing HTTPS, STCP, or TCPMUX proxy types through the frps SSH Tunnel Gateway.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_7
+
+LANGUAGE: Bash
+CODE:
+```
+ssh -R :80:127.0.0.1:8080 v0@{frp address} -p 2200 {https|stcp|tcpmux} --help
+```
+
+----------------------------------------
+
+TITLE: Configuring Client OIDC Authentication - TOML
+DESCRIPTION: Configures the frp client (frpc) to use OIDC authentication. Specifies the authentication method as "oidc", the client ID, client secret, audience identifier, and the token endpoint URL for obtaining tokens.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_35
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+auth.method = "oidc"
+auth.oidc.clientID = "98692467-37de-409a-9fac-bb2585826f18" # Replace with OIDC client ID
+auth.oidc.clientSecret = "oidc_secret"
+auth.oidc.audience = "https://oidc-audience.com/.default"
+auth.oidc.tokenEndpointURL = "https://example-oidc-endpoint.com/oauth2/v2.0/token"
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc for SSH via TCPMUX (TOML)
+DESCRIPTION: Configures the frp client to connect to the server, defining an SSH proxy named "ssh1". It uses the tcpmux type with httpconnect multiplexing, maps a custom domain, and forwards local port 22.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_6
+
+LANGUAGE: TOML
+CODE:
+```
+serverAddr = "x.x.x.x"
+serverPort = 7000
+
+[[proxies]]
+name = "ssh1"
+type = "tcpmux"
+multiplexer = "httpconnect"
+customDomains = ["machine-a.example.com"]
+localIP = "127.0.0.1"
+localPort = 22
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin RPC Request Example
+DESCRIPTION: Example structure of an HTTP POST request sent from frps to the external server plugin's configured handler path, including URL parameters, JSON body, and the custom tracing header.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_0
+
+LANGUAGE: HTTP
+CODE:
+```
+POST /handler?version=0.1.0&op=Login
+{
+    "version": "0.1.0",
+    "op": "Login",
+    "content": {
+        ... // Operation info
+    }
+}
+
+Request Header:
+X-Frp-Reqid: for tracing
+```
+
+----------------------------------------
+
+TITLE: Using SSH Client for frp Reverse Tunneling (Format)
+DESCRIPTION: Provides the general command format for using an SSH client to establish a reverse tunnel to the frps SSH Tunnel Gateway. It outlines the required parameters for specifying the local service, frps address, port, proxy type, and optional settings like proxy name and token.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_2
+
+LANGUAGE: Bash
+CODE:
+```
+ssh -R :80:{local_ip:port} v0@{frps_address} -p {frps_ssh_listen_port} {tcp|http|https|stcp|tcpmux} --remote_port {real_remote_port} --proxy_name {proxy_name} --token {frp_token}
+```
+
+----------------------------------------
+
+TITLE: Restricting frps Allowed Ports (TOML)
+DESCRIPTION: Configures the frps server to restrict the range of remote ports that clients are allowed to expose. This prevents abuse by limiting clients to specific ports or port ranges. Add this section to the `frps.toml` file.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_44
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+allowPorts = [
+  { start = 2000, end = 3000 },
+  { single = 3001 },
+  { single = 3003 },
+  { start = 4000, end = 50000 }
+]
+```
+
+----------------------------------------
+
+TITLE: Configure SSH Public Key Authentication with Existing authorized_keys (TOML)
+DESCRIPTION: Configures the bind port for the SSH tunnel gateway and specifies the path to an existing authorized_keys file. This file is used for SSH public key authentication for clients connecting to the gateway. Each line in the file should contain a public key.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_10
+
+LANGUAGE: toml
+CODE:
+```
+sshTunnelGateway.bindPort = 2200
+sshTunnelGateway.authorizedKeysFile = "/home/user/.ssh/authorized_keys"
+```
+
+----------------------------------------
+
+TITLE: Configuring Minimal SSH Tunnel Gateway in frps
+DESCRIPTION: Shows the minimum required configuration in frps.toml to enable the SSH Tunnel Gateway, specifying only the bind port. Note that this configuration automatically generates a private key and disables authentication by default.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_1
+
+LANGUAGE: TOML
+CODE:
+```
+sshTunnelGateway.bindPort = 2200
+```
+
+----------------------------------------
+
+TITLE: Establishing HTTP Proxy via SSH Tunnel Gateway
+DESCRIPTION: Illustrates the SSH client command for setting up an HTTP reverse proxy using the frps SSH Tunnel Gateway. This example maps a local service on port 8080 and assigns it a custom domain on the frps side.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_5
+
+LANGUAGE: Bash
+CODE:
+```
+ssh -R :80:127.0.0.1:8080 v0@{frp address} -p 2200 http --proxy_name "test-http"  --custom_domain test-http.frps.com
+```
+
+----------------------------------------
+
+TITLE: Configuring frpc to Connect via Proxy (TOML)
+DESCRIPTION: Configures the frpc client to connect to the frps server through an intermediate HTTP proxy specified by `transport.proxyURL`. This is useful when the frpc client needs to traverse a network proxy to reach the frps server.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_65
+
+LANGUAGE: toml
+CODE:
+```
+serverAddr = "x.x.x.x"
+serverPort = 7000
+transport.proxyURL = "http://user:pwd@192.168.1.128:8080"
+```
+
+----------------------------------------
+
+TITLE: Equivalent frpc Command for SSH Tunnel Gateway Setup (Bash)
+DESCRIPTION: This bash command shows the standard `frpc` command that achieves the same TCP proxying result as the previous SSH Tunnel Gateway command. It demonstrates the equivalence between the two methods.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_71
+
+LANGUAGE: Bash
+CODE:
+```
+frpc tcp --proxy_name "test-tcp" --local_ip 127.0.0.1 --local_port 8080 --remote_port 9090
+```
+
+----------------------------------------
+
+TITLE: Testing Unix Domain Socket Proxy (Shell)
+DESCRIPTION: Uses the `curl` command to send an HTTP request to the frp server's IP and the remote port (6000) configured for the Unix domain socket proxy. This tests if the Docker daemon's API is accessible through the proxy.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_18
+
+LANGUAGE: Shell
+CODE:
+```
+curl http://x.x.x.x:6000/version
+```
+
+----------------------------------------
+
+TITLE: Accessing SSH via TCPMUX Proxy (Shell)
+DESCRIPTION: Demonstrates how to connect to the proxied SSH service on machine A using the `ssh` command with a `ProxyCommand`. It uses `socat` to establish the connection through the frp server's tcpmux port.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_8
+
+LANGUAGE: Shell
+CODE:
+```
+ssh -o 'proxycommand socat - PROXY:x.x.x.x:%h:%p,proxyport=5002' test@machine-a.example.com
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin Login Request Content
+DESCRIPTION: Structure of the 'content' field within the RPC request body for the 'Login' operation, detailing the information sent by the client upon connection.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_4
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "content": {
+        "version": <string>,
+        "hostname": <string>,
+        "os": <string>,
+        "arch": <string>,
+        "user": <string>,
+        "timestamp": <int64>,
+        "privilege_key": <string>,
+        "run_id": <string>,
+        "pool_count": <int>,
+        "metas": map<string>string,
+        "client_address": <string>
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring Client Admin UI - TOML
+DESCRIPTION: Sets up the web server for the frp client admin UI. Specifies the listening address (typically 127.0.0.1 for local access), port (7400), and optional basic authentication credentials (admin/admin).
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_33
+
+LANGUAGE: TOML
+CODE:
+```
+webServer.addr = "127.0.0.1"
+webServer.port = 7400
+webServer.user = "admin"
+webServer.password = "admin"
+```
+
+----------------------------------------
+
+TITLE: Configuring XTCP Visitor frpc TOML
+DESCRIPTION: This frpc configuration sets up an XTCP visitor on machine C to access a service exposed via an XTCP proxy (named "p2p_ssh"). It uses the same `secretKey` as the proxy and binds a local port (6000) for the client to connect to, potentially using a STUN server.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_25
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+# set up a new stun server if the default one is not available.
+# natHoleStunServer = "xxx"
+
+[[visitors]]
+name = "p2p_ssh_visitor"
+type = "xtcp"
+serverName = "p2p_ssh"
+secretKey = "abcdefg"
+bindAddr = "127.0.0.1"
+bindPort = 6000
+# when automatic tunnel persistence is required, set it to true
+keepTunnelOpen = false
+```
+
+----------------------------------------
+
+TITLE: Expected Output from SSH Tunnel Gateway Command (Bash)
+DESCRIPTION: This snippet shows the expected output displayed in the terminal after successfully executing the SSH command to set up a TCP proxy via the frps SSH Tunnel Gateway. It confirms the proxy details.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_70
+
+LANGUAGE: Bash
+CODE:
+```
+frp (via SSH) (Ctrl+C to quit)
+
+User:
+ProxyName: test-tcp
+Type: tcp
+RemoteAddress: :9090
+```
+
+----------------------------------------
+
+TITLE: Configuring XTCP Proxy frpc TOML
+DESCRIPTION: This frpc configuration sets up an XTCP proxy on machine B to expose a local service (SSH on port 22) for P2P connections. It requires a `secretKey` and omits `remotePort`, potentially using a STUN server for NAT traversal.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_24
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+# set up a new stun server if the default one is not available.
+# natHoleStunServer = "xxx"
+
+[[proxies]]
+name = "p2p_ssh"
+type = "xtcp"
+secretKey = "abcdefg"
+localIP = "127.0.0.1"
+localPort = 22
+```
+
+----------------------------------------
+
+TITLE: Connecting via XTCP Visitor Shell
+DESCRIPTION: This shell command demonstrates how a client on machine C connects to the local bound port (6000) set up by the XTCP visitor configuration to access the remote SSH service on machine B via a P2P connection.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_26
+
+LANGUAGE: Shell
+CODE:
+```
+ssh -oPort=6000 127.0.0.1
+```
+
+----------------------------------------
+
+TITLE: Configuring VirtualNet Client Address in frpc TOML
+DESCRIPTION: This configuration block demonstrates the basic setup for an frpc client using VirtualNet. It includes server connection details, enabling the feature gate, and assigning a specific IP address and CIDR block to the client's virtual network interface.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/virtual_net.md#_snippet_1
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+serverAddr = "x.x.x.x"
+serverPort = 7000
+featureGates = { VirtualNet = true }
+
+# Configure the virtual network interface
+virtualNet.address = "100.86.0.1/24"
+```
+
+----------------------------------------
+
+TITLE: Configuring Included Proxy frpc TOML
+DESCRIPTION: This is an example of a separate TOML file (`./confd/test.toml`) that can be included by the main frpc configuration. It defines a single TCP proxy named "ssh".
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_30
+
+LANGUAGE: TOML
+CODE:
+```
+# ./confd/test.toml
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000
+```
+
+----------------------------------------
+
+TITLE: Starting the frps Server (Shell)
+DESCRIPTION: Command to start the frp server executable, specifying the path to its configuration file. This initiates the server process, making it ready to accept client connections and proxy requests.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_11
+
+LANGUAGE: Shell
+CODE:
+```
+./frps -c ./frps.toml
+```
+
+----------------------------------------
+
+TITLE: Connecting via STCP Visitor Shell
+DESCRIPTION: This shell command demonstrates how a client on machine C connects to the local bound port (6000) set up by the STCP visitor configuration to access the remote SSH service on machine B.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_23
+
+LANGUAGE: Shell
+CODE:
+```
+ssh -oPort=6000 127.0.0.1
+```
+
+----------------------------------------
+
+TITLE: Enabling VirtualNet Feature Gate in frpc TOML
+DESCRIPTION: This snippet shows how to enable the alpha VirtualNet feature in the frp client configuration file (frpc.toml) by setting the `VirtualNet` flag within the `featureGates` object.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/virtual_net.md#_snippet_0
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml
+featureGates = { VirtualNet = true }
+```
+
+----------------------------------------
+
+TITLE: Enable QUIC Protocol on frps (TOML)
+DESCRIPTION: Configures the frps server to listen for QUIC connections on a specified UDP port. The QUIC port can be the same as the TCP bind port.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_49
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml
+bindPort = 7000
+# Specify a UDP port for QUIC.
+quicBindPort = 7000
+```
+
+----------------------------------------
+
+TITLE: Configuring VirtualNet Server Proxy in frpc TOML
+DESCRIPTION: This snippet shows how to configure a proxy on the frpc client that acts as the 'server' endpoint within the virtual network. It uses the `stcp` type for secure tunnel and specifies the `virtual_net` plugin to integrate with the virtual network.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/virtual_net.md#_snippet_2
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml (server side)
+[[proxies]]
+name = "vnet-server"
+type = "stcp"
+secretKey = "your-secret-key"
+[proxies.plugin]
+type = "virtual_net"
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin RPC Allow/Modify Response
+DESCRIPTION: JSON structure for a response from the server plugin indicating that the requested operation is allowed and providing modified content to be used instead of the original.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_3
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "unchange": "false",
+    "content": {
+        ... // Replaced content
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Disable TCP Stream Multiplexing (TOML)
+DESCRIPTION: Disables TCP stream multiplexing, which is enabled by default. This setting must be the same in both frps.toml and frpc.toml.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_46
+
+LANGUAGE: TOML
+CODE:
+```
+# frps.toml and frpc.toml, must be same
+transport.tcpMux = false
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin RPC Reject Response
+DESCRIPTION: JSON structure for a response from the server plugin indicating that the requested operation should be rejected, including a reason.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_1
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "reject": true,
+    "reject_reason": "invalid user"
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring VirtualNet Client Visitor in frpc TOML
+DESCRIPTION: This configuration block illustrates how to set up a visitor on the frpc client to connect to a specific destination within the virtual network. It uses the `stcp` type, references the server proxy by `serverName`, and specifies the target IP within the virtual network using `destinationIP`.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/virtual_net.md#_snippet_3
+
+LANGUAGE: TOML
+CODE:
+```
+# frpc.toml (client side)
+serverAddr = "x.x.x.x"
+serverPort = 7000
+featureGates = { VirtualNet = true }
+
+# Configure the virtual network interface
+virtualNet.address = "100.86.0.2/24"
+
+[[visitors]]
+name = "vnet-visitor"
+type = "stcp"
+serverName = "vnet-server"
+secretKey = "your-secret-key"
+bindPort = -1
+[visitors.plugin]
+type = "virtual_net"
+destinationIP = "100.86.0.1"
+```
+
+----------------------------------------
+
+TITLE: Equivalent frpc Command for HTTP Proxy
+DESCRIPTION: Presents the equivalent frpc command-line configuration for setting up an HTTP proxy with a custom domain, matching the functionality of the SSH client HTTP proxy example.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/ssh_tunnel_gateway.md#_snippet_6
+
+LANGUAGE: Bash
+CODE:
+```
+frpc http --proxy_name "test-http" --custom_domain test-http.frps.com
+```
+
+----------------------------------------
+
+TITLE: Lint Project with ESLint (sh)
+DESCRIPTION: Runs the ESLint linter to check the project's code for style and errors using the 'make lint' command.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frpc/README.md#_snippet_3
+
+LANGUAGE: sh
+CODE:
+```
+make lint
+```
+
+----------------------------------------
+
+TITLE: Compile and Minify for Production (sh)
+DESCRIPTION: Executes the production build process, which usually involves compiling, minifying, and optimizing the code for deployment.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frps/README.md#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+make build
+```
+
+----------------------------------------
+
+TITLE: Compile and Minify for Production (sh)
+DESCRIPTION: Compiles and minifies the project source code for production deployment using the 'make build' command.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frpc/README.md#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+make build
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin Configuration Example (TOML)
+DESCRIPTION: Beginning of a TOML configuration block in frps for defining server plugins.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_10
+
+LANGUAGE: TOML
+CODE:
+```
+```toml
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin NewUserConn Request Content
+DESCRIPTION: Structure of the 'content' field within the RPC request body for the 'NewUserConn' operation, sent when a new user connection arrives for a specific proxy.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_9
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "content": {
+        "user": {
+            "user": <string>,
+            "metas": map<string>string
+            "run_id": <string>
+        },
+        "proxy_name": <string>,
+        "proxy_type": <string>,
+        "remote_addr": <string>
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Enable a Feature Gate (TOML)
+DESCRIPTION: This TOML configuration snippet demonstrates how to enable an experimental feature, specifically 'VirtualNet', using the `featureGates` setting in the frp configuration file. Feature gates allow users to opt-in to alpha or beta features.
+SOURCE: https://github.com/fatedier/frp/blob/dev/README.md#_snippet_72
+
+LANGUAGE: TOML
+CODE:
+```
+featureGates = { VirtualNet = true }
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin RPC Allow/Unchange Response
+DESCRIPTION: JSON structure for a response from the server plugin indicating that the requested operation is allowed and the original content should be used without modification.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_2
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "reject": false,
+    "unchange": true
+}
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin NewWorkConn Request Content
+DESCRIPTION: Structure of the 'content' field within the RPC request body for the 'NewWorkConn' operation, sent when a new work connection is established from the frpc client.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_8
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "content": {
+        "user": {
+            "user": <string>,
+            "metas": map<string>string
+            "run_id": <string>
+        },
+        "run_id": <string>,
+        "timestamp": <int64>,
+        "privilege_key": <string>
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring frps HTTP Plugins (TOML)
+DESCRIPTION: This snippet shows how to configure HTTP plugins in the frp server configuration file (frps.toml). HTTP plugins allow external services to handle specific frp operations like user login or new proxy creation. Each plugin requires an address (`addr`), a request path (`path`), and a list of operations (`ops`) it will handle.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_11
+
+LANGUAGE: TOML
+CODE:
+```
+bindPort = 7000
+
+[[httpPlugins]]
+name = "user-manager"
+addr = "127.0.0.1:9000"
+path = "/handler"
+ops = ["Login"]
+
+[[httpPlugins]]
+name = "port-manager"
+addr = "127.0.0.1:9001"
+path = "/handler"
+ops = ["NewProxy"]
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin Ping Request Content
+DESCRIPTION: Structure of the 'content' field within the RPC request body for the 'Ping' operation, sent as a heartbeat from the frpc client.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_7
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "content": {
+        "user": {
+            "user": <string>,
+            "metas": map<string>string
+            "run_id": <string>
+        },
+        "timestamp": <int64>,
+        "privilege_key": <string>
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin NewProxy Request Content
+DESCRIPTION: Structure of the 'content' field within the RPC request body for the 'NewProxy' operation, detailing the configuration and metadata for a new proxy being registered by the client.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_5
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "content": {
+        "user": {
+            "user": <string>,
+            "metas": map<string>string
+            "run_id": <string>
+        },
+        "proxy_name": <string>,
+        "proxy_type": <string>,
+        "use_encryption": <bool>,
+        "use_compression": <bool>,
+        "bandwidth_limit": <string>,
+        "bandwidth_limit_mode": <string>,
+        "group": <string>,
+        "group_key": <string>,
+
+        // tcp and udp only
+        "remote_port": <int>,
+
+        // http and https only
+        "custom_domains": []<string>,
+        "subdomain": <string>,
+        "locations": <string>,
+        "http_user": <string>,
+        "http_pwd": <string>,
+        "host_header_rewrite": <string>,
+        "headers": map<string>string,
+
+        // stcp only
+        "sk": <string>,
+
+        // tcpmux only
+        "multiplexer": <string>,
+
+        "metas": map<string>string
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: frp Server Plugin CloseProxy Request Content
+DESCRIPTION: Structure of the 'content' field within the RPC request body for the 'CloseProxy' operation, detailing the user and proxy name for a proxy that is being closed.
+SOURCE: https://github.com/fatedier/frp/blob/dev/doc/server_plugin.md#_snippet_6
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "content": {
+        "user": {
+            "user": <string>,
+            "metas": map<string>string
+            "run_id": <string>
+        },
+        "proxy_name": <string>
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Compile and Hot-Reload for Development (sh)
+DESCRIPTION: Compiles the project and sets up a development server with hot-reloading capabilities using the 'make dev' command.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frpc/README.md#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+make dev
+```
+
+----------------------------------------
+
+TITLE: Install Dependencies with Yarn (sh)
+DESCRIPTION: Installs the project dependencies using the Yarn package manager.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frps/README.md#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+yarn install
+```
+
+----------------------------------------
+
+TITLE: Install Project Dependencies (sh)
+DESCRIPTION: Installs all necessary project dependencies using the Yarn package manager.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frpc/README.md#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+yarn install
+```
+
+----------------------------------------
+
+TITLE: Compile and Hot-Reload for Development (sh)
+DESCRIPTION: Runs the development build process, typically including compilation and hot-reloading for local development.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frps/README.md#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+make dev
+```
+
+----------------------------------------
+
+TITLE: Lint Code with ESLint (sh)
+DESCRIPTION: Runs the linter (ESLint) to check code for style and potential errors.
+SOURCE: https://github.com/fatedier/frp/blob/dev/web/frps/README.md#_snippet_3
+
+LANGUAGE: sh
+CODE:
+```
+make lint
+```

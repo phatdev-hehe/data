@@ -1,0 +1,1352 @@
+TITLE: Build RustDesk from Source
+DESCRIPTION: Installs Rustup, clones the RustDesk repository with submodules, downloads the Sciter library, moves it to the target directory, and builds/runs the project using cargo.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_9
+
+LANGUAGE: sh
+CODE:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+git clone --recurse-submodules https://github.com/rustdesk/rustdesk
+cd rustdesk
+mkdir -p target/debug
+wget https://raw.githubusercontent.com/c-smile/sciter-sdk/master/bin.lnx/x64/libsciter-gtk.so
+mv libsciter-gtk.so target/debug
+VCPKG_ROOT=$HOME/vcpkg cargo run
+```
+
+----------------------------------------
+
+TITLE: Basic Project Setup
+DESCRIPTION: Sets the minimum required CMake version, defines the project name and language, and specifies the desired name for the output executable binary.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+cmake_minimum_required(VERSION 3.14)
+project(rustdesk LANGUAGES CXX)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+set(BINARY_NAME "rustdesk")
+```
+
+----------------------------------------
+
+TITLE: Install Executable
+DESCRIPTION: Installs the main application executable (`${BINARY_NAME}`) to the specified installation prefix.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_9
+
+LANGUAGE: CMake
+CODE:
+```
+install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
+  COMPONENT Runtime)
+```
+
+----------------------------------------
+
+TITLE: Project Initialization and Basic Settings (CMake)
+DESCRIPTION: Sets the minimum required CMake version, defines the project name and languages, specifies the executable binary name and GTK application ID, and sets the runtime path for bundled libraries.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+# Project-level configuration.
+cmake_minimum_required(VERSION 3.10)
+project(runner LANGUAGES CXX)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+set(BINARY_NAME "rustdesk")
+# The unique GTK application identifier for this application. See:
+# https://wiki.gnome.org/HowDoI/ChooseApplicationID
+set(APPLICATION_ID "com.carriez.flutter_hbb")
+
+# Explicitly opt into modern CMake behaviors to avoid warnings with recent
+# versions of CMake.
+cmake_policy(SET CMP0063 NEW)
+
+# Load bundled libraries from the lib/ directory relative to the binary.
+set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
+```
+
+----------------------------------------
+
+TITLE: Initializing CMake and Ephemeral Directory
+DESCRIPTION: Sets the minimum required CMake version and defines the path to the ephemeral directory where generated files are located.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+cmake_minimum_required(VERSION 3.10)
+
+set(EPHEMERAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ephemeral")
+```
+
+----------------------------------------
+
+TITLE: Define Minimum CMake Version and Project
+DESCRIPTION: Sets the minimum required CMake version for the project and defines the project name ('runner') along with the programming languages used (C++).
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+cmake_minimum_required(VERSION 3.14)
+project(runner LANGUAGES CXX)
+```
+
+----------------------------------------
+
+TITLE: Link Libraries and Include Directories
+DESCRIPTION: Specifies the libraries (${BINARY_NAME} should link against (flutter and flutter_wrapper_app) and adds the project's source directory (${CMAKE_SOURCE_DIR}) to the include paths for the target.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+target_link_libraries(${BINARY_NAME} PRIVATE flutter flutter_wrapper_app)
+target_include_directories(${BINARY_NAME} PRIVATE "${CMAKE_SOURCE_DIR}")
+```
+
+----------------------------------------
+
+TITLE: Define Executable Target and Source Files
+DESCRIPTION: Defines the main executable target for the Windows runner using the variable ${BINARY_NAME}. It lists all the source files, generated plugin registrant, resource file, and manifest file required for building the application.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+add_executable(${BINARY_NAME} WIN32
+  "flutter_window.cpp"
+  "main.cpp"
+  "utils.cpp"
+  "win32_window.cpp"
+  "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
+  "Runner.rc"
+  "runner.exe.manifest"
+)
+```
+
+----------------------------------------
+
+TITLE: Defining Executable Target and Applying Settings (CMake)
+DESCRIPTION: Defines the main application executable target using add_executable, listing its source files. Applies the previously defined standard compilation settings to this executable target.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+# Define the application target. To change its name, change BINARY_NAME above,
+# not the value here, or `flutter run` will no longer work.
+#
+# Any new source files that you add to the application should be added here.
+add_executable(${BINARY_NAME}
+  "main.cc"
+  "my_application.cc"
+  "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
+)
+
+# Apply the standard set of build settings. This can be removed for applications
+# that need different build settings.
+apply_standard_settings(${BINARY_NAME})
+```
+
+----------------------------------------
+
+TITLE: Installing Executable, Data, and Libraries (CMake)
+DESCRIPTION: Installs the built executable, the Flutter ICU data file, the main Flutter library, and any bundled plugin libraries into their respective destination directories within the installation bundle.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_9
+
+LANGUAGE: CMake
+CODE:
+```
+install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+
+foreach(bundled_library ${PLUGIN_BUNDLED_LIBRARIES})
+  install(FILES "${bundled_library}"
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endforeach(bundled_library)
+```
+
+----------------------------------------
+
+TITLE: Add Dependency on Flutter Assemble
+DESCRIPTION: Adds a build dependency ensuring that the `flutter_assemble` target is completed before building the main executable target (${BINARY_NAME}). This integrates the Flutter asset and code generation steps into the CMake build.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+add_dependencies(${BINARY_NAME} flutter_assemble)
+```
+
+----------------------------------------
+
+TITLE: Simulating Input with enigo Rust
+DESCRIPTION: Demonstrates basic usage of the enigo crate to simulate mouse movement, a left click, and parsing a key sequence string to simulate complex key presses like Ctrl+A and Shift+Hello World.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/libs/enigo/README.md#_snippet_0
+
+LANGUAGE: Rust
+CODE:
+```
+let mut enigo = Enigo::new();
+
+enigo.mouse_move_to(500, 200);
+enigo.mouse_click(MouseButton::Left);
+enigo.key_sequence_parse("{+CTRL}a{-CTRL}{+SHIFT}Hello World{-SHIFT}");
+```
+
+----------------------------------------
+
+TITLE: Run Release Executable
+DESCRIPTION: Executes the release build of the RustDesk application located in the target/release directory.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_13
+
+LANGUAGE: sh
+CODE:
+```
+target/release/rustdesk
+```
+
+----------------------------------------
+
+TITLE: Run Debug Executable
+DESCRIPTION: Executes the debug build of the RustDesk application located in the target/debug directory.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_12
+
+LANGUAGE: sh
+CODE:
+```
+target/debug/rustdesk
+```
+
+----------------------------------------
+
+TITLE: Define Flutter Assemble Custom Build Target (CMake)
+DESCRIPTION: Defines a custom command that runs the Flutter tool backend script to generate necessary build artifacts. It uses a phony output to ensure the command runs every time. A custom target `flutter_assemble` is created with dependencies on the outputs of this command.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+# === Flutter tool backend ===
+# _phony_ is a nonexistent file to force this command to run every time,
+# since currently there's no way to get a full input/output list from the
+# flutter tool.
+set(PHONY_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/_phony_")
+set_source_files_properties("${PHONY_OUTPUT}" PROPERTIES SYMBOLIC TRUE)
+add_custom_command(
+  OUTPUT ${FLUTTER_LIBRARY} ${FLUTTER_LIBRARY_HEADERS}
+    ${CPP_WRAPPER_SOURCES_CORE} ${CPP_WRAPPER_SOURCES_PLUGIN}
+    ${CPP_WRAPPER_SOURCES_APP}
+    ${PHONY_OUTPUT}
+  COMMAND ${CMAKE_COMMAND} -E env
+    ${FLUTTER_TOOL_ENVIRONMENT}
+    "${FLUTTER_ROOT}/packages/flutter_tools/bin/tool_backend.bat"
+      ${FLUTTER_TARGET_PLATFORM} $<CONFIG>
+  VERBATIM
+)
+add_custom_target(flutter_assemble DEPENDS
+  "${FLUTTER_LIBRARY}"
+  ${FLUTTER_LIBRARY_HEADERS}
+  ${CPP_WRAPPER_SOURCES_CORE}
+  ${CPP_WRAPPER_SOURCES_PLUGIN}
+  ${CPP_WRAPPER_SOURCES_APP}
+)
+```
+
+----------------------------------------
+
+TITLE: Adding Custom Target for Flutter Assemble
+DESCRIPTION: Creates a custom target named `flutter_assemble` that depends on the outputs generated by the custom command (the Flutter library and header files). This target ensures that the Flutter tool backend script is run before targets that depend on its outputs.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_8
+
+LANGUAGE: CMake
+CODE:
+```
+add_custom_target(flutter_assemble DEPENDS
+  "${FLUTTER_LIBRARY}"
+  ${FLUTTER_LIBRARY_HEADERS}
+)
+```
+
+----------------------------------------
+
+TITLE: Adding Scrap Dependency (TOML)
+DESCRIPTION: Specifies the `scrap` crate as a dependency in a Cargo.toml file, using version 0.5.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/libs/scrap/README.md#_snippet_0
+
+LANGUAGE: toml
+CODE:
+```
+[dependencies]
+scrap = "0.5"
+```
+
+----------------------------------------
+
+TITLE: Run RustDesk with Cargo
+DESCRIPTION: Executes the RustDesk application using the Cargo build tool after dependencies are installed and the environment is set up.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_2
+
+LANGUAGE: Shell
+CODE:
+```
+cargo run
+```
+
+----------------------------------------
+
+TITLE: Install Ubuntu/Debian Build Dependencies
+DESCRIPTION: Installs necessary system packages for building RustDesk on Ubuntu 18 or Debian 10, including compilers, build tools, and libraries for GUI, audio, and video.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_3
+
+LANGUAGE: Shell
+CODE:
+```
+sudo apt install -y zip g++ gcc git curl wget nasm yasm libgtk-3-dev clang libxcb-randr0-dev libxdo-dev \
+        libxfixes-dev libxcb-shape0-dev libxcb-xfixes0-dev libasound2-dev libpulse-dev cmake make \
+        libclang-dev ninja-build libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libpam0g-dev
+```
+
+----------------------------------------
+
+TITLE: Adding Subdirectories
+DESCRIPTION: Includes the `flutter` and `runner` subdirectories in the build, processing their respective CMakeLists.txt files to incorporate Flutter library and tool build rules as well as the application's main build logic.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+# Flutter library and tool build rules.
+set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
+add_subdirectory(${FLUTTER_MANAGED_DIR})
+
+# Application build; see runner/CMakeLists.txt.
+add_subdirectory("runner")
+```
+
+----------------------------------------
+
+TITLE: Including Flutter Subdirectory and Finding Dependencies (CMake)
+DESCRIPTION: Includes the flutter subdirectory's CMakeLists.txt file to handle Flutter-specific build rules. Finds required system dependencies like PkgConfig and GTK 3.0 using find_package and pkg_check_modules.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+# Flutter library and tool build rules.
+set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
+add_subdirectory(${FLUTTER_MANAGED_DIR})
+
+# System-level dependencies.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+
+add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
+```
+
+----------------------------------------
+
+TITLE: Build Configuration Types
+DESCRIPTION: Explicitly opts into modern CMake policies and defines the available build configuration types (Debug, Profile, Release) for multi-config generators or sets the default build type for single-config generators.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+# Explicitly opt into modern CMake behaviors to avoid warnings with recent
+# versions of CMake.
+cmake_policy(SET CMP0063 NEW)
+
+# Define build configuration option.
+get_property(IS_MULTICONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(IS_MULTICONFIG)
+  set(CMAKE_CONFIGURATION_TYPES "Debug;Profile;Release"
+    CACHE STRING "" FORCE)
+elif(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE
+    STRING "Flutter build mode" FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Profile" "Release")
+endif()
+```
+
+----------------------------------------
+
+TITLE: Define Flutter Library Paths and Export Variables (CMake)
+DESCRIPTION: Defines the path to the Flutter Windows DLL and other build artifacts. These variables are then exported to the parent scope using `PARENT_SCOPE` for use in other CMakeLists.txt files.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+# === Flutter Library ===
+set(FLUTTER_LIBRARY "${EPHEMERAL_DIR}/flutter_windows.dll")
+
+# Published to parent scope for install step.
+set(FLUTTER_LIBRARY ${FLUTTER_LIBRARY} PARENT_SCOPE)
+set(FLUTTER_ICU_DATA_FILE "${EPHEMERAL_DIR}/icudtl.dat" PARENT_SCOPE)
+set(PROJECT_BUILD_DIR "${PROJECT_DIR}/build/" PARENT_SCOPE)
+set(AOT_LIBRARY "${PROJECT_DIR}/build/windows/app.so" PARENT_SCOPE)
+```
+
+----------------------------------------
+
+TITLE: Scrap Crate Core API (Rust)
+DESCRIPTION: Defines the core structures (`Display`, `Frame`, `Capturer`) and their methods for interacting with screens and capturing frames using the `scrap` crate.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/libs/scrap/README.md#_snippet_1
+
+LANGUAGE: rust
+CODE:
+```
+struct Display; /// A screen.
+struct Frame; /// An array of the pixels that were on-screen.
+struct Capturer; /// A recording instance.
+
+impl Capturer {
+    /// Begin recording.
+    pub fn new(display: Display) -> io::Result<Capturer>;
+
+    /// Try to get a frame.
+    /// Returns WouldBlock if it's not ready yet.
+    pub fn frame<'a>(&'a mut self) -> io::Result<Frame<'a>>;
+
+    pub fn width(&self) -> usize;
+    pub fn height(&self) -> usize;
+}
+
+impl Display {
+    /// The primary screen.
+    pub fn primary() -> io::Result<Display>;
+
+    /// All the screens.
+    pub fn all() -> io::Result<Vec<Display>>;
+
+    pub fn width(&self) -> usize;
+    pub fn height(&self) -> usize;
+}
+
+impl<'a> ops::Deref for Frame<'a> {
+    /// A frame is just an array of bytes.
+    type Target = [u8];
+}
+```
+
+----------------------------------------
+
+TITLE: Finding System Dependencies (GTK, GLib, GIO)
+DESCRIPTION: Uses `find_package` and `pkg_check_modules` to locate required system libraries like GTK, GLib, and GIO, making them available as imported targets for linking.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+pkg_check_modules(GLIB REQUIRED IMPORTED_TARGET glib-2.2)
+pkg_check_modules(GIO REQUIRED IMPORTED_TARGET gio-2.0)
+```
+
+----------------------------------------
+
+TITLE: Build RustDesk Docker Image
+DESCRIPTION: Clones the RustDesk repository, updates submodules, and builds a Docker image tagged 'rustdesk-builder'.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_10
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/rustdesk/rustdesk
+cd rustdesk
+git submodule update --init --recursive
+docker build -t "rustdesk-builder" .
+```
+
+----------------------------------------
+
+TITLE: Linking Libraries and Dependencies (CMake)
+DESCRIPTION: Links necessary libraries to the executable target, including the Flutter library, GTK (via PkgConfig), and system dynamic linking libraries. Also adds a dependency on the flutter_assemble target to ensure Flutter build steps run.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+# Add dependency libraries. Add any application-specific dependencies here.
+target_link_libraries(${BINARY_NAME} PRIVATE flutter)
+target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
+target_link_libraries(${BINARY_NAME} PRIVATE ${CMAKE_DL_LIBS})
+# target_link_libraries(${BINARY_NAME} PRIVATE librustdesk)
+
+# Run the Flutter tool portions of the build. This must not be removed.
+add_dependencies(${BINARY_NAME} flutter_assemble)
+```
+
+----------------------------------------
+
+TITLE: Run RustDesk Build in Docker
+DESCRIPTION: Runs the 'rustdesk-builder' Docker container, mounting the current directory and cargo caches, and executing the build process inside the container.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_11
+
+LANGUAGE: sh
+CODE:
+```
+docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-git-cache:/home/user/.cargo/git -v rustdesk-registry-cache:/home/user/.cargo/registry -e PUID="$(id -u)" -e PGID="$(id -g)" rustdesk-builder
+```
+
+----------------------------------------
+
+TITLE: Install Linux/macOS Dependencies with vcpkg
+DESCRIPTION: Installs required libraries (libvpx, libyuv, opus, aom) for building RustDesk on Linux or macOS using vcpkg.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+vcpkg install libvpx libyuv opus aom
+```
+
+----------------------------------------
+
+TITLE: Install Linux Dependencies for enigo
+DESCRIPTION: Provides commands to install the necessary runtime dependency (libxdo-dev/xdotool) for the enigo crate on different Linux distributions like Ubuntu/Debian and Arch.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/libs/enigo/README.md#_snippet_1
+
+LANGUAGE: Bash
+CODE:
+```
+apt install libxdo-dev
+```
+
+LANGUAGE: Bash
+CODE:
+```
+pacman -S xdotool
+```
+
+----------------------------------------
+
+TITLE: Install and Setup vcpkg
+DESCRIPTION: Clones, checks out a specific version, bootstraps, and installs required libraries (libvpx, libyuv, opus, aom) using vcpkg.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_7
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/microsoft/vcpkg
+cd vcpkg
+git checkout 2023.04.15
+cd ..
+vcpkg/bootstrap-vcpkg.sh
+export VCPKG_ROOT=$HOME/vcpkg
+vcpkg/vcpkg install libvpx libyuv opus aom
+```
+
+----------------------------------------
+
+TITLE: Installing GStreamer Dependencies (APT)
+DESCRIPTION: Installs the development libraries for GStreamer and its base plugins using the APT package manager. These libraries are required for building or running components that rely on GStreamer for media processing, such as screen capturing.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/libs/scrap/src/wayland/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+apt install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+```
+
+----------------------------------------
+
+TITLE: Install Windows Dependencies with vcpkg
+DESCRIPTION: Installs required libraries (libvpx, libyuv, opus, aom) for building RustDesk on Windows using vcpkg, targeting the x64-windows-static triplet.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+vcpkg install libvpx:x64-windows-static libyuv:x64-windows-static opus:x64-windows-static aom:x64-windows-static
+```
+
+----------------------------------------
+
+TITLE: Install Flutter Assets
+DESCRIPTION: Adds installation rules to first remove the existing Flutter assets directory in the installation destination to prevent stale files, and then copies the newly built Flutter assets directory into the data installation directory.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_13
+
+LANGUAGE: CMake
+CODE:
+```
+# Fully re-copy the assets directory on each build to avoid having stale files
+# from a previous install.
+set(FLUTTER_ASSET_DIR_NAME "flutter_assets")
+install(CODE "
+  file(REMOVE_RECURSE \"${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}\")
+  " COMPONENT Runtime)
+install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
+  DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
+```
+
+----------------------------------------
+
+TITLE: Build RustDesk Linux Debug (Bash)
+DESCRIPTION: This command executes the build script within the devcontainer to create a debug build of the RustDesk Linux binary. It uses the `--debug` flag for debug mode and specifies `linux` as the target platform.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/docs/DEVCONTAINER.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+.devcontainer/build.sh --debug linux
+```
+
+----------------------------------------
+
+TITLE: Installation Directory Setup
+DESCRIPTION: Configures installation paths, setting the build bundle directory relative to the executable, making the install step default in Visual Studio, and defining destination directories for data and library files within the installation prefix.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_8
+
+LANGUAGE: CMake
+CODE:
+```
+# === Installation ===
+# Support files are copied into place next to the executable, so that it can
+# run in place. This is done instead of making a separate bundle (as on Linux)
+# so that building and running from within Visual Studio will work.
+set(BUILD_BUNDLE_DIR "$<TARGET_FILE_DIR:${BINARY_NAME}>")
+# Make the "install" step default, as it's required to run.
+set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD 1)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
+endif()
+
+set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
+set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}")
+```
+
+----------------------------------------
+
+TITLE: Defining Installation Rules (CMake)
+DESCRIPTION: Sets up the installation process, defining the build bundle directory as the installation prefix. It includes a code block to clean the bundle directory before installation and defines destination directories for data and libraries within the bundle.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_8
+
+LANGUAGE: CMake
+CODE:
+```
+# === Installation ===
+# By default, "installing" just makes a relocatable bundle in the build
+# directory.
+set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
+#if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
+#endif()
+
+# Start with a clean build bundle directory every time.
+install(CODE "
+  file(REMOVE_RECURSE \"${BUILD_BUNDLE_DIR}/\")
+  " COMPONENT Runtime)
+
+set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
+set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+```
+
+----------------------------------------
+
+TITLE: Build RustDesk Android Debug (Bash)
+DESCRIPTION: This command executes the build script within the devcontainer to create a debug build of the RustDesk Android binary (specifically arm64). It uses the `--debug` flag for debug mode and specifies `android` as the target platform.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/docs/DEVCONTAINER.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+.devcontainer/build.sh --debug android
+```
+
+----------------------------------------
+
+TITLE: Install AOT Library
+DESCRIPTION: Installs the Ahead-Of-Time (AOT) compiled Flutter library to the data installation directory, but only for Profile and Release build configurations.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_14
+
+LANGUAGE: CMake
+CODE:
+```
+# Install the AOT library on non-Debug builds only.
+install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
+  CONFIGURATIONS Profile;Release
+  COMPONENT Runtime)
+```
+
+----------------------------------------
+
+TITLE: Build RustDesk Android Release (Bash)
+DESCRIPTION: This command executes the build script within the devcontainer to create a release build of the RustDesk Android binary (specifically arm64). It uses the `--release` flag for release mode and specifies `android` as the target platform.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/docs/DEVCONTAINER.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+.devcontainer/build.sh --release android
+```
+
+----------------------------------------
+
+TITLE: Install Flutter Files
+DESCRIPTION: Installs the Flutter ICU data file and the main Flutter library file to their respective destination directories within the installation prefix.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_10
+
+LANGUAGE: CMake
+CODE:
+```
+install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+```
+
+----------------------------------------
+
+TITLE: Installing Flutter Assets (CMake)
+DESCRIPTION: Defines the name of the Flutter assets directory. Uses an install(CODE) command to remove the existing assets directory before using install(DIRECTORY) to copy the new assets from the build directory to the installation destination, ensuring assets are always fresh.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_12
+
+LANGUAGE: CMake
+CODE:
+```
+set(FLUTTER_ASSET_DIR_NAME "flutter_assets")
+install(CODE "
+  file(REMOVE_RECURSE \"${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}\")
+  " COMPONENT Runtime)
+install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
+  DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
+```
+
+----------------------------------------
+
+TITLE: Profile Build Flags
+DESCRIPTION: Copies the linker and compiler flags from the Release configuration to the Profile configuration, ensuring consistent optimization settings for profiling builds.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+# Define settings for the Profile build mode.
+set(CMAKE_EXE_LINKER_FLAGS_PROFILE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+set(CMAKE_SHARED_LINKER_FLAGS_PROFILE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
+set(CMAKE_C_FLAGS_PROFILE "${CMAKE_C_FLAGS_RELEASE}")
+set(CMAKE_CXX_FLAGS_PROFILE "${CMAKE_CXX_FLAGS_RELEASE}")
+```
+
+----------------------------------------
+
+TITLE: Setting Rust Library Build Type (CMake)
+DESCRIPTION: Determines the build configuration (debug or release) for the Rust library based on the CMake build type, converts it to lowercase, and logs the result.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_10
+
+LANGUAGE: CMake
+CODE:
+```
+set(RUSTDESK_LIB_BUILD_TYPE $<IF:$<CONFIG:Debug>,debug,release>)
+string(TOLOWER ${CMAKE_BUILD_TYPE} ${RUSTDESK_LIB_BUILD_TYPE})
+message(STATUS "rustdesk lib build type: ${RUSTDESK_LIB_BUILD_TYPE}")
+```
+
+----------------------------------------
+
+TITLE: Install Plugin Libraries
+DESCRIPTION: Installs any bundled plugin libraries to the library installation directory if the `PLUGIN_BUNDLED_LIBRARIES` variable is set.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_11
+
+LANGUAGE: CMake
+CODE:
+```
+if(PLUGIN_BUNDLED_LIBRARIES)
+  install(FILES "${PLUGIN_BUNDLED_LIBRARIES}"
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Standard Compile Settings Function
+DESCRIPTION: Defines a CMake function `APPLY_STANDARD_SETTINGS` that applies common compilation options to a specified target, including C++17 standard, warning level 4, treating warnings as errors (except 4100), enabling exception handling, disabling specific VC compiler features, and defining `_HAS_EXCEPTIONS=0` and `_DEBUG` for Debug builds.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+# Compilation settings that should be applied to most targets.
+#
+# Be cautious about adding new options here, as plugins use this function by
+# default. In most cases, you should add new options to specific targets instead
+# of modifying this function.
+function(APPLY_STANDARD_SETTINGS TARGET)
+  target_compile_features(${TARGET} PUBLIC cxx_std_17)
+  target_compile_options(${TARGET} PRIVATE /W4 /WX /wd"4100")
+  target_compile_options(${TARGET} PRIVATE /EHsc)
+  # Disable VC140_1
+  target_compile_options(${TARGET} PRIVATE /d2FH4-)
+  target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
+  target_compile_definitions(${TARGET} PRIVATE "$<$<CONFIG:Debug>:_DEBUG>")
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: Defining Standard Compilation Settings Function (CMake)
+DESCRIPTION: Defines a CMake function APPLY_STANDARD_SETTINGS that applies common compilation features (C++14), options (-Wall, -Werror, -O3 for non-Debug), and definitions (NDEBUG for non-Debug) to a specified target.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+# Compilation settings that should be applied to most targets.
+#
+# Be cautious about adding new options here, as plugins use this function by
+# default. In most cases, you should add new options to specific targets instead
+# of modifying this function.
+function(APPLY_STANDARD_SETTINGS TARGET)
+  target_compile_features(${TARGET} PUBLIC cxx_std_14)
+  target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+  target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
+  target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: Static Runtime Linking Flags
+DESCRIPTION: Iterates through standard compiler flag variables and replaces the /MD flag (dynamic runtime linking) with /MT (static runtime linking) for all configurations, ensuring the application uses the static C/C++ runtime library.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+# Replace /MD flags to /MT to use static vcruntine
+set(CompilerFlags
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        )
+foreach(CompilerFlag ${CompilerFlags})
+  string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+endforeach()
+```
+
+----------------------------------------
+
+TITLE: Install Rust Library
+DESCRIPTION: Determines the build type (debug or release) for the Rust library, sets the path to the built Rust dynamic link library (`librustdesk.dll`), and installs it to the library installation directory, renaming it to `librustdesk.dll`.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_12
+
+LANGUAGE: CMake
+CODE:
+```
+# flutter_rust_bridge
+set(RUSTDESK_LIB_BUILD_TYPE $<IF:$<CONFIG:Debug>,debug,release>)
+message(STATUS "rustdesk lib build type: ${RUSTDESK_LIB_BUILD_TYPE}")
+set(RUSTDESK_LIB "../../target/${RUSTDESK_LIB_BUILD_TYPE}/librustdesk.dll")
+install(FILES "${RUSTDESK_LIB}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+COMPONENT Runtime RENAME librustdesk.dll)
+```
+
+----------------------------------------
+
+TITLE: Setting Rust Library Path and Installing (CMake)
+DESCRIPTION: Defines the path to the built Rust library file based on the determined build type and configures its installation to the bundle's library directory, renaming it to librustdesk.so.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_11
+
+LANGUAGE: CMake
+CODE:
+```
+set(RUSTDESK_LIB "../../target/${RUSTDESK_LIB_BUILD_TYPE}/liblibrustdesk.so")
+install(FILES "${RUSTDESK_LIB}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+COMPONENT Runtime RENAME librustdesk.so)
+```
+
+----------------------------------------
+
+TITLE: Conditionally Installing AOT Library (CMake)
+DESCRIPTION: Checks if the current CMake build type is not 'Debug'. If true, it installs the AOT (Ahead-of-Time) compiled library to the bundle's library directory as part of the Runtime component.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_13
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Defining the Flutter Interface Library
+DESCRIPTION: Creates an `INTERFACE` library target named `flutter`. It specifies include directories and links the required Flutter engine library and system dependencies (GTK, GLib, GIO) to this interface target. It also adds a dependency on the `flutter_assemble` target.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+add_library(flutter INTERFACE)
+target_include_directories(flutter INTERFACE
+  "${EPHEMERAL_DIR}"
+)
+target_link_libraries(flutter INTERFACE "${FLUTTER_LIBRARY}")
+target_link_libraries(flutter INTERFACE
+  PkgConfig::GTK
+  PkgConfig::GLIB
+  PkgConfig::GIO
+)
+add_dependencies(flutter flutter_assemble)
+```
+
+----------------------------------------
+
+TITLE: Configure Flutter Interface Library (CMake)
+DESCRIPTION: Appends required Flutter header files to a list, transforms the list to include the ephemeral directory path, creates an `INTERFACE` library named `flutter`, sets include directories, links the Flutter library file, and adds a dependency on the `flutter_assemble` target.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+list(APPEND FLUTTER_LIBRARY_HEADERS
+  "flutter_export.h"
+  "flutter_windows.h"
+  "flutter_messenger.h"
+  "flutter_plugin_registrar.h"
+  "flutter_texture_registrar.h"
+)
+list(TRANSFORM FLUTTER_LIBRARY_HEADERS PREPEND "${EPHEMERAL_DIR}/")
+add_library(flutter INTERFACE)
+target_include_directories(flutter INTERFACE
+  "${EPHEMERAL_DIR}"
+)
+target_link_libraries(flutter INTERFACE "${FLUTTER_LIBRARY}.lib")
+add_dependencies(flutter flutter_assemble)
+```
+
+----------------------------------------
+
+TITLE: Configuring Cross-Building and Build Type (CMake)
+DESCRIPTION: Configures the CMake sysroot and find root path modes for cross-building if FLUTTER_TARGET_PLATFORM_SYSROOT is set. Also defines the default build type (Debug) if not already set.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+# Root filesystem for cross-building.
+if(FLUTTER_TARGET_PLATFORM_SYSROOT)
+  set(CMAKE_SYSROOT ${FLUTTER_TARGET_PLATFORM_SYSROOT})
+  set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
+  set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+  set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+endif()
+
+# Define build configuration options.
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE
+    STRING "Flutter build mode" FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Profile" "Release")
+endif()
+```
+
+----------------------------------------
+
+TITLE: Unicode Definitions
+DESCRIPTION: Adds preprocessor definitions to enable Unicode support throughout the project.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+# Use Unicode for all projects.
+add_definitions(-DUNICODE -D_UNICODE)
+```
+
+----------------------------------------
+
+TITLE: Configuring Runtime Output Directory (CMake)
+DESCRIPTION: Sets the RUNTIME_OUTPUT_DIRECTORY property for the executable target to a subdirectory (intermediates_do_not_run) to prevent users from running the unbundled executable, as it requires resources in specific relative locations.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+# Only the install-generated bundle's copy of the executable will launch
+# correctly, since the resources must in the right relative locations. To avoid
+# people trying to run the unbundled copy, put it in a subdirectory instead of
+# the default top-level location.
+set_target_properties(${BINARY_NAME}
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/intermediates_do_not_run"
+)
+```
+
+----------------------------------------
+
+TITLE: Including Generated Configuration
+DESCRIPTION: Includes a CMake configuration file generated by the Flutter tool, which provides necessary build variables and settings.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+include(${EPHEMERAL_DIR}/generated_config.cmake)
+```
+
+----------------------------------------
+
+TITLE: Install openSUSE Build Dependencies
+DESCRIPTION: Installs necessary system packages for building RustDesk on openSUSE Tumbleweed, including compilers, build tools, and libraries for GUI, audio, and video.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_4
+
+LANGUAGE: Shell
+CODE:
+```
+sudo zypper install gcc-c++ git curl wget nasm yasm gcc gtk3-devel clang libxcb-devel libXfixes-devel cmake alsa-lib-devel gstreamer-devel gstreamer-plugins-base-devel xdotool-devel pam-devel
+```
+
+----------------------------------------
+
+TITLE: Install Dependencies on Arch/Manjaro
+DESCRIPTION: Installs necessary build dependencies for RustDesk on Arch or Manjaro using pacman.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_6
+
+LANGUAGE: sh
+CODE:
+```
+sudo pacman -Syu --needed unzip git cmake gcc curl wget yasm nasm zip make pkg-config clang gtk3 xdotool libxcb libxfixes alsa-lib pipewire
+```
+
+----------------------------------------
+
+TITLE: Define C++ Wrapper Source File Lists (CMake)
+DESCRIPTION: Defines lists of source files for the C++ wrapper core, plugin, and application components. It then transforms these lists to prepend the wrapper root directory path to each file name.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+# === Wrapper ===
+list(APPEND CPP_WRAPPER_SOURCES_CORE
+  "core_implementations.cc"
+  "standard_codec.cc"
+)
+list(TRANSFORM CPP_WRAPPER_SOURCES_CORE PREPEND "${WRAPPER_ROOT}/")
+list(APPEND CPP_WRAPPER_SOURCES_PLUGIN
+  "plugin_registrar.cc"
+)
+list(TRANSFORM CPP_WRAPPER_SOURCES_PLUGIN PREPEND "${WRAPPER_ROOT}/")
+list(APPEND CPP_WRAPPER_SOURCES_APP
+  "flutter_engine.cc"
+  "flutter_view_controller.cc"
+)
+list(TRANSFORM CPP_WRAPPER_SOURCES_APP PREPEND "${WRAPPER_ROOT}/")
+```
+
+----------------------------------------
+
+TITLE: Rust Translation Entry Format
+DESCRIPTION: This snippet shows the required format for each translation entry in the `.rs` translation files. Each entry is a tuple consisting of the English key string and its corresponding translation string, followed by a comma.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/src/lang/README.md#_snippet_0
+
+LANGUAGE: Rust
+CODE:
+```
+("ENG-KEY", "translation"),
+```
+
+----------------------------------------
+
+TITLE: Including Generated Plugins CMake (CMake)
+DESCRIPTION: Includes the generated_plugins.cmake file, which contains build rules for managing and adding Flutter plugins to the application build.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/CMakeLists.txt#_snippet_7
+
+LANGUAGE: CMake
+CODE:
+```
+# Generated plugin build rules, which manage building the plugins and adding
+# them to the application.
+include(flutter/generated_plugins.cmake)
+```
+
+----------------------------------------
+
+TITLE: Configure CMake Environment and Load Flutter Config (CMake)
+DESCRIPTION: Sets the minimum required CMake version, defines paths for ephemeral and wrapper directories, includes a generated configuration file from the Flutter tool, and sets a fallback target platform if not defined.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+cmake_minimum_required(VERSION 3.14)
+
+set(EPHEMERAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ephemeral")
+
+# Configuration provided via flutter tool.
+include(${EPHEMERAL_DIR}/generated_config.cmake)
+
+# TODO: Move the rest of this into files in ephemeral. See
+# https://github.com/flutter/flutter/issues/57146.
+set(WRAPPER_ROOT "${EPHEMERAL_DIR}/cpp_client_wrapper")
+
+# Set fallback configurations for older versions of the flutter tool.
+if (NOT DEFINED FLUTTER_TARGET_PLATFORM)
+  set(FLUTTER_TARGET_PLATFORM "windows-x64")
+endif()
+```
+
+----------------------------------------
+
+TITLE: Disable NOMINMAX Macro
+DESCRIPTION: Adds the NOMINMAX preprocessor definition to the target ${BINARY_NAME}. This is commonly used in Windows development to prevent conflicts between Windows header macros (like min and max) and C++ standard library functions.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")
+```
+
+----------------------------------------
+
+TITLE: Install Dependencies on Fedora/CentOS
+DESCRIPTION: Installs necessary build dependencies for RustDesk on Fedora 28 or CentOS 8 using yum.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_5
+
+LANGUAGE: sh
+CODE:
+```
+sudo yum -y install gcc-c++ git curl wget nasm yasm gcc gtk3-devel clang libxcb-devel libxdo-devel libXfixes-devel pulseaudio-libs-devel cmake alsa-lib-devel gstreamer1-devel gstreamer1-plugins-base-devel pam-devel
+```
+
+----------------------------------------
+
+TITLE: Including Generated Plugins
+DESCRIPTION: Includes a CMake file generated by the Flutter build process that contains rules for building and integrating any plugins used by the application.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/CMakeLists.txt#_snippet_7
+
+LANGUAGE: CMake
+CODE:
+```
+# Generated plugin build rules, which manage building the plugins and adding
+# them to the application.
+include(flutter/generated_plugins.cmake)
+```
+
+----------------------------------------
+
+TITLE: Add Version Preprocessor Definitions
+DESCRIPTION: Adds preprocessor definitions to the target ${BINARY_NAME} to embed Flutter version information (full version string, major, minor, patch, and build numbers) into the compiled executable.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION=\"${FLUTTER_VERSION}\"")
+target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_MAJOR=${FLUTTER_VERSION_MAJOR}")
+target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_MINOR=${FLUTTER_VERSION_MINOR}")
+target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_PATCH=${FLUTTER_VERSION_PATCH}")
+target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_BUILD=${FLUTTER_VERSION_BUILD}")
+```
+
+----------------------------------------
+
+TITLE: Apply Standard Build Settings
+DESCRIPTION: Applies a predefined set of standard build settings to the executable target specified by ${BINARY_NAME}. This command encapsulates common configurations for the project.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/runner/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+apply_standard_settings(${BINARY_NAME})
+```
+
+----------------------------------------
+
+TITLE: Setting Flutter Library and Data Paths
+DESCRIPTION: Defines variables for the paths to the Flutter engine library (`libflutter_linux_gtk.so`), ICU data file (`icudtl.dat`), project build directory, and the AOT application library (`libapp.so`), exporting them to the parent scope.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+set(FLUTTER_LIBRARY "${EPHEMERAL_DIR}/libflutter_linux_gtk.so")
+
+# Published to parent scope for install step.
+set(FLUTTER_LIBRARY ${FLUTTER_LIBRARY} PARENT_SCOPE)
+set(FLUTTER_ICU_DATA_FILE "${EPHEMERAL_DIR}/icudtl.dat" PARENT_SCOPE)
+set(PROJECT_BUILD_DIR "${PROJECT_DIR}/build/" PARENT_SCOPE)
+set(AOT_LIBRARY "${PROJECT_DIR}/build/lib/libapp.so" PARENT_SCOPE)
+```
+
+----------------------------------------
+
+TITLE: Opening Xcode Workspace for iOS Assets
+DESCRIPTION: This command opens the Xcode workspace for the Flutter project's iOS runner, allowing access to the Asset Catalog (`Assets.xcassets`) where launch screen images can be managed.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+open ios/Runner.xcworkspace
+```
+
+----------------------------------------
+
+TITLE: Build Flutter Wrapper Plugin Static Library (CMake)
+DESCRIPTION: Creates a static library named `flutter_wrapper_plugin` using the core and plugin wrapper sources. It applies standard settings, sets properties for position-independent code and visibility, links against the `flutter` interface library, sets public include directories, and adds a dependency on `flutter_assemble`.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+# Wrapper sources needed for a plugin.
+add_library(flutter_wrapper_plugin STATIC
+  ${CPP_WRAPPER_SOURCES_CORE}
+  ${CPP_WRAPPER_SOURCES_PLUGIN}
+)
+apply_standard_settings(flutter_wrapper_plugin)
+set_target_properties(flutter_wrapper_plugin PROPERTIES
+  POSITION_INDEPENDENT_CODE ON)
+set_target_properties(flutter_wrapper_plugin PROPERTIES
+  CXX_VISIBILITY_PRESET hidden)
+target_link_libraries(flutter_wrapper_plugin PUBLIC flutter)
+target_include_directories(flutter_wrapper_plugin PUBLIC
+  "${WRAPPER_ROOT}/include"
+)
+add_dependencies(flutter_wrapper_plugin flutter_assemble)
+```
+
+----------------------------------------
+
+TITLE: Build Flutter Wrapper App Static Library (CMake)
+DESCRIPTION: Creates a static library named `flutter_wrapper_app` using the core and app wrapper sources. It applies standard settings, links against the `flutter` interface library, sets public include directories, and adds a dependency on `flutter_assemble`.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/windows/flutter/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+# Wrapper sources needed for the runner.
+add_library(flutter_wrapper_app STATIC
+  ${CPP_WRAPPER_SOURCES_CORE}
+  ${CPP_WRAPPER_SOURCES_APP}
+)
+apply_standard_settings(flutter_wrapper_app)
+target_link_libraries(flutter_wrapper_app PUBLIC flutter)
+target_include_directories(flutter_wrapper_app PUBLIC
+  "${WRAPPER_ROOT}/include"
+)
+add_dependencies(flutter_wrapper_app flutter_assemble)
+```
+
+----------------------------------------
+
+TITLE: Adding Custom Command for Flutter Tool Backend
+DESCRIPTION: Defines a custom command that executes the Flutter tool backend script (`tool_backend.sh`). This command is configured to run every time due to a phony output file (`_phony_`) and depends on environment variables and build configuration. It outputs the Flutter library and header files.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_7
+
+LANGUAGE: CMake
+CODE:
+```
+add_custom_command(
+  OUTPUT ${FLUTTER_LIBRARY} ${FLUTTER_LIBRARY_HEADERS}
+    ${CMAKE_CURRENT_BINARY_DIR}/_phony_
+  COMMAND ${CMAKE_COMMAND} -E env
+    ${FLUTTER_TOOL_ENVIRONMENT}
+    "${FLUTTER_ROOT}/packages/flutter_tools/bin/tool_backend.sh"
+      ${FLUTTER_TARGET_PLATFORM} ${CMAKE_BUILD_TYPE}
+  VERBATIM
+)
+```
+
+----------------------------------------
+
+TITLE: Defining and Prepending Flutter Library Headers
+DESCRIPTION: Appends a list of Flutter library header file names to the `FLUTTER_LIBRARY_HEADERS` variable and then uses the custom `list_prepend` function to add the ephemeral directory path to each header name.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+list(APPEND FLUTTER_LIBRARY_HEADERS
+  "fl_basic_message_channel.h"
+  "fl_binary_codec.h"
+  "fl_binary_messenger.h"
+  "fl_dart_project.h"
+  "fl_engine.h"
+  "fl_json_message_codec.h"
+  "fl_json_method_codec.h"
+  "fl_message_codec.h"
+  "fl_method_call.h"
+  "fl_method_channel.h"
+  "fl_method_codec.h"
+  "fl_method_response.h"
+  "fl_plugin_registrar.h"
+  "fl_plugin_registry.h"
+  "fl_standard_message_codec.h"
+  "fl_standard_method_codec.h"
+  "fl_string_codec.h"
+  "fl_value.h"
+  "fl_view.h"
+  "flutter_linux.h"
+)
+list_prepend(FLUTTER_LIBRARY_HEADERS "${EPHEMERAL_DIR}/flutter_linux/")
+```
+
+----------------------------------------
+
+TITLE: Defining list_prepend Function
+DESCRIPTION: Defines a custom CMake function `list_prepend` that prepends a given prefix to each element in a list and updates the list in the parent scope. This is a workaround for older CMake versions lacking `list(TRANSFORM ... PREPEND ...)`.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/flutter/linux/flutter/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+function(list_prepend LIST_NAME PREFIX)
+    set(NEW_LIST "")
+    foreach(element ${${LIST_NAME}})
+        list(APPEND NEW_LIST "${PREFIX}${element}")
+    endforeach(element)
+    set(${LIST_NAME} "${NEW_LIST}" PARENT_SCOPE)
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: Fix libvpx Build for Fedora
+DESCRIPTION: Navigates into the libvpx build directory within vcpkg, modifies Makefiles to add -fPIC flag, rebuilds, and copies the static library.
+SOURCE: https://github.com/rustdesk/rustdesk/blob/master/README.md#_snippet_8
+
+LANGUAGE: sh
+CODE:
+```
+cd vcpkg/buildtrees/libvpx/src
+cd *
+./configure
+sed -i 's/CFLAGS+=-I/CFLAGS+=-fPIC -I/g' Makefile
+sed -i 's/CXXFLAGS+=-I/CXXFLAGS+=-fPIC -I/g' Makefile
+make
+cp libvpx.a $HOME/vcpkg/installed/x64-linux/lib/
+cd
+```

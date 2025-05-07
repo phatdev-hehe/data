@@ -1,0 +1,429 @@
+TITLE: Syncthing Docker Compose Configuration
+DESCRIPTION: Docker Compose configuration for Syncthing with environment variables, volume mounts, port mappings, and healthcheck settings.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/README-Docker.md#2025-04-21_snippet_1
+
+LANGUAGE: yaml
+CODE:
+```
+---
+version: "3"
+services:
+  syncthing:
+    image: syncthing/syncthing
+    container_name: syncthing
+    hostname: my-syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /wherever/st-sync:/var/syncthing
+    ports:
+      - 8384:8384 # Web UI
+      - 22000:22000/tcp # TCP file transfers
+      - 22000:22000/udp # QUIC file transfers
+      - 21027:21027/udp # Receive local discovery broadcasts
+    restart: unless-stopped
+    healthcheck:
+      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+```
+
+----------------------------------------
+
+TITLE: Docker Compose with Host Network Mode
+DESCRIPTION: Docker Compose configuration using host network mode for optimal local network performance and device discovery.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/README-Docker.md#2025-04-21_snippet_3
+
+LANGUAGE: yaml
+CODE:
+```
+---
+version: "3"
+services:
+  syncthing:
+    image: syncthing/syncthing
+    container_name: syncthing
+    hostname: my-syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /wherever/st-sync:/var/syncthing
+    network_mode: host
+    restart: unless-stopped
+    healthcheck:
+      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+```
+
+----------------------------------------
+
+TITLE: Running Syncthing Container with Docker CLI
+DESCRIPTION: Basic Docker command to run Syncthing container with port mappings and volume mount. Exposes web UI, TCP/UDP file transfers, and discovery ports.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/README-Docker.md#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ docker pull syncthing/syncthing
+$ docker run -p 8384:8384 -p 22000:22000/tcp -p 22000:22000/udp -p 21027:21027/udp \
+    -v /wherever/st-sync:/var/syncthing \
+    --hostname=my-syncthing \
+    syncthing/syncthing:latest
+```
+
+----------------------------------------
+
+TITLE: Running Syncthing with Host Network Mode
+DESCRIPTION: Docker CLI command to run Syncthing using host network mode for better local device discovery and transfer rates.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/README-Docker.md#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+$ docker pull syncthing/syncthing
+$ docker run --network=host \
+    -v /wherever/st-sync:/var/syncthing \
+    syncthing/syncthing:latest
+```
+
+----------------------------------------
+
+TITLE: Verifying UFW Configuration for Syncthing
+DESCRIPTION: Command to check the current UFW status and verify that the correct ports are open for Syncthing. This helps ensure the firewall is configured correctly.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/firewall-ufw/README.md#2025-04-21_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+sudo ufw status verbose
+```
+
+----------------------------------------
+
+TITLE: Allowing Syncthing Ports in UFW
+DESCRIPTION: Command to allow the default Syncthing ports through the UFW firewall. This enables Syncthing to communicate properly.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/firewall-ufw/README.md#2025-04-21_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+sudo ufw allow syncthing
+```
+
+----------------------------------------
+
+TITLE: Updating Syncthing UFW Application Presets
+DESCRIPTION: Commands to update the Syncthing and Syncthing GUI application presets in UFW. This step loads the preset configurations into UFW.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/firewall-ufw/README.md#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+sudo ufw app update syncthing
+sudo ufw app update syncthing-gui
+```
+
+----------------------------------------
+
+TITLE: Installing Syncthing Tech UI from release zip
+DESCRIPTION: Commands to download and install the Syncthing Tech UI into the GUI override directory for a default Linux setup. This places the UI files where Syncthing can serve them as an alternative interface.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/next-gen-gui/README.md#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ cd ~/.config/syncthing
+$ mkdir -p gui/default
+$ cd gui/default
+$ unzip ~/tech-ui-v1.0.0.zip
+```
+
+----------------------------------------
+
+TITLE: Building and deploying Syncthing Tech UI to config directory
+DESCRIPTION: Commands to build the UI in production mode and copy the built assets to Syncthing's config directory, allowing it to be served directly by Syncthing at the /tech-ui/ endpoint.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/next-gen-gui/README.md#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+$ npm run build -- --prod
+$ rsync -va --delete dist/tech-ui/ ~/.config/syncthing/gui/default/tech-ui/
+```
+
+----------------------------------------
+
+TITLE: Deploying Syncthing Tech UI using STGUIASSETS environment variable
+DESCRIPTION: Alternative deployment method that builds the UI in production mode and sets the STGUIASSETS environment variable to point to the distribution directory before starting Syncthing.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/next-gen-gui/README.md#2025-04-21_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+$ npm run build -- --prod
+$ ln -sf . dist/default
+$ export STGUIASSETS=$(pwd)/dist
+$ syncthing
+```
+
+----------------------------------------
+
+TITLE: Syncthing GUI Security Configuration
+DESCRIPTION: Docker command to run Syncthing with custom GUI security settings by unsetting the STGUIADDRESS environment variable.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/README-Docker.md#2025-04-21_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+$ docker pull syncthing/syncthing
+$ docker run -e STGUIADDRESS= \
+    -v /wherever/st-sync:/var/syncthing \
+    syncthing/syncthing:latest
+```
+
+----------------------------------------
+
+TITLE: Applying sysctl Changes for Syncthing UDP Buffer Configuration
+DESCRIPTION: This command applies the sysctl changes system-wide, including the new configuration for Syncthing's UDP buffer size. It uses sudo for elevated permissions and the -q flag for quiet operation.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/linux-sysctl/README.md#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+sudo sysctl -q --system
+```
+
+----------------------------------------
+
+TITLE: Verifying UDP Buffer Size Configuration for Syncthing
+DESCRIPTION: This command checks the current value of the net.core.rmem_max sysctl parameter, which represents the maximum receive buffer size for all types of connections, including UDP used by Syncthing.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/linux-sysctl/README.md#2025-04-21_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+sysctl net.core.rmem_max
+```
+
+----------------------------------------
+
+TITLE: Enabling Syncthing Autostart in FreeBSD rc.conf
+DESCRIPTION: This snippet shows the configuration line to add to /etc/rc.conf for automatically starting Syncthing at boot time on FreeBSD systems.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/freebsd-rc/README.md#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+syncthing_enable=YES
+```
+
+----------------------------------------
+
+TITLE: Optional Syncthing Configuration in FreeBSD rc.conf
+DESCRIPTION: These are optional configuration settings for Syncthing in FreeBSD's rc.conf. They allow specifying the home directory, log file location, and the user/group under which Syncthing runs.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/freebsd-rc/README.md#2025-04-21_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+syncthing_home=</path/to/syncthing/config/dir>
+syncthing_log_file=</path/to/syncthing/log/file>
+syncthing_user=<syncthing_user>
+syncthing_group=<syncthing_group>
+```
+
+----------------------------------------
+
+TITLE: macOS launchd Commands for Syncthing
+DESCRIPTION: Command to load the Syncthing launch agent configuration into launchd system on macOS.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/macos-launchd/README.md#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+launchctl load ~/Library/LaunchAgents/syncthing.plist
+```
+
+----------------------------------------
+
+TITLE: Starting Syncthing Manually via Upstart
+DESCRIPTION: Command to manually start Syncthing when using the system-level Upstart configuration. Requires sudo privileges to execute the initctl command.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/linux-upstart/README.md#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+sudo initctl start syncthing
+```
+
+----------------------------------------
+
+TITLE: Installing Syncthing Binary for SMF on Solaris
+DESCRIPTION: Instructions for placing the Syncthing binary in the home directory's bin folder to prepare for SMF configuration.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/solaris-smf/README.md#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+Install the `syncthing` binary in a directory called `bin` in your
+home directory.
+```
+
+----------------------------------------
+
+TITLE: Editing SMF Configuration File for Syncthing on Solaris
+DESCRIPTION: Instructions for customizing the syncthing.xml service manifest by replacing placeholder values with the actual username and home directory path.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/solaris-smf/README.md#2025-04-21_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+Edit the `syncthing.xml` file in the two places that refer to your
+username and home directory; that is, replace `jb` with your actual
+username and `/home/jb` with your actual home directory location.
+```
+
+----------------------------------------
+
+TITLE: Loading Syncthing Service Manifest in Solaris SMF
+DESCRIPTION: Command to import the Syncthing service manifest into the Solaris Service Management Facility (SMF). This must be executed with appropriate privileges.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/solaris-smf/README.md#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+svccfg import syncthing.xml
+```
+
+----------------------------------------
+
+TITLE: Generated Relay Server URI
+DESCRIPTION: Example URI generated by strelaysrv containing server ID and configuration parameters
+SOURCE: https://github.com/syncthing/syncthing/blob/main/cmd/strelaysrv/README.md#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+relay://:22067/?id=EZQOIDM-6DDD4ZI-DJ65NSM-4OQWRAT-EIKSMJO-OZ552BO-WQZEGYY-STS5RQM&pingInterval=1m0s&networkTimeout=2m0s&sessionLimitBps=0&globalLimitBps=0&statusAddr=:22070
+```
+
+----------------------------------------
+
+TITLE: Relay Server Status Endpoint JSON Response
+DESCRIPTION: Example JSON response from the relay server's /status endpoint showing metrics like bytes proxied, system info, and configuration options.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/cmd/strelaysrv/README.md#2025-04-21_snippet_0
+
+LANGUAGE: json
+CODE:
+```
+{
+    "bytesProxied": 0,
+    "goArch": "amd64",
+    "goMaxProcs": 1,
+    "goNumRoutine": 13,
+    "goOS": "linux",
+    "goVersion": "go1.6",
+    "kbps10s1m5m15m30m60m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    ],
+    "numActiveSessions": 0,
+    "numConnections": 0,
+    "numPendingSessionKeys": 2,
+    "numProxies": 0,
+    "options": {
+        "global-rate": 0,
+        "message-timeout": 60,
+        "network-timeout": 120,
+        "per-session-rate": 0,
+        "ping-interval": 60,
+        "pools": [
+            "https://relays.syncthing.net/endpoint"
+        ],
+        "provided-by": ""
+    },
+    "startTime": "2016-03-06T12:53:07.090847749-05:00",
+    "uptimeSeconds": 17
+}
+```
+
+----------------------------------------
+
+TITLE: Test Utility Client Command
+DESCRIPTION: Command to start the test utility client for testing relay connectivity
+SOURCE: https://github.com/syncthing/syncthing/blob/main/cmd/strelaysrv/README.md#2025-04-21_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+./testutil -relay="relay://192.0.2.1:22067" -keys=certs/client/ -join
+```
+
+----------------------------------------
+
+TITLE: Test Utility Server Command
+DESCRIPTION: Command to start the test utility server for testing relay connectivity
+SOURCE: https://github.com/syncthing/syncthing/blob/main/cmd/strelaysrv/README.md#2025-04-21_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+./testutil -relay="relay://192.0.2.1:22067" -keys=certs/server/ -connect=BG2C5ZA-W7XPFDO-LH222Z6-65F3HJX-ADFTGRT-3SBFIGM-KV26O2Q-E5RMRQ2
+```
+
+----------------------------------------
+
+TITLE: Allowing Syncthing GUI Access in UFW
+DESCRIPTION: Optional command to allow access to the Syncthing GUI from any IP address. This step is not necessary for typical installations where GUI access is only needed from localhost.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/etc/firewall-ufw/README.md#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+sudo ufw allow syncthing-gui
+```
+
+----------------------------------------
+
+TITLE: Running the development server for Syncthing Tech UI
+DESCRIPTION: Command to start the development server, which runs on port 4200 and provides automatic reloading when source files are changed.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/next-gen-gui/README.md#2025-04-21_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+$ npm run serve
+```
+
+----------------------------------------
+
+TITLE: Generating new Angular components for Syncthing Tech UI
+DESCRIPTION: Angular CLI command to generate new components, which can be adapted to generate other Angular artifacts such as directives, pipes, services, etc.
+SOURCE: https://github.com/syncthing/syncthing/blob/main/next-gen-gui/README.md#2025-04-21_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+$ ng generate component component-name
+```
+
+----------------------------------------
+
+TITLE: Public Pool Join Confirmation Log
+DESCRIPTION: Log message showing successful connection to the public relay pool
+SOURCE: https://github.com/syncthing/syncthing/blob/main/cmd/strelaysrv/README.md#2025-04-21_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+2015/09/21 22:45:46 pool.go:60: Joined https://relays.syncthing.net/endpoint rejoining in 48m0s
+```

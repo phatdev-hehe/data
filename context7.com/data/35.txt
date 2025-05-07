@@ -1,0 +1,1241 @@
+TITLE: Axios Request Configuration Options
+DESCRIPTION: Complete configuration object showing all available options for making HTTP requests with Axios. Includes URL configuration, request methods, data handling, authentication, timeout settings, interceptors, and advanced features.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_9
+
+LANGUAGE: javascript
+CODE:
+```
+{
+  url: '/user',
+  method: 'get',
+  baseURL: 'https://some-domain.com/api/',
+  allowAbsoluteUrls: true,
+  transformRequest: [function (data, headers) {
+    return data;
+  }],
+  transformResponse: [function (data) {
+    return data;
+  }],
+  headers: {'X-Requested-With': 'XMLHttpRequest'},
+  params: {
+    ID: 12345
+  },
+  paramsSerializer: {
+    encode?: (param: string): string => { },
+    serialize?: (params: Record<string, any>, options?: ParamsSerializerOptions ),
+    indexes: false
+  },
+  data: {
+    firstName: 'Fred'
+  },
+  timeout: 1000,
+  withCredentials: false,
+  adapter: function (config) {
+    /* ... */
+  },
+  auth: {
+    username: 'janedoe',
+    password: 's00pers3cret'
+  },
+  responseType: 'json',
+  responseEncoding: 'utf8',
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+  withXSRFToken: boolean | undefined | ((config: InternalAxiosRequestConfig) => boolean | undefined),
+  onUploadProgress: function ({loaded, total, progress, bytes, estimated, rate, upload = true}) {
+  },
+  onDownloadProgress: function ({loaded, total, progress, bytes, estimated, rate, download = true}) {
+  },
+  maxContentLength: 2000,
+  maxBodyLength: 2000,
+  validateStatus: function (status) {
+    return status >= 200 && status < 300;
+  },
+  maxRedirects: 21,
+  beforeRedirect: (options, { headers }) => {
+    if (options.hostname === "example.com") {
+      options.auth = "user:password";
+    }
+  },
+  socketPath: null,
+  transport: undefined,
+  httpAgent: new http.Agent({ keepAlive: true }),
+  httpsAgent: new https.Agent({ keepAlive: true }),
+  proxy: {
+    protocol: 'https',
+    host: '127.0.0.1',
+    port: 9000,
+    auth: {
+      username: 'mikeymike',
+      password: 'rapunz3l'
+    }
+  },
+  cancelToken: new CancelToken(function (cancel) {
+  }),
+  signal: new AbortController().signal
+}
+```
+
+----------------------------------------
+
+TITLE: Making GET Requests with Axios
+DESCRIPTION: Examples of making GET requests using Axios, including handling responses with promises and async/await.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_4
+
+LANGUAGE: javascript
+CODE:
+```
+axios.get('/user?ID=12345')
+  .then(function (response) {
+    // handle success
+    console.log(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .finally(function () {
+    // always executed
+  });
+
+// Using async/await
+async function getUser() {
+  try {
+    const response = await axios.get('/user?ID=12345');
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Making POST Requests with Axios
+DESCRIPTION: Example of making a POST request using Axios, including sending data in the request body.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_5
+
+LANGUAGE: javascript
+CODE:
+```
+axios.post('/user', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+```
+
+----------------------------------------
+
+TITLE: Error Handling in Axios
+DESCRIPTION: Demonstrates how to handle different types of errors in Axios requests including response errors, request errors, and setup errors.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_22
+
+LANGUAGE: javascript
+CODE:
+```
+axios.get('/user/12345')
+  .catch(function (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
+  });
+```
+
+----------------------------------------
+
+TITLE: Configuring Axios Requests
+DESCRIPTION: Examples of configuring Axios requests using different methods and options.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_7
+
+LANGUAGE: javascript
+CODE:
+```
+// Send a POST request
+axios({
+  method: 'post',
+  url: '/user/12345',
+  data: {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  }
+});
+
+// GET request for remote image in node.js
+axios({
+  method: 'get',
+  url: 'https://bit.ly/2mTM3nY',
+  responseType: 'stream'
+})
+  .then(function (response) {
+    response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+  });
+```
+
+----------------------------------------
+
+TITLE: Axios Response Structure
+DESCRIPTION: The structure of the response object returned by Axios after a successful request, containing data, status code, headers, and request configuration.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_11
+
+LANGUAGE: javascript
+CODE:
+```
+{
+  // `data` is the response that was provided by the server
+  data: {},
+
+  // `status` is the HTTP status code from the server response
+  status: 200,
+
+  // `statusText` is the HTTP status message from the server response
+  statusText: 'OK',
+
+  // `headers` the HTTP headers that the server responded with
+  // All header names are lowercase and can be accessed using the bracket notation.
+  // Example: `response.headers['content-type']`
+  headers: {},
+
+  // `config` is the config that was provided to `axios` for the request
+  config: {},
+
+  // `request` is the request that generated this response
+  // It is the last ClientRequest instance in node.js (in redirects)
+  // and an XMLHttpRequest instance in the browser
+  request: {}
+}
+```
+
+----------------------------------------
+
+TITLE: Performing Concurrent Requests with Axios
+DESCRIPTION: Example of making multiple concurrent requests using Axios and Promise.all().
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_6
+
+LANGUAGE: javascript
+CODE:
+```
+function getUserAccount() {
+  return axios.get('/user/12345');
+}
+
+function getUserPermissions() {
+  return axios.get('/user/12345/permissions');
+}
+
+Promise.all([getUserAccount(), getUserPermissions()])
+  .then(function (results) {
+    const acct = results[0];
+    const perm = results[1];
+  });
+```
+
+----------------------------------------
+
+TITLE: Creating Custom Axios Instances with Default Configuration
+DESCRIPTION: Example of creating an Axios instance with specific default settings, which is useful when working with multiple APIs or different authentication requirements.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_14
+
+LANGUAGE: javascript
+CODE:
+```
+// Set config defaults when creating the instance
+const instance = axios.create({
+  baseURL: 'https://api.example.com'
+});
+
+// Alter defaults after instance has been created
+instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+```
+
+----------------------------------------
+
+TITLE: Setting Global Axios Defaults
+DESCRIPTION: Configuring global default settings for all Axios requests including baseURL and default headers for authentication and content type.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_13
+
+LANGUAGE: javascript
+CODE:
+```
+axios.defaults.baseURL = 'https://api.example.com';
+
+// Important: If axios is used with multiple domains, the AUTH_TOKEN will be sent to all of them.
+// See below for an example using Custom instance defaults instead.
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+```
+
+----------------------------------------
+
+TITLE: Creating Axios Instances
+DESCRIPTION: Example of creating a custom Axios instance with specific configuration options.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_8
+
+LANGUAGE: javascript
+CODE:
+```
+const instance = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+```
+
+----------------------------------------
+
+TITLE: Using Axios Interceptors for Request and Response Processing
+DESCRIPTION: Implementation of Axios interceptors to modify requests before they are sent and process responses before they are handled by promise chains.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_16
+
+LANGUAGE: javascript
+CODE:
+```
+
+const instance = axios.create();
+
+// Add a request interceptor
+instance.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    return config;
+  }, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  });
+
+// Add a response interceptor
+instance.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  });
+```
+
+----------------------------------------
+
+TITLE: Request Cancellation using AbortController
+DESCRIPTION: Shows how to cancel Axios requests using the AbortController API (supported since v0.22.0).
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_25
+
+LANGUAGE: javascript
+CODE:
+```
+const controller = new AbortController();
+
+axios.get('/foo/bar', {
+   signal: controller.signal
+}).then(function(response) {
+   //...
+});
+// cancel the request
+controller.abort()
+```
+
+----------------------------------------
+
+TITLE: Processing Axios Response with Promises
+DESCRIPTION: Example of using the then method to process a successful Axios response, accessing various properties like data, status, and headers.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_12
+
+LANGUAGE: javascript
+CODE:
+```
+axios.get('/user/12345')
+  .then(function (response) {
+    console.log(response.data);
+    console.log(response.status);
+    console.log(response.statusText);
+    console.log(response.headers);
+    console.log(response.config);
+  });
+```
+
+----------------------------------------
+
+TITLE: Installing Axios with Package Managers
+DESCRIPTION: Commands for installing Axios using various package managers like npm, yarn, pnpm, and bun.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install axios
+
+$ yarn add axios
+
+$ pnpm add axios
+
+$ bun add axios
+```
+
+----------------------------------------
+
+TITLE: Configuring Axios Request Options
+DESCRIPTION: Configuration options for Axios requests including decompress settings, HTTP parser options, and transitional features for backward compatibility.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_10
+
+LANGUAGE: javascript
+CODE:
+```
+  // - Node only (XHR cannot turn off decompression)
+  decompress: true, // default
+
+  // `insecureHTTPParser` boolean.
+  // Indicates where to use an insecure HTTP parser that accepts invalid HTTP headers.
+  // This may allow interoperability with non-conformant HTTP implementations.
+  // Using the insecure parser should be avoided.
+  // see options https://nodejs.org/dist/latest-v12.x/docs/api/http.html#http_http_request_url_options_callback
+  // see also https://nodejs.org/en/blog/vulnerability/february-2020-security-releases/#strict-http-header-parsing-none
+  insecureHTTPParser: undefined, // default
+
+  // transitional options for backward compatibility that may be removed in the newer versions
+  transitional: {
+    // silent JSON parsing mode
+    // `true`  - ignore JSON parsing errors and set response.data to null if parsing failed (old behaviour)
+    // `false` - throw SyntaxError if JSON parsing failed (Note: responseType must be set to 'json')
+    silentJSONParsing: true, // default value for the current Axios version
+
+    // try to parse the response string as JSON even if `responseType` is not 'json'
+    forcedJSONParsing: true,
+
+    // throw ETIMEDOUT error instead of generic ECONNABORTED on request timeouts
+    clarifyTimeoutError: false,
+  },
+
+  env: {
+    // The FormData class to be used to automatically serialize the payload into a FormData object
+    FormData: window?.FormData || global?.FormData
+  },
+
+  formSerializer: {
+      visitor: (value, key, path, helpers) => {}; // custom visitor function to serialize form values
+      dots: boolean; // use dots instead of brackets format
+      metaTokens: boolean; // keep special endings like {} in parameter key
+      indexes: boolean; // array indexes format null - no brackets, false - empty brackets, true - brackets with indexes
+  },
+
+  // http adapter only (node.js)
+  maxRate: [
+    100 * 1024, // 100KB/s upload limit,
+    100 * 1024  // 100KB/s download limit
+  ]
+}
+```
+
+----------------------------------------
+
+TITLE: FormData Usage in Axios
+DESCRIPTION: Demonstrates how to send multipart/form-data using FormData API in both browser and Node.js environments.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_30
+
+LANGUAGE: javascript
+CODE:
+```
+const formData = new FormData();
+formData.append('foo', 'bar');
+
+axios.post('https://httpbin.org/post', formData);
+```
+
+----------------------------------------
+
+TITLE: Importing Axios in JavaScript
+DESCRIPTION: Different ways to import Axios in JavaScript, including named imports and default import.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_3
+
+LANGUAGE: javascript
+CODE:
+```
+import axios, {isCancel, AxiosError} from 'axios';
+
+// or
+
+import axios from 'axios';
+
+console.log(axios.isCancel('something'));
+```
+
+----------------------------------------
+
+TITLE: Axios TypeScript Error Handling
+DESCRIPTION: Example of TypeScript usage with Axios, including error handling with type guards.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_44
+
+LANGUAGE: typescript
+CODE:
+```
+let user: User = null;
+try {
+  const { data } = await axios.get('/user?ID=12345');
+  user = data.userDetails;
+} catch (error) {
+  if (axios.isAxiosError(error)) {
+    handleAxiosError(error);
+  } else {
+    handleUnexpectedError(error);
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Error JSON Conversion in Axios
+DESCRIPTION: Demonstrates how to convert Axios errors to JSON format for more detailed error information.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_24
+
+LANGUAGE: javascript
+CODE:
+```
+axios.get('/user/12345')
+  .catch(function (error) {
+    console.log(error.toJSON());
+  });
+```
+
+----------------------------------------
+
+TITLE: Managing Configuration Priority in Axios
+DESCRIPTION: Demonstrating the order of precedence for Axios configuration options, where request-specific settings override instance defaults, which override library defaults.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_15
+
+LANGUAGE: javascript
+CODE:
+```
+// Create an instance using the config defaults provided by the library
+// At this point the timeout config value is `0` as is the default for the library
+const instance = axios.create();
+
+// Override timeout default for the library
+// Now all requests using this instance will wait 2.5 seconds before timing out
+instance.defaults.timeout = 2500;
+
+// Override timeout for this request as it's known to take a long time
+instance.get('/longRequest', {
+  timeout: 5000
+});
+```
+
+----------------------------------------
+
+TITLE: URLSearchParams for Form Data
+DESCRIPTION: Demonstrates using URLSearchParams API to send data in application/x-www-form-urlencoded format.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_28
+
+LANGUAGE: javascript
+CODE:
+```
+const params = new URLSearchParams({ foo: 'bar' });
+params.append('extraparam', 'value');
+axios.post('/foo', params);
+```
+
+----------------------------------------
+
+TITLE: Implementing Custom Axios Adapter in JavaScript
+DESCRIPTION: Example implementation of a custom Axios adapter that handles request dispatch and promise settlement. The adapter takes a config object, makes the request, and returns a Promise that resolves with the response data. It uses the settle utility to resolve or reject the promise based on the response.
+SOURCE: https://github.com/axios/axios/blob/v1.x/lib/adapters/README.md#2025-04-22_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+var settle = require('./../core/settle');
+
+module.exports = function myAdapter(config) {
+  // At this point:
+  //  - config has been merged with defaults
+  //  - request transformers have already run
+  //  - request interceptors have already run
+  
+  // Make the request using config provided
+  // Upon response settle the Promise
+
+  return new Promise(function(resolve, reject) {
+  
+    var response = {
+      data: responseData,
+      status: request.status,
+      statusText: request.statusText,
+      headers: responseHeaders,
+      config: config,
+      request: request
+    };
+
+    settle(resolve, reject, response);
+
+    // From here:
+    //  - response transformers will run
+    //  - response interceptors will run
+  });
+}
+```
+
+----------------------------------------
+
+TITLE: Custom Status Validation in Axios
+DESCRIPTION: Shows how to override default status code validation using validateStatus config option.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_23
+
+LANGUAGE: javascript
+CODE:
+```
+axios.get('/user/12345', {
+  validateStatus: function (status) {
+    return status < 500; // Resolve only if the status code is less than 500
+  }
+})
+```
+
+----------------------------------------
+
+TITLE: File Upload with Axios
+DESCRIPTION: Examples of single and multiple file uploads using FormData
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_34
+
+LANGUAGE: javascript
+CODE:
+```
+await axios.postForm('https://httpbin.org/post', {
+  'myVar' : 'foo',
+  'file': document.querySelector('#fileInput').files[0]
+});
+```
+
+----------------------------------------
+
+TITLE: Basic FormData Serialization in Axios
+DESCRIPTION: Demonstrates basic FormData serialization by posting data with multipart/form-data content type header
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_31
+
+LANGUAGE: javascript
+CODE:
+```
+axios.post('https://httpbin.org/post', {x: 1}, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+}).then(({data}) => console.log(data));
+```
+
+----------------------------------------
+
+TITLE: Progress Tracking in Axios
+DESCRIPTION: Shows how to capture upload and download progress events in Axios requests
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_36
+
+LANGUAGE: javascript
+CODE:
+```
+await axios.post(url, data, {
+  onUploadProgress: function (axiosProgressEvent) {
+    /*{
+      loaded: number;
+      total?: number;
+      progress?: number; // in range [0..1]
+      bytes: number; // how many bytes have been transferred since the last trigger (delta)
+      estimated?: number; // estimated time in seconds
+      rate?: number; // upload speed in bytes
+      upload: true; // upload sign
+    }*/
+  },
+
+  onDownloadProgress: function (axiosProgressEvent) {
+    /*{
+      loaded: number;
+      total?: number;
+      progress?: number;
+      bytes: number; 
+      estimated?: number;
+      rate?: number; // download speed in bytes
+      download: true; // download sign
+    }*/
+  }
+});
+```
+
+----------------------------------------
+
+TITLE: Query String Serialization with qs Library
+DESCRIPTION: Shows how to use the qs library to serialize data for x-www-form-urlencoded format.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_29
+
+LANGUAGE: javascript
+CODE:
+```
+const qs = require('qs');
+axios.post('/foo', qs.stringify({ 'bar': 123 }));
+```
+
+----------------------------------------
+
+TITLE: Synchronous Axios Request Interceptors
+DESCRIPTION: Setting the synchronous flag to true for request interceptors to avoid delays when the main thread is blocked.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_20
+
+LANGUAGE: javascript
+CODE:
+```
+axios.interceptors.request.use(function (config) {
+  config.headers.test = 'I am only a header!';
+  return config;
+}, null, { synchronous: true });
+```
+
+----------------------------------------
+
+TITLE: Axios Fetch Adapter Configuration
+DESCRIPTION: Examples of configuring Axios to use the fetch adapter either globally or for specific instances.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_43
+
+LANGUAGE: javascript
+CODE:
+```
+const {data} = axios.get(url, {
+  adapter: 'fetch' // by default ['xhr', 'http', 'fetch']
+})
+
+const fetchAxios = axios.create({
+  adapter: 'fetch'
+});
+
+const {data} = fetchAxios.get(url);
+```
+
+----------------------------------------
+
+TITLE: Managing Axios Interceptors
+DESCRIPTION: Methods for removing individual interceptors or clearing all interceptors for an Axios instance.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_17
+
+LANGUAGE: javascript
+CODE:
+```
+const instance = axios.create();
+const myInterceptor = instance.interceptors.request.use(function () {/*...*/});
+axios.interceptors.request.eject(myInterceptor);
+```
+
+----------------------------------------
+
+TITLE: Complex Object FormData Serialization
+DESCRIPTION: Example of complex object structure that will be serialized to FormData by Axios
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_33
+
+LANGUAGE: javascript
+CODE:
+```
+const obj = {
+  x: 1,
+  arr: [1, 2, 3],
+  arr2: [1, [2], 3],
+  users: [{name: 'Peter', surname: 'Griffin'}, {name: 'Thomas', surname: 'Anderson'}],
+  'obj2{}': [{x:1}]
+};
+```
+
+----------------------------------------
+
+TITLE: Adding Interceptors to Custom Axios Instances
+DESCRIPTION: Example of adding an interceptor to a custom Axios instance rather than the global Axios object.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_19
+
+LANGUAGE: javascript
+CODE:
+```
+const instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+```
+
+----------------------------------------
+
+TITLE: Clearing All Axios Interceptors
+DESCRIPTION: Example of how to remove all request or response interceptors from an Axios instance.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_18
+
+LANGUAGE: javascript
+CODE:
+```
+const instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+instance.interceptors.request.clear(); // Removes interceptors from requests
+instance.interceptors.response.use(function () {/*...*/});
+instance.interceptors.response.clear(); // Removes interceptors from responses
+```
+
+----------------------------------------
+
+TITLE: Conditional Axios Request Interceptors
+DESCRIPTION: Using the runWhen option to conditionally execute a request interceptor based on a runtime check, such as the request method.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_21
+
+LANGUAGE: javascript
+CODE:
+```
+function onGetCall(config) {
+  return config.method === 'get';
+}
+axios.interceptors.request.use(function (config) {
+  config.headers.test = 'special get headers';
+  return config;
+}, null, { runWhen: onGetCall });
+```
+
+----------------------------------------
+
+TITLE: AxiosHeaders Get Method Demo
+DESCRIPTION: Example showing different ways to get and parse header values using the get method, including RegExp matching and custom parsing functions.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_40
+
+LANGUAGE: typescript
+CODE:
+```
+const headers = new AxiosHeaders({
+  'Content-Type': 'multipart/form-data; boundary=Asrf456BGe4h'
+});
+
+console.log(headers.get('Content-Type')); 
+// multipart/form-data; boundary=Asrf456BGe4h
+
+console.log(headers.get('Content-Type', true));
+// [Object: null prototype] {
+//   'multipart/form-data': undefined,
+//    boundary: 'Asrf456BGe4h'
+// }
+
+console.log(headers.get('Content-Type', (value, name, headers) => {
+  return String(value).replace(/a/g, 'ZZZ');
+}));
+// multipZZZrt/form-dZZZtZZZ; boundZZZry=Asrf456BGe4h
+
+console.log(headers.get('Content-Type', /boundary=(\w+)/)?.[0]);
+// boundary=Asrf456BGe4h
+```
+
+----------------------------------------
+
+TITLE: AxiosHeaders Normalize Method Example
+DESCRIPTION: Example showing header normalization to combine duplicate keys with different cases into a single normalized header.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_42
+
+LANGUAGE: javascript
+CODE:
+```
+const headers = new AxiosHeaders({
+  'foo': '1',
+});
+
+headers.Foo = '2';
+headers.FOO = '3';
+
+console.log(headers.toJSON()); // [Object: null prototype] { foo: '1', Foo: '2', FOO: '3' }
+console.log(headers.normalize().toJSON()); // [Object: null prototype] { foo: '3' }
+console.log(headers.normalize(true).toJSON()); // [Object: null prototype] { Foo: '3' }
+```
+
+----------------------------------------
+
+TITLE: AxiosHeaders Set Method Signatures
+DESCRIPTION: Method signatures for setting headers with optional rewrite behavior control. The rewrite parameter determines if existing headers should be overwritten.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_39
+
+LANGUAGE: typescript
+CODE:
+```
+set(headerName, value: Axios, rewrite?: boolean);
+set(headerName, value, rewrite?: (this: AxiosHeaders, value: string, name: string, headers: RawAxiosHeaders) => boolean);
+set(headers?: RawAxiosHeaders | AxiosHeaders | string, rewrite?: boolean);
+```
+
+----------------------------------------
+
+TITLE: AxiosHeaders Clear Method Example
+DESCRIPTION: Demonstration of clearing headers using pattern matching to remove specific headers based on name patterns.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_41
+
+LANGUAGE: typescript
+CODE:
+```
+const headers = new AxiosHeaders({
+  'foo': '1',
+  'x-foo': '2',
+  'x-bar': '3',
+});
+
+console.log(headers.clear(/^x-/)); // true
+
+console.log(headers.toJSON()); // [Object: null prototype] { foo: '1' }
+```
+
+----------------------------------------
+
+TITLE: Rate Limiting in Axios
+DESCRIPTION: Demonstrates how to set upload and download rate limits in Node.js environment
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_37
+
+LANGUAGE: javascript
+CODE:
+```
+const {data} = await axios.post(LOCAL_SERVER_URL, myBuffer, {
+  onUploadProgress: ({progress, rate}) => {
+    console.log(`Upload [${(progress*100).toFixed(2)}%]: ${(rate / 1024).toFixed(2)}KB/s`)
+  },
+   
+  maxRate: [100 * 1024], // 100KB/s limit
+});
+```
+
+----------------------------------------
+
+TITLE: AxiosHeaders Usage Example
+DESCRIPTION: Shows how to use the AxiosHeaders class for header manipulation in interceptors
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_38
+
+LANGUAGE: javascript
+CODE:
+```
+axios.interceptors.request.use((request: InternalAxiosRequestConfig) => {
+    request.headers.set('My-header', 'value');
+
+    request.headers.set({
+      "My-set-header1": "my-set-value1",
+      "My-set-header2": "my-set-value2"
+    });
+    
+    request.headers.set('User-Agent', false);
+
+    request.headers.setContentType('text/plain');
+  
+    request.headers['My-set-header2'] = 'newValue'
+  
+    return request;
+  }
+);
+```
+
+----------------------------------------
+
+TITLE: Critical Security Vulnerability Fix for Axios CVE-2023-45857
+DESCRIPTION: A security alert indicating a critical vulnerability fix for Axios. The code block contains a warning message about the vulnerability with a link to more information at Snyk's security database.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CHANGELOG.md#2025-04-22_snippet_2
+
+LANGUAGE: markdown
+CODE:
+```
+⚠️ Critical vulnerability fix. See https://security.snyk.io/vuln/SNYK-JS-AXIOS-6032459
+```
+
+----------------------------------------
+
+TITLE: Axios CVE-2023-45857 Security Fix
+DESCRIPTION: PR description for a critical security vulnerability fix in Axios (CVE-2023-45857), including a link to the security advisory on Snyk.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CHANGELOG.md#2025-04-22_snippet_1
+
+LANGUAGE: markdown
+CODE:
+```
+⚠️ Critical vulnerability fix. See https://security.snyk.io/vuln/SNYK-JS-AXIOS-6032459
+```
+
+----------------------------------------
+
+TITLE: Security Fix for CVE-2023-45857 in Axios
+DESCRIPTION: Critical vulnerability fix for CVE-2023-45857 in Axios. This code snippet shows the security advisory notice that appears in pull request #6028.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CHANGELOG.md#2025-04-22_snippet_4
+
+LANGUAGE: text
+CODE:
+```
+⚠️ Critical vulnerability fix. See https://security.snyk.io/vuln/SNYK-JS-AXIOS-6032459
+```
+
+----------------------------------------
+
+TITLE: Critical Vulnerability Fix for Axios
+DESCRIPTION: This code snippet warns about a critical vulnerability fix for Axios and provides a link to more information.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CHANGELOG.md#2025-04-22_snippet_3
+
+LANGUAGE: plaintext
+CODE:
+```
+⚠️ Critical vulnerability fix. See https://security.snyk.io/vuln/SNYK-JS-AXIOS-6032459
+```
+
+----------------------------------------
+
+TITLE: Using withXSRFToken Option with Axios
+DESCRIPTION: PR description explaining the new withXSRFToken option that was added as a replacement for the old withCredentials behavior. Users should use withXSRFToken along with withCredentials to maintain the previous behavior.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CHANGELOG.md#2025-04-22_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+📢 This PR added 'withXSRFToken' option as a replacement for old withCredentials behaviour. 
+You should now use withXSRFToken along with withCredential to get the old behavior.
+This functionality is considered as a fix.
+```
+
+----------------------------------------
+
+TITLE: FormData with Buffer in Node.js
+DESCRIPTION: Shows how to use FormData with Buffer objects in Node.js environment using form-data package
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_32
+
+LANGUAGE: javascript
+CODE:
+```
+const axios = require('axios');
+var FormData = require('form-data');
+
+axios.post('https://httpbin.org/post', {x: 1, buf: new Buffer(10)}, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+}).then(({data}) => console.log(data));
+```
+
+----------------------------------------
+
+TITLE: HTML Form Example
+DESCRIPTION: Sample HTML form structure for FormData serialization
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_35
+
+LANGUAGE: html
+CODE:
+```
+<form id="form">
+  <input type="text" name="foo" value="1">
+  <input type="text" name="deep.prop" value="2">
+  <input type="text" name="deep prop spaced" value="3">
+  <input type="text" name="baz" value="4">
+  <input type="text" name="baz" value="5">
+
+  <select name="user.age">
+    <option value="value1">Value 1</option>
+    <option value="value2" selected>Value 2</option>
+    <option value="value3">Value 3</option>
+  </select>
+
+  <input type="submit" value="Save">
+</form>
+```
+
+----------------------------------------
+
+TITLE: Running Axios Examples from Command Line
+DESCRIPTION: Command to run examples for manual testing, which starts a server at 127.0.0.1:3000.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CONTRIBUTING.md#2025-04-22_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+> npm run examples
+# Open 127.0.0.1:3000
+```
+
+----------------------------------------
+
+TITLE: Running Axios Sandbox in Browser
+DESCRIPTION: Command to start the sandbox environment accessible in a browser at 127.0.0.1:3000.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CONTRIBUTING.md#2025-04-22_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+> npm start
+# Open 127.0.0.1:3000
+```
+
+----------------------------------------
+
+TITLE: Running Axios Sandbox in Terminal
+DESCRIPTION: Commands to start the Axios sandbox environment and run a client from the terminal.
+SOURCE: https://github.com/axios/axios/blob/v1.x/CONTRIBUTING.md#2025-04-22_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+> npm start
+> node ./sandbox/client
+```
+
+----------------------------------------
+
+TITLE: Running Examples Server
+DESCRIPTION: Command to start the local server for running Axios examples.
+SOURCE: https://github.com/axios/axios/blob/v1.x/examples/README.md#2025-04-22_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+npm run examples
+```
+
+----------------------------------------
+
+TITLE: Accessing Examples
+DESCRIPTION: Link to access the examples in a web browser after starting the examples server.
+SOURCE: https://github.com/axios/axios/blob/v1.x/examples/README.md#2025-04-22_snippet_5
+
+LANGUAGE: markdown
+CODE:
+```
+http://localhost:3000
+```
+
+----------------------------------------
+
+TITLE: Building Axios
+DESCRIPTION: Command to build the Axios project from source code.
+SOURCE: https://github.com/axios/axios/blob/v1.x/examples/README.md#2025-04-22_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+npm run build
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies
+DESCRIPTION: Command to install all required dependencies for the Axios project.
+SOURCE: https://github.com/axios/axios/blob/v1.x/examples/README.md#2025-04-22_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Navigating to Axios Directory
+DESCRIPTION: Command to change directory to the cloned axios repository.
+SOURCE: https://github.com/axios/axios/blob/v1.x/examples/README.md#2025-04-22_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+cd axios
+```
+
+----------------------------------------
+
+TITLE: Request Cancellation using CancelToken (Deprecated)
+DESCRIPTION: Demonstrates the deprecated CancelToken approach for canceling Axios requests.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_26
+
+LANGUAGE: javascript
+CODE:
+```
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
+
+axios.get('/user/12345', {
+  cancelToken: source.token
+}).catch(function (thrown) {
+  if (axios.isCancel(thrown)) {
+    console.log('Request canceled', thrown.message);
+  } else {
+    // handle error
+  }
+});
+
+axios.post('/user/12345', {
+  name: 'new name'
+}, {
+  cancelToken: source.token
+})
+
+// cancel the request (the message parameter is optional)
+source.cancel('Operation canceled by the user.');
+```
+
+----------------------------------------
+
+TITLE: CancelToken with Executor Function
+DESCRIPTION: Shows how to create a cancel token using an executor function with the CancelToken constructor.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_27
+
+LANGUAGE: javascript
+CODE:
+```
+const CancelToken = axios.CancelToken;
+let cancel;
+
+axios.get('/user/12345', {
+  cancelToken: new CancelToken(function executor(c) {
+    // An executor function receives a cancel function as a parameter
+    cancel = c;
+  })
+});
+
+// cancel the request
+cancel();
+```
+
+----------------------------------------
+
+TITLE: Cloning Axios Repository
+DESCRIPTION: Command to clone the Axios repository from GitHub to your local machine.
+SOURCE: https://github.com/axios/axios/blob/v1.x/examples/README.md#2025-04-22_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git clone https://github.com/axios/axios.git
+```
+
+----------------------------------------
+
+TITLE: HTML Project Header
+DESCRIPTION: Centered header section containing the Axios logo, description and main navigation links.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_1
+
+LANGUAGE: HTML
+CODE:
+```
+<div align="center">
+   <a href="https://axios-http.com"><img src="https://axios-http.com/assets/logo.svg" /></a><br>
+</div>
+
+<p align="center">Promise based HTTP client for the browser and node.js</p>
+```
+
+----------------------------------------
+
+TITLE: HTML Sponsor Table Layout
+DESCRIPTION: HTML table structure displaying gold sponsors for the Axios project with company logos, descriptions and links.
+SOURCE: https://github.com/axios/axios/blob/v1.x/README.md#2025-04-22_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+<table align="center" width="100%">
+  <tr width="33.333333333333336%">
+    <td align="center" width="33.333333333333336%">
+      <!-- Sponsor content -->
+    </td>
+  </tr>
+</table>
+```

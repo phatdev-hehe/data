@@ -1,0 +1,89 @@
+TITLE: Running with Docker Compose
+DESCRIPTION: Configures the OpenAI API key in a .env file in the root directory and starts the application services (frontend and backend) using Docker Compose in detached mode, building images if necessary.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/README.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+echo "OPENAI_API_KEY=sk-your-key" > .env
+docker-compose up -d --build
+```
+
+----------------------------------------
+
+TITLE: Running Backend with Poetry
+DESCRIPTION: Sets up the backend environment using Poetry, configures API keys in a .env file, installs dependencies, activates the virtual environment, and starts the FastAPI server with auto-reloading on port 7001.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+cd backend
+echo "OPENAI_API_KEY=sk-your-key" > .env
+echo "ANTHROPIC_API_KEY=your-key" > .env
+poetry install
+poetry shell
+poetry run uvicorn main:app --reload --port 7001
+```
+
+----------------------------------------
+
+TITLE: Running Frontend with Yarn
+DESCRIPTION: Navigates to the frontend directory, installs dependencies using Yarn, and starts the development server. The app will be accessible at http://localhost:5173.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+cd frontend
+yarn
+yarn dev
+```
+
+----------------------------------------
+
+TITLE: Run Tests (Pytest) - Shell
+DESCRIPTION: Runs the project's test suite using Pytest via Poetry to verify functionality and prevent regressions.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/backend/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+poetry run pytest
+```
+
+----------------------------------------
+
+TITLE: Run Type Checker (Pyright) - Shell
+DESCRIPTION: Executes the Pyright type checker using Poetry to ensure code correctness and catch type errors.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/backend/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+poetry run pyright
+```
+
+----------------------------------------
+
+TITLE: Running Backend in Mock Mode
+DESCRIPTION: Starts the backend server in mock mode, which streams a pre-recorded response instead of using actual AI models, useful for debugging without consuming API credits.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+MOCK=true poetry run uvicorn main:app --reload --port 7001
+```
+
+----------------------------------------
+
+TITLE: Running Model Evaluation Script (Shell)
+DESCRIPTION: This command executes the main Python evaluation script. It sets the OPENAI_API_KEY environment variable inline before running the script, which is required for the script to interact with the OpenAI API. The script processes the input screenshots in parallel.
+SOURCE: https://github.com/abi/screenshot-to-code/blob/main/Evaluation.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+OPENAI_API_KEY=sk-... python run_evals.py
+```

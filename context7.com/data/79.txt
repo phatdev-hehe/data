@@ -1,0 +1,941 @@
+TITLE: Launch ComfyUI (Python)
+DESCRIPTION: Starts the ComfyUI application by executing the main Python script.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+python main.py
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI Standard
+DESCRIPTION: Launches ComfyUI using the default configuration, typically suitable for most installations after dependencies are met.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_12
+
+LANGUAGE: Shell
+CODE:
+```
+python main.py
+```
+
+----------------------------------------
+
+TITLE: Download ComfyUI Models and Assets (Python)
+DESCRIPTION: This snippet provides commented-out `wget` commands to download various models and assets required for ComfyUI, such as Stable Diffusion checkpoints (SDXL, SD1.5, SD2), VAEs, and Loras. Users can uncomment the desired lines to download specific files from Hugging Face or Civitai.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+# Checkpoints
+
+### SDXL
+### I recommend these workflow examples: https://comfyanonymous.github.io/ComfyUI_examples/sdxl/
+
+#!wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors -P ./models/checkpoints/
+#!wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors -P ./models/checkpoints/
+
+# SDXL ReVision
+#!wget -c https://huggingface.co/comfyanonymous/clip_vision_g/resolve/main/clip_vision_g.safetensors -P ./models/clip_vision/
+
+# SD1.5
+!wget -c https://huggingface.co/Comfy-Org/stable-diffusion-v1-5-archive/resolve/main/v1-5-pruned-emaonly-fp16.safetensors -P ./models/checkpoints/
+
+# SD2
+#!wget -c https://huggingface.co/stabilityai/stable-diffusion-2-1-base/resolve/main/v2-1_512-ema-pruned.safetensors -P ./models/checkpoints/
+#!wget -c https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.safetensors -P ./models/checkpoints/
+
+# Some SD1.5 anime style
+#!wget -c https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix2/AbyssOrangeMix2_hard.safetensors -P ./models/checkpoints/
+#!wget -c https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors -P ./models/checkpoints/
+#!wget -c https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A3_orangemixs.safetensors -P ./models/checkpoints/
+#!wget -c https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/anything-v3-fp16-pruned.safetensors -P ./models/checkpoints/
+
+# Waifu Diffusion 1.5 (anime style SD2.x 768-v)
+#!wget -c https://huggingface.co/waifu-diffusion/wd-1-5-beta3/resolve/main/wd-illusion-fp16.safetensors -P ./models/checkpoints/
+
+
+# unCLIP models
+#!wget -c https://huggingface.co/comfyanonymous/illuminatiDiffusionV1_v11_unCLIP/resolve/main/illuminatiDiffusionV1_v11-unclip-h-fp16.safetensors -P ./models/checkpoints/
+#!wget -c https://huggingface.co/comfyanonymous/wd-1.5-beta2_unCLIP/resolve/main/wd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors -P ./models/checkpoints/
+
+
+# VAE
+!wget -c https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors -P ./models/vae/
+#!wget -c https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/VAEs/orangemix.vae.pt -P ./models/vae/
+#!wget -c https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt -P ./models/vae/
+
+
+# Loras
+#!wget -c https://civitai.com/api/download/models/10350 -O ./models/loras/theovercomer8sContrastFix_sd21768.safetensors #theovercomer8sContrastFix SD2.x 768-v
+#!wget -c https://civitai.com/api/download/models/10638 -O ./models/loras/theovercomer8sContrastFix_sd15.safetensors #theovercomer8sContrastFix SD1.x
+#!wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors -P ./models/loras/ #SDXL offset noise lora
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch for NVIDIA GPUs (CUDA 12.8 Stable) (Bash)
+DESCRIPTION: Installs the stable version of PyTorch, torchvision, and torchaudio compatible with CUDA 12.8 for NVIDIA GPUs.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128
+```
+
+----------------------------------------
+
+TITLE: Install ComfyUI Dependencies (Bash)
+DESCRIPTION: Installs all required Python dependencies for ComfyUI listed in the requirements.txt file using pip.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+pip install -r requirements.txt
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch for NVIDIA GPUs (CUDA 12.8 Nightly) (Bash)
+DESCRIPTION: Installs the nightly build of PyTorch, torchvision, and torchaudio compatible with CUDA 12.8 for NVIDIA GPUs, potentially offering performance improvements.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+```
+
+----------------------------------------
+
+TITLE: Setup ComfyUI Environment and Dependencies (Python)
+DESCRIPTION: This snippet configures the environment for ComfyUI, optionally mounts Google Drive, clones or updates the ComfyUI repository from GitHub, and installs required Python packages using pip, including xformers. It uses Colab-specific commands (`!`, `%cd`, `google.colab`).
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+#@title Environment Setup
+
+
+OPTIONS = {}
+
+USE_GOOGLE_DRIVE = False  #@param {type:"boolean"}
+UPDATE_COMFY_UI = True  #@param {type:"boolean"}
+WORKSPACE = 'ComfyUI'
+OPTIONS['USE_GOOGLE_DRIVE'] = USE_GOOGLE_DRIVE
+OPTIONS['UPDATE_COMFY_UI'] = UPDATE_COMFY_UI
+
+if OPTIONS['USE_GOOGLE_DRIVE']:
+    !echo "Mounting Google Drive..."
+    %cd /
+    
+    from google.colab import drive
+    drive.mount('/content/drive')
+
+    WORKSPACE = "/content/drive/MyDrive/ComfyUI"
+    %cd /content/drive/MyDrive
+
+![ ! -d $WORKSPACE ] && echo -= Initial setup ComfyUI =- && git clone https://github.com/comfyanonymous/ComfyUI
+%cd $WORKSPACE
+
+if OPTIONS['UPDATE_COMFY_UI']:
+  !echo -= Updating ComfyUI =-
+  !git pull
+
+!echo -= Install dependencies =-
+!pip install xformers!=0.0.18 -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121 --extra-index-url https://download.pytorch.org/whl/cu118 --extra-index-url https://download.pytorch.org/whl/cu117
+```
+
+----------------------------------------
+
+TITLE: Run ComfyUI with Colab Iframe (Python)
+DESCRIPTION: This snippet starts a Python thread that waits for the ComfyUI server to become available on port 8188. Once the server is running, it uses Google Colab's `output` module to serve the server port within an iframe in the Colab notebook and also provides a link to open it in a separate window. Finally, it starts the ComfyUI server using `main.py`. Note that some UI features like live image previews may not work in the iframe due to websocket limitations.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_12
+
+LANGUAGE: python
+CODE:
+```
+import threading
+import time
+import socket
+
+def iframe_thread(port):
+  while True:
+      time.sleep(0.5)
+      sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      result = sock.connect_ex(('127.0.0.1', port))
+      if result == 0:
+        break
+      sock.close()
+  from google.colab import output
+  output.serve_kernel_port_as_iframe(port, height=1024)
+  print("to open it in a window you can open this link here:")
+  output.serve_kernel_port_as_window(port)
+
+threading.Thread(target=iframe_thread, daemon=True, args=(8188,)).start()
+
+!python main.py --dont-print-server
+```
+
+----------------------------------------
+
+TITLE: Defining a ComfyUI Node Class (Python)
+DESCRIPTION: Demonstrates the basic structure for defining a custom ComfyUI node using the ComfyNodeABC abstract base class. It shows how to import necessary types and define the mandatory INPUT_TYPES class method.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/comfy/comfy_types/README.md#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+from comfy.comfy_types import IO, ComfyNodeABC, CheckLazyMixin
+
+class ExampleNode(ComfyNodeABC):
+    @classmethod
+    def INPUT_TYPES(s) -> InputTypeDict:
+        return {"required": {}}
+```
+
+----------------------------------------
+
+TITLE: Download ControlNet SD1.5 Models (Shell)
+DESCRIPTION: Downloads a collection of ControlNet models for Stable Diffusion 1.5 from Hugging Face, covering various control types like Canny, Depth, OpenPose, etc., and saves them to the `./models/controlnet/` directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_5
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11e_sd15_ip2p_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11e_sd15_shuffle_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_canny_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11f1p_sd15_depth_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_inpaint_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_lineart_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_mlsd_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_normalbae_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_openpose_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_scribble_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_seg_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_softedge_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15s2_lineart_anime_fp16.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11u_sd15_tile_fp16.safetensors -P ./models/controlnet/
+```
+
+----------------------------------------
+
+TITLE: Specify Pytest Version - Python
+DESCRIPTION: Specifies the minimum required version for the pytest testing framework, ensuring compatibility with features used in the test suite.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests-unit/requirements.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+pytest>=7.8.0
+```
+
+----------------------------------------
+
+TITLE: Download ControlNet SDXL Models (Shell)
+DESCRIPTION: Downloads Control-LoRA models specifically for Stable Diffusion XL from Hugging Face, including Canny, Depth, Recolor, and Sketch variants, saving them to the `./models/controlnet/` directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_6
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-canny-rank256.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-depth-rank256.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-recolor-rank256.safetensors -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-sketch-rank256.safetensors -P ./models/controlnet/
+```
+
+----------------------------------------
+
+TITLE: Install ControlNet Preprocessors (Shell)
+DESCRIPTION: Navigates to the `custom_nodes` directory, clones the `comfy_controlnet_preprocessors` repository from GitHub, and then executes the installation script within the cloned directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_7
+
+LANGUAGE: Shell
+CODE:
+```
+#!cd custom_nodes && git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors; cd comfy_controlnet_preprocessors && python install.py
+```
+
+----------------------------------------
+
+TITLE: Download T2I-Adapter Models (Shell)
+DESCRIPTION: Downloads various T2I-Adapter models from Hugging Face, specifically designed for Stable Diffusion 1.4, into the `./models/controlnet/` directory. These adapters provide control over image generation based on different inputs like depth, segmentation, sketch, etc.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_2
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_depth_sd14v1.pth -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_seg_sd14v1.pth -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_sketch_sd14v1.pth -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_keypose_sd14v1.pth -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_openpose_sd14v1.pth -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_color_sd14v1.pth -P ./models/controlnet/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_canny_sd14v1.pth -P ./models/controlnet/
+```
+
+----------------------------------------
+
+TITLE: Download ESRGAN Upscale Models (Shell)
+DESCRIPTION: Downloads several ESRGAN models (`RealESRGAN_x4plus.pth`, `RealESRGAN_x2.pth`, `RealESRGAN_x4.pth`) from GitHub and Hugging Face, used for image upscaling, saving them to the `./models/upscale_models/` directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_9
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -P ./models/upscale_models/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth -P ./models/upscale_models/
+```
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth -P ./models/upscale_models/
+```
+
+----------------------------------------
+
+TITLE: Download CLIPVision Model (Shell)
+DESCRIPTION: Downloads the CLIPVision model (specifically `clip-vit-large-patch14`) from Hugging Face, which is required for the T2I Styles model, saving it as `clip_vit14.bin` in the `./models/clip_vision/` directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_4
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/pytorch_model.bin -O ./models/clip_vision/clip_vit14.bin
+```
+
+----------------------------------------
+
+TITLE: Download T2I Styles Model (Shell)
+DESCRIPTION: Downloads the T2I Styles model from Hugging Face, used for applying specific artistic styles during image generation, saving it to the `./models/style_models/` directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_3
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/TencentARC/T2I-Adapter/resolve/main/models/t2iadapter_style_sd14v1.pth -P ./models/style_models/
+```
+
+----------------------------------------
+
+TITLE: Install ComfyUI using comfy-cli (Bash)
+DESCRIPTION: Installs the comfy-cli tool and then uses it to install ComfyUI. Requires Python and pip.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+pip install comfy-cli
+comfy install
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch DirectML
+DESCRIPTION: Installs the torch-directml package, which provides DirectML support for PyTorch on AMD cards running on Windows.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_10
+
+LANGUAGE: Shell
+CODE:
+```
+pip install torch-directml
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI with DirectML
+DESCRIPTION: Launches ComfyUI using the DirectML backend, suitable for AMD cards on Windows after installing the torch-directml package.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_11
+
+LANGUAGE: Shell
+CODE:
+```
+python main.py --directml
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch for AMD GPUs (ROCm 6.2.4 Stable) (Bash)
+DESCRIPTION: Installs the stable version of PyTorch, torchvision, and torchaudio compatible with ROCm 6.2.4 for AMD GPUs on Linux.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch for AMD GPUs (ROCm 6.3 Nightly) (Bash)
+DESCRIPTION: Installs the nightly build of PyTorch, torchvision, and torchaudio compatible with ROCm 6.3 for AMD GPUs on Linux, potentially offering performance improvements.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.3
+```
+
+----------------------------------------
+
+TITLE: Required Python Packages
+DESCRIPTION: This snippet lists the Python packages and their versions that are required to run ComfyUI. It includes core dependencies as well as optional ones.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/requirements.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+comfyui-frontend-package==1.18.9
+torch
+torchsde
+torchvision
+torchaudio
+numpy>=1.25.0
+einops
+transformers>=4.28.1
+tokenizers>=0.13.3
+sentencepiece
+safetensors>=0.4.2
+aiohttp>=3.11.8
+yarl>=1.18.0
+pyyaml
+Pillow
+scipy
+tqdm
+psutil
+
+#non essential dependencies:
+kornia>=0.7.1
+spandrel
+soundfile
+av>=14.2.0
+pydantic~=2.0
+```
+
+----------------------------------------
+
+TITLE: Download GLIGEN Model (Shell)
+DESCRIPTION: Downloads the GLIGEN model (`gligen_sd14_textbox_pruned_fp16.safetensors`) from Hugging Face, used for grounding text prompts to specific image regions, saving it to the `./models/gligen/` directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_8
+
+LANGUAGE: Shell
+CODE:
+```
+#!wget -c https://huggingface.co/comfyanonymous/GLIGEN_pruned_safetensors/resolve/main/gligen_sd14_textbox_pruned_fp16.safetensors -P ./models/gligen/
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch and IPEX for Intel Arc GPUs (Conda)
+DESCRIPTION: Installs libuv using conda, then installs specific versions of PyTorch, torchvision, torchaudio, and intel-extension-for-pytorch compatible with Intel Arc GPUs using pip within a conda environment.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+conda install libuv
+pip install torch==2.3.1.post0+cxx11.abi torchvision==0.18.1.post0+cxx11.abi torchaudio==2.3.1.post0+cxx11.abi intel-extension-for-pytorch==2.3.110.post0+xpu --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/us/ --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/cn/
+```
+
+----------------------------------------
+
+TITLE: Install PyTorch Nightly for Intel Arc GPUs (XPU) (Bash)
+DESCRIPTION: Installs the nightly build of PyTorch, torchvision, and torchaudio with torch.xpu support for Intel Arc GPUs.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/xpu
+```
+
+----------------------------------------
+
+TITLE: Use Textual Inversion Embedding in Prompt
+DESCRIPTION: Syntax for referencing a textual inversion concept or embedding file (located in models/embeddings) within a CLIPTextEncode node prompt.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_19
+
+LANGUAGE: Prompt Syntax
+CODE:
+```
+embedding:embedding_filename.pt
+```
+
+----------------------------------------
+
+TITLE: Run ComfyUI with Cloudflared Tunnel (Python)
+DESCRIPTION: This snippet downloads and installs the Cloudflared daemon using shell commands. It then starts a Python thread that waits for the ComfyUI server to become available on a specific port (8188). Once the server is detected, it launches a Cloudflared tunnel process to create a public URL for accessing ComfyUI. Finally, it starts the ComfyUI server using `main.py`.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_10
+
+LANGUAGE: python
+CODE:
+```
+!wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+!dpkg -i cloudflared-linux-amd64.deb
+
+import subprocess
+import threading
+import time
+import socket
+import urllib.request
+
+def iframe_thread(port):
+  while True:
+      time.sleep(0.5)
+      sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      result = sock.connect_ex(('127.0.0.1', port))
+      if result == 0:
+        break
+      sock.close()
+  print("\nComfyUI finished loading, trying to launch cloudflared (if it gets stuck here cloudflared is having issues)\n")
+
+  p = subprocess.Popen(["cloudflared", "tunnel", "--url", "http://127.0.0.1:{}".format(port)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  for line in p.stderr:
+    l = line.decode()
+    if "trycloudflare.com " in l:
+      print("This is the URL to access ComfyUI:", l[l.find("http"):], end='')
+    #print(l, end='')
+
+
+threading.Thread(target=iframe_thread, daemon=True, args=(8188,)).start()
+
+!python main.py --dont-print-server
+```
+
+----------------------------------------
+
+TITLE: Run ComfyUI with Localtunnel (Python)
+DESCRIPTION: This snippet installs the localtunnel npm package globally using a shell command. It then starts a Python thread that waits for the ComfyUI server to become available on port 8188. Once the server is running, it launches a localtunnel process to create a public URL for accessing ComfyUI and prints the public IP address. Finally, it starts the ComfyUI server using `main.py`.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/notebooks/comfyui_colab.ipynb#_snippet_11
+
+LANGUAGE: python
+CODE:
+```
+!npm install -g localtunnel
+
+import threading
+import time
+import socket
+import urllib.request
+import subprocess
+
+def iframe_thread(port):
+  while True:
+      time.sleep(0.5)
+      sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      result = sock.connect_ex(('127.0.0.1', port))
+      if result == 0:
+        break
+      sock.close()
+  print("\nComfyUI finished loading, trying to launch localtunnel (if it gets stuck here localtunnel is having issues)\n")
+
+  print("The password/enpoint ip for localtunnel is:", urllib.request.urlopen('https://ipv4.icanhazip.com').read().decode('utf8').strip("\n"))
+  p = subprocess.Popen(["lt", "--port", "{}".format(port)], stdout=subprocess.PIPE)
+  for line in p.stdout:
+    print(line.decode(), end='')
+
+
+threading.Thread(target=iframe_thread, daemon=True, args=(8188,)).start()
+
+!python main.py --dont-print-server
+```
+
+----------------------------------------
+
+TITLE: Uninstall PyTorch (Bash)
+DESCRIPTION: Removes the existing PyTorch installation using pip, often used for troubleshooting installation issues.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+pip uninstall torch
+```
+
+----------------------------------------
+
+TITLE: Enable TLS/SSL in ComfyUI
+DESCRIPTION: Launch ComfyUI with these command-line arguments to enable TLS/SSL using the specified key and certificate files. This allows accessing the ComfyUI web interface via HTTPS instead of HTTP.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_21
+
+LANGUAGE: Shell
+CODE:
+```
+--tls-keyfile key.pem --tls-certfile cert.pem
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI with Latest Frontend
+DESCRIPTION: Use this command-line argument when launching ComfyUI to fetch and use the latest daily build of the new frontend from the specified GitHub repository.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_22
+
+LANGUAGE: Shell
+CODE:
+```
+--front-end-version Comfy-Org/ComfyUI_frontend@latest
+```
+
+----------------------------------------
+
+TITLE: Generate Baseline Images for Quality Test (Pytest)
+DESCRIPTION: Runs the inference tests and saves the output images to a specified directory ('tests/inference/baseline'). These images serve as the 'ground truth' for subsequent quality regression testing.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests/README.md#_snippet_2
+
+LANGUAGE: Shell
+CODE:
+```
+    pytest tests/inference --output_dir tests/inference/baseline
+```
+
+----------------------------------------
+
+TITLE: Run Inference Tests (Pytest)
+DESCRIPTION: Executes the inference tests using pytest. This command runs the test suite located in the 'tests/inference' directory.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+pytest tests/inference
+```
+
+----------------------------------------
+
+TITLE: Run All Tests (Pytest)
+DESCRIPTION: Executes all tests configured in the pytest suite. This is typically used after making code edits to run both inference and quality comparison tests.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests/README.md#_snippet_3
+
+LANGUAGE: Shell
+CODE:
+```
+pytest
+```
+
+----------------------------------------
+
+TITLE: Install Test Dependencies (Python)
+DESCRIPTION: Installs the required Python packages for running automated tests, including pytest, websocket-client, opencv-python, and scikit-image.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+pip install pytest
+pip install websocket-client==1.6.1
+opencv-python==4.6.0.66
+scikit-image==0.21.0
+```
+
+----------------------------------------
+
+TITLE: Run Unit Tests with Pytest (Shell)
+DESCRIPTION: Executes the unit test suite located in the 'tests-unit/' directory using the Pytest test runner.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests-unit/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+pytest tests-unit/
+```
+
+----------------------------------------
+
+TITLE: Install Test Dependencies (Shell)
+DESCRIPTION: Installs the necessary Python packages required to run the unit tests by reading from the specified requirements file.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests-unit/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+pip install -r tests-unit/requirements.txt
+```
+
+----------------------------------------
+
+TITLE: Generate Self-Signed SSL Certificate using OpenSSL
+DESCRIPTION: This command uses OpenSSL to generate a self-signed X.509 certificate and a private key. It creates `cert.pem` and `key.pem` files, valid for 10 years, suitable for basic TLS/SSL testing or non-production use. Replace the subject details with your own.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_20
+
+LANGUAGE: Shell
+CODE:
+```
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+```
+
+----------------------------------------
+
+TITLE: Set PyTorch TunableOp Environment Variable
+DESCRIPTION: Sets the PYTORCH_TUNABLEOP_ENABLED environment variable, which might speed up subsequent runs after a potentially slow initial run.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_16
+
+LANGUAGE: Shell
+CODE:
+```
+PYTORCH_TUNABLEOP_ENABLED=1
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI ROCm Experimental Attention
+DESCRIPTION: Launches ComfyUI with experimental memory efficient attention enabled on PyTorch 2.5 for RDNA3 and potentially other AMD GPUs using ROCm.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_15
+
+LANGUAGE: Shell
+CODE:
+```
+TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1 python main.py --use-pytorch-cross-attention
+```
+
+----------------------------------------
+
+TITLE: Run ComfyUI with Staging API Base
+DESCRIPTION: Starts the ComfyUI backend server, configuring it to connect to the staging API endpoint for development and testing purposes. This command overrides the default production API base URL.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/comfy_api_nodes/README.md#_snippet_0
+
+LANGUAGE: Bash
+CODE:
+```
+python run main.py --comfy-api-base https://stagingapi.comfy.org
+```
+
+----------------------------------------
+
+TITLE: Generate API Stubs from OpenAPI
+DESCRIPTION: A sequence of commands to download the OpenAPI definition from the staging server, filter it using Redocly based on a configuration file, and then generate Pydantic v2 data models from the filtered definition for use in API node development.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/comfy_api_nodes/README.md#_snippet_1
+
+LANGUAGE: Bash
+CODE:
+```
+# Download the OpenAPI file from prod server.
+curl -o openapi.yaml https://stagingapi.comfy.org/openapi
+
+# Filter out unneeded API definitions.
+npm install -g @redocly/cli
+redocly bundle openapi.yaml --output filtered-openapi.yaml --config comfy_api_nodes/redocly-dev.yaml --remove-unused-components
+
+# Generate the pydantic datamodels for validation.
+datamodel-codegen --use-subclass-enum --field-constraints --strict-types bytes --input filtered-openapi.yaml --output comfy_api_nodes/apis/__init__.py --output-model-type pydantic_v2.BaseModel
+
+```
+
+----------------------------------------
+
+TITLE: Dynamic Prompt Single-line Comment
+DESCRIPTION: Example syntax for adding a single-line comment within a dynamic prompt.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_17
+
+LANGUAGE: Prompt Syntax
+CODE:
+```
+// comment
+```
+
+----------------------------------------
+
+TITLE: Dynamic Prompt Multi-line Comment
+DESCRIPTION: Example syntax for adding a multi-line comment within a dynamic prompt.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_18
+
+LANGUAGE: Prompt Syntax
+CODE:
+```
+/* comment */
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI with Specific Frontend Version
+DESCRIPTION: Launch ComfyUI with this argument to use a particular version of the new frontend. Replace `1.2.2` with the desired version tag or commit hash from the frontend repository.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_23
+
+LANGUAGE: Shell
+CODE:
+```
+--front-end-version Comfy-Org/ComfyUI_frontend@1.2.2
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI AMD RDNA3 Override
+DESCRIPTION: Launches ComfyUI with a specific HSA_OVERRIDE_GFX_VERSION for AMD RDNA3 cards (like 7600) to potentially resolve compatibility issues.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_14
+
+LANGUAGE: Shell
+CODE:
+```
+HSA_OVERRIDE_GFX_VERSION=11.0.0 python main.py
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI AMD RDNA2 Override
+DESCRIPTION: Launches ComfyUI with a specific HSA_OVERRIDE_GFX_VERSION for AMD RDNA2 or older cards (like 6700, 6600) to potentially resolve compatibility issues.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_13
+
+LANGUAGE: Shell
+CODE:
+```
+HSA_OVERRIDE_GFX_VERSION=10.3.0 python main.py
+```
+
+----------------------------------------
+
+TITLE: Launch ComfyUI with Legacy Frontend
+DESCRIPTION: Use this command-line argument to launch ComfyUI using a snapshot of the older, legacy frontend preserved in a separate repository.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/README.md#_snippet_24
+
+LANGUAGE: Shell
+CODE:
+```
+--front-end-version Comfy-Org/ComfyUI_legacy_frontend@latest
+```
+
+----------------------------------------
+
+TITLE: Include Pytest Aiohttp Plugin - Python
+DESCRIPTION: Includes the pytest-aiohttp plugin, which provides fixtures and helpers for testing applications built with the aiohttp library.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests-unit/requirements.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+pytest-aiohttp
+```
+
+----------------------------------------
+
+TITLE: Include Pytest Asyncio Plugin - Python
+DESCRIPTION: Includes the pytest-asyncio plugin, which enables writing tests for asyncio-based code using pytest fixtures and markers.
+SOURCE: https://github.com/comfyanonymous/comfyui/blob/master/tests-unit/requirements.txt#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+pytest-asyncio
+```

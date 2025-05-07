@@ -1,0 +1,435 @@
+TITLE: Correcting apt-get Permission Error with The Fuck (Interactive)
+DESCRIPTION: Demonstrates using The Fuck to automatically correct a 'Permission denied' error when running `apt-get install` without sudo, suggesting the correct command with elevated privileges. The user confirms the suggested command.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+➜ apt-get install vim
+E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+
+➜ fuck
+sudo apt-get install vim [enter/↑/↓/ctrl+c]
+[sudo] password for nvbn:
+Reading package lists... Done
+...
+```
+
+----------------------------------------
+
+TITLE: Setting The Fuck Default Shell Alias
+DESCRIPTION: Command recommended for shell startup scripts (.bashrc, .zshrc) to define the `fuck` alias, enabling easy access to the correction tool.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_12
+
+LANGUAGE: bash
+CODE:
+```
+eval $(thefuck --alias)
+```
+
+----------------------------------------
+
+TITLE: Correcting Git Command Typo with The Fuck (Interactive)
+DESCRIPTION: Demonstrates The Fuck identifying and correcting a typo within a git command (`git brnch` instead of `git branch`), suggesting the correct syntax for execution.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+➜ git brnch
+git: 'brnch' is not a git command. See 'git --help'.
+
+Did you mean this?
+    branch
+
+➜ fuck
+git branch [enter/↑/↓/ctrl+c]
+* master
+```
+
+----------------------------------------
+
+TITLE: Correcting Command Not Found Typo with The Fuck (Interactive)
+DESCRIPTION: Illustrates The Fuck correcting a simple command typo (`puthon` instead of `python`), finding the correct command, and allowing the user to execute it.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+➜ puthon
+No command 'puthon' found, did you mean:
+ Command 'python' from package 'python-minimal' (main)
+ Command 'python' from package 'python3' (main)
+zsh: command not found: puthon
+
+➜ fuck
+python [enter/↑/↓/ctrl+c]
+Python 3.4.2 (default, Oct  8 2014, 13:08:17)
+...
+```
+
+----------------------------------------
+
+TITLE: Correcting Git Push Upstream Error with The Fuck (Interactive)
+DESCRIPTION: Shows how The Fuck fixes a common 'no upstream branch' error when using `git push`, suggesting the appropriate `git push --set-upstream` command. The user confirms the correction.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+➜ git push
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin master
+
+
+➜ fuck
+git push --set-upstream origin master [enter/↑/↓/ctrl+c]
+Counting objects: 9, done.
+...
+```
+
+----------------------------------------
+
+TITLE: Applying Shell Alias Changes Immediately
+DESCRIPTION: Standard shell command to reload the configuration file (like .bashrc or .zshrc), making newly added aliases available in the current session without restarting the shell.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_14
+
+LANGUAGE: bash
+CODE:
+```
+source ~/.bashrc
+```
+
+----------------------------------------
+
+TITLE: Installing The Fuck via pip (Generic)
+DESCRIPTION: Provides the general command to install The Fuck using the pip package installer, suitable for systems not covered by specific package managers.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_11
+
+LANGUAGE: bash
+CODE:
+```
+pip install thefuck
+```
+
+----------------------------------------
+
+TITLE: Correcting Lein Command Typo with The Fuck (Interactive)
+DESCRIPTION: Shows The Fuck correcting a typo in a Leiningen command (`lein rpl` instead of `lein repl`), identifying the correct task and allowing the user to run it.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+➜ lein rpl
+'rpl' is not a task. See 'lein help'.
+
+Did you mean this?
+         repl
+
+➜ fuck
+lein repl [enter/↑/↓/ctrl+c]
+nREPL server started on port 54848 on host 127.0.0.1 - nrepl://127.0.0.1:54848
+REPL-y 0.3.1
+...
+```
+
+----------------------------------------
+
+TITLE: Installing The Fuck on Ubuntu / Mint
+DESCRIPTION: Provides the sequence of commands to install The Fuck on Ubuntu or Mint distributions, including updating packages, installing prerequisites, and using pip3.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt update
+sudo apt install python3-dev python3-pip python3-setuptools
+pip3 install thefuck --user
+```
+
+----------------------------------------
+
+TITLE: Correcting apt-get Permission Error with The Fuck (Non-interactive)
+DESCRIPTION: Demonstrates using The Fuck in non-interactive mode (with `--yeah` implied by text context or disabled confirmation setting) to automatically fix a permission denied error requiring sudo.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+➜ apt-get install vim
+E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+
+➜ fuck
+sudo apt-get install vim
+[sudo] password for nvbn:
+Reading package lists... Done
+...
+```
+
+----------------------------------------
+
+TITLE: Example Sudo Rule Definition (Python)
+DESCRIPTION: This example rule checks for 'permission denied' or 'EACCES' in the command output and prepends 'sudo' to the command script. It includes optional settings like enabling by default, setting a priority, and requiring command output for the match function. A side effect is shown that changes file permissions.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_19
+
+LANGUAGE: Python
+CODE:
+```
+def match(command):
+    return ('permission denied' in command.output.lower()
+            or 'EACCES' in command.output)
+
+def get_new_command(command):
+    return 'sudo {}'.format(command.script)
+
+# Optional:
+enabled_by_default = True
+
+def side_effect(command, fixed_command):
+    subprocess.call('chmod 777 .', shell=True)
+
+priority = 1000  # Lower first, default is 1000
+
+requires_output = True
+```
+
+----------------------------------------
+
+TITLE: Installing The Fuck via Homebrew
+DESCRIPTION: Provides the command to install The Fuck using the Homebrew package manager on macOS or Linux.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+brew install thefuck
+```
+
+----------------------------------------
+
+TITLE: Updating The Fuck via pip3
+DESCRIPTION: Provides the command to update The Fuck using the pip3 package installer, ensuring you have the latest version.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_17
+
+LANGUAGE: bash
+CODE:
+```
+pip3 install thefuck --upgrade
+```
+
+----------------------------------------
+
+TITLE: Installing The Fuck on Arch based systems
+DESCRIPTION: Provides the command to install The Fuck using the pacman package manager on Arch Linux and Arch-based systems.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+sudo pacman -S thefuck
+```
+
+----------------------------------------
+
+TITLE: Installing The Fuck on FreeBSD
+DESCRIPTION: Provides the command to install The Fuck using the pkg package manager on FreeBSD.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+pkg install thefuck
+```
+
+----------------------------------------
+
+TITLE: Example The Fuck Settings File (Python)
+DESCRIPTION: This snippet provides an example of a settings.py configuration file. It shows how to set various parameters like the list of enabled rules, excluded rules, confirmation requirement, command wait times, priority mappings, history limits, slow command lists, and the number of close matches suggested.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_20
+
+LANGUAGE: Python
+CODE:
+```
+rules = ['sudo', 'no_command']
+exclude_rules = ['git_push']
+require_confirmation = True
+wait_command = 10
+no_colors = False
+priority = {'sudo': 100, 'no_command': 9999}
+debug = False
+history_limit = 9999
+wait_slow_command = 20
+slow_commands = ['react-native', 'gradle']
+num_close_matches = 5
+```
+
+----------------------------------------
+
+TITLE: Installing The Fuck on ChromeOS
+DESCRIPTION: Provides the command to install The Fuck using the chromebrew package manager on ChromeOS.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+crew install thefuck
+```
+
+----------------------------------------
+
+TITLE: Configuring The Fuck Settings via Environment Variables (Bash)
+DESCRIPTION: This snippet demonstrates how to configure The Fuck settings using environment variables in Bash. It shows examples for setting enabled/excluded rules (THEFUCK_RULES, THEFUCK_EXCLUDE_RULES), confirmation requirement (THEFUCK_REQUIRE_CONFIRMATION), command wait time (THEFUCK_WAIT_COMMAND), color options (THEFUCK_NO_COLORS), rule priorities (THEFUCK_PRIORITY), history scanning limit (THEFUCK_HISTORY_LIMIT), and the number of close match suggestions (THEFUCK_NUM_CLOSE_MATCHES).
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_21
+
+LANGUAGE: Bash
+CODE:
+```
+export THEFUCK_RULES='sudo:no_command'
+export THEFUCK_EXCLUDE_RULES='git_pull:git_push'
+export THEFUCK_REQUIRE_CONFIRMATION='true'
+export THEFUCK_WAIT_COMMAND=10
+export THEFUCK_NO_COLORS='false'
+export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
+export THEFUCK_HISTORY_LIMIT='2000'
+export THEFUCK_NUM_CLOSE_MATCHES='5'
+```
+
+----------------------------------------
+
+TITLE: Enable Experimental Instant Mode Alias - Bash
+DESCRIPTION: This snippet provides the bash command used to initialize the 'thefuck' alias in a shell configuration file (like .bashrc or .zshrc) with the experimental instant mode enabled. The `eval` command executes the output of `thefuck --alias --enable-experimental-instant-mode`, which sets up the necessary shell function for the alias.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_22
+
+LANGUAGE: bash
+CODE:
+```
+eval $(thefuck --alias --enable-experimental-instant-mode)
+```
+
+----------------------------------------
+
+TITLE: Setting The Fuck Custom Shell Alias
+DESCRIPTION: Example demonstrating how to set a custom alias (like `FUCK`) for The Fuck using the `--alias` option in shell startup scripts.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_13
+
+LANGUAGE: bash
+CODE:
+```
+eval $(thefuck --alias FUCK)
+```
+
+----------------------------------------
+
+TITLE: Defining The Fuck Rule Functions (Python)
+DESCRIPTION: This snippet shows the function signatures required for custom rules in 'The Fuck'. 'match' determines if the rule applies to a command, 'get_new_command' provides the corrected command, and 'side_effect' is an optional function for performing actions after the correction.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_18
+
+LANGUAGE: Python
+CODE:
+```
+match(command: Command) -> bool
+get_new_command(command: Command) -> str | list[str]
+side_effect(old_command: Command, fixed_command: str) -> None
+```
+
+----------------------------------------
+
+TITLE: Running The Fuck Without Confirmation (--yeah)
+DESCRIPTION: Provides the command to execute The Fuck and automatically run the suggested correction without requiring user confirmation.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_15
+
+LANGUAGE: bash
+CODE:
+```
+fuck --yeah
+```
+
+----------------------------------------
+
+TITLE: Running The Fuck Recursively (-r)
+DESCRIPTION: Provides the command to execute The Fuck with the recursive option, which attempts to fix commands repeatedly until successful.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/README.md#_snippet_16
+
+LANGUAGE: bash
+CODE:
+```
+fuck -r
+```
+
+----------------------------------------
+
+TITLE: Install Development Dependencies Bash
+DESCRIPTION: Installs project dependencies from requirements.txt and sets up the project for development using Python's setup.py develop command.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/CONTRIBUTING.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+pip install -r requirements.txt
+python setup.py develop
+```
+
+----------------------------------------
+
+TITLE: Run Unit and Functional Tests Bash
+DESCRIPTION: Runs both unit and functional tests using pytest, requiring Docker for functional tests.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/CONTRIBUTING.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+pytest --enable-functional
+```
+
+----------------------------------------
+
+TITLE: Run Unit Tests Bash
+DESCRIPTION: Runs the project's unit tests using the pytest framework.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/CONTRIBUTING.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+pytest
+```
+
+----------------------------------------
+
+TITLE: Run Code Style Checks Bash
+DESCRIPTION: Executes the flake8 tool to check Python code against style guides and best practices.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/CONTRIBUTING.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+flake8
+```
+
+----------------------------------------
+
+TITLE: Install pandoc via apt-get Bash
+DESCRIPTION: Installs the pandoc document converter utility using the apt-get package manager, typically required for building documentation or packaging.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/CONTRIBUTING.md#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt-get install pandoc
+```
+
+----------------------------------------
+
+TITLE: Run Release Script Bash
+DESCRIPTION: Executes the project's release script, likely used for preparing and publishing new versions.
+SOURCE: https://github.com/nvbn/thefuck/blob/master/CONTRIBUTING.md#_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+./release.py
+```

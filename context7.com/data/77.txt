@@ -1,0 +1,1544 @@
+TITLE: Importing Manim Library (Python)
+DESCRIPTION: This Python line imports all components from the `manimlib` library. This provides access to classes like `Scene`, `Circle`, `Square`, and various animation types needed for creating Manim videos.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+from manimlib import *
+```
+
+----------------------------------------
+
+TITLE: Defining Manim Scene Class (Python)
+DESCRIPTION: This Python line defines a new class `SquareToCircle` that inherits from Manim's base `Scene` class. Custom scenes must inherit from `Scene` to provide the necessary structure for Manim rendering.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+class SquareToCircle(Scene):
+```
+
+----------------------------------------
+
+TITLE: Defining Manim Scene Construction Method (Python)
+DESCRIPTION: This Python code defines the `construct` method within the scene class. This method is where the user defines the sequence of operations, such as creating mobjects, applying transformations, and playing animations, that constitute the scene's content.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_5
+
+LANGUAGE: python
+CODE:
+```
+def construct(self):
+```
+
+----------------------------------------
+
+TITLE: Creating a Basic Manim Scene (Python)
+DESCRIPTION: Defines a basic Manim scene class `SquareToCircle` with a `construct` method. Inside `construct`, it creates a blue circle, sets its fill and stroke properties, and adds it to the scene. This serves as a minimal example for generating a static visual output.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+from manimlib import *
+
+class SquareToCircle(Scene):
+    def construct(self):
+        circle = Circle()
+        circle.set_fill(BLUE, opacity=0.5)
+        circle.set_stroke(BLUE_E, width=4)
+
+        self.add(circle)
+```
+
+----------------------------------------
+
+TITLE: Adding Mobject to Manim Scene (Python)
+DESCRIPTION: This Python line adds the previously created `circle` mobject to the scene. Mobjects must be added to the scene using `self.add()` or via animation methods like `self.play()` to become visible during rendering.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_8
+
+LANGUAGE: python
+CODE:
+```
+self.add(circle)
+```
+
+----------------------------------------
+
+TITLE: Setting Mobject Fill and Stroke Styles (Python)
+DESCRIPTION: These Python lines demonstrate setting the visual appearance of the `circle` mobject. `set_fill` applies a blue color with 0.5 opacity, while `set_stroke` sets a dark blue border with a width of 4.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_7
+
+LANGUAGE: python
+CODE:
+```
+circle.set_fill(BLUE, opacity=0.5)
+circle.set_stroke(BLUE_E, width=4)
+```
+
+----------------------------------------
+
+TITLE: Running Manim Scene using CLI (sh)
+DESCRIPTION: Demonstrates the basic command structure for executing a Manim scene from the command line. It requires specifying the Python file containing the scene, the name of the Scene class to render, and optional command-line flags to control rendering behavior.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/configuration.rst#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+manimgl <code>.py <Scene> <flags>
+```
+
+LANGUAGE: sh
+CODE:
+```
+manim-render <code>.py <Scene> <flags>
+```
+
+----------------------------------------
+
+TITLE: Rendering Manim Scene to Video File (Shell)
+DESCRIPTION: This shell command renders the animated `SquareToCircle` scene to a video file. The `-o` flag triggers offline rendering to the `videos/` directory, automatically opening the resulting video upon completion.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_11
+
+LANGUAGE: sh
+CODE:
+```
+manimgl start.py SquareToCircle -o
+```
+
+----------------------------------------
+
+TITLE: Rendering Manim Scene to Image File (Shell)
+DESCRIPTION: This shell command renders the `SquareToCircle` scene to an image file. The `-os` flag ensures that the scene is rendered offline to the `images/` directory without displaying the interactive window.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+manimgl start.py SquareToCircle -os
+```
+
+----------------------------------------
+
+TITLE: Rendering Basic Manim Scene (Image, Shell)
+DESCRIPTION: This shell command executes the Manim scene defined in `start.py`. It uses `manimgl` to run the specified `SquareToCircle` scene, which typically opens an interactive preview window.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+manimgl start.py SquareToCircle
+```
+
+----------------------------------------
+
+TITLE: Using Text Mobject in Manim (Python)
+DESCRIPTION: This scene demonstrates how to create and style text using the `Text` mobject in Manim. It shows setting fonts, sizes, applying colors to specific words or characters using `t2c`, and setting font styles like slant (`t2s`) and weight (`t2w`). It also illustrates combining multiple mobjects using `VGroup` and arranging them, and animating their appearance/disappearance with `Write`, `FadeIn`, and `FadeOut`.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+class TextExample(Scene):
+    def construct(self):
+        # To run this scene properly, you should have "Consolas" font in your computer
+        # for full usage, you can see https://github.com/3b1b/manim/pull/680
+        text = Text("Here is a text", font="Consolas", font_size=90)
+        difference = Text(
+            """
+            The most important difference between Text and TexText is that\n
+            you can change the font more easily, but can't use the LaTeX grammar
+            """,
+            font="Arial", font_size=24,
+            # t2c is a dict that you can choose color for different text
+            t2c={"Text": BLUE, "TexText": BLUE, "LaTeX": ORANGE}
+        )
+        VGroup(text, difference).arrange(DOWN, buff=1)
+        self.play(Write(text))
+        self.play(FadeIn(difference, UP))
+        self.wait(3)
+
+        fonts = Text(
+            "And you can also set the font according to different words",
+            font="Arial",
+            t2f={"font": "Consolas", "words": "Consolas"},
+            t2c={"font": BLUE, "words": GREEN}
+        )
+        fonts.set_width(FRAME_WIDTH - 1)
+        slant = Text(
+            "And the same as slant and weight",
+            font="Consolas",
+            t2s={"slant": ITALIC},
+            t2w={"weight": BOLD},
+            t2c={"slant": ORANGE, "weight": RED}
+        )
+        VGroup(fonts, slant).arrange(DOWN, buff=0.8)
+        self.play(FadeOut(text), FadeOut(difference, shift=DOWN))
+        self.play(Write(fonts))
+        self.wait()
+        self.play(Write(slant))
+        self.wait()
+```
+
+----------------------------------------
+
+TITLE: Running Interactive Manim Scene (Python)
+DESCRIPTION: This scene demonstrates Manim's interactive development features. It creates and animates shapes, then utilizes `self.embed()` to open an interactive iPython shell allowing direct manipulation of objects and execution of commands within the scene context. It also shows how to make an object follow the mouse.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+from manimlib import *
+
+class InteractiveDevelopment(Scene):
+    def construct(self):
+        circle = Circle()
+        circle.set_fill(BLUE, opacity=0.5)
+        circle.set_stroke(BLUE_E, width=4)
+        square = Square()
+
+        self.play(ShowCreation(square))
+        self.wait()
+
+        # This opens an iPython terminal where you can keep writing
+        # lines as if they were part of this construct method.
+        # In particular, 'square', 'circle' and 'self' will all be
+        # part of the local namespace in that terminal.
+        self.embed()
+
+        # Try copying and pasting some of the lines below into
+        # the interactive shell
+        self.play(ReplacementTransform(square, circle))
+        self.wait()
+        self.play(circle.animate.stretch(4, 0))
+        self.play(Rotate(circle, 90 * DEG))
+        self.play(circle.animate.shift(2 * RIGHT).scale(0.25))
+
+        text = Text("""
+            In general, using the interactive shell
+            is very helpful when developing new scenes
+        """)
+        self.play(Write(text))
+
+        # In the interactive shell, you can just type
+        # play, add, remove, clear, wait, save_state and restore,
+        # instead of self.play, self.add, self.remove, etc.
+
+        # To interact with the window, type touch().  You can then
+        # scroll in the window, or zoom by holding down 'z' while scrolling,
+        # and change camera perspective by holding down 'd' while moving
+        # the mouse.  Press 'r' to reset to the standard camera position.
+        # Press 'q' to stop interacting with the window and go back to
+        # typing new commands into the shell.
+
+        # In principle you can customize a scene to be responsive to
+        # mouse and keyboard interactions
+        always(circle.move_to, self.mouse_point)
+```
+
+----------------------------------------
+
+TITLE: Using Standard Updaters (always_redraw, always, f_always) in Manim (Python)
+DESCRIPTION: Demonstrates how to keep mobjects dynamically updated based on other objects using Manim's built-in updater functions. always_redraw recreates an object every frame, always calls a method with fixed arguments, and f_always calls a method with arguments derived from function calls, showing how a brace and text label track a square's position and width.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_7
+
+LANGUAGE: Python
+CODE:
+```
+class UpdatersExample(Scene):
+    def construct(self):
+        square = Square()
+        square.set_fill(BLUE_E, 1)
+
+        # On all all frames, the constructor Brace(square, UP) will
+        # be called, and the mobject brace will set its data to match
+        # that of the newly constructed object
+        brace = always_redraw(Brace, square, UP)
+
+        text, number = label = VGroup(
+            Text("Width = "),
+            DecimalNumber(
+                0,
+                show_ellipsis=True,
+                num_decimal_places=2,
+                include_sign=True,
+            )
+        )
+        label.arrange(RIGHT)
+
+        # This ensures that the method deicmal.next_to(square)
+        # is called on every frame
+        always(label.next_to, brace, UP)
+        # You could also write the following equivalent line
+        # label.add_updater(lambda m: m.next_to(brace, UP))
+
+        # If the argument itself might change, you can use f_always,
+        # for which the arguments following the initial Mobject method
+        # should be functions returning arguments to that method.
+        # The following line ensures that decimal.set_value(square.get_y())
+        # is called every frame
+        f_always(number.set_value, square.get_width)
+        # You could also write the following equivalent line
+        # number.add_updater(lambda m: m.set_value(square.get_width()))
+
+        self.add(square, brace, label)
+
+        # Notice that the brace and label track with the square
+        self.play(
+            square.animate.scale(2),
+            rate_func=there_and_back,
+            run_time=2,
+        )
+        self.wait()
+        self.play(
+            square.animate.set_width(5, stretch=True),
+            run_time=3,
+        )
+        self.wait()
+        self.play(
+            square.animate.set_width(2),
+            run_time=3
+        )
+        self.wait()
+```
+
+----------------------------------------
+
+TITLE: Animating Mobject Methods in Manim (Python)
+DESCRIPTION: This scene demonstrates various ways to animate method calls on Manim mobjects. It shows the modern `.animate` syntax for transforming objects (shifting, coloring, resizing, applying complex functions) and compares it with the older method-passing syntax within `self.play`. It highlights how both approaches interpolate the mobject's state during the animation.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+class AnimatingMethods(Scene):
+    def construct(self):
+        grid = OldTex(r"\pi").get_grid(10, 10, height=4)
+        self.add(grid)
+
+        # You can animate the application of mobject methods with the
+        # ".animate" syntax:
+        self.play(grid.animate.shift(LEFT))
+
+        # Alternatively, you can use the older syntax by passing the
+        # method and then the arguments to the scene's "play" function:
+        self.play(grid.shift, LEFT)
+
+        # Both of those will interpolate between the mobject's initial
+        # state and whatever happens when you apply that method.
+        # For this example, calling grid.shift(LEFT) would shift the
+        # grid one unit to the left, but both of the previous calls to
+        # "self.play" animate that motion.
+
+        # The same applies for any method, including those setting colors.
+        self.play(grid.animate.set_color(YELLOW))
+        self.wait()
+        self.play(grid.animate.set_submobject_colors_by_gradient(BLUE, GREEN))
+        self.wait()
+        self.play(grid.animate.set_height(TAU - MED_SMALL_BUFF))
+        self.wait()
+
+        # The method Mobject.apply_complex_function lets you apply arbitrary
+        # complex functions, treating the points defining the mobject as
+        # complex numbers.
+        self.play(grid.animate.apply_complex_function(np.exp), run_time=5)
+        self.wait()
+
+        # Even more generally, you could apply Mobject.apply_function,
+        # which takes in functions form R^3 to R^3
+        self.play(
+            grid.animate.apply_function(
+                lambda p: [
+                    p[0] + 0.5 * math.sin(p[1]),
+                    p[1] + 0.5 * math.sin(p[0]),
+                    p[2]
+                ]
+            ),
+            run_time=5,
+        )
+        self.wait()
+```
+
+----------------------------------------
+
+TITLE: Creating and Labeling Axes in Manim Coordinate System (Python)
+DESCRIPTION: Demonstrates how to initialize an Axes object, configuring its ranges, dimensions, and appearance using axis_config and y_axis_config. It also shows how to automatically add coordinate labels to the axes using add_coordinate_labels with font size and decimal precision settings.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_9
+
+LANGUAGE: Python
+CODE:
+```
+class CoordinateSystemExample(Scene):
+    def construct(self):
+        axes = Axes(
+            # x-axis ranges from -1 to 10, with a default step size of 1
+            x_range=(-1, 10),
+            # y-axis ranges from -2 to 2 with a step size of 0.5
+            y_range=(-2, 2, 0.5),
+            # The axes will be stretched so as to match the specified
+            # height and width
+            height=6,
+            width=10,
+            # Axes is made of two NumberLine mobjects.  You can specify
+            # their configuration with axis_config
+            axis_config={
+                "stroke_color": GREY_A,
+                "stroke_width": 2,
+            },
+            # Alternatively, you can specify configuration for just one
+            # of them, like this.
+            y_axis_config={
+                "include_tip": False,
+            }
+        )
+        # Keyword arguments of add_coordinate_labels can be used to
+        # configure the DecimalNumber mobjects which it creates and
+        # adds to the axes
+        axes.add_coordinate_labels(
+            font_size=20,
+            num_decimal_places=1,
+        )
+        self.add(axes)
+```
+
+----------------------------------------
+
+TITLE: Generating Function Graphs in Manim GraphExample
+DESCRIPTION: Demonstrates how to generate graphs of different functions using `axes.get_graph`. It shows examples for a smooth function (sin), a function with a corner (ReLU, using `use_smoothing=False`), and a discontinuous function (step, specifying `discontinuities`).
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_14
+
+LANGUAGE: Python
+CODE:
+```
+sin_graph = axes.get_graph(
+    lambda x: 2 * math.sin(x),
+    color=BLUE,
+)
+relu_graph = axes.get_graph(
+    lambda x: max(x, 0),
+    use_smoothing=False,
+    color=YELLOW,
+)
+step_graph = axes.get_graph(
+    lambda x: 2.0 if x > 3 else 1.0,
+    discontinuities=[3],
+    color=GREEN,
+)
+```
+
+----------------------------------------
+
+TITLE: Animating Dot Movement with ValueTracker and f_always in Manim
+DESCRIPTION: Introduces `ValueTracker` to track a numerical value (here, the x-coordinate). It uses `f_always` to link the dot's position to the current value of the `x_tracker` and the `parabola` graph via `axes.i2gp`, ensuring the dot stays on the graph as the value changes.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_19
+
+LANGUAGE: Python
+CODE:
+```
+x_tracker = ValueTracker(2)
+f_always(
+    dot.move_to,
+    lambda: axes.i2gp(x_tracker.get_value(), parabola)
+)
+```
+
+----------------------------------------
+
+TITLE: Creating and Writing Axes in Manim GraphExample
+DESCRIPTION: Initializes an Axes object with specified ranges for the x and y axes. Coordinate labels are added, and then the creation of the axes is animated using the `Write` function.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_13
+
+LANGUAGE: Python
+CODE:
+```
+axes = Axes((-3, 10), (-1, 8))
+axes.add_coordinate_labels()
+
+self.play(Write(axes, lag_ratio=0.01, run_time=1))
+```
+
+----------------------------------------
+
+TITLE: Creating Tracking Lines in Manim Coordinate System with always_redraw (Python)
+DESCRIPTION: Illustrates how to create horizontal and vertical lines extending from the axes to a specific point's position using axes.get_h_line and axes.get_v_line. By wrapping these calls in always_redraw, the lines automatically update and follow the point as it moves within the coordinate system.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_11
+
+LANGUAGE: Python
+CODE:
+```
+# We can draw lines from the axes to better mark the coordinates
+# of a given point.
+# Here, the always_redraw command means that on each new frame
+# the lines will be redrawn
+h_line = always_redraw(lambda: axes.get_h_line(dot.get_left()))
+v_line = always_redraw(lambda: axes.get_v_line(dot.get_bottom()))
+
+self.play(
+    ShowCreation(h_line),
+    ShowCreation(v_line),
+)
+self.play(dot.animate.move_to(axes.c2p(3, -2)))
+self.wait()
+self.play(dot.animate.move_to(axes.c2p(1, 1)))
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Examples of Interactive Manim Commands (Python)
+DESCRIPTION: These Python commands are examples for use in Manim's interactive mode. They show how to apply various transformations (`stretch`, `Rotate`, `shift`, `scale`, `apply_complex_function`) to an existing mobject (`circle`) and control the interactive session (`exit`). `play` is an alias for `self.play` in this mode.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_13
+
+LANGUAGE: python
+CODE:
+```
+# Stretched 4 times in the vertical direction
+play(circle.animate.stretch(4, dim=0))
+# Rotate the ellipse 90°
+play(Rotate(circle, TAU / 4))
+# Move 2 units to the right and shrink to 1/4 of the original
+play(circle.animate.shift(2 * RIGHT), circle.animate.scale(0.25))
+# Insert 10 curves into circle for non-linear transformation (no animation will play)
+circle.insert_n_curves(10)
+# Apply a complex transformation of f(z)=z^2 to all points on the circle
+play(circle.animate.apply_complex_function(lambda z: z**2))
+# Close the window and exit the program
+exit()
+```
+
+----------------------------------------
+
+TITLE: Creating Manim Scene with Animations (Python)
+DESCRIPTION: This Python scene extends the basic example by adding animation. It creates both a square and a circle, then uses `self.play` and `self.wait` to animate the creation of the square and its transformation into the circle with pauses in between.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_9
+
+LANGUAGE: python
+CODE:
+```
+from manimlib import *
+
+class SquareToCircle(Scene):
+    def construct(self):
+        circle = Circle()
+        circle.set_fill(BLUE, opacity=0.5)
+        circle.set_stroke(BLUE_E, width=4)
+        square = Square()
+
+        self.play(ShowCreation(square))
+        self.wait()
+        self.play(ReplacementTransform(square, circle))
+        self.wait()
+```
+
+----------------------------------------
+
+TITLE: Installing Manim in Anaconda Environment Shell
+DESCRIPTION: Clones the Manim repository, changes into the directory, creates a new Conda environment named 'manim' with Python 3.8, activates the environment, and installs the Manim dependencies in editable mode using pip. Requires Conda to be installed.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/installation.rst#_snippet_5
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/3b1b/manim.git
+cd manim
+conda create -n manim python=3.8
+conda activate manim
+pip install -e .
+```
+
+----------------------------------------
+
+TITLE: Cloning and Installing Manim on Windows Shell
+DESCRIPTION: Clones the Manim repository from GitHub, changes the current directory to the newly created 'manim' folder, installs the dependencies in editable mode using pip, and runs an example scene. This assumes Git and Python with pip are installed.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/installation.rst#_snippet_4
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/3b1b/manim.git
+cd manim
+pip install -e .
+manimgl example_scenes.py OpeningManimExample
+```
+
+----------------------------------------
+
+TITLE: Cloning Manim Repository (sh)
+DESCRIPTION: This snippet provides the command to clone the Manim project repository from GitHub. It includes options for cloning the official repository or a personal fork, followed by changing the current directory into the cloned repository.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/development/contributing.rst#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/3b1b/manim.git
+# or your own repo
+# git clone https://github/<your user name>/manim.git
+cd manim
+```
+
+----------------------------------------
+
+TITLE: Installing and Running Manim from Source Shell
+DESCRIPTION: Installs Manim's Python dependencies in editable mode ('-e') from the current directory. The following lines provide example commands to render a scene using either 'manimgl' or 'manim-render'. This is typically used after cloning the Manim repository.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/installation.rst#_snippet_3
+
+LANGUAGE: sh
+CODE:
+```
+# Install python requirements
+pip install -e .
+
+# Try it out
+manimgl example_scenes.py OpeningManimExample
+# or
+manim-render example_scenes.py OpeningManimExample
+```
+
+----------------------------------------
+
+TITLE: Installing FFmpeg Linux Shell
+DESCRIPTION: Updates the package lists, installs the FFmpeg package using apt, and then verifies the installation by checking the installed version. Requires root or sudo privileges.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/installation.rst#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+$ sudo apt update
+$ sudo apt install ffmpeg
+$ ffmpeg -version
+```
+
+----------------------------------------
+
+TITLE: Installing FFmpeg Windows CMD
+DESCRIPTION: Installs the FFmpeg dependency on Windows using the Chocolatey package manager. This command assumes Chocolatey is already installed and configured on the system.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/installation.rst#_snippet_0
+
+LANGUAGE: cmd
+CODE:
+```
+choco install ffmpeg
+```
+
+----------------------------------------
+
+TITLE: Installing Manim Documentation Dependencies (sh)
+DESCRIPTION: This command installs the Python package dependencies required to build the Manim documentation. It uses pip and specifies the requirements.txt file located within the docs/ directory.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/development/contributing.rst#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+pip install -r docs/requirements.txt
+```
+
+----------------------------------------
+
+TITLE: Creating a Circle Mobject (Python)
+DESCRIPTION: This Python line creates an instance of the `Circle` class, which represents a circle mobject in Manim. The instance is assigned to the variable `circle` for later manipulation.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_6
+
+LANGUAGE: python
+CODE:
+```
+circle = Circle()
+```
+
+----------------------------------------
+
+TITLE: Creating Graph Labels in Manim GraphExample
+DESCRIPTION: Illustrates how to create labels for generated graphs using `axes.get_graph_label`. Labels can be LaTeX strings or Text mobjects. The position can be automatically determined or explicitly set using `x`.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_15
+
+LANGUAGE: Python
+CODE:
+```
+sin_label = axes.get_graph_label(sin_graph, "\\sin(x)")
+relu_label = axes.get_graph_label(relu_graph, Text("ReLU"))
+step_label = axes.get_graph_label(step_graph, Text("Step"), x=4)
+```
+
+----------------------------------------
+
+TITLE: Creating Intro Text and Writing in Manim
+DESCRIPTION: Creates a multi-line `Text` mobject containing introductory words and positions it at the top edge of the screen. The `Write` animation is used to make the text appear letter by letter.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_31
+
+LANGUAGE: Python
+CODE:
+```
+intro_words = Text("""
+    The original motivation for manim was to
+    better illustrate mathematical functions
+    as transformations.
+""")
+intro_words.to_edge(UP)
+
+self.play(Write(intro_words))
+self.wait(2)
+```
+
+----------------------------------------
+
+TITLE: Transforming LaTeX Expressions in Manim (Python)
+DESCRIPTION: This scene demonstrates how to create LaTeX expressions using `OldTex` (or `Tex`) and animate transformations between them using `TransformMatchingTex`. It shows how to structure the `Tex` mobject using multiple arguments or the `isolate` parameter to control which parts become submobjects, enabling precise control over coloring and how `TransformMatchingTex` matches corresponding elements during the animation.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_3
+
+LANGUAGE: Python
+CODE:
+```
+class TexTransformExample(Scene):
+    def construct(self):
+        to_isolate = ["B", "C", "=", "(", ")"]
+        lines = VGroup(
+            # Passing in muliple arguments to Tex will result
+            # in the same expression as if those arguments had
+            # been joined together, except that the submobject
+            # hierarchy of the resulting mobject ensure that the
+            # Tex mobject has a subject corresponding to
+            # each of these strings.  For example, the Tex mobject
+            # below will have 5 subjects, corresponding to the
+            # expressions [A^2, +, B^2, =, C^2]
+            OldTex("A^2", "+", "B^2", "=", "C^2"),
+            # Likewise here
+            OldTex("A^2", "=", "C^2", "-", "B^2"),
+            # Alternatively, you can pass in the keyword argument
+            # "isolate" with a list of strings that should be out as
+            # their own submobject.  So the line below is equivalent
+            # to the commented out line below it.
+            OldTex("A^2 = (C + B)(C - B)", isolate=["A^2", *to_isolate]),
+            # OldTex("A^2", "=", "(", "C", "+", "B", ")", "(", "C", "-", "B", ")"),
+            OldTex("A = \\sqrt{(C + B)(C - B)}", isolate=["A", *to_isolate])
+        )
+        lines.arrange(DOWN, buff=LARGE_BUFF)
+        for line in lines:
+            line.set_color_by_tex_to_color_map({
+                "A": BLUE,
+                "B": TEAL,
+                "C": GREEN,
+            })
+
+        play_kw = {"run_time": 2}
+        self.add(lines[0])
+        # The animation TransformMatchingTex will line up parts
+        # of the source and target which have matching tex strings.
+        # Here, giving it a little path_arc makes each part sort of
+        # rotate into their final positions, which feels appropriate
+        # for the idea of rearranging an equation
+        self.play(
+            TransformMatchingTex(
+                lines[0].copy(), lines[1],
+                path_arc=90 * DEG,
+            ),
+            **play_kw
+        )
+        self.wait()
+```
+
+----------------------------------------
+
+TITLE: Animating Transition to ComplexPlane in Manim
+DESCRIPTION: Animates the transition from the `NumberPlane` to the `ComplexPlane`. The `NumberPlane` fades out, the static `ComplexPlane` is written, the mutable copy fades in, and the linear transform text is transformed into the complex map text.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_36
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    FadeOut(grid),
+    Write(c_grid, run_time=3),
+    FadeIn(moving_c_grid),
+    FadeTransform(linear_transform_words, complex_map_words),
+)
+```
+
+----------------------------------------
+
+TITLE: Mapping Coordinates to Points using Manim Axes (c2p) (Python)
+DESCRIPTION: Shows how to use the coords_to_point method (aliased as c2p) of an Axes object to find the screen position corresponding to mathematical coordinates. It demonstrates moving a Dot mobject to specific points within the coordinate system using c2p.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_10
+
+LANGUAGE: Python
+CODE:
+```
+# Axes descends from the CoordinateSystem class, meaning
+# you can call call axes.coords_to_point, abbreviated to
+# axes.c2p, to associate a set of coordinates with a point,
+# like so:
+dot = Dot(color=RED)
+dot.move_to(axes.c2p(0, 0))
+self.play(FadeIn(dot, scale=0.5))
+self.play(dot.animate.move_to(axes.c2p(3, 2)))
+self.wait()
+self.play(dot.animate.move_to(axes.c2p(5, 0.5)))
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Applying TransformMatchingTex with Key Mapping (Manim, Python)
+DESCRIPTION: Demonstrates using TransformMatchingTex to transform Tex objects, specifically showing how to use a key_map to explicitly link source and target terms that might not match automatically, preventing terms from fading out/in unintentionally.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_4
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    TransformMatchingTex(lines[1].copy(), lines[2]),
+    **play_kw
+)
+self.wait()
+# ...and this looks nice enough, but since there's no tex
+# in lines[2] which matches "C^2" or "B^2", those terms fade
+# out to nothing while the C and B terms fade in from nothing.
+# If, however, we want the C^2 to go to C, and B^2 to go to B,
+# we can specify that with a key map.
+self.play(FadeOut(lines[2]))
+self.play(
+    TransformMatchingTex(
+        lines[1].copy(), lines[2],
+        key_map={
+            "C^2": "C",
+            "B^2": "B",
+        }
+    ),
+    **play_kw
+)
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Adding Custom Updater Function to a Manim Object (Python)
+DESCRIPTION: Shows how to attach a custom function to a mobject using add_updater. The function, executed every frame, takes the mobject (and optionally time delta) as input and can modify its properties. This specific example makes the square's width oscillate based on the scene's time.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_8
+
+LANGUAGE: Python
+CODE:
+```
+# In general, you can alway call Mobject.add_updater, and pass in
+# a function that you want to be called on every frame.  The function
+# should take in either one argument, the mobject, or two arguments,
+# the mobject and the amount of time since the last frame.
+now = self.time
+w0 = square.get_width()
+square.add_updater(
+    lambda m: m.set_width(w0 * math.cos(self.time - now))
+)
+self.wait(4 * PI)
+```
+
+----------------------------------------
+
+TITLE: Transforming Mismatched Tex Terms using TransformMatchingTex (Manim, Python)
+DESCRIPTION: Illustrates the use of transform_mismatches=True in TransformMatchingTex. By isolating parts of the source Tex object (A^2 into A and ^2), the snippet shows how to transform the mismatching part (^2) into the corresponding part in the target Tex (\sqrt) instead of having it fade out.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_5
+
+LANGUAGE: Python
+CODE:
+```
+# And to finish off, a simple TransformMatchingShapes would work
+# just fine.  But perhaps we want that exponent on A^2 to transform into
+# the square root symbol.  At the moment, lines[2] treats the expression
+# A^2 as a unit, so we might create a new version of the same line which
+# separates out just the A.  This way, when TransformMatchingTex lines up
+# all matching parts, the only mismatch will be between the "^2" from
+# new_line2 and the "\sqrt" from the final line.  By passing in,
+# transform_mismatches=True, it will transform this "^2" part into
+# the "\sqrt" part.
+new_line2 = OldTex("A^2 = (C + B)(C - B)", isolate=["A", *to_isolate])
+new_line2.replace(lines[2])
+new_line2.match_style(lines[2])
+
+self.play(
+    TransformMatchingTex(
+        new_line2, lines[3],
+        transform_mismatches=True,
+    ),
+    **play_kw
+)
+self.wait(3)
+self.play(FadeOut(lines, RIGHT))
+```
+
+----------------------------------------
+
+TITLE: Applying TransformMatchingShapes for Text Transformation (Manim, Python)
+DESCRIPTION: Shows how to use TransformMatchingShapes to transform one Text object into another. Unlike TransformMatchingTex, this method attempts to match sub-objects based on their geometric shape rather than their underlying text content or structure, providing a different visual transition effect.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_6
+
+LANGUAGE: Python
+CODE:
+```
+# Alternatively, if you don't want to think about breaking up
+# the tex strings deliberately, you can TransformMatchingShapes,
+# which will try to line up all pieces of a source mobject with
+# those of a target, regardless of the submobject hierarchy in
+# each one, according to whether those pieces have the same
+# shape (as best it can).
+source = Text("the morse code", height=1)
+target = Text("here come dots", height=1)
+
+self.play(Write(source))
+self.wait()
+kw = {"run_time": 3, "path_arc": PI / 2}
+self.play(TransformMatchingShapes(source, target, **kw))
+self.wait()
+self.play(TransformMatchingShapes(target, source, **kw))
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Adding Ambient Camera Rotation in Manim
+DESCRIPTION: Adds an updater function to the camera frame using `frame.add_updater`. This updater function is called on every frame update, causing the camera to continuously increment its `theta` angle, resulting in a smooth, ambient rotation around the scene.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_28
+
+LANGUAGE: Python
+CODE:
+```
+frame.add_updater(lambda m, dt: m.increment_theta(-0.1 * dt))
+```
+
+----------------------------------------
+
+TITLE: Setting Camera Config for 3D Scenes in Manim
+DESCRIPTION: Configures the scene to use a `ThreeDCamera` by setting the `camera_class` in the scene's `CONFIG` dictionary. This is necessary for rendering 3D objects and controlling 3D perspective.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_21
+
+LANGUAGE: Python
+CODE:
+```
+CONFIG = {
+    "camera_class": ThreeDCamera,
+}
+```
+
+----------------------------------------
+
+TITLE: Transforming Between Graphs and Labels in Manim
+DESCRIPTION: Demonstrates animating the transition from one graph and its label to another. `ReplacementTransform` smoothly morphs the shape of the graph, while `FadeTransform` handles the label transition.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_17
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    ReplacementTransform(sin_graph, relu_graph),
+    FadeTransform(sin_label, relu_label),
+)
+self.wait()
+self.play(
+    ReplacementTransform(relu_graph, step_graph),
+    FadeTransform(relu_label, step_label),
+)
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Setting Camera Perspective in Manim 3D Scene
+DESCRIPTION: Accesses the camera's frame and sets its Euler angles (`theta`, `phi`) to define the initial viewing perspective for the 3D scene. This controls the angle and tilt of the camera.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_24
+
+LANGUAGE: Python
+CODE:
+```
+frame = self.camera.frame
+frame.set_euler_angles(
+    theta=-30 * DEG,
+    phi=70 * DEG,
+)
+```
+
+----------------------------------------
+
+TITLE: Creating, Texturing, and Meshing 3D Surfaces in Manim
+DESCRIPTION: Creates various 3D surface mobjects (`Sphere`, `Torus`). It demonstrates texturing surfaces using `TexturedSurface` with image URLs. A mesh is added to each surface using `SurfaceMesh` and styled.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_23
+
+LANGUAGE: Python
+CODE:
+```
+torus1 = Torus(r1=1, r2=1)
+torus2 = Torus(r1=3, r2=1)
+sphere = Sphere(radius=3, resolution=torus1.resolution)
+
+day_texture = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Whole_world_-_land_and_oceans.jpg/1280px-Whole_world_-_land_and_oceans.jpg"
+night_texture = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/The_earth_at_night.jpg/1280px-The_earth_at_night.jpg"
+
+surfaces = [
+    TexturedSurface(surface, day_texture, night_texture)
+    for surface in [sphere, torus1, torus2]
+]
+
+for mob in surfaces:
+    mob.shift(IN)
+    mob.mesh = SurfaceMesh(mob)
+    mob.mesh.set_stroke(BLUE, 1, opacity=0.5)
+```
+
+----------------------------------------
+
+TITLE: Animating ValueTracker to Move Dot on Graph in Manim
+DESCRIPTION: Animates the change in the `x_tracker`'s value. Because the dot's position is linked to the tracker via `f_always`, animating the tracker's value results in the dot smoothly moving along the specified graph.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_20
+
+LANGUAGE: Python
+CODE:
+```
+self.play(x_tracker.animate.set_value(4), run_time=3)
+self.play(x_tracker.animate.set_value(-2), run_time=3)
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Displaying Initial Surface and Mesh in Manim
+DESCRIPTION: Animates the initial appearance of the first surface object (`surface = surfaces[0]`) and its corresponding mesh. `FadeIn` makes the surface appear, and `ShowCreation` animates the drawing of the mesh lines.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_25
+
+LANGUAGE: Python
+CODE:
+```
+surface = surfaces[0]
+
+self.play(
+    FadeIn(surface),
+    ShowCreation(surface.mesh, lag_ratio=0.01, run_time=3),
+)
+```
+
+----------------------------------------
+
+TITLE: Transforming Between Surfaces and Animating Camera in Manim
+DESCRIPTION: Animates the transformation from one surface object to another using `Transform`. Simultaneously, it animates a change in the camera's perspective by incrementing its `phi` and `theta` angles.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_27
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    Transform(surface, surfaces[1]),
+    run_time=3
+)
+
+self.play(
+    Transform(surface, surfaces[2]),
+    frame.animate.increment_phi(-10 * DEG),
+    frame.animate.increment_theta(-20 * DEG),
+    run_time=3
+)
+```
+
+----------------------------------------
+
+TITLE: Animating Graph and Label Display in Manim
+DESCRIPTION: Shows how to animate the initial appearance of a graph and its corresponding label. `ShowCreation` animates the drawing of the graph, and `FadeIn` animates the label appearing from a direction (Right in this case).
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_16
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    ShowCreation(sin_graph),
+    FadeIn(sin_label, RIGHT),
+)
+self.wait(2)
+```
+
+----------------------------------------
+
+TITLE: Adding Fixed-in-Frame Text in Manim 3D Scene
+DESCRIPTION: Creates standard text and positions it. Crucially, `.fix_in_frame()` is called to ensure the text remains at a fixed screen position relative to the camera view, regardless of how the 3D scene or camera rotates.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_22
+
+LANGUAGE: Python
+CODE:
+```
+surface_text = Text("For 3d scenes, try using surfaces")
+surface_text.fix_in_frame()
+surface_text.to_edge(UP)
+self.add(surface_text)
+self.wait(0.1)
+```
+
+----------------------------------------
+
+TITLE: Animating Dot on Axes in Manim (Snippet)
+DESCRIPTION: This snippet shows how to make a dot follow a point on axes as the axes move, using `f_always` to update the dot's position based on the axes' coordinate system (`c2p`). It concludes with an animation scaling the axes and fading out objects.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_12
+
+LANGUAGE: Python
+CODE:
+```
+f_always(dot.move_to, lambda: axes.c2p(1, 1))
+self.play(
+    axes.animate.scale(0.75).to_corner(UL),
+    run_time=2,
+)
+self.wait()
+self.play(FadeOut(VGroup(axes, dot, h_line, v_line)))
+```
+
+----------------------------------------
+
+TITLE: Animating NumberPlane and Text Intro in Manim
+DESCRIPTION: Animates the creation of the `NumberPlane` grid using `ShowCreation` and simultaneously transforms the previous intro text into the new text describing the linear transformation using `FadeTransform`.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_33
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    ShowCreation(grid),
+    FadeTransform(intro_words, linear_transform_words)
+)
+```
+
+----------------------------------------
+
+TITLE: Adding Parabola Graph and Dot in Manim
+DESCRIPTION: Creates a parabola graph, sets its stroke color, fades out the previous graph/label, and shows the creation of the parabola. A dot is then created and positioned precisely on the parabola at x=2 using `axes.i2gp` (input to graph point).
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_18
+
+LANGUAGE: Python
+CODE:
+```
+parabola = axes.get_graph(lambda x: 0.25 * x**2)
+parabola.set_stroke(BLUE)
+self.play(
+    FadeOut(step_graph),
+    FadeOut(step_label),
+    ShowCreation(parabola)
+)
+self.wait()
+
+dot = Dot(color=RED)
+dot.move_to(axes.i2gp(2, parabola))
+self.play(FadeIn(dot, scale=0.5))
+```
+
+----------------------------------------
+
+TITLE: Rendering Animated Manim Scene (Video, Shell)
+DESCRIPTION: This shell command executes the animated Manim scene using `manimgl`. It runs the `SquareToCircle` scene from `start.py`, playing the animations in the interactive preview window.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_10
+
+LANGUAGE: sh
+CODE:
+```
+manimgl start.py SquareToCircle
+```
+
+----------------------------------------
+
+TITLE: Applying Linear Matrix Transform to NumberPlane in Manim
+DESCRIPTION: Applies a linear transformation defined by the specified matrix to the `NumberPlane` mobject. `grid.animate.apply_matrix(matrix)` creates an animation that smoothly deforms the grid according to the matrix transformation.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_34
+
+LANGUAGE: Python
+CODE:
+```
+self.play(grid.animate.apply_matrix(matrix), run_time=3)
+self.wait()
+```
+
+----------------------------------------
+
+TITLE: Animating Text Transitions in Manim SurfaceExample
+DESCRIPTION: Creates new text mobjects and positions them. It uses `FadeTransform` to smoothly transition from the previous text mobject (`surface_text` or `light_text`) to the new one (`light_text` or `drag_text`), effectively changing the displayed message.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_30
+
+LANGUAGE: Python
+CODE:
+```
+light_text = Text("You can move around the light source")
+light_text.move_to(surface_text)
+light_text.fix_in_frame()
+
+self.play(FadeTransform(surface_text, light_text))
+drag_text = Text("Try moving the mouse while pressing d or s")
+drag_text.move_to(light_text)
+drag_text.fix_in_frame()
+
+self.play(FadeTransform(light_text, drag_text))
+```
+
+----------------------------------------
+
+TITLE: Enabling Interactive Manim Scene (Python)
+DESCRIPTION: Adding this Python line to a scene enables interactive mode. After the scene's `construct` method finishes (or reaches this line), an IPython terminal opens, allowing the user to execute Manim commands dynamically in the live preview window.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_12
+
+LANGUAGE: python
+CODE:
+```
+self.embed()
+```
+
+----------------------------------------
+
+TITLE: Starting Manim in Interactive Mode Directly (Shell)
+DESCRIPTION: This shell command launches Manim directly into interactive mode without first running a specific scene file. It opens the Manim preview window and the IPython terminal immediately, ready for user input.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/quickstart.rst#_snippet_14
+
+LANGUAGE: sh
+CODE:
+```
+manimgl
+```
+
+----------------------------------------
+
+TITLE: Setting up NumberPlane and Linear Transform Text in Manim
+DESCRIPTION: Creates a `NumberPlane` to represent a coordinate grid. It also creates `VGroup` containing text and an `IntegerMatrix` mobject to describe the linear transformation that will be applied.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_32
+
+LANGUAGE: Python
+CODE:
+```
+grid = NumberPlane((-10, 10), (-5, 5))
+matrix = [[1, 1], [0, 1]]
+linear_transform_words = VGroup(
+    Text("This is what the matrix"),
+    IntegerMatrix(matrix, include_background_rectangle=True),
+    Text("looks like")
+)
+linear_transform_words.arrange(RIGHT)
+linear_transform_words.to_edge(UP)
+linear_transform_words.set_stroke(BLACK, 10, background=True)
+```
+
+----------------------------------------
+
+TITLE: Setting up ComplexPlane and Complex Map Text in Manim
+DESCRIPTION: Creates a `ComplexPlane` to represent the complex number plane. A copy is made and prepared for nonlinear transformations (`prepare_for_nonlinear_transform`). Coordinate labels are added, and `TexText` is used to create text describing the complex function.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_35
+
+LANGUAGE: Python
+CODE:
+```
+c_grid = ComplexPlane()
+moving_c_grid = c_grid.copy()
+moving_c_grid.prepare_for_nonlinear_transform()
+c_grid.set_stroke(BLUE_E, 1)
+c_grid.add_coordinate_labels(font_size=24)
+complex_map_words = TexText("""
+    Or thinking of the plane as $\\mathds{C}$,\\\
+    this is the map $z \\rightarrow z^2$
+""")
+complex_map_words.to_corner(UR)
+complex_map_words.set_stroke(BLACK, 5, background=True)
+```
+
+----------------------------------------
+
+TITLE: Cloning the ManimGL Repository
+DESCRIPTION: Clones the official 3b1b ManimGL source code repository from GitHub to the local machine. This is a prerequisite step for installing ManimGL directly from source or for contributing to the project. Requires Git to be installed.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_6
+
+LANGUAGE: sh
+CODE:
+```
+git clone https://github.com/3b1b/manim.git
+```
+
+----------------------------------------
+
+TITLE: Rotating Surfaces and Adding Meshes in Manim
+DESCRIPTION: Adds the mesh as a child mobject to each surface so they move together. It then animates a rotation of the first surface (`surface.save_state()` and `Rotate`) and applies the same rotation to the other surfaces instantly.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_26
+
+LANGUAGE: Python
+CODE:
+```
+for mob in surfaces:
+    mob.add(mob.mesh)
+surface.save_state()
+self.play(Rotate(surface, PI / 2), run_time=2)
+for mob in surfaces[1:]:
+    mob.rotate(PI / 2)
+```
+
+----------------------------------------
+
+TITLE: Creating a Conda Environment for ManimGL
+DESCRIPTION: Creates a new, isolated Conda environment named `manim` with Python version 3.8 installed within it. Using a dedicated environment helps manage dependencies and avoids conflicts with other Python projects. Requires Conda (or Miniconda/Anaconda) to be installed.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_8
+
+LANGUAGE: sh
+CODE:
+```
+conda create -n manim python=3.8
+```
+
+----------------------------------------
+
+TITLE: Applying Complex Function Transform to ComplexPlane in Manim
+DESCRIPTION: Applies a complex function (here, z -> z^2) as a transformation to the `moving_c_grid` mobject. `apply_complex_function` animates the deformation of the complex grid according to the complex mapping.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_37
+
+LANGUAGE: Python
+CODE:
+```
+self.play(
+    moving_c_grid.animate.apply_complex_function(lambda z: z**2),
+    run_time=6,
+)
+self.wait(2)
+```
+
+----------------------------------------
+
+TITLE: Running ManimGL Command-Line Interface
+DESCRIPTION: Executes the ManimGL command-line interface tool. Running this command without additional arguments typically opens an interactive session or awaits further scene specifications. Requires ManimGL to be installed and accessible in the system's PATH.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+manimgl
+```
+
+----------------------------------------
+
+TITLE: Defining Text Style Constants (Python)
+DESCRIPTION: These constants define standard string values used to specify text styles or font variations for text mobjects. They represent common styles such as normal, italic, oblique, and bold, used to configure the appearance of text elements in a Manim scene.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/documentation/constants.rst#_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+NORMAL = "NORMAL"
+ITALIC = "ITALIC"
+OBLIQUE = "OBLIQUE"
+BOLD = "BOLD"
+```
+
+----------------------------------------
+
+TITLE: Running a Specific ManimGL Scene
+DESCRIPTION: Renders and/or plays a specific scene (`OpeningManimExample`) located within a specified Python file (`example_scenes.py`) using the `manimgl` command-line tool. This is a common way to execute predefined animations from scene files. Requires ManimGL installed and the specified scene file to exist.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_3
+
+LANGUAGE: sh
+CODE:
+```
+manimgl example_scenes.py OpeningManimExample
+```
+
+----------------------------------------
+
+TITLE: Rendering a Specific ManimGL Scene (Alternative)
+DESCRIPTION: An alternative command, `manim-render`, used to render a specific scene (`OpeningManimExample`) from a file (`example_scenes.py`). This command is often used in the context of installations from source code. Requires ManimGL installed from source and the specified scene file.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_4
+
+LANGUAGE: sh
+CODE:
+```
+manim-render example_scenes.py OpeningManimExample
+```
+
+----------------------------------------
+
+TITLE: Installing ManimGL in Development Mode
+DESCRIPTION: Installs the ManimGL library directly from the local source code directory in "editable" mode using pip. This allows for modifications to the source code without needing to repeatedly reinstall the package. Requires Python, pip, and the ManimGL source code cloned locally.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+pip install -e .
+```
+
+----------------------------------------
+
+TITLE: Animating Light Source Movement in Manim 3D Scene
+DESCRIPTION: Accesses the camera's light source mobject and animates its position change. This demonstrates how the lighting affects the appearance of 3D surfaces as the light source moves relative to them.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/example_scenes.rst#_snippet_29
+
+LANGUAGE: Python
+CODE:
+```
+light = self.camera.light_source
+self.add(light)
+light.save_state()
+self.play(light.animate.move_to(3 * IN), run_time=5)
+self.play(light.animate.shift(10 * OUT), run_time=5)
+```
+
+----------------------------------------
+
+TITLE: Installing ManimGL Dependencies on macOS with Homebrew
+DESCRIPTION: Installs required dependencies for ManimGL on macOS, specifically FFmpeg for video rendering and MacTeX for LaTeX support, using the Homebrew package manager. This step is necessary before installing ManimGL from source on macOS. Requires Homebrew to be installed.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_5
+
+LANGUAGE: sh
+CODE:
+```
+brew install ffmpeg mactex
+```
+
+----------------------------------------
+
+TITLE: Navigating to the ManimGL Directory
+DESCRIPTION: Changes the current working directory in the terminal to the `manim` folder, which is the cloned ManimGL repository directory. This command is typically executed immediately after cloning the repository. Requires the `manim` directory to exist in the current location.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_7
+
+LANGUAGE: sh
+CODE:
+```
+cd manim
+```
+
+----------------------------------------
+
+TITLE: Installing and Running ManimGL Directly Shell
+DESCRIPTION: Installs the 'manimgl' Python package using pip. The second command attempts to run 'manimgl', serving as a basic test of the installation.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/installation.rst#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+# Install manimgl
+pip install manimgl
+
+# Try it out
+manimgl
+```
+
+----------------------------------------
+
+TITLE: Installing ManimGL via Pip
+DESCRIPTION: Installs the official 3b1b ManimGL library from the Python Package Index (PyPI) using pip. This is the standard method for users who do not need to modify the ManimGL source code. Requires Python and pip installed on the system.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+pip install manimgl
+```
+
+----------------------------------------
+
+TITLE: Defining Buffering and Spacing Constants (Python)
+DESCRIPTION: These constants define standard spacing values (buffers) used for positioning Manim objects. They include general buffer sizes (SMALL_BUFF, etc.) and defaults for spacing mobjects relative to frame edges or other mobjects, typically determined by the `size` configuration in Manim config files.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/documentation/constants.rst#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+SMALL_BUFF
+MED_SMALL_BUFF
+MED_LARGE_BUFF
+LARGE_BUFF
+
+DEFAULT_MOBJECT_TO_EDGE_BUFF
+DEFAULT_MOBJECT_TO_MOBJECT_BUFF
+```
+
+----------------------------------------
+
+TITLE: Activating a Conda Environment
+DESCRIPTION: Activates the Conda environment named `manim`. Once activated, any subsequent Python or package installation commands will apply only to this specific environment. Requires Conda to be installed and the environment to have been previously created.
+SOURCE: https://github.com/3b1b/manim/blob/master/README.md#_snippet_9
+
+LANGUAGE: sh
+CODE:
+```
+conda activate manim
+```
+
+----------------------------------------
+
+TITLE: Defining 3D Coordinate and Position Constants (Python)
+DESCRIPTION: These constants define fundamental 3D vectors for directions (UP, DOWN, RIGHT, LEFT, etc.) and axes using NumPy arrays, assuming a 3D coordinate system. They also include constants for diagonal directions and positions relative to the frame edges, useful for placing objects at standard locations.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/documentation/constants.rst#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+ORIGIN = np.array((0., 0., 0.))
+UP = np.array((0., 1., 0.))
+DOWN = np.array((0., -1., 0.))
+RIGHT = np.array((1., 0., 0.))
+LEFT = np.array((-1., 0., 0.))
+IN = np.array((0., 0., -1.))
+OUT = np.array((0., 0., 1.))
+X_AXIS = np.array((1., 0., 0.))
+Y_AXIS = np.array((0., 1., 0.))
+Z_AXIS = np.array((0., 0., 1.))
+
+# Useful abbreviations for diagonals
+UL = UP + LEFT
+UR = UP + RIGHT
+DL = DOWN + LEFT
+DR = DOWN + RIGHT
+
+TOP = FRAME_Y_RADIUS * UP
+BOTTOM = FRAME_Y_RADIUS * DOWN
+LEFT_SIDE = FRAME_X_RADIUS * LEFT
+RIGHT_SIDE = FRAME_X_RADIUS * RIGHT
+```
+
+----------------------------------------
+
+TITLE: Defining Frame and Pixel Constants (Python)
+DESCRIPTION: These constants define properties related to the rendering frame and pixel dimensions, such as aspect ratio, height, width, and default FPS. Their values are typically derived from the `camera` configuration in Manim config files and are used internally for scene layout and rendering.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/documentation/constants.rst#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+ASPECT_RATIO
+FRAME_HEIGHT
+FRAME_WIDTH
+FRAME_Y_RADIUS
+FRAME_X_RADIUS
+
+DEFAULT_PIXEL_HEIGHT
+DEFAULT_PIXEL_WIDTH
+DEFAULT_FPS
+```
+
+----------------------------------------
+
+TITLE: Specifying Custom Config File (sh)
+DESCRIPTION: Illustrates how to override default Manim configuration settings by explicitly providing the path to a custom `custom_config.yml` file using the `--config_file` command-line flag. This allows for specific project or render configurations without modifying the default file.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/getting_started/configuration.rst#_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+manimgl project/code.py --config_file /path/to/custom_config.yml
+```
+
+----------------------------------------
+
+TITLE: Defining Mathematical Constants (Python)
+DESCRIPTION: These constants provide standard mathematical values based on NumPy's pi. They include PI, TAU (2 * PI), and DEG (the value of one degree in radians), commonly used for calculations involving angles and circular geometry within Manim.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/documentation/constants.rst#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+PI = np.pi
+TAU = 2 * PI
+DEG = TAU / 360
+```
+
+----------------------------------------
+
+TITLE: Building Manim Documentation (sh)
+DESCRIPTION: These commands navigate into the docs/ directory and then execute the make html command. This command triggers the documentation build process, typically using Sphinx, to generate HTML documentation files.
+SOURCE: https://github.com/3b1b/manim/blob/master/docs/source/development/contributing.rst#_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+cd docs/
+make html
+```

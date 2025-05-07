@@ -1,0 +1,133 @@
+TITLE: Installing Font Awesome Free with Yarn (Shell)
+DESCRIPTION: This command uses the Yarn package manager to install the official @fortawesome/fontawesome-free package as a project dependency. It performs the same function as 'npm install --save'.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/fontawesome-free/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+$ yarn add @fortawesome/fontawesome-free
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome Free with npm (Shell)
+DESCRIPTION: This command uses the npm package manager to install the official @fortawesome/fontawesome-free package as a project dependency. The '--save' flag ensures the dependency is added to the project's package.json file.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/fontawesome-free/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+$ npm i --save @fortawesome/fontawesome-free
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome SVG Core with yarn
+DESCRIPTION: This command uses the yarn package manager to install the `@fortawesome/fontawesome-svg-core` package. Yarn automatically saves installed packages to the `dependencies` section of your project's `package.json` file by default. Requires Node.js and yarn installed.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/fontawesome-svg-core/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+$ yarn add @fortawesome/fontawesome-svg-core
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome SVG Core with npm
+DESCRIPTION: This command uses the npm package manager to install the `@fortawesome/fontawesome-svg-core` package. The `--save` flag adds the package to the `dependencies` section of your project's `package.json` file, making it a required dependency for your project. Requires Node.js and npm installed.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/fontawesome-svg-core/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm i --save @fortawesome/fontawesome-svg-core
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome Regular SVG Icons via npm (Shell)
+DESCRIPTION: This command installs the @fortawesome/free-regular-svg-icons package using npm. The --save flag (which is often implicit in newer npm versions) adds it as a production dependency to your package.json file. This makes the regular, free SVG icons available for use in a JavaScript project.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/free-regular-svg-icons/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+$ npm i --save @fortawesome/free-regular-svg-icons
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome Free Brands Icons via yarn
+DESCRIPTION: This command installs the @fortawesome/free-brands-svg-icons package using the yarn package manager. Yarn adds dependencies to the `package.json` file by default, so no explicit flag like `--save` is needed.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/free-brands-svg-icons/README.md#_snippet_1
+
+LANGUAGE: command-line
+CODE:
+```
+$ yarn add @fortawesome/free-brands-svg-icons
+```
+
+----------------------------------------
+
+TITLE: Install Font Awesome Solid Icons using npm (Shell)
+DESCRIPTION: Installs the @fortawesome/free-solid-svg-icons package as a project dependency using the npm package manager. This command adds the package to your project's package.json file and downloads it into the node_modules directory.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/free-solid-svg-icons/README.md#_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+$ npm i --save @fortawesome/free-solid-svg-icons
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome Free Brands Icons via npm
+DESCRIPTION: This command installs the @fortawesome/free-brands-svg-icons package using the npm package manager. The `--save` flag adds the package as a production dependency in the project's `package.json` file.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/free-brands-svg-icons/README.md#_snippet_0
+
+LANGUAGE: command-line
+CODE:
+```
+$ npm i --save @fortawesome/free-brands-svg-icons
+```
+
+----------------------------------------
+
+TITLE: Installing Font Awesome Regular SVG Icons via Yarn (Shell)
+DESCRIPTION: This command installs the @fortawesome/free-regular-svg-icons package using Yarn. It adds the package as a production dependency to your package.json file. This provides access to the regular, free SVG icons for use in a JavaScript project.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/free-regular-svg-icons/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+$ yarn add @fortawesome/free-regular-svg-icons
+```
+
+----------------------------------------
+
+TITLE: Install Font Awesome Solid Icons using Yarn (Shell)
+DESCRIPTION: Installs the @fortawesome/free-solid-svg-icons package as a project dependency using the Yarn package manager. This command updates your project's package.json and yarn.lock files and downloads the package.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/free-solid-svg-icons/README.md#_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+$ yarn add @fortawesome/free-solid-svg-icons
+```
+
+----------------------------------------
+
+TITLE: Importing Font Awesome Types - TypeScript
+DESCRIPTION: This snippet demonstrates the recommended way to import Font Awesome TypeScript types, such as `IconName`, directly from the `@fortawesome/fontawesome-svg-core` package. This approach is preferred over importing types from `@fortawesome/fontawesome-common-types`.
+SOURCE: https://github.com/fortawesome/font-awesome/blob/6.x/js-packages/@fortawesome/fontawesome-common-types/README.md#_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+import {
+  IconName
+} from `@fortawesome/fontawesome-svg-core`
+
+const myIcon: IconName = "..."
+```

@@ -1,0 +1,1583 @@
+TITLE: Implementing LRU Cache in Python
+DESCRIPTION: This code snippet provides a complete implementation of an LRU cache in Python. It includes a `Node` class for linked list nodes, a `LinkedList` class for managing the order of cache items (most recently used at the front, least recently used at the tail), and a `Cache` class that uses a dictionary (`lookup`) for O(1) access and the linked list for O(1) updates and evictions. The `get` method retrieves an item and moves it to the front, while the `set` method adds or updates an item, moving it to the front and evicting the tail if the cache is full.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/object_oriented_design/lru_cache/lru_cache.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+%%writefile lru_cache.py
+class Node(object):
+
+    def __init__(self, results):
+        self.results = results
+        self.prev = None
+        self.next = None
+
+
+class LinkedList(object):
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def move_to_front(self, node):  # ...
+    def append_to_front(self, node):  # ...
+    def remove_from_tail(self):  # ...
+
+
+class Cache(object):
+
+    def __init__(self, MAX_SIZE):
+        self.MAX_SIZE = MAX_SIZE
+        self.size = 0
+        self.lookup = {}  # key: query, value: node
+        self.linked_list = LinkedList()
+
+    def get(self, query):
+        """Get the stored query result from the cache.
+        
+        Accessing a node updates its position to the front of the LRU list.
+        """
+        node = self.lookup.get(query)
+        if node is None:
+            return None
+        self.linked_list.move_to_front(node)
+        return node.results
+
+    def set(self, results, query):
+        """Set the result for the given query key in the cache.
+        
+        When updating an entry, updates its position to the front of the LRU list.
+        If the entry is new and the cache is at capacity, removes the oldest entry
+        before the new entry is added.
+        """
+        node = self.lookup.get(query)
+        if node is not None:
+            # Key exists in cache, update the value
+            node.results = results
+            self.linked_list.move_to_front(node)
+        else:
+            # Key does not exist in cache
+            if self.size == self.MAX_SIZE:
+                # Remove the oldest entry from the linked list and lookup
+                self.lookup.pop(self.linked_list.tail.query, None)
+                self.linked_list.remove_from_tail()
+            else:
+                self.size += 1
+            # Add the new key and value
+            new_node = Node(results)
+            self.linked_list.append_to_front(new_node)
+            self.lookup[query] = new_node
+```
+
+----------------------------------------
+
+TITLE: Implementing Simple Hash Map with Chaining in Python
+DESCRIPTION: This snippet defines a simple hash map (`HashTable`) class in Python. It uses a list of lists for the hash table and implements chaining for collision resolution. It includes methods for setting, getting, and removing key-value pairs. Keys are assumed to be integers, and the hash function is a simple modulo operation. A helper `Item` class stores key-value pairs within the chains.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/object_oriented_design/hash_table/hash_map.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+%%writefile hash_map.py
+class Item(object):
+
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
+
+class HashTable(object):
+
+    def __init__(self, size):
+        self.size = size
+        self.table = [[] for _ in range(self.size)]
+
+    def _hash_function(self, key):
+        return key % self.size
+
+    def set(self, key, value):
+        hash_index = self._hash_function(key)
+        for item in self.table[hash_index]:
+            if item.key == key:
+                item.value = value
+                return
+        self.table[hash_index].append(Item(key, value))
+
+    def get(self, key):
+        hash_index = self._hash_function(key)
+        for item in self.table[hash_index]:
+            if item.key == key:
+                return item.value
+        raise KeyError('Key not found')
+
+    def remove(self, key):
+        hash_index = self._hash_function(key)
+        for index, item in enumerate(self.table[hash_index]):
+            if item.key == key:
+                del self.table[hash_index][index]
+                return
+        raise KeyError('Key not found')
+```
+
+----------------------------------------
+
+TITLE: Implementing LRU Cache Logic - Python
+DESCRIPTION: This Python class implements the core logic for a fixed-size Least Recently Used (LRU) cache. It uses a hash table (`lookup`) for O(1) average time complexity key lookups and a doubly-linked list (`linked_list`) to maintain the access order and facilitate O(1) eviction of the least recently used item. The `get` method retrieves an item and moves it to the front of the list, while the `set` method adds or updates an item, moving it to the front and removing the tail if the cache is full.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/query_cache/README.md#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+class Cache(object):
+
+    def __init__(self, MAX_SIZE):
+        self.MAX_SIZE = MAX_SIZE
+        self.size = 0
+        self.lookup = {}  # key: query, value: node
+        self.linked_list = LinkedList()
+
+    def get(self, query):
+        """Get the stored query result from the cache.
+
+        Accessing a node updates its position to the front of the LRU list.
+        """
+        node = self.lookup.get(query) # Use .get() for safe lookup
+        if node is None:
+            return None
+        self.linked_list.move_to_front(node)
+        return node.results
+
+    def set(self, query, results):
+        """Set the result for the given query key in the cache.
+
+        When updating an entry, updates its position to the front of the LRU list.
+        If the entry is new and the cache is at capacity, removes the oldest entry
+        before the new entry is added.
+        """
+        node = self.lookup.get(query)
+        if node is not None:
+            # Key exists in cache, update the value
+            node.results = results
+            self.linked_list.move_to_front(node)
+        else:
+            # Key does not exist in cache
+            if self.size == self.MAX_SIZE:
+                # Remove the oldest entry from the linked list and lookup
+                self.lookup.pop(self.linked_list.tail.query, None)
+                self.linked_list.remove_from_tail()
+            else:
+                self.size += 1
+            # Add the new key and value
+            new_node = Node(query, results)
+            self.linked_list.append_to_front(new_node)
+            self.lookup[query] = new_node
+```
+
+----------------------------------------
+
+TITLE: Implementing General Graph BFS Shortest Path - Python
+DESCRIPTION: This Python code provides a standard Breadth-First Search (BFS) implementation for finding the shortest path in an unweighted graph. It assumes the entire graph fits into memory on a single machine. It relies on a base Graph class and a State enum (not shown).
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/social_graph/README.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+class Graph(Graph):
+
+    def shortest_path(self, source, dest):
+        if source is None or dest is None:
+            return None
+        if source is dest:
+            return [source.key]
+        prev_node_keys = self._shortest_path(source, dest)
+        if prev_node_keys is None:
+            return None
+        else:
+            path_ids = [dest.key]
+            prev_node_key = prev_node_keys[dest.key]
+            while prev_node_key is not None:
+                path_ids.append(prev_node_key)
+                prev_node_key = prev_node_keys[prev_node_key]
+            return path_ids[::-1]
+
+    def _shortest_path(self, source, dest):
+        queue = deque()
+        queue.append(source)
+        prev_node_keys = {source.key: None}
+        source.visit_state = State.visited
+        while queue:
+            node = queue.popleft()
+            if node is dest:
+                return prev_node_keys
+            prev_node = node
+            for adj_node in node.adj_nodes.values():
+                if adj_node.visit_state == State.unvisited:
+                    queue.append(adj_node)
+                    prev_node_keys[adj_node.key] = prev_node.key
+                    adj_node.visit_state = State.visited
+        return None
+```
+
+----------------------------------------
+
+TITLE: Defining Core Classes for Online Chat - Python
+DESCRIPTION: This Python code snippet outlines the basic class structure for an online chat system. It includes definitions for managing users (UserService, User), handling different chat types (Chat, PrivateChat, GroupChat), representing messages (Message), and managing friend requests (AddRequest, RequestStatus). Note that some method bodies are omitted ('# ...') and the Enum class for RequestStatus is used without an explicit 'from enum import Enum' import in the original snippet.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/object_oriented_design/online_chat/online_chat.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+%%writefile online_chat.py\nfrom abc import ABCMeta\n\n\nclass UserService(object):\n\n    def __init__(self):\n        self.users_by_id = {}  # key: user id, value: User\n\n    def add_user(self, user_id, name, pass_hash):  # ...\n    def remove_user(self, user_id):  # ...\n    def add_friend_request(self, from_user_id, to_user_id):  # ...\n    def approve_friend_request(self, from_user_id, to_user_id):  # ...\n    def reject_friend_request(self, from_user_id, to_user_id):  # ...\n\n\nclass User(object):\n\n    def __init__(self, user_id, name, pass_hash):\n        self.user_id = user_id\n        self.name = name\n        self.pass_hash = pass_hash\n        self.friends_by_id = {}  # key: friend id, value: User\n        self.friend_ids_to_private_chats = {}  # key: friend id, value: private chats\n        self.group_chats_by_id = {}  # key: chat id, value: GroupChat\n        self.received_friend_requests_by_friend_id = {}  # key: friend id, value: AddRequest\n        self.sent_friend_requests_by_friend_id = {}  # key: friend id, value: AddRequest\n\n    def message_user(self, friend_id, message):  # ...\n    def message_group(self, group_id, message):  # ...\n    def send_friend_request(self, friend_id):  # ...\n    def receive_friend_request(self, friend_id):  # ...\n    def approve_friend_request(self, friend_id):  # ...\n    def reject_friend_request(self, friend_id):  # ...\n\n\nclass Chat(metaclass=ABCMeta):\n\n    def __init__(self, chat_id):\n        self.chat_id = chat_id\n        self.users = []\n        self.messages = []\n\n\nclass PrivateChat(Chat):\n\n    def __init__(self, first_user, second_user):\n        super(PrivateChat, self).__init__()\n        self.users.append(first_user)\n        self.users.append(second_user)\n\n\nclass GroupChat(Chat):\n\n    def add_user(self, user):  # ...\n    def remove_user(self, user):  # ... \n\n\nclass Message(object):\n\n    def __init__(self, message_id, message, timestamp):\n        self.message_id = message_id\n        self.message = message\n        self.timestamp = timestamp\n\n\nclass AddRequest(object):\n\n    def __init__(self, from_user_id, to_user_id, request_status, timestamp):\n        self.from_user_id = from_user_id\n        self.to_user_id = to_user_id\n        self.request_status = request_status\n        self.timestamp = timestamp\n\n\nclass RequestStatus(Enum):\n\n    UNREAD = 0\n    READ = 1\n    ACCEPTED = 2\n    REJECTED = 3\n
+```
+
+----------------------------------------
+
+TITLE: Implementing User Graph Service for Sharded Search - Python
+DESCRIPTION: This Python class implements the User Graph Service, responsible for performing a distributed shortest path search across sharded Person Servers. It utilizes the LookupService to locate user data and performs a BFS, fetching nodes from remote servers as needed. Note: Error handling and detailed node visiting logic are simplified.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/social_graph/README.md#_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+class UserGraphService(object):
+
+    def __init__(self, lookup_service):
+        self.lookup_service = lookup_service
+
+    def person(self, person_id):
+        person_server = self.lookup_service.lookup_person_server(person_id)
+        return person_server.people([person_id])
+
+    def shortest_path(self, source_key, dest_key):
+        if source_key is None or dest_key is None:
+            return None
+        if source_key is dest_key:
+            return [source_key]
+        prev_node_keys = self._shortest_path(source_key, dest_key)
+        if prev_node_keys is None:
+            return None
+        else:
+            # Iterate through the path_ids backwards, starting at dest_key
+            path_ids = [dest_key]
+            prev_node_key = prev_node_keys[dest_key]
+            while prev_node_key is not None:
+                path_ids.append(prev_node_key)
+                prev_node_key = prev_node_keys[prev_node_key]
+            # Reverse the list since we iterated backwards
+            return path_ids[::-1]
+
+    def _shortest_path(self, source_key, dest_key, path):
+        # Use the id to get the Person
+        source = self.person(source_key)
+        # Update our bfs queue
+        queue = deque()
+        queue.append(source)
+        # prev_node_keys keeps track of each hop from
+        # the source_key to the dest_key
+        prev_node_keys = {source_key: None}
+        # We'll use visited_ids to keep track of which nodes we've
+        # visited, which can be different from a typical bfs where
+        # this can be stored in the node itself
+        visited_ids = set()
+        visited_ids.add(source.id)
+        while queue:
+            node = queue.popleft()
+            if node.key is dest_key:
+                return prev_node_keys
+            prev_node = node
+            for friend_id in node.friend_ids:
+                if friend_id not in visited_ids:
+                    friend_node = self.person(friend_id)
+                    queue.append(friend_node)
+                    prev_node_keys[friend_id] = prev_node.key
+                    visited_ids.add(friend_id)
+        return None
+```
+
+----------------------------------------
+
+TITLE: Implementing Call Center Classes in Python
+DESCRIPTION: This Python snippet provides the foundational class definitions for a call center system. It includes enums for employee ranks and call states, an abstract base class for employees with methods for taking, completing, and escalating calls, concrete employee subclasses for Operator, Supervisor, and Director, a Call class to represent incoming calls, and a CallCenter class responsible for dispatching calls to available employees and managing a call queue.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/object_oriented_design/call_center/call_center.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+%%writefile call_center.py
+from abc import ABCMeta, abstractmethod
+from collections import deque
+from enum import Enum
+
+
+class Rank(Enum):
+
+    OPERATOR = 0
+    SUPERVISOR = 1
+    DIRECTOR = 2
+
+
+class Employee(metaclass=ABCMeta):
+
+    def __init__(self, employee_id, name, rank, call_center):
+        self.employee_id = employee_id
+        self.name = name
+        self.rank = rank
+        self.call = None
+        self.call_center = call_center
+
+    def take_call(self, call):
+        """Assume the employee will always successfully take the call."""
+        self.call = call
+        self.call.employee = self
+        self.call.state = CallState.IN_PROGRESS
+
+    def complete_call(self):
+        self.call.state = CallState.COMPLETE
+        self.call_center.notify_call_completed(self.call)
+
+    @abstractmethod
+    def escalate_call(self):
+        pass
+
+    def _escalate_call(self):
+        self.call.state = CallState.READY
+        call = self.call
+        self.call = None
+        self.call_center.notify_call_escalated(call)
+
+
+class Operator(Employee):
+
+    def __init__(self, employee_id, name):
+        super(Operator, self).__init__(employee_id, name, Rank.OPERATOR)
+
+    def escalate_call(self):
+        self.call.level = Rank.SUPERVISOR
+        self._escalate_call()
+
+
+class Supervisor(Employee):
+
+    def __init__(self, employee_id, name):
+        super(Operator, self).__init__(employee_id, name, Rank.SUPERVISOR)
+
+    def escalate_call(self):
+        self.call.level = Rank.DIRECTOR
+        self._escalate_call()
+
+
+class Director(Employee):
+
+    def __init__(self, employee_id, name):
+        super(Operator, self).__init__(employee_id, name, Rank.DIRECTOR)
+
+    def escalate_call(self):
+        raise NotImplemented('Directors must be able to handle any call')
+
+
+class CallState(Enum):
+
+    READY = 0
+    IN_PROGRESS = 1
+    COMPLETE = 2
+
+
+class Call(object):
+
+    def __init__(self, rank):
+        self.state = CallState.READY
+        self.rank = rank
+        self.employee = None
+
+
+class CallCenter(object):
+
+    def __init__(self, operators, supervisors, directors):
+        self.operators = operators
+        self.supervisors = supervisors
+        self.directors = directors
+        self.queued_calls = deque()
+
+    def dispatch_call(self, call):
+        if call.rank not in (Rank.OPERATOR, Rank.SUPERVISOR, Rank.DIRECTOR):
+            raise ValueError('Invalid call rank: {}'.format(call.rank))
+        employee = None
+        if call.rank == Rank.OPERATOR:
+            employee = self._dispatch_call(call, self.operators)
+        if call.rank == Rank.SUPERVISOR or employee is None:
+            employee = self._dispatch_call(call, self.supervisors)
+        if call.rank == Rank.DIRECTOR or employee is None:
+            employee = self._dispatch_call(call, self.directors)
+        if employee is None:
+            self.queued_calls.append(call)
+
+    def _dispatch_call(self, call, employees):
+        for employee in employees:
+            if employee.call is None:
+                employee.take_call(call)
+                return employee
+        return None
+
+    def notify_call_escalated(self, call):  # ...
+    def notify_call_completed(self, call):  # ...
+    def dispatch_queued_call_to_newly_freed_employee(self, call, employee):  # ...
+```
+
+----------------------------------------
+
+TITLE: Implement Parking Lot Classes - Python
+DESCRIPTION: This Python code defines the core classes for a parking lot system. It includes an enumeration for vehicle sizes, an abstract base class for vehicles with common properties and methods, concrete vehicle classes (Motorcycle, Car, Bus) implementing specific fitting logic, and classes for the Parking Lot, individual Levels, and Parking Spots to manage allocation.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/object_oriented_design/parking_lot/parking_lot.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+%%writefile parking_lot.py
+from abc import ABCMeta, abstractmethod
+
+
+class VehicleSize(Enum):
+
+    MOTORCYCLE = 0
+    COMPACT = 1
+    LARGE = 2
+
+
+class Vehicle(metaclass=ABCMeta):
+
+    def __init__(self, vehicle_size, license_plate, spot_size):
+        self.vehicle_size = vehicle_size
+        self.license_plate = license_plate
+        self.spot_size = spot_size
+        self.spots_taken = []
+
+    def clear_spots(self):
+        for spot in self.spots_taken:
+            spot.remove_vehicle(self)
+        self.spots_taken = []
+
+    def take_spot(self, spot):
+        self.spots_taken.append(spot)
+
+    @abstractmethod
+    def can_fit_in_spot(self, spot):
+        pass
+
+
+class Motorcycle(Vehicle):
+
+    def __init__(self, license_plate):
+        super(Motorcycle, self).__init__(VehicleSize.MOTORCYCLE, license_plate, spot_size=1)
+
+    def can_fit_in_spot(self, spot):
+        return True
+
+
+class Car(Vehicle):
+
+    def __init__(self, license_plate):
+        super(Car, self).__init__(VehicleSize.COMPACT, license_plate, spot_size=1)
+
+    def can_fit_in_spot(self, spot):
+        return True if (spot.size == LARGE or spot.size == COMPACT) else False
+
+
+class Bus(Vehicle):
+
+    def __init__(self, license_plate):
+        super(Bus, self).__init__(VehicleSize.LARGE, license_plate, spot_size=5)
+
+    def can_fit_in_spot(self, spot):
+        return True if spot.size == LARGE else False
+
+
+class ParkingLot(object):
+
+    def __init__(self, num_levels):
+        self.num_levels = num_levels
+        self.levels = []
+
+    def park_vehicle(self, vehicle):
+        for level in levels:
+            if level.park_vehicle(vehicle):
+                return True
+        return False
+
+
+class Level(object):
+
+    SPOTS_PER_ROW = 10
+
+    def __init__(self, floor, total_spots):
+        self.floor = floor
+        self.num_spots = total_spots
+        self.available_spots = 0
+        self.parking_spots = []
+
+    def spot_freed(self):
+        self.available_spots += 1
+
+    def park_vehicle(self, vehicle):
+        spot = self._find_available_spot(vehicle)
+        if spot is None:
+            return None
+        else:
+            spot.park_vehicle(vehicle)
+            return spot
+
+    def _find_available_spot(self, vehicle):
+        """Find an available spot where vehicle can fit, or return None"""
+        # ...
+
+    def _park_starting_at_spot(self, spot, vehicle):
+        """Occupy starting at spot.spot_number to vehicle.spot_size."""
+        # ...
+
+
+class ParkingSpot(object):
+
+    def __init__(self, level, row, spot_number, spot_size, vehicle_size):
+        self.level = level
+        self.row = row
+        self.spot_number = spot_number
+        self.spot_size = spot_size
+        self.vehicle_size = vehicle_size
+        self.vehicle = None
+
+    def is_available(self):
+        return True if self.vehicle is None else False
+
+    def can_fit_vehicle(self, vehicle):
+        if self.vehicle is not None:
+            return False
+        return vehicle.can_fit_in_spot(self)
+
+    def park_vehicle(self, vehicle):  # ...
+    def remove_vehicle(self):  # ...
+
+```
+
+----------------------------------------
+
+TITLE: Implementing Deck of Cards System - Python
+DESCRIPTION: Defines the core classes for a card game system in Python, including an Enum for Suit, an abstract base class for Card, a specific implementation for Black Jack Card, generic Hand and Black Jack Hand classes with scoring logic, and a basic Deck class. It illustrates object-oriented design principles for representing card game components.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/object_oriented_design/deck_of_cards/deck_of_cards.ipynb#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+%%writefile deck_of_cards.py
+from abc import ABCMeta, abstractmethod
+from enum import Enum
+import sys
+
+
+class Suit(Enum):
+
+    HEART = 0
+    DIAMOND = 1
+    CLUBS = 2
+    SPADE = 3
+
+
+class Card(metaclass=ABCMeta):
+
+    def __init__(self, value, suit):
+        self.value = value
+        self.suit = suit
+        self.is_available = True
+
+    @property
+    @abstractmethod
+    def value(self):
+        pass
+
+    @value.setter
+    @abstractmethod
+    def value(self, other):
+        pass
+
+
+class BlackJackCard(Card):
+
+    def __init__(self, value, suit):
+        super(BlackJackCard, self).__init__(value, suit)
+
+    def is_ace(self):
+        return self._value == 1
+
+    def is_face_card(self):
+        """Jack = 11, Queen = 12, King = 13"""
+        return 10 < self._value <= 13
+
+    @property
+    def value(self):
+        if self.is_ace() == 1:
+            return 1
+        elif self.is_face_card():
+            return 10
+        else:
+            return self._value
+
+    @value.setter
+    def value(self, new_value):
+        if 1 <= new_value <= 13:
+            self._value = new_value
+        else:
+            raise ValueError('Invalid card value: {}'.format(new_value))
+
+
+class Hand(object):
+
+    def __init__(self, cards):
+        self.cards = cards
+
+    def add_card(self, card):
+        self.cards.append(card)
+
+    def score(self):
+        total_value = 0
+        for card in self.cards:
+            total_value += card.value
+        return total_value
+
+
+class BlackJackHand(Hand):
+
+    BLACKJACK = 21
+
+    def __init__(self, cards):
+        super(BlackJackHand, self).__init__(cards)
+
+    def score(self):
+        min_over = sys.MAXSIZE
+        max_under = -sys.MAXSIZE
+        for score in self.possible_scores():
+            if self.BLACKJACK < score < min_over:
+                min_over = score
+            elif max_under < score <= self.BLACKJACK:
+                max_under = score
+        return max_under if max_under != -sys.MAXSIZE else min_over
+
+    def possible_scores(self):
+        """Return a list of possible scores, taking Aces into account."""
+        # ...
+
+
+class Deck(object):
+
+    def __init__(self, cards):
+        self.cards = cards
+        self.deal_index = 0
+
+    def remaining_cards(self):
+        return len(self.cards) - deal_index
+
+    def deal_card():
+        try:
+            card = self.cards[self.deal_index]
+            card.is_available = False
+            self.deal_index += 1
+        except IndexError:
+            return None
+        return card
+
+    def shuffle(self):  # ...
+
+```
+
+----------------------------------------
+
+TITLE: Implementing Cache-Aside Strategy Python
+DESCRIPTION: This Python function demonstrates the Cache-Aside pattern. It first attempts to retrieve user data from a cache using a generated key. If a cache miss occurs, it queries the database, and if data is found, it stores the result in the cache before returning it.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/README.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+def get_user(self, user_id):
+    user = cache.get("user.{0}", user_id)
+    if user is None:
+        user = db.query("SELECT * FROM users WHERE user_id = {0}", user_id)
+        if user is not None:
+            key = "user.{0}".format(user_id)
+            cache.set(key, json.dumps(user))
+    return user
+```
+
+----------------------------------------
+
+TITLE: Calculating Sales Rank using MapReduce (Python)
+DESCRIPTION: Implements a two-step MapReduce job using the `mrjob` framework to process sales logs. The first step aggregates total sales quantity for each product within its category. The second step transforms the data to enable distributed sorting by quantity within each category, ultimately providing the sales rank.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/sales_rank/README.md#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+class SalesRanker(MRJob):
+
+    def within_past_week(self, timestamp):
+        """Return True if timestamp is within past week, False otherwise."""
+        ...
+
+    def mapper(self, _ line):
+        """Parse each log line, extract and transform relevant lines.
+
+        Emit key value pairs of the form:
+
+        (category1, product1), 2
+        (category2, product1), 2
+        (category2, product1), 1
+        (category1, product2), 3
+        (category2, product3), 7
+        (category1, product4), 1
+        """
+        timestamp, product_id, category_id, quantity, total_price, seller_id, \
+            buyer_id = line.split('\t')
+        if self.within_past_week(timestamp):
+            yield (category_id, product_id), quantity
+
+    def reducer(self, key, value):
+        """Sum values for each key.
+
+        (category1, product1), 2
+        (category2, product1), 3
+        (category1, product2), 3
+        (category2, product3), 7
+        (category1, product4), 1
+        """
+        yield key, sum(values)
+
+    def mapper_sort(self, key, value):
+        """Construct key to ensure proper sorting.
+
+        Transform key and value to the form:
+
+        (category1, 2), product1
+        (category2, 3), product1
+        (category1, 3), product2
+        (category2, 7), product3
+        (category1, 1), product4
+
+        The shuffle/sort step of MapReduce will then do a
+        distributed sort on the keys, resulting in:
+
+        (category1, 1), product4
+        (category1, 2), product1
+        (category1, 3), product2
+        (category2, 3), product1
+        (category2, 7), product3
+        """
+        category_id, product_id = key
+        quantity = value
+        yield (category_id, quantity), product_id
+
+    def reducer_identity(self, key, value):
+        yield key, value
+
+    def steps(self):
+        """Run the map and reduce steps."""
+        return [
+            self.mr(mapper=self.mapper,
+                    reducer=self.reducer),
+            self.mr(mapper=self.mapper_sort,
+                    reducer=self.reducer_identity),
+        ]
+```
+
+----------------------------------------
+
+TITLE: Implementing Write-Through Set User - Cache - Python
+DESCRIPTION: This snippet demonstrates the implementation of the `set_user` function using the write-through cache strategy. It first synchronously updates the 'Users' table in the database (`db.query`) and then updates the cache (`cache.set`) with the new user data. It requires access to `db` and `cache` objects.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/README.md#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+def set_user(user_id, values):\n    user = db.query("UPDATE Users WHERE id = {0}", user_id, values)\n    cache.set(user_id, user)
+```
+
+----------------------------------------
+
+TITLE: Implementing Query API Logic - Python
+DESCRIPTION: This Python class represents the Query API server component in the cache design. It handles parsing queries, checking the memory cache, interacting with the reverse index service on a cache miss, and updating the cache. It depends on injected instances of `memory_cache` and `reverse_index_service`. The `process_query` method takes a `query` string as input, processes it, checks the cache, fetches results from the reverse index if necessary, updates the cache, and returns the results.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/query_cache/README.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+class QueryApi(object):
+
+    def __init__(self, memory_cache, reverse_index_service):
+        self.memory_cache = memory_cache
+        self.reverse_index_service = reverse_index_service
+
+    def parse_query(self, query):
+        """Remove markup, break text into terms, deal with typos,
+        normalize capitalization, convert to use boolean operations.
+        """
+        ...
+
+    def process_query(self, query):
+        query = self.parse_query(query)
+        results = self.memory_cache.get(query)
+        if results is None:
+            results = self.reverse_index_service.process_search(query)
+            self.memory_cache.set(query, results)
+        return results
+```
+
+----------------------------------------
+
+TITLE: Removing Duplicate URLs with MapReduce (Python/MRJob)
+DESCRIPTION: Illustrates a method for removing duplicate URLs from a large dataset using the MapReduce paradigm with the `mrjob` library. The mapper emits each line (URL) with a count of 1, and the reducer sums the counts for each URL. Only URLs with a total count of 1 (meaning they appeared only once) are yielded, effectively filtering out duplicates.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md#_snippet_3
+
+LANGUAGE: Python
+CODE:
+```
+class RemoveDuplicateUrls(MRJob):
+
+    def mapper(self, _, line):
+        yield line, 1
+
+    def reducer(self, key, values):
+        total = sum(values)
+        if total == 1:
+            yield key, total
+```
+
+----------------------------------------
+
+TITLE: Calculating Spending with MapReduce (Python)
+DESCRIPTION: Implements a MapReduce job using the `MRJob` framework in Python to process transaction log data. The `mapper` extracts relevant fields (user, timestamp, seller, amount) from tab-delimited lines, uses a categorizer to map sellers to categories, and yields key-value pairs for the current month's transactions. The `reducer` sums the amounts for each unique key (user, period, category). Requires a `categorizer` instance.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_8
+
+LANGUAGE: python
+CODE:
+```
+class SpendingByCategory(MRJob):
+
+    def __init__(self, categorizer):
+        self.categorizer = categorizer
+        self.current_year_month = calc_current_year_month()
+        ...
+
+    def calc_current_year_month(self):
+        """Return the current year and month."""
+        ...
+
+    def extract_year_month(self, timestamp):
+        """Return the year and month portions of the timestamp."""
+        ...
+
+    def handle_budget_notifications(self, key, total):
+        """Call notification API if nearing or exceeded budget."""
+        ...
+
+    def mapper(self, _, line):
+        """Parse each log line, extract and transform relevant lines.
+
+        Argument line will be of the form:
+
+        user_id   timestamp   seller  amount
+
+        Using the categorizer to convert seller to category,
+        emit key value pairs of the form:
+
+        (user_id, 2016-01, shopping), 25
+        (user_id, 2016-01, shopping), 100
+        (user_id, 2016-01, gas), 50
+        """
+        user_id, timestamp, seller, amount = line.split('\t')
+        category = self.categorizer.categorize(seller)
+        period = self.extract_year_month(timestamp)
+        if period == self.current_year_month:
+            yield (user_id, period, category), amount
+
+    def reducer(self, key, value):
+        """Sum values for each key.
+
+        (user_id, 2016-01, shopping), 125
+        (user_id, 2016-01, gas), 50
+        """
+        total = sum(values)
+        yield key, sum(values)
+```
+
+----------------------------------------
+
+TITLE: Calculating Monthly Paste Hit Counts - Python MapReduce Pseudocode
+DESCRIPTION: This pseudocode outlines a MapReduce job (using an `MRJob`-like structure) to calculate monthly hit counts for each paste from web server logs. The mapper extracts the URL and time period from log lines, and the reducer sums the counts for each (period, URL) key.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md#_snippet_5
+
+LANGUAGE: Python
+CODE:
+```
+class HitCounts(MRJob):
+
+    def extract_url(self, line):
+        """Extract the generated url from the log line."""
+        ...
+
+    def extract_year_month(self, line):
+        """Return the year and month portions of the timestamp."""
+        ...
+
+    def mapper(self, _, line):
+        """Parse each log line, extract and transform relevant lines.
+
+        Emit key value pairs of the form:
+
+        (2016-01, url0), 1
+        (2016-01, url0), 1
+        (2016-01, url1), 1
+        """
+        url = self.extract_url(line)
+        period = self.extract_year_month(line)
+        yield (period, url), 1
+
+    def reducer(self, key, values):
+        """Sum values for each key.
+
+        (2016-01, url0), 2
+        (2016-01, url1), 1
+        """
+        yield key, sum(values)
+```
+
+----------------------------------------
+
+TITLE: Sample REST Calls using HTTP
+DESCRIPTION: Shows examples of REST calls implemented using HTTP requests. The first is a GET request to retrieve a specific resource, and the second is a PUT request to update that resource with data provided in the JSON body. Requires a server implementing a RESTful API.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/README.md#_snippet_4
+
+LANGUAGE: HTTP
+CODE:
+```
+GET /someresources/anId
+
+PUT /someresources/anId
+{"anotherdata": "another value"}
+```
+
+----------------------------------------
+
+TITLE: Implementing Core Web Crawler Logic (Python)
+DESCRIPTION: Defines the main `Crawler` class, which orchestrates the web crawling process. It uses a `PagesDataStore` to manage links and interacts with external queues for indexing services. The `crawl` method implements the main loop: extracting the next highest priority link, checking for content similarity to prevent cycles, processing the page (adding child links, generating signature, updating data store), or reducing its priority.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+class Crawler(object):
+
+    def __init__(self, data_store, reverse_index_queue, doc_index_queue):
+        self.data_store = data_store
+        self.reverse_index_queue = reverse_index_queue
+        self.doc_index_queue = doc_index_queue
+
+    def create_signature(self, page):
+        """Create signature based on url and contents."""
+        ...
+
+    def crawl_page(self, page):
+        for url in page.child_urls:
+            self.data_store.add_link_to_crawl(url)
+        page.signature = self.create_signature(page)
+        self.data_store.remove_link_to_crawl(page.url)
+        self.data_store.insert_crawled_link(page.url, page.signature)
+
+    def crawl(self):
+        while True:
+            page = self.data_store.extract_max_priority_page()
+            if page is None:
+                break
+            if self.data_store.crawled_similar(page.signature):
+                self.data_store.reduce_priority_link_to_crawl(page.url)
+            else:
+                self.crawl_page(page)
+```
+
+----------------------------------------
+
+TITLE: Defining Monthly Spending Table Schema SQL
+DESCRIPTION: Defines the structure for the `monthly_spending` table in a relational database, storing aggregated monthly spending data per category for each user. Includes fields for ID, month/year, category, amount, and user ID, with primary and foreign keys. Indexes facilitate quick lookups by user and month.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_3
+
+LANGUAGE: SQL
+CODE:
+```
+sql
+id int NOT NULL AUTO_INCREMENT
+month_year date NOT NULL
+category varchar(32)
+amount decimal NOT NULL
+user_id int NOT NULL
+PRIMARY KEY(id)
+FOREIGN KEY(user_id) REFERENCES users(id)
+
+```
+
+----------------------------------------
+
+TITLE: Defining Paste Storage Schema - SQL
+DESCRIPTION: This SQL schema defines the `pastes` table used to store metadata about pastes. It includes columns for the unique `shortlink` (primary key), `expiration_length_in_minutes`, `created_at` (indexed for lookup speed), and the `paste_path` to the actual content in the object store.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md#_snippet_0
+
+LANGUAGE: SQL
+CODE:
+```
+shortlink char(7) NOT NULL
+expiration_length_in_minutes int NOT NULL
+created_at datetime NOT NULL
+paste_path varchar(255) NOT NULL
+PRIMARY KEY(shortlink)
+```
+
+----------------------------------------
+
+TITLE: Defining Accounts Table Schema SQL
+DESCRIPTION: Defines the structure for the `accounts` table in a relational database, storing user account connection details. Includes fields for ID, timestamps, account URL, login, password hash, and user ID, with primary and foreign keys. Indexes are used to optimize lookups.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_0
+
+LANGUAGE: SQL
+CODE:
+```
+sql
+id int NOT NULL AUTO_INCREMENT
+created_at datetime NOT NULL
+last_update datetime NOT NULL
+account_url varchar(255) NOT NULL
+account_login varchar(32) NOT NULL
+account_password_hash char(64) NOT NULL
+user_id int NOT NULL
+PRIMARY KEY(id)
+FOREIGN KEY(user_id) REFERENCES users(id)
+
+```
+
+----------------------------------------
+
+TITLE: Defining Transactions Table Schema SQL
+DESCRIPTION: Defines the structure for the `transactions` table in a relational database, storing individual financial transactions extracted from user accounts. Includes fields for ID, timestamp, seller, amount, and user ID, with primary and foreign keys. Indexes are used for efficient querying.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_2
+
+LANGUAGE: SQL
+CODE:
+```
+sql
+id int NOT NULL AUTO_INCREMENT
+created_at datetime NOT NULL
+seller varchar(32) NOT NULL
+amount decimal NOT NULL
+user_id int NOT NULL
+PRIMARY KEY(id)
+FOREIGN KEY(user_id) REFERENCES users(id)
+
+```
+
+----------------------------------------
+
+TITLE: Sample RPC Calls using HTTP
+DESCRIPTION: Shows examples of RPC calls implemented using HTTP requests. The first is a GET request representing an operation with a query parameter, and the second is a POST request representing an operation with parameters sent in a JSON body. Requires a server capable of interpreting these HTTP requests as RPC procedure calls.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/README.md#_snippet_3
+
+LANGUAGE: HTTP
+CODE:
+```
+GET /someoperation?data=anId
+
+POST /anotheroperation
+{
+  "data":"anId";
+  "anotherdata": "another value"
+}
+```
+
+----------------------------------------
+
+TITLE: Implementing Person Server Lookup Service - Python
+DESCRIPTION: This Python class represents a Lookup Service responsible for mapping a given person's ID to the specific Person Server instance where their data is stored. It initializes an internal lookup table and provides a method to retrieve the corresponding server.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/social_graph/README.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+class LookupService(object):
+
+    def __init__(self):
+        self.lookup = self._init_lookup()  # key: person_id, value: person_server
+
+    def _init_lookup(self):
+        ...
+
+    def lookup_person_server(self, person_id):
+        return self.lookup[person_id]
+```
+
+----------------------------------------
+
+TITLE: Encoding Number to Base 62 - Python Pseudocode
+DESCRIPTION: This pseudocode demonstrates a function to encode a number into a specified base, typically used for Base 62 encoding in URL shortening. It iteratively calculates digits by taking the modulo and dividing by the base until the number is zero, then reverses the collected digits.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+def base_encode(num, base=62):
+    digits = []
+    while num > 0
+      remainder = modulo(num, base)
+      digits.push(remainder)
+      num = divide(num, base)
+    digits = digits.reverse
+```
+
+----------------------------------------
+
+TITLE: Posting a Tweet via REST API (Bash)
+DESCRIPTION: Example curl command demonstrating how to post a tweet using the Twitter v1 API via a POST request. It includes user authentication token, status text, and optional media IDs in the request body.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md#_snippet_0
+
+LANGUAGE: Bash
+CODE:
+```
+curl -X POST --data '{ "user_id": "123", "auth_token": "ABC123", \
+    "status": "hello world!", "media_ids": "ABC987" }' \
+    https://twitter.com/api/v1/tweet
+```
+
+----------------------------------------
+
+TITLE: Calling Accounts API REST Shell
+DESCRIPTION: Demonstrates how to make a POST request to the `/api/v1/account` endpoint using `curl`. It sends user account details (user_id, account_url, login, password) as JSON data to create or update an account entry via the REST API.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+$ curl -X POST --data '{ "user_id": "foo", "account_url": "bar", \n    "account_login": "baz", "account_password": "qux" }' \n    https://mint.com/api/v1/account
+
+```
+
+----------------------------------------
+
+TITLE: Retrieving Paste API Request - Shell
+DESCRIPTION: This shell command uses `curl` to demonstrate a GET request to the Pastebin API endpoint for retrieving paste content. It includes the `shortlink` as a query parameter to identify the requested paste.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md#_snippet_4
+
+LANGUAGE: Shell
+CODE:
+```
+$ curl https://pastebin.com/api/v1/paste?shortlink=foobar
+```
+
+----------------------------------------
+
+TITLE: Creating New Paste API Request - Shell
+DESCRIPTION: This shell command uses `curl` to demonstrate a POST request to the Pastebin API endpoint for creating a new paste. It sends JSON data specifying the expiration length and paste contents to the `/api/v1/paste` path.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md#_snippet_3
+
+LANGUAGE: Shell
+CODE:
+```
+$ curl -X POST --data '{ "expiration_length_in_minutes": "60", \
+    "paste_contents": "Hello World!" }' https://pastebin.com/api/v1/paste
+```
+
+----------------------------------------
+
+TITLE: Querying Search API using Curl Shell Command
+DESCRIPTION: This snippet demonstrates how a client can interact with the search API using the standard `curl` command-line tool. It shows an HTTP GET request targeting the `/api/v1/search` endpoint and passing the user's search query via the `query` parameter.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md#_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+$ curl https://search.com/api/v1/search?query=hello+world
+```
+
+----------------------------------------
+
+TITLE: Searching Keywords via REST API (Bash)
+DESCRIPTION: Example curl command demonstrating how to perform a keyword search using the Twitter v1 API via a GET request. The search query is passed as a URL-encoded query parameter.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md#_snippet_4
+
+LANGUAGE: Bash
+CODE:
+```
+curl https://twitter.com/api/v1/search?query=hello+world
+```
+
+----------------------------------------
+
+TITLE: Fetching Home Timeline via REST API (Bash)
+DESCRIPTION: Example curl command to retrieve the home timeline for a specific user ID using a GET request to the Twitter v1 API endpoint. The user ID is passed as a query parameter.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md#_snippet_2
+
+LANGUAGE: Bash
+CODE:
+```
+curl https://twitter.com/api/v1/home_timeline?user_id=123
+```
+
+----------------------------------------
+
+TITLE: Generating Unique Short URL - Python Pseudocode
+DESCRIPTION: This pseudocode shows how to generate a short URL by taking the MD5 hash of combined data (like IP address and timestamp), encoding the hash using Base 62, and taking the first 7 characters. This approach aims for a unique, URL-safe string.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+url = base_encode(md5(ip_address+timestamp))[:URL_LENGTH]
+```
+
+----------------------------------------
+
+TITLE: Implementing Person Server Component - Python
+DESCRIPTION: This Python class represents a Person Server, acting as a shard that stores a subset of user (Person) data. It manages a dictionary mapping person IDs to Person objects and provides a method to retrieve multiple Person objects by their IDs.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/social_graph/README.md#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+class PersonServer(object):
+
+    def __init__(self):
+        self.people = {}  # key: person_id, value: person
+
+    def add_person(self, person):
+        ...
+
+    def people(self, ids):
+        results = []
+        for id in ids:
+            if id in self.people:
+                results.append(self.people[id])
+        return results
+```
+
+----------------------------------------
+
+TITLE: Defining Web Crawler Page Data Store (Python)
+DESCRIPTION: Defines an abstract class `PagesDataStore` responsible for interacting with the underlying NoSQL database to manage links awaiting crawl (`links_to_crawl`) and links that have been processed (`crawled_links`). It provides methods for adding, removing, reducing priority, extracting, inserting, and checking for similar crawled links.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+class PagesDataStore(object):
+
+    def __init__(self, db);
+        self.db = db
+        ...
+
+    def add_link_to_crawl(self, url):
+        """Add the given link to `links_to_crawl`."""
+        ...
+
+    def remove_link_to_crawl(self, url):
+        """Remove the given link from `links_to_crawl`."""
+        ...
+
+    def reduce_priority_link_to_crawl(self, url)
+        """Reduce the priority of a link in `links_to_crawl` to avoid cycles."""
+        ...
+
+    def extract_max_priority_page(self):
+        """Return the highest priority link in `links_to_crawl`."""
+        ...
+
+    def insert_crawled_link(self, url, signature):
+        """Add the given link to `crawled_links`."""
+        ...
+
+    def crawled_similar(self, signature):
+        """Determine if we've already crawled a page matching the given signature"""
+        ...
+```
+
+----------------------------------------
+
+TITLE: Implementing Transaction Categorizer Python
+DESCRIPTION: Defines the `Categorizer` class responsible for assigning categories to transactions based on the seller. It first checks a default seller-to-category map and then falls back to a map based on crowd-sourced user overrides if the seller is not in the default map. Requires `Transaction` and a data structure supporting peek_min (like a heap).
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_5
+
+LANGUAGE: Python
+CODE:
+```
+python
+class Categorizer(object):
+
+    def __init__(self, seller_category_map, seller_category_crowd_overrides_map):
+        self.seller_category_map = seller_category_map
+        self.seller_category_crowd_overrides_map = \n            seller_category_crowd_overrides_map
+
+    def categorize(self, transaction):
+        if transaction.seller in self.seller_category_map:
+            return self.seller_category_map[transaction.seller]
+        elif transaction.seller in self.seller_category_crowd_overrides_map:
+            self.seller_category_map[transaction.seller] = \n                self.seller_category_crowd_overrides_map[transaction.seller].peek_min()
+            return self.seller_category_map[transaction.seller]
+        return None
+
+```
+
+----------------------------------------
+
+TITLE: Home Timeline Response (JSON)
+DESCRIPTION: Example JSON array of objects representing entries in a user's home timeline, returned by the Twitter v1 API. Each object typically contains user ID, tweet ID, and status text.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md#_snippet_3
+
+LANGUAGE: JSON
+CODE:
+```
+[
+{
+    "user_id": "456",
+    "tweet_id": "123",
+    "status": "foo"
+},
+{
+    "user_id": "789",
+    "tweet_id": "456",
+    "status": "bar"
+},
+{
+    "user_id": "789",
+    "tweet_id": "579",
+    "status": "baz"
+}
+]
+```
+
+----------------------------------------
+
+TITLE: Defining Web Crawler Page Abstraction (Python)
+DESCRIPTION: Defines the `Page` class, an internal abstraction used by the Crawler Service to represent a single web page. It encapsulates essential information about the page, including its URL, raw content, a list of child URLs found within the content, and a unique signature derived from its content for duplicate detection.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+class Page(object):
+
+    def __init__(self, url, contents, child_urls, signature):
+        self.url = url
+        self.contents = contents
+        self.child_urls = child_urls
+        self.signature = signature
+```
+
+----------------------------------------
+
+TITLE: Tweet Post Success Response (JSON)
+DESCRIPTION: Example JSON response returned by the Twitter v1 API after successfully posting a tweet. It includes metadata about the newly created tweet, such as creation timestamp, status text, tweet ID, and user ID.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md#_snippet_1
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "created_at": "Wed Sep 05 00:37:15 +0000 2012",
+    "status": "hello world!",
+    "tweet_id": "987",
+    "user_id": "123",
+    ...
+}
+```
+
+----------------------------------------
+
+TITLE: Calling Set User Function - Application - Python
+DESCRIPTION: This snippet shows how an application would call a function (`set_user`) to update user data. In the context of the write-through cache strategy, this call initiates the synchronous update process where the cache first updates the database and then itself.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/README.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+set_user(12345, {"foo":"bar"})
+```
+
+----------------------------------------
+
+TITLE: Initializing and Overriding Budget Categories (Python)
+DESCRIPTION: Defines a Python class `Budget` to manage a user's budget. It initializes the budget based on income using a default template and provides a method to override the budget amount for specific categories. Relies on a `DefaultCategories` enum or similar structure (not shown).
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_7
+
+LANGUAGE: python
+CODE:
+```
+class Budget(object):
+
+    def __init__(self, income):
+        self.income = income
+        self.categories_to_budget_map = self.create_budget_template()
+
+    def create_budget_template(self):
+        return {
+            DefaultCategories.HOUSING: self.income * .4,
+            DefaultCategories.FOOD: self.income * .2,
+            DefaultCategories.GAS: self.income * .1,
+            DefaultCategories.SHOPPING: self.income * .2,
+            ...
+        }
+
+    def override_category_budget(self, category, amount):
+        self.categories_to_budget_map[category] = amount
+```
+
+----------------------------------------
+
+TITLE: Defining LRU Cache Linked List - Python
+DESCRIPTION: This Python class represents a doubly-linked list structure intended for use within the LRU cache implementation. It tracks the `head` (most recently used) and `tail` (least recently used) nodes. Placeholder methods (`move_to_front`, `append_to_front`, `remove_from_tail`) are included, indicating the necessary operations for managing node order based on access for the LRU policy.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/query_cache/README.md#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+class LinkedList(object):
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def move_to_front(self, node):
+        ...
+
+    def append_to_front(self, node):
+        ...
+
+    def remove_from_tail(self):
+        ...
+```
+
+----------------------------------------
+
+TITLE: Defining Cache Node Structure - Python
+DESCRIPTION: This Python class defines the structure of a node used within the linked list component of the LRU cache implementation. Each node is designed to store a specific cache entry, consisting of the `query` (acting as the key) and its corresponding `results` (the value).
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/query_cache/README.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+class Node(object):
+
+    def __init__(self, query, results):
+        self.query = query
+        self.results = results
+```
+
+----------------------------------------
+
+TITLE: Defining Person Data Structure - Python
+DESCRIPTION: This simple Python class defines the structure for a 'Person' object, representing a user in the social network. It stores the user's unique ID, name, and a list of IDs for their friends.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/social_graph/README.md#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+class Person(object):
+
+    def __init__(self, id, name, friend_ids):
+        self.id = id
+        self.name = name
+        self.friend_ids = friend_ids
+```
+
+----------------------------------------
+
+TITLE: Defining Transaction Data Structure Python
+DESCRIPTION: Defines a simple `Transaction` class to represent a financial transaction. It holds basic transaction details: creation timestamp (`created_at`), seller name (`seller`), and transaction amount (`amount`). This object is used as input for the `Categorizer`.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_6
+
+LANGUAGE: Python
+CODE:
+```
+python
+class Transaction(object):
+
+    def __init__(self, created_at, seller, amount):
+        self.created_at = created_at
+        self.seller = seller
+        self.amount = amount
+
+```
+
+----------------------------------------
+
+TITLE: Initializing Default Categories Python
+DESCRIPTION: Defines an Enum for default transaction categories and initializes a dictionary mapping common sellers to these default categories. This map serves as a starting point for the categorization service, allowing quick lookups for known sellers.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md#_snippet_4
+
+LANGUAGE: Python
+CODE:
+```
+python
+class DefaultCategories(Enum):
+
+    HOUSING = 0
+    FOOD = 1
+    GAS = 2
+    SHOPPING = 3
+    ...
+
+seller_category_map = {}
+seller_category_map['Exxon'] = DefaultCategories.GAS
+seller_category_map['Target'] = DefaultCategories.SHOPPING
+...
+
+```
+
+----------------------------------------
+
+TITLE: Cloning Forked Repository - Bash
+DESCRIPTION: Clones the forked GitHub repository to your local machine. Replace 'YourLogin' with your GitHub username. Requires Git installed.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/CONTRIBUTING.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ git clone git@github.com:YourLogin/system-design-primer.git
+$ cd system-design-primer
+```
+
+----------------------------------------
+
+TITLE: Pushing Local Branch to GitHub - Bash
+DESCRIPTION: Pushes the local branch and its commits to the remote repository on GitHub. The '-u origin' sets the upstream branch for easier subsequent pushes. Requires Git installed and configured.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/CONTRIBUTING.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+$ git push -u origin my-feature
+```
+
+----------------------------------------
+
+TITLE: Creating New Feature Branch - Bash
+DESCRIPTION: Creates a new local branch to work on features or fixes. This prevents working directly on the main master branch. Replace 'my-feature' with a descriptive branch name. Requires Git installed.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/CONTRIBUTING.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+$ git checkout -b my-feature
+```
+
+----------------------------------------
+
+TITLE: Staging and Committing Changes - Bash
+DESCRIPTION: Stages modified files for the next commit and then creates a new commit with those staged changes. Requires Git installed. 'modified_files' can be replaced with specific file paths or '.' to stage all changes.
+SOURCE: https://github.com/donnemartin/system-design-primer/blob/master/CONTRIBUTING.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+$ git add modified_files
+$ git commit
+```

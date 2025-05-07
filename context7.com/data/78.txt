@@ -1,0 +1,1019 @@
+TITLE: Implementing Custom Exception Handler for Spring Boot Controller
+DESCRIPTION: This code demonstrates how to create a global exception handler for a Spring Boot application. It captures various types of exceptions and translates them into appropriate HTTP responses with descriptive error messages.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/test/resources/metadata/service-metadata-2.1.0.txt#2025-04-21_snippet_1
+
+LANGUAGE: java
+CODE:
+```
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation failed",
+                LocalDateTime.now(),
+                errors
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring Custom Validator in Spring Boot
+DESCRIPTION: This snippet shows how to create a configuration class that sets up a custom validator in a Spring Boot application. It defines a bean for LocalValidatorFactoryBean and configures it with a custom validator.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/test/resources/dependency-customizer-tests/resource1.txt#2025-04-21_snippet_0
+
+LANGUAGE: Java
+CODE:
+```
+@Configuration(proxyBeanMethods = false)
+public class ValidationAutoConfiguration {
+
+	@Bean
+	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+	staticLocalValidatorFactoryBean<?> defaultValidator() {
+		LocalValidatorFactoryBean<?> factoryBean = new LocalValidatorFactoryBean<>();
+		factoryBean.setMessageInterpolator(new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator("org.springframework.validation.messages")));
+		return factoryBean;
+	}
+
+}
+```
+
+----------------------------------------
+
+TITLE: Defining a YAML Data Structure with Nested Arrays
+DESCRIPTION: This YAML snippet defines a simple data structure with three keys (b, a, c), each containing an array of two string values. The structure demonstrates YAML's hierarchical organization capability using dash notation for array items.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader-tools/src/test/resources/org/springframework/boot/loader/tools/LayersIndexTests-writeToWritesLayersInIteratorOrder.txt#2025-04-21_snippet_0
+
+LANGUAGE: yaml
+CODE:
+```
+- "b":
+  - "b1"
+  - "b2"
+- "a":
+  - "a1"
+  - "a2"
+- "c":
+  - "c1"
+  - "c2"
+```
+
+----------------------------------------
+
+TITLE: Defining a YAML List of Animals with Hierarchical Structure
+DESCRIPTION: A YAML configuration that defines a key 'a' mapping to a list of animal names. The list is organized in alphabetical order and demonstrates the indentation-based nesting structure typical in YAML files.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader-tools/src/test/resources/org/springframework/boot/loader/tools/LayersIndexTests-writeToWhenSimpleNamesSortsAlphabetically.txt#2025-04-21_snippet_0
+
+LANGUAGE: yaml
+CODE:
+```
+- "a":
+  - "aardvark"
+  - "cat"
+  - "dog"
+  - "hamster"
+  - "zerbra"
+```
+
+----------------------------------------
+
+TITLE: Defining Nested YAML Configuration Structure
+DESCRIPTION: This YAML snippet defines a configuration structure with three top-level keys and their nested values. It showcases the hierarchical nature of YAML and how to represent lists under keys.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader-tools/src/test/resources/org/springframework/boot/loader/tools/LayersIndexTests-writeToWhenLayerNotUsedDoesNotSkipLayer.txt#2025-04-21_snippet_0
+
+LANGUAGE: YAML
+CODE:
+```
+- "a":
+  - "a1"
+  - "a2"
+- "b":
+- "c":
+  - "c1"
+  - "c2"
+```
+
+----------------------------------------
+
+TITLE: Defining Hierarchical Path Structure in YAML
+DESCRIPTION: A YAML configuration defining a nested hierarchy with three main keys ('a', 'b', 'c'), each containing lists of path strings. This structure could represent directories, namespaces, or other hierarchical organization in a Spring Boot application.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader-tools/src/test/resources/org/springframework/boot/loader/tools/LayersIndexTests-writeToWhenAllFilesInDirectoryAreInNotInSameLayerUsesFiles.txt#2025-04-21_snippet_0
+
+LANGUAGE: yaml
+CODE:
+```
+- "a":
+  - "a1/b1/c1"
+  - "a2/b1"
+- "b":
+  - "a1/b1/c2"
+  - "a2/b2"
+- "c":
+  - "a1/b2/"
+```
+
+----------------------------------------
+
+TITLE: Configuring Unix Startup Script for Spring Boot Applications
+DESCRIPTION: This shell script provides a complete launcher for Spring Boot applications on Unix-like systems. It resolves the application home directory, configures Java environment variables, handles platform-specific settings (Darwin/Cygwin/MINGW/NONSTOP), and properly processes command-line arguments before executing the Java application.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin/src/main/resources/unixStartScript.txt#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+#!/usr/bin/env sh
+
+##############################################################################
+##
+##  ${applicationName} start up script for UN*X
+##
+##############################################################################
+
+# Attempt to set APP_HOME
+# Resolve links: \$0 may be a link
+PRG="\$0"
+# Need this for relative symlinks.
+while [ -h "\$PRG" ] ; do
+    ls=`ls -ld "\$PRG"`
+    link=`expr "\$ls" : '.*-> \\(.*\\)\$'`
+    if expr "\$link" : '/.*' > /dev/null; then
+        PRG="\$link"
+    else
+        PRG=`dirname "\$PRG"`"/\$link"
+    fi
+done
+SAVED="`pwd`"
+cd "`dirname \"\$PRG\"`/${appHomeRelativePath}" >/dev/null
+APP_HOME="`pwd -P`"
+cd "\$SAVED" >/dev/null
+
+APP_NAME="${applicationName}"
+APP_BASE_NAME=`basename "\$0"`
+
+# Add default JVM options here. You can also use JAVA_OPTS and ${optsEnvironmentVar} to pass JVM options to this script.
+DEFAULT_JVM_OPTS=${defaultJvmOpts}
+
+# Use the maximum available, or set MAX_FD != -1 to use that value.
+MAX_FD="maximum"
+
+warn ( ) {
+    echo "\$*"
+}
+
+die ( ) {
+    echo
+    echo "\$*"
+    echo
+    exit 1
+}
+
+# OS specific support (must be 'true' or 'false').
+cygwin=false
+msys=false
+darwin=false
+nonstop=false
+case "`uname`" in
+  CYGWIN* )
+    cygwin=true
+    ;;
+  Darwin* )
+    darwin=true
+    ;;
+  MINGW* )
+    msys=true
+    ;;
+  NONSTOP* )
+    nonstop=true
+    ;;
+esac
+
+JARPATH=$classpath
+
+# Determine the Java command to use to start the JVM.
+if [ -n "\$JAVA_HOME" ] ; then
+    if [ -x "\$JAVA_HOME/jre/sh/java" ] ; then
+        # IBM's JDK on AIX uses strange locations for the executables
+        JAVACMD="\$JAVA_HOME/jre/sh/java"
+    else
+        JAVACMD="\$JAVA_HOME/bin/java"
+    fi
+    if [ ! -x "\$JAVACMD" ] ; then
+        die "ERROR: JAVA_HOME is set to an invalid directory: \$JAVA_HOME
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation."
+    fi
+else
+    JAVACMD="java"
+    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation."
+fi
+
+# Increase the maximum file descriptors if we can.
+if [ "\$cygwin" = "false" -a "\$darwin" = "false" -a "\$nonstop" = "false" ] ; then
+    MAX_FD_LIMIT=`ulimit -H -n`
+    if [ \$? -eq 0 ] ; then
+        if [ "\$MAX_FD" = "maximum" -o "\$MAX_FD" = "max" ] ; then
+            MAX_FD="\$MAX_FD_LIMIT"
+        fi
+        ulimit -n \$MAX_FD
+        if [ \$? -ne 0 ] ; then
+            warn "Could not set maximum file descriptor limit: \$MAX_FD"
+        fi
+    else
+        warn "Could not query maximum file descriptor limit: \$MAX_FD_LIMIT"
+    fi
+fi
+
+# For Darwin, add options to specify how the application appears in the dock
+if \$darwin; then
+    GRADLE_OPTS="\$GRADLE_OPTS \\"-Xdock:name=\$APP_NAME\\" \\"-Xdock:icon=\$APP_HOME/media/gradle.icns\\""
+fi
+
+# For Cygwin, switch paths to Windows format before running java
+if \$cygwin ; then
+    APP_HOME=`cygpath --path --mixed "\$APP_HOME"`
+    JARPATH=`cygpath --path --mixed "\$JARPATH"`
+    JAVACMD=`cygpath --unix "\$JAVACMD"`
+
+    # We build the pattern for arguments to be converted via cygpath
+    ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null`
+    SEP=""
+    for dir in \$ROOTDIRSRAW ; do
+        ROOTDIRS="\$ROOTDIRS\$SEP\$dir"
+        SEP="|"
+    done
+    OURCYGPATTERN="(^(\$ROOTDIRS))"
+    # Add a user-defined pattern to the cygpath arguments
+    if [ "\$GRADLE_CYGPATTERN" != "" ] ; then
+        OURCYGPATTERN="\$OURCYGPATTERN|(\$GRADLE_CYGPATTERN)"
+    fi
+    # Now convert the arguments - kludge to limit ourselves to /bin/sh
+    i=0
+    for arg in "\$@" ; do
+        CHECK=`echo "\$arg"|egrep -c "\$OURCYGPATTERN" -`
+        CHECK2=`echo "\$arg"|egrep -c "^-"`                                 ### Determine if an option
+
+        if [ \$CHECK -ne 0 ] && [ \$CHECK2 -eq 0 ] ; then                    ### Added a condition
+            eval `echo args\$i`=`cygpath --path --ignore --mixed "\$arg"`
+        else
+            eval `echo args\$i`="\"\$arg\""
+        fi
+        i=\$((i+1))
+    done
+    case \$i in
+        (0) set -- ;;
+        (1) set -- "\$args0" ;;
+        (2) set -- "\$args0" "\$args1" ;;
+        (3) set -- "\$args0" "\$args1" "\$args2" ;;
+        (4) set -- "\$args0" "\$args1" "\$args2" "\$args3" ;;
+        (5) set -- "\$args0" "\$args1" "\$args2" "\$args3" "\$args4" ;;
+        (6) set -- "\$args0" "\$args1" "\$args2" "\$args3" "\$args4" "\$args5" ;;
+        (7) set -- "\$args0" "\$args1" "\$args2" "\$args3" "\$args4" "\$args5" "\$args6" ;;
+        (8) set -- "\$args0" "\$args1" "\$args2" "\$args3" "\$args4" "\$args5" "\$args6" "\$args7" ;;
+        (9) set -- "\$args0" "\$args1" "\$args2" "\$args3" "\$args4" "\$args5" "\$args6" "\$args7" "\$args8" ;;
+    esac
+fi
+
+# Escape application args
+save ( ) {
+    for i do printf %s\\\\n "\$i" | sed "s/'/'\\\\\\\\''/g;1s/^/'/;\\\$s/\\\$/' \\\\\\\\\\\\\\\\/' ; done
+    echo " "
+}
+APP_ARGS=\$(save "\$@")
+
+# Collect all arguments for the java command, following the shell quoting and substitution rules
+eval set -- \$DEFAULT_JVM_OPTS \$JAVA_OPTS \$${optsEnvironmentVar} <% if ( appNameSystemProperty ) { %>"\"-D${appNameSystemProperty}=\$APP_BASE_NAME\"" <% } %>-jar "\"\$JARPATH\"" "\$APP_ARGS"
+
+# by default we should be in the correct project dir, but when run from Finder on Mac, the cwd is wrong
+if [ "\$(uname)" = "Darwin" ] && [ "\$HOME" = "\$PWD" ]; then
+  cd "\$(dirname "\$0")"
+fi
+
+exec "\$JAVACMD" "\$@"
+```
+
+----------------------------------------
+
+TITLE: Checking Java Version - Bash
+DESCRIPTION: Command to verify the installed Java version meets the minimum requirement of JDK v1.8.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/main/content/INSTALL.txt#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+java -version
+```
+
+----------------------------------------
+
+TITLE: Initializing Windows Environment for Spring Boot Application
+DESCRIPTION: This batch script sets up the necessary environment variables and paths to run a Spring Boot application on Windows. It locates the Java executable, configures JVM options, and prepares the command-line arguments.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin/src/main/resources/windowsStartScript.txt#2025-04-21_snippet_0
+
+LANGUAGE: Batch
+CODE:
+```
+@if "%DEBUG%" == "" @echo off
+@rem ##########################################################################
+@rem
+@rem  ${applicationName} startup script for Windows
+@rem
+@rem ##########################################################################
+
+@rem Set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" setlocal
+
+set DIRNAME=%~dp0
+if "%DIRNAME%" == "" set DIRNAME=.\
+
+set APP_BASE_NAME=%~n0
+set APP_HOME=%DIRNAME%${appHomeRelativePath}
+
+@rem Add default JVM options here. You can also use JAVA_OPTS and ${optsEnvironmentVar} to pass JVM options to this script.
+set DEFAULT_JVM_OPTS=${defaultJvmOpts}
+
+@rem Find java.exe
+if defined JAVA_HOME goto findJavaFromJavaHome
+
+set JAVA_EXE=java.exe
+%JAVA_EXE% -version >NUL 2>&1
+if "%ERRORLEVEL%" == "0" goto init
+
+echo.
+echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+echo.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation.
+
+goto fail
+
+:findJavaFromJavaHome
+set JAVA_HOME=%JAVA_HOME:"=%
+set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+
+if exist "%JAVA_EXE%" goto init
+
+echo.
+echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
+echo.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation.
+
+goto fail
+
+:init
+@rem Get command-line arguments, handling Windows variants
+
+if not "%OS%" == "Windows_NT" goto win9xME_args
+
+:win9xME_args
+@rem Slurp the command line arguments.
+set CMD_LINE_ARGS=
+set _SKIP=2
+
+:win9xME_args_slurp
+if "x%~1" == "x" goto execute
+
+set CMD_LINE_ARGS=%*
+
+:execute
+@rem Setup the command line
+
+set JARPATH=$classpath
+
+@rem Execute ${applicationName}
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %${optsEnvironmentVar}% <% if ( appNameSystemProperty ) { %>"-D${appNameSystemProperty}=%APP_BASE_NAME%"<% } %> -jar "%JARPATH%" %CMD_LINE_ARGS%
+
+:end
+@rem End local scope for the variables with windows NT shell
+if "%ERRORLEVEL%"=="0" goto mainEnd
+
+:fail
+rem Set variable ${exitEnvironmentVar} if you need the _script_ return code instead of
+rem the _cmd.exe /c_ return code!
+if  not "" == "%${exitEnvironmentVar}%" exit 1
+exit /b 1
+
+:mainEnd
+if "%OS%"=="Windows_NT" endlocal
+
+:omega
+```
+
+----------------------------------------
+
+TITLE: Listing Spring Boot Executable JAR Structure Components
+DESCRIPTION: This plain text listing shows the four main components of a Spring Boot executable JAR or WAR file structure. These components define how the Spring Boot loader organizes code and dependencies in a packaged application.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/list-layers-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+dependencies
+spring-boot-loader
+snapshot-dependencies
+application
+```
+
+----------------------------------------
+
+TITLE: X.509 SSL/TLS Certificate in PEM Format
+DESCRIPTION: PEM-encoded X.509 certificate for a SAML testing server (simplesamlphp.cfapps.io). The certificate contains public key information, issuer details, and validity period (2015-2025).
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-tests/spring-boot-smoke-tests/spring-boot-smoke-test-saml2-service-provider/src/main/resources/saml/certificate.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+-----BEGIN CERTIFICATE-----
+MIIEEzCCAvugAwIBAgIJAIc1qzLrv+5nMA0GCSqGSIb3DQEBCwUAMIGfMQswCQYD
+VQQGEwJVUzELMAkGA1UECAwCQ08xFDASBgNVBAcMC0Nhc3RsZSBSb2NrMRwwGgYD
+VQQKDBNTYW1sIFRlc3RpbmcgU2VydmVyMQswCQYDVQQLDAJJVDEgMB4GA1UEAwwX
+c2ltcGxlc2FtbHBocC5jZmFwcHMuaW8xIDAeBgkqhkiG9w0BCQEWEWZoYW5pa0Bw
+aXZvdGFsLmlvMB4XDTE1MDIyMzIyNDUwM1oXDTI1MDIyMjIyNDUwM1owgZ8xCzAJ
+BgNVBAYTAlVTMQswCQYDVQQIDAJDTzEUMBIGA1UEBwwLQ2FzdGxlIFJvY2sxHDAa
+BgNVBAoME1NhbWwgVGVzdGluZyBTZXJ2ZXIxCzAJBgNVBAsMAklUMSAwHgYDVQQD
+DBdzaW1wbGVzYW1scGhwLmNmYXBwcy5pbzEgMB4GCSqGSIb3DQEJARYRZmhhbmlr
+QHBpdm90YWwuaW8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC4cn62
+E1xLqpN34PmbrKBbkOXFjzWgJ9b+pXuaRft6A339uuIQeoeH5qeSKRVTl32L0gdz
+2ZivLwZXW+cqvftVW1tvEHvzJFyxeTW3fCUeCQsebLnA2qRa07RkxTo6Nf244mWW
+RDodcoHEfDUSbxfTZ6IExSojSIU2RnD6WllYWFdD1GFpBJOmQB8rAc8wJIBdHFdQ
+nX8Ttl7hZ6rtgqEYMzYVMuJ2F2r1HSU1zSAvwpdYP6rRGFRJEfdA9mm3WKfNLSc5
+cljz0X/TXy0vVlAV95l9qcfFzPmrkNIst9FZSwpvB49LyAVke04FQPPwLgVH4gph
+iJH3jvZ7I+J5lS8VAgMBAAGjUDBOMB0GA1UdDgQWBBTTyP6Cc5HlBJ5+ucVCwGc5
+ogKNGzAfBgNVHSMEGDAWgBTTyP6Cc5HlBJ5+ucVCwGc5ogKNGzAMBgNVHRMEBTAD
+AQH/MA0GCSqGSIb3DQEBCwUAA4IBAQAvMS4EQeP/ipV4jOG5lO6/tYCb/iJeAduO
+nRhkJk0DbX329lDLZhTTL/x/w/9muCVcvLrzEp6PN+VWfw5E5FWtZN0yhGtP9R+v
+ZnrV+oc2zGD+no1/ySFOe3EiJCO5dehxKjYEmBRv5sU/LZFKZpozKN/BMEa6CqLu
+xbzb7ykxVr7EVFXwltPxzE9TmL9OACNNyF5eJHWMRMllarUvkcXlh4pux4ks9e6z
+V9DQBy2zds9f1I3qxg0eX6JnGrXi/ZiCT+lJgVe3ZFXiejiLAiKB04sXW3ti0LW3
+lx13Y1YlQ4/tlpgTgfIJxKV6nyPiLoK0nywbMd+vpAirDt2Oc+hk
+-----END CERTIFICATE-----
+```
+
+----------------------------------------
+
+TITLE: Verifying Spring Boot CLI Installation - Bash
+DESCRIPTION: Command to verify successful installation of the Spring Boot CLI by checking its version.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/main/content/INSTALL.txt#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+spring --version
+```
+
+----------------------------------------
+
+TITLE: Setting Up Shell Completion - Bash
+DESCRIPTION: Commands to create symbolic links for BASH and ZSH shell completion scripts.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/main/content/INSTALL.txt#2025-04-21_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+ln -s ./shell-completion/bash/spring /etc/bash_completion.d/spring
+ln -s ./shell-completion/zsh/_spring /usr/local/share/zsh/site-functions/_spring
+```
+
+----------------------------------------
+
+TITLE: Recommended Replacement for Deprecated Layertools Command
+DESCRIPTION: Shows the recommended replacement command for the deprecated layertools extract functionality, using the newer jarmode=tools syntax.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-error-option-unknown-output.txt#2025-04-21_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+-Djarmode=tools extract --layers --launcher
+```
+
+----------------------------------------
+
+TITLE: Using Spring Boot Jar Extraction Tool via Command Line
+DESCRIPTION: Command-line usage example for extracting the contents of a Spring Boot executable jar. The command uses the 'jarmode=tools' system property to activate the extraction tool mode and provides various options to customize the extraction process.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-help-extract-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+java -Djarmode=tools -jar test.jar extract [options]
+```
+
+----------------------------------------
+
+TITLE: Basic Spring Boot Template String with Variable Substitution
+DESCRIPTION: A simple template string that includes a placeholder variable called 'message'. This syntax is commonly used in Spring Boot templates like Thymeleaf or in property files for dynamic content insertion.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/test/resources/templates/test.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+Hello ${message}!
+```
+
+----------------------------------------
+
+TITLE: Apache License 2.0 Header Template for Spring Boot Project
+DESCRIPTION: Standard license header containing copyright notice and Apache License 2.0 terms that appears at the top of source files in the Spring Boot project. The copyright year range dynamically shows from 2012 to the current year of file creation or modification.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/src/checkstyle/checkstyle-header.txt#2025-04-21_snippet_0
+
+LANGUAGE: Text
+CODE:
+```
+/*
+ * Copyright 2012-20XX the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+```
+
+----------------------------------------
+
+TITLE: Docker Build Log Output
+DESCRIPTION: Complete build log showing the process of building a Docker image for a Spring Boot application using Cloud Native Buildpacks. Includes pulling builder images, running build steps, and tagging the final image.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-buildpack-platform/src/test/resources/org/springframework/boot/buildpack/platform/build/print-stream-build-log.txt#2025-04-21_snippet_0
+
+LANGUAGE: log
+CODE:
+```
+Building image 'docker.io/library/my-app:latest'
+
+ > Pulling builder image 'docker.io/cnb/builder' ..................................................
+ > Pulled builder image '00000001'
+ > Pulling run image 'docker.io/cnb/runner' for platform 'linux/arm64/v1' ..................................................
+ > Pulled run image '00000002'
+ > Executing lifecycle version v0.5.0
+ > Using build cache volume 'pack-abc.cache'
+
+ > Running alphabet
+    [alphabet]    one
+    [alphabet]    two
+    [alphabet]    three
+
+ > Running basket
+    [basket]      spring
+    [basket]      boot
+
+Successfully built image 'docker.io/library/my-app:latest'
+
+Successfully created image tag 'docker.io/library/my-app:1.0'
+```
+
+----------------------------------------
+
+TITLE: Deprecated JAR Layer Command with Alternative in Spring Boot
+DESCRIPTION: A deprecation warning for a Spring Boot command with the recommended replacement syntax using the jarmode parameter. This informs users to transition to the newer command format for listing layers.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-list-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+Warning: This command is deprecated. Use '-Djarmode=tools list-layers' instead.
+```
+
+----------------------------------------
+
+TITLE: Displaying Spring Boot Remote ASCII Art Banner
+DESCRIPTION: An ASCII art banner for Spring Boot Remote applications. The banner includes the Spring Boot logo and text with a version placeholder ('${spring-boot.formatted-version}') that gets replaced with the actual version at runtime.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-devtools/src/main/resources/org/springframework/boot/devtools/remote-banner.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+  .   ____          _                                              __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _          ___               _      \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` |        | _ \___ _ __  ___| |_ ___ \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| []::::::[]   / -_) '  \/ _ \  _/ -_) ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, |        |_|_\___|_|_|_\___/\__\___|/ / / /
+ =========|_|==============|___/===================================/_/_/_/
+ :: Spring Boot Remote :: ${spring-boot.formatted-version}
+```
+
+----------------------------------------
+
+TITLE: Using list-layers Command with Spring Boot JAR
+DESCRIPTION: Command-line example showing how to use the list-layers jarmode tool to extract layer information from a Spring Boot JAR file. This requires setting the jarmode system property to 'tools' when executing the JAR.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-help-list-layers-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=tools -jar test.jar list-layers
+```
+
+----------------------------------------
+
+TITLE: Apache License 2.0 Boilerplate Notice Template
+DESCRIPTION: A template for the boilerplate notice that should be included when applying the Apache License 2.0 to a project. Developers should replace the bracketed fields with their own identifying information.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/LICENSE.txt#2025-04-21_snippet_0
+
+LANGUAGE: text
+CODE:
+```
+Copyright {yyyy} {name of copyright owner}
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+----------------------------------------
+
+TITLE: Using Spring Boot CLI Help Command
+DESCRIPTION: This shows the syntax for using the help command when running a Spring Boot JAR in tools mode. The command accepts an optional parameter to get help about a specific command.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-help-help-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=tools -jar test.jar help [<command>]
+```
+
+----------------------------------------
+
+TITLE: Spring Boot ASCII Art Logo and Version Display in Plain Text
+DESCRIPTION: An ASCII art representation of the Spring Boot logo, followed by text that displays the Spring Boot version using the variable ${spring-boot.formatted-version}. This is likely used as a banner that appears in the console when a Spring Boot application starts.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-tests/spring-boot-smoke-tests/spring-boot-smoke-test-actuator-noweb/src/main/resources/banner.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+   ,--.   ,--.  
+   \  /-~-\  /
+    )' a a `(
+   (  ,---.  )
+    `(_o_o_)'
+      )`-'(
+
+Spring Boot${spring-boot.formatted-version}
+```
+
+----------------------------------------
+
+TITLE: Executing Spring Boot JAR in Tools Mode
+DESCRIPTION: Shows the basic command to run a Spring Boot JAR file in tools mode, which enables access to JAR manipulation utilities. The -Djarmode=tools flag enables tools mode functionality.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-help-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+java -Djarmode=tools -jar test.jar
+```
+
+----------------------------------------
+
+TITLE: Defining ExampleClass for Class Loading Tests in Spring Boot (Java)
+DESCRIPTION: This snippet defines a simple Java class named ExampleClass within the explodedsample package. The class is used for testing class loading mechanisms in Spring Boot. It contains no methods or properties, serving as a minimal example for loading tests.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader-classic/src/test/resources/explodedsample/ExampleClass.txt#2025-04-21_snippet_0
+
+LANGUAGE: Java
+CODE:
+```
+package explodedsample;
+
+/**
+ * Example class used to test class loading.
+ *
+ * @author Phillip Webb
+ */
+public class ExampleClass {
+
+}
+```
+
+----------------------------------------
+
+TITLE: Executing Spring Boot Jar in Tools Mode
+DESCRIPTION: Shows how to run a Spring Boot jar file in tools mode using the jarmode system property. The command exposes a CLI interface with test and help commands.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/help-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+java -Djarmode=tools -jar test.jar
+```
+
+----------------------------------------
+
+TITLE: Using Spring Boot Layertools Extract Command
+DESCRIPTION: Shows how to use the layertools extract command to extract layers from a JAR file for container image creation. This command is now deprecated in favor of the 'jarmode=tools extract' syntax.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-error-option-unknown-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+java -Djarmode=layertools -jar test.jar extract [options] [<layer>...]
+```
+
+----------------------------------------
+
+TITLE: Extracting Layers from Spring Boot Jar (Java CLI)
+DESCRIPTION: Command to extract layers from a Spring Boot jar file for image creation. It requires specifying the jar file and optionally the layers to extract. The --destination option can be used to specify the extraction location.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-error-option-missing-value-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=layertools -jar test.jar extract [options] [<layer>...]
+```
+
+----------------------------------------
+
+TITLE: Implementing readValue method for JDBC encrypted data handling in Java
+DESCRIPTION: Implementation of the readValue method in JdbcBaseManager that reads data using a specified cipher. The method handles column data reading and decryption operations.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-maven-plugin/src/intTest/projects/run-additional-classpath-directory/src/main/additional-elements/another/two.txt#2025-04-22_snippet_0
+
+LANGUAGE: java
+CODE:
+```
+@Override
+public <V> V readValue(ResultSet resultSet, String columnName, Class<V> type, Cipher cipher) throws SQLException {
+	Object columnData = this.jdbcSupplier.getColumnData(resultSet, columnName);
+	return readValue(columnData, type, cipher);
+}
+```
+
+----------------------------------------
+
+TITLE: Executing Spring Boot Layer Tools JAR Command
+DESCRIPTION: Command syntax for running the Spring Boot layertools jarmode, which provides functionality for working with layered JAR files. This command enables access to layer-related tools and commands.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-error-command-unknown-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+java -Djarmode=layertools -jar test.jar
+```
+
+----------------------------------------
+
+TITLE: Printing Colorized Welcome Message for Spring Boot Application
+DESCRIPTION: This code snippet defines a welcome message for a Spring Boot sample application. It uses ANSI color codes to display the text in green and includes the Spring Boot version number.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-tests/spring-boot-smoke-tests/spring-boot-smoke-test-simple/src/main/resources/banner.txt#2025-04-21_snippet_0
+
+LANGUAGE: Java
+CODE:
+```
+${Ansi.GREEN} :: Sample application build with Spring Boot${spring-boot.formatted-version} ::${Ansi.DEFAULT}
+```
+
+----------------------------------------
+
+TITLE: Defining a Test Class for Spring Boot Class Loading
+DESCRIPTION: A minimal Java class definition used for testing class loading mechanisms within Spring Boot. The class doesn't contain any functionality but serves as a placeholder for class loading tests.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader/src/test/resources/explodedsample/ExampleClass.txt#2025-04-21_snippet_0
+
+LANGUAGE: Java
+CODE:
+```
+package explodedsample;
+
+/**
+ * Example class used to test class loading.
+ *
+ * @author Phillip Webb
+ */
+public class ExampleClass {
+
+}
+```
+
+----------------------------------------
+
+TITLE: Available JAR Tools Commands
+DESCRIPTION: Lists the available commands in JAR tools mode: extract for extracting JAR contents, list-layers for viewing extractable layers, and help for command documentation.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-help-output.txt#2025-04-21_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+extract      Extract the contents from the jar
+list-layers  List layers from the jar that can be extracted
+help         Help about any command
+```
+
+----------------------------------------
+
+TITLE: Spring Boot Layertools Extract Command Options
+DESCRIPTION: Demonstrates the available option for the layertools extract command, specifically the destination parameter which specifies where extracted files should be placed.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-error-option-unknown-output.txt#2025-04-21_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+--destination string  The destination to extract files to
+```
+
+----------------------------------------
+
+TITLE: Executing Spring Boot JAR Extract Command in Shell
+DESCRIPTION: Command for extracting contents from a Spring Boot JAR file using the tools jarmode. The command allows various options to customize the extraction process.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-error-option-unknown-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+java -Djarmode=tools -jar test.jar extract [options]
+```
+
+----------------------------------------
+
+TITLE: Declaring Public File in Java for Spring Boot
+DESCRIPTION: This snippet declares a public file or class in Java. It serves as a basic structure for a Java class file, typically used as a starting point for implementing Spring Boot components or utilities.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-tests/spring-boot-smoke-tests/spring-boot-smoke-test-devtools/src/main/resources/public/public.txt#2025-04-21_snippet_0
+
+LANGUAGE: Java
+CODE:
+```
+public file
+```
+
+----------------------------------------
+
+TITLE: Referencing Maven Parent POM Configuration
+DESCRIPTION: This directive indicates that configurations should be inherited from the parent POM file. In Maven projects, this is used to maintain consistent settings across multiple modules.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-devtools/src/test/resources/org/springframework/boot/devtools/restart/classloader/Parent.txt#2025-04-21_snippet_0
+
+LANGUAGE: maven
+CODE:
+```
+fromparent
+```
+
+----------------------------------------
+
+TITLE: Spring Boot JAR Tool Mode Usage Example
+DESCRIPTION: Shows the correct command syntax for using Spring Boot's jarmode tools feature, which allows for operations on JAR files such as content extraction and layer listing.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-error-command-unknown-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=tools -jar test.jar
+```
+
+----------------------------------------
+
+TITLE: Spring Boot License Header Text
+DESCRIPTION: Standard copyright and license header text used in the Spring Boot project, specifying VMware copyright and Apache 2.0 license terms.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/buildSrc/src/main/resources/NOTICE.txt#2025-04-21_snippet_0
+
+LANGUAGE: text
+CODE:
+```
+Spring Boot ${version}
+Copyright (c) 2012-2025 VMware, Inc.
+
+This product is licensed to you under the Apache License, Version 2.0
+(the "License"). You may not use this product except in compliance with
+the License.
+```
+
+----------------------------------------
+
+TITLE: Executing Spring Boot Jar Layer Tools
+DESCRIPTION: Command to run Spring Boot's jarmode layertools. This allows for operations on jar layers such as listing and extraction.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-help-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=layertools -jar test.jar
+```
+
+----------------------------------------
+
+TITLE: Numeric Sequence in Spring Boot Documentation
+DESCRIPTION: A simple numeric sequence that appears to be line numbers or placeholder content in the Spring Boot documentation or command output.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/layertools-list-output.txt#2025-04-21_snippet_1
+
+LANGUAGE: plaintext
+CODE:
+```
+0001
+0002
+0003
+```
+
+----------------------------------------
+
+TITLE: Running Spring Boot JAR in Tools Mode
+DESCRIPTION: Shows the correct command syntax for running a Spring Boot JAR in tools mode. This mode allows performing maintenance operations on the JAR file.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-help-unknown-command-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+java -Djarmode=tools -jar test.jar
+```
+
+----------------------------------------
+
+TITLE: Running Spring Boot Tool in Tools Jarmode
+DESCRIPTION: Shows how to execute a Spring Boot application in tools jarmode with command parameters and options. This execution pattern uses a system property to specify the jarmode and passes test command with options and parameters.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/help-test-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=tools -jar test.jar test [options] parameter1 parameter2
+```
+
+----------------------------------------
+
+TITLE: Using the Spring Boot JAR Extract Command
+DESCRIPTION: Command-line syntax for using the Spring Boot extract tool to extract contents from a JAR file. The command requires Java with a specific jarmode parameter and supports various options for customizing the extraction process.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-jarmode-tools/src/test/resources/org/springframework/boot/jarmode/tools/tools-error-option-missing-value-output.txt#2025-04-21_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+java -Djarmode=tools -jar test.jar extract [options]
+```
+
+----------------------------------------
+
+TITLE: Implementing a Spring Boot REST Controller with GET and POST endpoints
+DESCRIPTION: This code shows how to define a RESTful controller in Spring Boot with both GET and POST endpoints. It includes parameter handling, request mappings, and demonstrates proper HTTP response handling.
+SOURCE: https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-cli/src/test/resources/metadata/service-metadata-2.1.0.txt#2025-04-21_snippet_0
+
+LANGUAGE: java
+CODE:
+```
+@RestController
+@RequestMapping("/api/v1/users")
+public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        return userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    }
+
+    @PostMapping
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.create(userDTO);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdUser.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(createdUser);
+    }
+}
+```

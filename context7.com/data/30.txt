@@ -1,0 +1,1 @@
+Library /kubernetes/kubernetes has been redirected to this library: /kubernetes/website.

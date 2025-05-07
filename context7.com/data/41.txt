@@ -1,0 +1,3279 @@
+TITLE: Installing Excalidraw Package with npm/yarn (Bash)
+DESCRIPTION: Provides the commands to install the Excalidraw package along with its peer dependencies (React and React DOM) using either npm or yarn. This is the standard way to add the package to a project.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/installation.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install react react-dom @excalidraw/excalidraw
+# or
+yarn add react react-dom @excalidraw/excalidraw
+```
+
+----------------------------------------
+
+TITLE: Installing Core Excalidraw Dependencies (bash)
+DESCRIPTION: This bash command installs the required React, React DOM, and Excalidraw packages using either `npm` or `yarn`. These packages are essential prerequisites for embedding the Excalidraw component within a React application. It's a standard project setup step before development can begin.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install react react-dom @excalidraw/excalidraw
+# or
+yarn add react react-dom @excalidraw/excalidraw
+```
+
+----------------------------------------
+
+TITLE: Initializing Excalidraw API in React
+DESCRIPTION: This snippet demonstrates how to receive the `ExcalidrawAPI` instance from the `Excalidraw` component using the `excalidrawAPI` prop's callback function. The received API object is then stored in a React state variable (`excalidrawAPI`) using `useState`, making it available for subsequent API calls within the component. This requires the `Excalidraw` component and React's `useState` hook.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/excalidraw-api.mdx#_snippet_0
+
+LANGUAGE: jsx
+CODE:
+```
+export default function App() {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  return <Excalidraw excalidrawAPI={(api)=> setExcalidrawAPI(api)} />;
+}
+```
+
+----------------------------------------
+
+TITLE: Installing Excalidraw npm Package (Bash)
+DESCRIPTION: This snippet provides the command-line instructions to install the core dependencies required to integrate the `@excalidraw/excalidraw` component into a React application. It shows equivalent commands using both `npm` and `yarn`. Required dependencies include `react`, `react-dom`, and `@excalidraw/excalidraw`. The expected output is the successful installation of these packages.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install react react-dom @excalidraw/excalidraw\n# or\nyarn add react react-dom @excalidraw/excalidraw
+```
+
+----------------------------------------
+
+TITLE: Rendering Excalidraw with Initial Data (JSX)
+DESCRIPTION: This JSX code snippet demonstrates how to render the Excalidraw component with a predefined `initialData` object. It initializes the canvas with a single rectangle element and specific application state settings (zen mode enabled, light blue background). The `scrollToContent` flag is set to true to automatically scroll to the added element upon mounting.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/initialdata.mdx#_snippet_0
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw
+        initialData={{
+          elements: [
+            {
+              type: "rectangle",
+              version: 141,
+              versionNonce: 361174001,
+              isDeleted: false,
+              id: "oDVXy8D6rom3H1-LLH2-f",
+              fillStyle: "hachure",
+              strokeWidth: 1,
+              strokeStyle: "solid",
+              roughness: 1,
+              opacity: 100,
+              angle: 0,
+              x: 100.50390625,
+              y: 93.67578125,
+              strokeColor: "#000000",
+              backgroundColor: "transparent",
+              width: 186.47265625,
+              height: 141.9765625,
+              seed: 1968410350,
+              groupIds: [],
+            },
+          ],
+          appState: { zenModeEnabled: true, viewBackgroundColor: "#a5d8ff" },
+          scrollToContent: true
+        }}
+      />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Updating Excalidraw Scene with API in React
+DESCRIPTION: This React component example shows how to use the `excalidrawAPI.updateScene()` method to programmatically modify the Excalidraw canvas. A button click triggers the `updateScene` function, which provides a predefined `sceneData` object containing elements (like a rectangle) and app state properties (like background color) to update the canvas content. This requires obtaining the `excalidrawAPI` instance previously.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/excalidraw-api.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  const updateScene = () => {
+    const sceneData = {
+      elements: [
+        {
+          type: "rectangle",
+          version: 141,
+          versionNonce: 361174001,
+          isDeleted: false,
+          id: "oDVXy8D6rom3H1-LLH2-f",
+          fillStyle: "hachure",
+          strokeWidth: 1,
+          strokeStyle: "solid",
+          roughness: 1,
+          opacity: 100,
+          angle: 0,
+          x: 100.50390625,
+          y: 93.67578125,
+          strokeColor: "#c92a2a",
+          backgroundColor: "transparent",
+          width: 186.47265625,
+          height: 141.9765625,
+          seed: 1968410350,
+          groupIds: [],
+          boundElements: null,
+          locked: false,
+          link: null,
+          updated: 1,
+          roundness: {
+            type: 3,
+            value: 32,
+          },
+        },
+      ],
+      appState: {
+        viewBackgroundColor: "#edf2ff",
+      },
+      captureUpdate: CaptureUpdateAction.IMMEDIATELY,
+    };
+    excalidrawAPI.updateScene(sceneData);
+  };
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+  return (
+    <div style={{ height: "500px" }}>
+      <p style={{ fontSize: "16px" }}> Click to update the scene</p>
+      <button className="custom-button" onClick={updateScene}>
+        Update Scene
+      </button>
+      <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)} />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Implementing Live Collaboration UI Excalidraw React/TSX
+DESCRIPTION: This React functional component demonstrates how to integrate the <LiveCollaborationTrigger/> component into an Excalidraw instance. It manages collaboration state using `useState` and updates the Excalidraw scene's collaborators map based on user interaction, specifically showing or clearing collaborator avatars in the UI.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/live-collaboration-trigger.mdx#_snippet_0
+
+LANGUAGE: tsx
+CODE:
+```
+function App() {\n  const [excalidrawAPI, setExcalidrawAPI] = useState(null);\n  const [isCollaborating, setIsCollaborating] = useState(false);\n  return (\n    <div style={{ height: \"500px\" }}>\n      <p style={{ fontSize: \"16px\" }}>\n        Selecting the checkbox to see the collaborator count\n      </p>\n      <label style={{ fontSize: \"16px\", fontWeight: \"bold\" }}>\n        <input\n          type=\"checkbox\"\n          checked={isCollaborating}\n          onChange={() => {\n            if (!isCollaborating) {\n              const collaborators = new Map();\n              collaborators.set(\"id1\", {\n                username: \"Doremon\",\n                avatarUrl: \"../../../../img/doremon.png\",\n              });\n              collaborators.set(\"id3\", {\n                username: \"Pika\",\n                avatarUrl: \"../../../../img/pika.jpeg\",\n              });\n              excalidrawAPI.updateScene({ collaborators });\n            } else {\n              excalidrawAPI.updateScene({\n                collaborators: new Map(),\n              });\n            }\n            setIsCollaborating(!isCollaborating);\n          }}\n        />\n        Show Collaborators\n      </label>\n      <Excalidraw\n        ref={(api) => setExcalidrawAPI(api)}\n        renderTopRightUI={() => (\n          <LiveCollaborationTrigger\n            isCollaborating={isCollaborating}\n            onSelect={() => {\n              window.alert(\"You clicked on collab button\");\n              setIsCollaborating(true);\n            }}\n          />\n        )}\n      ></Excalidraw>\n    </div>\n  );\n}
+```
+
+----------------------------------------
+
+TITLE: onChange Callback Signature (JavaScript/TypeScript)
+DESCRIPTION: Specifies the signature for the `onChange` callback function, which is triggered whenever the Excalidraw component updates due to any change. The callback receives the current array of `excalidrawElements`, the `appState`, and any `files` added to the scene, returning `void`. It's commonly used for tasks like saving the drawing data.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+(excalidrawElements, appState, files) => void;
+```
+
+----------------------------------------
+
+TITLE: Rendering Excalidraw Component in React (JSX)
+DESCRIPTION: Shows a simple React function component that renders the Excalidraw component within a fixed-height div. This is a basic example of how to embed the component once imported.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <>
+      <h1 style={{ textAlign: "center" }}>Excalidraw Example</h1>
+      <div style={{ height: "500px" }}>
+        <Excalidraw />
+      </div>
+    </>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Exporting Excalidraw Scene to Canvas with Customization - JSX
+DESCRIPTION: Demonstrates a React component using the `exportToCanvas` function to export the current Excalidraw scene. It shows how to retrieve elements and files from the Excalidraw API, customize app state and export dimensions, add custom content to the resulting canvas, and display it as an image.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/export.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  const [canvasUrl, setCanvasUrl] = useState("");
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+
+  return  (
+    <>
+      <button
+        className="custom-button"
+        onClick={async () => {
+          if (!excalidrawAPI) {
+            return
+          }
+          const elements = excalidrawAPI.getSceneElements();
+          if (!elements || !elements.length) {
+            return
+          }
+          const canvas = await exportToCanvas({
+            elements,
+            appState: {
+              ...initialData.appState,
+              exportWithDarkMode: false,
+            },
+            files: excalidrawAPI.getFiles(),
+            getDimensions: () => { return {width: 350, height: 350}}
+          });
+          const ctx = canvas.getContext("2d");
+          ctx.font = "30px Virgil";
+          ctx.strokeText("My custom text", 50, 60);
+          setCanvasUrl(canvas.toDataURL());
+        }}
+      >
+        Export to Canvas
+      </button>
+      <div className="export export-canvas">
+        <img src={canvasUrl} alt="" />
+      </div>
+      <div style={{ height: "400px" }}>
+        <Excalidraw excalidrawAPI={(api) => setExcalidrawAPI(api)}
+/>
+      </div>
+    </>
+  )
+}
+```
+
+----------------------------------------
+
+TITLE: Creating Styled Shapes with ExcalidrawElementSkeleton (JavaScript)
+DESCRIPTION: This JavaScript example shows how to create rectangle, ellipse, and diamond shapes with additional styling properties. It uses `convertToExcalidrawElements` to define shapes including `width`, `height`, `backgroundColor`, `strokeWidth`, `strokeStyle`, and `fillStyle` from their skeleton representations.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_3
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "rectangle",
+    x: 50,
+    y: 250,
+    width: 200,
+    height: 100,
+    backgroundColor: "#c0eb75",
+    strokeWidth: 2,
+  },
+  {
+    type: "ellipse",
+    x: 300,
+    y: 250,
+    width: 200,
+    height: 100,
+    backgroundColor: "#ffc9c9",
+    strokeStyle: "dotted",
+    fillStyle: "solid",
+    strokeWidth: 2,
+  },
+  {
+    type: "diamond",
+    x: 550,
+    y: 250,
+    width: 200,
+    height: 100,
+    backgroundColor: "#a5d8ff",
+    strokeColor: "#1971c2",
+    strokeStyle: "dashed",
+    fillStyle: "cross-hatch",
+    strokeWidth: 2,
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Creating Excalidraw Wrapper Component (JSX)
+DESCRIPTION: Defines a React component (`ExcalidrawWrapper`) that imports Excalidraw, its CSS, and demonstrates using `convertToExcalidrawElements`. This wrapper component includes the `use client` directive and can be dynamically imported in Next.js applications.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_3
+
+LANGUAGE: jsx
+CODE:
+```
+"use client";
+import { Excalidraw, convertToExcalidrawElements } from "@excalidraw/excalidraw";
+
+import "@excalidraw/excalidraw/index.css";
+
+const ExcalidrawWrapper: React.FC = () => {
+  console.info(convertToExcalidrawElements([{
+    type: "rectangle",
+    id: "rect-1",
+    width: 186.47265625,
+    height: 141.9765625,
+  },]));
+  return (
+    <div style={{height:"500px", width:"500px"}}>
+      <Excalidraw />
+    </div>
+  );
+};
+export default ExcalidrawWrapper;
+```
+
+----------------------------------------
+
+TITLE: Creating Elements and Binding Arrows by ID - JavaScript
+DESCRIPTION: Demonstrates how to create various Excalidraw elements including ellipses, diamonds, and arrows. It shows how to bind the start or end points of arrows to existing elements by referencing their unique IDs, useful for connecting elements in a diagram.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_12
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "ellipse",
+    id: "ellipse-1",
+    strokeColor: "#66a80f",
+    x: 390,
+    y: 356,
+    width: 150,
+    height: 150,
+    backgroundColor: "#d8f5a2",
+  },
+  {
+    type: "diamond",
+    id: "diamond-1",
+    strokeColor: "#9c36b5",
+    width: 100,
+    x: -30,
+    y: 380,
+  },
+  {
+    type: "arrow",
+    x: 100,
+    y: 440,
+    width: 295,
+    height: 35,
+    strokeColor: "#1864ab",
+    start: {
+      type: "rectangle",
+      width: 150,
+      height: 150,
+    },
+    end: {
+      id: "ellipse-1",
+    },
+  },
+  {
+    type: "arrow",
+    x: 60,
+    y: 420,
+    width: 330,
+    strokeColor: "#e67700",
+    start: {
+      id: "diamond-1",
+    },
+    end: {
+      id: "ellipse-1",
+    },
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Creating Basic Shapes with ExcalidrawElementSkeleton (JSX)
+DESCRIPTION: This JSX example demonstrates how to create basic rectangle, ellipse, and diamond shapes using `convertToExcalidrawElements` within a React component. It defines the shapes using minimal properties (`type`, `x`, `y`) and passes the converted elements to the Excalidraw component's `initialData` prop for rendering.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_2
+
+LANGUAGE: JSX
+CODE:
+```
+function App() {
+  const elements = convertToExcalidrawElements([
+    {
+      type: "rectangle",
+      x: 100,
+      y: 250,
+    },
+    {
+      type: "ellipse",
+      x: 250,
+      y: 250,
+    },
+    {
+      type: "diamond",
+      x: 380,
+      y: 250,
+    },
+  ]);
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw
+        initialData={{
+          elements,
+          appState: { zenModeEnabled: true, viewBackgroundColor: "#a5d8ff" },
+          scrollToContent: true,
+        }}
+      />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Loading Scene Data from Blob in JavaScript
+DESCRIPTION: This snippet shows how to import and use the `loadFromBlob` function. It asynchronously loads Excalidraw scene data from a Blob object (like a File) and then updates the Excalidraw instance with the loaded scene.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_3
+
+LANGUAGE: javascript
+CODE:
+```
+import { loadFromBlob } from "@excalidraw/excalidraw";
+
+const scene = await loadFromBlob(file, null, null);
+excalidrawAPI.updateScene(scene);
+```
+
+----------------------------------------
+
+TITLE: Exporting Excalidraw Diagram (JavaScript)
+DESCRIPTION: Provides a comprehensive example defining an Excalidraw diagram object and demonstrating the usage of `exportToSvg` to get an SVG element and `exportToBlob` to generate a PNG Blob URL.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/utils/README.md#_snippet_4
+
+LANGUAGE: javascript
+CODE:
+```
+const excalidrawDiagram = {
+  type: "excalidraw",
+  version: 2,
+  source: "https://excalidraw.com",
+  elements: [
+    {
+      id: "vWrqOAfkind2qcm7LDAGZ",
+      type: "ellipse",
+      x: 414,
+      y: 237,
+      width: 214,
+      height: 214,
+      angle: 0,
+      strokeColor: "#000000",
+      backgroundColor: "#15aabf",
+      fillStyle: "hachure",
+      strokeWidth: 1,
+      strokeStyle: "solid",
+      roughness: 1,
+      opacity: 100,
+      groupIds: [],
+      roundness: null,
+      seed: 1041657908,
+      version: 120,
+      versionNonce: 1188004276,
+      isDeleted: false,
+      boundElementIds: null,
+    },
+  ],
+  appState: {
+    viewBackgroundColor: "#ffffff",
+    gridSize: null,
+  },
+};
+
+// Export the Excalidraw diagram as SVG string
+const svg = exportToSvg(excalidrawDiagram);
+console.log(svg.outerHTML);
+
+// Export the Excalidraw diagram as PNG Blob URL
+(async () => {
+  const blob = await exportToBlob({
+    ...excalidrawDiagram,
+    mimeType: "image/png",
+  });
+
+  const urlCreator = window.URL || window.webkitURL;
+  console.log(urlCreator.createObjectURL(blob));
+})();
+```
+
+----------------------------------------
+
+TITLE: Creating Styled Text Containers with Labels (JavaScript)
+DESCRIPTION: This JavaScript snippet demonstrates creating styled text containers using `convertToExcalidrawElements`. It shows how to apply styling to both the container shape (e.g., `width`, `backgroundColor`, `strokeWidth`) and the text label within it (e.g., `strokeColor`, `fontSize`, `textAlign`, `verticalAlign`).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_8
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "diamond",
+    x: -120,
+    y: 100,
+    width: 270,
+    backgroundColor: "#fff3bf",
+    strokeWidth: 2,
+    label: {
+      text: "STYLED DIAMOND TEXT CONTAINER",
+      strokeColor: "#099268",
+      fontSize: 20,
+    },
+  },
+  {
+    type: "rectangle",
+    x: 180,
+    y: 150,
+    width: 200,
+    strokeColor: "#c2255c",
+    label: {
+      text: "TOP LEFT ALIGNED RECTANGLE TEXT CONTAINER",
+      textAlign: "left",
+      verticalAlign: "top",
+      fontSize: 20,
+    },
+  },
+  {
+    type: "ellipse",
+    x: 400,
+    y: 130,
+    strokeColor: "#f08c00",
+    backgroundColor: "#ffec99",
+    width: 200,
+    label: {
+      text: "STYLED ELLIPSE TEXT CONTAINER",
+      strokeColor: "#c2255c",
+    },
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Importing exportToBlob Function - JavaScript
+DESCRIPTION: Shows how to import the `exportToBlob` function from the `@excalidraw/excalidraw` package. This function exports the Excalidraw scene as a Blob object, useful for saving or uploading images.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/export.mdx#_snippet_2
+
+LANGUAGE: js
+CODE:
+```
+import { exportToBlob } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing exportToCanvas Function - JavaScript
+DESCRIPTION: Shows how to import the `exportToCanvas` function from the `@excalidraw/excalidraw` package. This function is used to render Excalidraw elements onto an HTML canvas element.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/export.mdx#_snippet_0
+
+LANGUAGE: js
+CODE:
+```
+import { exportToCanvas } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Disabling Image Tool in Excalidraw UIOptions
+DESCRIPTION: This JavaScript configuration demonstrates how to disable the image tool within the Excalidraw UI by setting the `image` property in the `UIOptions.tools` object to `false`. This prevents users from inserting new images via the toolbar, while still allowing image import from `.excalidraw` files.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/CHANGELOG.md#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+UIOptions.tools = {
+  image: false
+}
+```
+
+----------------------------------------
+
+TITLE: Customizing Top Right UI with renderTopRightUI Prop (JSX)
+DESCRIPTION: This snippet demonstrates how to use the `renderTopRightUI` prop in the Excalidraw component to render custom JSX elements in the top right corner of the canvas. It provides an example of adding a simple button that executes an action on click. Requires the `Excalidraw` component.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/render-props.mdx#_snippet_0
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw
+        renderTopRightUI={() => {
+          return (
+            <button
+              style={{
+                background: "#70b1ec",
+                border: "none",
+                color: "#fff",
+                width: "max-content",
+                fontWeight: "bold",
+              }}
+              onClick={() => window.alert("This is dummy top right UI")}
+            >
+              Click me
+            </button>
+          );
+        }}
+      />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Dynamically Importing Excalidraw Component in Next.js (JSX)
+DESCRIPTION: Explains how to use `next/dynamic` to import only the Excalidraw component client-side (`ssr: false`). This is necessary in Next.js because Excalidraw does not support server-side rendering.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_2
+
+LANGUAGE: jsx
+CODE:
+```
+import dynamic from "next/dynamic";
+const Excalidraw = dynamic(
+  async () => (await import("@excalidraw/excalidraw")).Excalidraw,
+  {
+    ssr: false,
+  },
+);
+export default function App() {
+  return <Excalidraw />;
+}
+```
+
+----------------------------------------
+
+TITLE: Customizing Canvas Actions UI in Excalidraw (TSX)
+DESCRIPTION: Customize the UI of Excalidraw by selectively disabling specific canvas actions. Setting properties like `changeViewBackgroundColor`, `clearCanvas`, or `loadScene` to `false` in `UIOptions.canvasActions` hides the corresponding buttons from the canvas menu. This requires integrating the Excalidraw component within a React application.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/ui-options.mdx#_snippet_0
+
+LANGUAGE: tsx
+CODE:
+```
+function App() {
+  const UIOptions = {
+    canvasActions: {
+      changeViewBackgroundColor: false,
+      clearCanvas: false,
+      loadScene: false,
+    },
+  };
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw UIOptions={UIOptions} />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Creating Basic Lines and Arrows (JavaScript)
+DESCRIPTION: This JavaScript example illustrates how to create simple line and arrow elements using `convertToExcalidrawElements`. It requires the element `type`, `x`, and `y` properties in the skeleton object, generating default lines and arrows.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_5
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "arrow",
+    x: 100,
+    y: 20,
+  },
+  {
+    type: "line",
+    x: 100,
+    y: 60,
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Including Default and Custom MainMenu Items in React/JSX
+DESCRIPTION: This snippet shows how to combine default Excalidraw menu items (like Socials and Export) using MainMenu.DefaultItems with custom MainMenu.Item components within the same custom menu.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/main-menu.mdx#_snippet_3
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <MainMenu>
+          <MainMenu.DefaultItems.Socials />
+          <MainMenu.DefaultItems.Export />
+          <MainMenu.Item onSelect={() => window.alert("Item1")}>
+            Item1
+          </MainMenu.Item>
+          <MainMenu.Item onSelect={() => window.alert("Item2")}>
+            Item 2
+          </MainMenu.Item>
+        </MainMenu>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Converting Mermaid Syntax to Excalidraw Elements in TypeScript
+DESCRIPTION: This TypeScript snippet demonstrates the two-step process for converting Mermaid diagram syntax into renderable Excalidraw elements. It first uses `parseMermaidToExcalidraw` to get skeleton elements and files, then passes the elements to `convertToExcalidrawElements` for final conversion. Dependencies include `@excalidraw/mermaid-to-excalidraw` and `@excalidraw/excalidraw`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { parseMermaidToExcalidraw } from "@excalidraw/mermaid-to-excalidraw";
+import { convertToExcalidrawElements}  from "@excalidraw/excalidraw"
+try {
+  const { elements, files } = await parseMermaidToExcalidraw(mermaidSyntax: string, {
+    fontSize: number,
+  });
+  const excalidrawElements = convertToExcalidrawElements(elements);
+  // Render elements and files on Excalidraw
+} catch (e) {
+  // Parse error, displaying error message to users
+}
+```
+
+----------------------------------------
+
+TITLE: Applying Custom Styles Class - Excalidraw - TSX
+DESCRIPTION: Shows how to integrate the custom CSS styles defined with a parent selector (e.g., `.custom-styles`) by wrapping the Excalidraw component in a container element that has the corresponding class applied. This is demonstrated in a React/TSX functional component context.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/customizing-styles.mdx#_snippet_2
+
+LANGUAGE: tsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }} className="custom-styles">
+      <Excalidraw />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Handling Excalidraw Link Clicks with React Router JS
+DESCRIPTION: Demonstrates how to implement custom link handling for Excalidraw elements using the `onLinkOpen` prop within a React application. It uses `useCallback` and `useHistory` (likely from React Router) to differentiate between internal links (handled by `history.push`) and external links, preventing default browser navigation for internal links.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_8
+
+LANGUAGE: javascript
+CODE:
+```
+const history = useHistory();
+
+// open internal links using the app's router, but opens external links in
+// a new tab/window
+const onLinkOpen: ExcalidrawProps["onLinkOpen"] = useCallback(
+  (element, event) => {
+    const link = element.link;
+    const { nativeEvent } = event.detail;
+    const isNewTab = nativeEvent.ctrlKey || nativeEvent.metaKey;
+    const isNewWindow = nativeEvent.shiftKey;
+    const isInternalLink =
+      link.startsWith("/") || link.includes(window.location.origin);
+    if (isInternalLink && !isNewTab && !isNewWindow) {
+      history.push(link.replace(window.location.origin, ""));
+      // signal that we're handling the redirect ourselves
+      event.preventDefault();
+    }
+  },
+  [history],
+);
+```
+
+----------------------------------------
+
+TITLE: Signature of convertToExcalidrawElements function (TypeScript)
+DESCRIPTION: This TypeScript signature defines the `convertToExcalidrawElements` function. It accepts an array of `ExcalidrawElementSkeleton` objects and an optional options object to control behaviors like ID regeneration, returning an array of fully formed `ExcalidrawElement` objects.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+convertToExcalidrawElements(
+  elements: ExcalidrawElementSkeleton,
+  opts?: { regenerateIds: boolean }
+): ExcalidrawElement[]
+```
+
+----------------------------------------
+
+TITLE: Dynamically Setting Excalidraw Asset Path (JSX)
+DESCRIPTION: Shows how to dynamically set `window.EXCALIDRAW_ASSET_PATH` using a Next.js `<Script>` component. It uses `location.origin` to derive the asset path from the current page's origin URL, suitable for dynamic environments.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/installation.mdx#_snippet_3
+
+LANGUAGE: jsx
+CODE:
+```
+{ `window["EXCALIDRAW_ASSET_PATH"] = location.origin;` }
+```
+
+----------------------------------------
+
+TITLE: Parsing Mermaid Syntax to Excalidraw Elements (JavaScript)
+DESCRIPTION: This JavaScript snippet demonstrates how to use the @excalidraw/mermaid-to-excalidraw library to parse a Mermaid diagram definition into Excalidraw skeleton elements and then convert them into fully qualified Excalidraw elements using @excalidraw/excalidraw. It shows the import statements, the parsing function call with options, and a conversion step.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/installation.mdx#_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+import { parseMermaidToExcalidraw } from "@excalidraw/mermaid-to-excalidraw";
+import { convertToExcalidrawElements}  from "@excalidraw/excalidraw"
+
+try {
+  const { elements, files } = await parseMermaid(diagramDefinition, {
+    fontSize: DEFAULT_FONT_SIZE,
+  });
+  // currently the elements returned from the parser are in a "skeleton" format
+  // which we need to convert to fully qualified excalidraw elements first
+  const excalidrawElements = convertToExcalidrawElements(elements);
+
+  // Render elements and files on Excalidraw
+} catch (e) {
+  // Error handling
+}
+```
+
+----------------------------------------
+
+TITLE: Overriding Primary Colors - Excalidraw CSS - CSS
+DESCRIPTION: Demonstrates the basic method for overriding Excalidraw's CSS variables using a parent selector like `.your-app` to achieve higher specificity. It shows how to set the `--color-primary` variable for both standard and dark themes.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/customizing-styles.mdx#_snippet_0
+
+LANGUAGE: css
+CODE:
+```
+.your-app .excalidraw {
+  --color-primary: red;
+}
+.your-app .excalidraw.theme--dark {
+  --color-primary: pink;
+}
+```
+
+----------------------------------------
+
+TITLE: Creating Styled Lines and Arrows (JavaScript)
+DESCRIPTION: This JavaScript snippet demonstrates creating styled line and arrow elements using `convertToExcalidrawElements`. It shows how to specify arrowheads (`startArrowhead`, `endArrowhead`) and apply styling properties like `strokeColor`, `strokeWidth`, and `strokeStyle`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_6
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "arrow",
+    x: 450,
+    y: 20,
+    startArrowhead: "dot",
+    endArrowhead: "triangle",
+    strokeColor: "#1971c2",
+    strokeWidth: 2,
+  },
+  {
+    type: "line",
+    x: 450,
+    y: 60,
+    strokeColor: "#2f9e44",
+    strokeWidth: 2,
+    strokeStyle: "dotted",
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Configuring Excalidraw Asset Path (JavaScript)
+DESCRIPTION: This JavaScript snippet sets the `window.EXCALIDRAW_ASSET_PATH` global variable, instructing Excalidraw where to load assets like fonts when self-hosting is enabled. Setting this variable is necessary if you are providing assets locally instead of relying on the default CDN. The example demonstrates setting the path to the web server's root directory.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/README.md#_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+<script>window.EXCALIDRAW_ASSET_PATH = "/";</script>
+```
+
+----------------------------------------
+
+TITLE: Creating Elements and Grouping in a Frame - TypeScript
+DESCRIPTION: Illustrates how to create multiple Excalidraw elements (rectangle, diamond) with specific IDs and then group them together within a 'frame' element. The frame includes the IDs of the elements it contains in its `children` array and can optionally have a `name`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_14
+
+LANGUAGE: TypeScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    "type": "rectangle",
+    "x": 10,
+    "y": 10,
+    "strokeWidth": 2,
+    "id": "1"
+  },
+  {
+    "type": "diamond",
+    "x": 120,
+    "y": 20,
+    "backgroundColor": "#fff3bf",
+    "strokeWidth": 2,
+    "label": {
+      "text": "HELLO EXCALIDRAW",
+      "strokeColor": "#099268",
+      "fontSize": 30
+    },
+    "id": "2"
+  },
+  {
+    "type": "frame",
+    "children": ["1", "2"],
+    "name": "My frame"
+  }]
+}
+```
+
+----------------------------------------
+
+TITLE: Customizing Excalidraw WelcomeScreen Center (JSX)
+DESCRIPTION: This example illustrates how to replace the default center content of the Excalidraw `WelcomeScreen` by providing `WelcomeScreen.Center` as a child. It shows how to render the default logo, a custom heading, and a custom menu with links and default help items. Requires Excalidraw and React.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/welcome-screen.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <WelcomeScreen>
+          <WelcomeScreen.Center>
+            <WelcomeScreen.Center.Logo />
+            <WelcomeScreen.Center.Heading>
+              Welcome Screen Heading!
+            </WelcomeScreen.Center.Heading>
+            <WelcomeScreen.Center.Menu>
+              <WelcomeScreen.Center.MenuItemLink href="https://github.com/excalidraw/excalidraw">
+                Excalidraw GitHub
+              </WelcomeScreen.Center.MenuItemLink>
+              <WelcomeScreen.Center.MenuItemHelp />
+            </WelcomeScreen.Center.Menu>
+          </WelcomeScreen.Center>
+        </WelcomeScreen>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Importing restoreAppState from Excalidraw JS
+DESCRIPTION: Imports the `restoreAppState` function from the `@excalidraw/excalidraw` package. This function is used to normalize imported application state, filling in missing keys with default values or values from a provided local state.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/restore.mdx#_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { restoreAppState } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Customizing Primary Color Variables - Excalidraw CSS - CSS
+DESCRIPTION: Provides a concrete example of overriding several specific CSS variables related to primary colors (`--color-primary`, `--color-primary-darker`, etc.) for both light and dark themes. It uses the `.custom-styles` parent class to ensure the styles are applied with high specificity.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/customizing-styles.mdx#_snippet_1
+
+LANGUAGE: css
+CODE:
+```
+.custom-styles .excalidraw {
+  --color-primary: #fcc6d9;
+  --color-primary-darker: #f783ac;
+  --color-primary-darkest: #e64980;
+  --color-primary-light: #f2a9c4;
+}
+
+.custom-styles .excalidraw.theme--dark {
+  --color-primary: #d494aa;
+  --color-primary-darker: #d64c7e;
+  --color-primary-darkest: #e86e99;
+  --color-primary-light: #dcbec9;
+}
+```
+
+----------------------------------------
+
+TITLE: Grouping MainMenu Items in React/JSX
+DESCRIPTION: This snippet demonstrates how to visually group menu items within the custom Excalidraw MainMenu using the MainMenu.Group component. Groups can contain both default and custom items and are given a title.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/main-menu.mdx#_snippet_4
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <MainMenu>
+          <MainMenu.Group title="Excalidraw items">
+            <MainMenu.DefaultItems.Socials />
+            <MainMenu.DefaultItems.Export />
+          </MainMenu.Group>
+          <MainMenu.Group title="custom items">
+            <MainMenu.Item onSelect={() => window.alert("Item1")}>
+              Item1
+            </MainMenu.Item>
+            <MainMenu.Item onSelect={() => window.alert("Item2")}>
+              Item 2
+            </MainMenu.Item>
+          </MainMenu.Group>
+        </MainMenu>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Creating Labelled Arrows (JavaScript)
+DESCRIPTION: This JavaScript example illustrates how to create arrows with attached text labels using `convertToExcalidrawElements`. It uses the `label` property in the arrow's skeleton object, demonstrating both basic and styled labels (`strokeColor`, `fontSize`) on the arrows.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_9
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "arrow",
+    x: 100,
+    y: 100,
+    label: {
+      text: "LABELED ARROW",
+    },
+  },
+  {
+    type: "arrow",
+    x: 100,
+    y: 200,
+    label: {
+      text: "STYLED LABELED ARROW",
+      strokeColor: "#099268",
+      fontSize: 20,
+    },
+  },
+  {
+    type: "arrow",
+    x: 100,
+    y: 300,
+    strokeColor: "#1098ad",
+    strokeWidth: 2,
+    label: {
+      text: "ANOTHER STYLED LABELLED ARROW",
+    },
+  },
+  {
+    type: "arrow",
+    x: 100,
+    y: 400,
+    strokeColor: "#1098ad",
+    strokeWidth: 2,
+    label: {
+      text: "ANOTHER STYLED LABELLED ARROW",
+      strokeColor: "#099268",
+    },
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Reimplementing getSyncableElements Helper - TypeScript
+DESCRIPTION: This TypeScript function demonstrates how to reimplement the removed `getSyncableElements` helper, which was specific to the Excalidraw app's collaboration implementation. It filters an array of `ExcalidrawElement` objects, including elements that are marked as deleted or are not considered invisibly small according to the `isInvisiblySmallElement` helper. This snippet requires the `ExcalidrawElement` type and the `isInvisiblySmallElement` helper to function.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/CHANGELOG.md#_snippet_4
+
+LANGUAGE: typescript
+CODE:
+```
+const getSyncableElements = (elements: readonly ExcalidrawElement[]) =>
+  elements.filter((el) => el.isDeleted || !isInvisiblySmallElement(el));
+```
+
+----------------------------------------
+
+TITLE: Dynamically Importing Excalidraw Wrapper (Next.js App Router, JSX)
+DESCRIPTION: Shows how to use `next/dynamic` to import a client-side `ExcalidrawWrapper` component (`ssr: false`) within a Next.js App router page. This approach requires the wrapper component itself to include the `"use client"` directive.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_5
+
+LANGUAGE: jsx
+CODE:
+```
+import dynamic from "next/dynamic";
+
+// Since client components get prerenderd on server as well hence importing
+// the excalidraw stuff dynamically with ssr false
+
+const ExcalidrawWrapper = dynamic(
+  async () => (await import("../excalidrawWrapper")).default,
+  {
+    ssr: false,
+  },
+);
+
+export default function Page() {
+  return (
+    <ExcalidrawWrapper />
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Conceptual Frame Element Ordering - JSON
+DESCRIPTION: This snippet illustrates the conceptual ordering required for elements in the Excalidraw scene array. It shows that child elements of a frame must appear in the array before the frame element itself. This order is necessary for the editor to render and clip elements correctly and for performance optimizations.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/codebase/frames.mdx#_snippet_0
+
+LANGUAGE: JSON
+CODE:
+```
+[
+  other_element,
+  frame1_child1,
+  frame1_child2,
+  frame1,
+  other_element,
+  frame2_child1,
+  frame2_child2,
+  frame2,
+  other_element,
+  ...
+]
+```
+
+----------------------------------------
+
+TITLE: Importing exportToClipboard Function - JavaScript
+DESCRIPTION: Shows how to import the `exportToClipboard` function from the `@excalidraw/excalidraw` package. This function copies the Excalidraw scene data in a specified format (PNG, SVG, or JSON) directly to the user's clipboard.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/export.mdx#_snippet_3
+
+LANGUAGE: js
+CODE:
+```
+import { exportToClipboard } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Adding Link Items to MainMenu in React/JSX
+DESCRIPTION: This snippet demonstrates how to add external links to the Excalidraw MainMenu using the MainMenu.ItemLink component. Each item is rendered as a link navigating to the specified URL when clicked.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/main-menu.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <MainMenu>
+          <MainMenu.ItemLink href="https://google.com">
+            Google
+          </MainMenu.ItemLink>
+          <MainMenu.ItemLink href="https://excalidraw.com">
+            Excalidraw
+          </MainMenu.ItemLink>
+        </MainMenu>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Dynamically Importing Excalidraw Wrapper (Next.js Pages Router, JSX)
+DESCRIPTION: Shows how to use `next/dynamic` to import a client-side `ExcalidrawWrapper` component (`ssr: false`) within a Next.js Pages router page. This pattern allows importing the component and any associated utilities.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_4
+
+LANGUAGE: jsx
+CODE:
+```
+import dynamic from "next/dynamic";
+
+// Since client components get prerenderd on server as well hence importing
+// the excalidraw stuff dynamically with ssr false
+
+const ExcalidrawWrapper = dynamic(
+  async () => (await import("../excalidrawWrapper")).default,
+  {
+    ssr: false,
+  },
+);
+
+export default function Page() {
+  return (
+    <ExcalidrawWrapper />
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: onPaste Callback Signature (TypeScript)
+DESCRIPTION: Defines the signature for the `onPaste` callback, triggered when content is pasted into the scene. It receives the parsed `ClipboardData` and the native `ClipboardEvent` (or null), and it must return a boolean (or a promise resolving to boolean) indicating whether Excalidraw should proceed with its default paste handling (`true`) or not (`false`).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_5
+
+LANGUAGE: TypeScript
+CODE:
+```
+(data: ClipboardData, event: ClipboardEvent | null) => boolean
+```
+
+----------------------------------------
+
+TITLE: Updating Excalidraw Library with API in React
+DESCRIPTION: This component demonstrates using the `excalidrawAPI.updateLibrary()` method to add or merge items into the Excalidraw library. It uses a `useEffect` hook to automatically open the library sidebar on mount if the API is available and a button to trigger the library update with sample `libraryItems`, ensuring the library menu remains open with `openLibraryMenu: true`. This requires the `excalidrawAPI` instance, React's `useState`, and `useEffect` hooks.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/excalidraw-api.mdx#_snippet_2
+
+LANGUAGE: tsx
+CODE:
+```
+function App() {
+  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
+
+  useEffect(() => {
+    if (!excalidrawAPI) {
+      return;
+    }
+    // to open the library sidebar
+    excalidrawAPI.updateScene({ appState: { openSidebar: "library" } });
+  }, [excalidrawAPI]);
+
+  return (
+    <div style={{ height: "500px" }}>
+      <p style={{ fontSize: "16px" }}> Click to update the library items</p>
+      <button
+        className="custom-button"
+        onClick={() => {
+          const libraryItems = [
+            {
+              status: "published",
+              id: "1",
+              created: 1,
+              elements: initialData.libraryItems[1],
+            },
+            {
+              status: "unpublished",
+              id: "2",
+              created: 2,
+              elements: initialData.libraryItems[1],
+            },
+          ];
+          excalidrawAPI.updateLibrary({
+            libraryItems,
+            openLibraryMenu: true,
+          });
+        }}
+      >
+        Update Library
+      </button>
+      <Excalidraw
+        excalidrawAPI={(api) => setExcalidrawAPI(api)}
+        // initial data retrieved from https://github.com/excalidraw/excalidraw/blob/master/dev-docs/packages/excalidraw/initialData.js
+        initialData={{
+          libraryItems: initialData.libraryItems,
+          appState: { openSidebar: "library" },
+        }}
+      />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Rendering Default Excalidraw WelcomeScreen (JSX)
+DESCRIPTION: This snippet demonstrates how to integrate the default Excalidraw `WelcomeScreen` component within an `Excalidraw` instance. It shows the minimal setup required to display the standard welcome screen when the canvas is empty, typically used in a React application. Requires Excalidraw and React.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/welcome-screen.mdx#_snippet_0
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "46rem" }}>
+      <Excalidraw>
+        <WelcomeScreen />
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Binding Arrow to Shapes by Type (JavaScript)
+DESCRIPTION: This JavaScript example shows how to bind an arrow's start and end points to other shapes (rectangle, ellipse) using `convertToExcalidrawElements`. It defines the binding targets using the `start` and `end` properties within the arrow skeleton, specifying the target shape by its `type` property.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_10
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "arrow",
+    x: 255,
+    y: 239,
+    label: {
+      text: "HELLO WORLD!!",
+    },
+    start: {
+      type: "rectangle",
+    },
+    end: {
+      type: "ellipse",
+    },
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Binding Arrow to Text Elements by Type (JavaScript)
+DESCRIPTION: This JavaScript snippet demonstrates binding an arrow's start and end points specifically to text elements using `convertToExcalidrawElements`. It utilizes the `start` and `end` properties, specifying the target elements by their `type` as "text" and providing the required `text` property for identification.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_11
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "arrow",
+    x: 255,
+    y: 239,
+    label: {
+      text: "HELLO WORLD!!",
+    },
+    start: {
+      type: "text",
+      text: "HEYYYYY",
+    },
+    end: {
+      type: "text",
+      text: "WHATS UP ?",
+    },
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: onLibraryChange Callback Signature (TypeScript)
+DESCRIPTION: Specifies the signature for the `onLibraryChange` callback, which is triggered when the user's library is updated (e.g., items added, removed, or cleared). The callback receives the array of current `LibraryItems` and can return `void` or a `Promise`. This is useful for persisting the library state in the host application.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_6
+
+LANGUAGE: TypeScript
+CODE:
+```
+(items: LibraryItems) => void | Promise<any>
+```
+
+----------------------------------------
+
+TITLE: Defining Excalidraw Frame Type - TypeScript
+DESCRIPTION: Provides the TypeScript type definition for an Excalidraw frame element. It specifies the mandatory `type` ("frame") and `children` properties (an array of element IDs), along with optional attributes like `name` and other properties from `Partial<ExcalidrawFrameElement>`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_13
+
+LANGUAGE: TypeScript
+CODE:
+```
+{
+  type: "frame";
+  children: readonly ExcalidrawElement["id"][];
+  name?: string;
+ } & Partial<ExcalidrawFrameElement>);
+```
+
+----------------------------------------
+
+TITLE: Integrating Custom Sidebar with Tabs and Trigger in Excalidraw (TSX)
+DESCRIPTION: This example demonstrates how to integrate a custom `Sidebar` component into an `Excalidraw` instance. It shows how to manage the sidebar's `docked` state using React's `useState` hook, configure the docking breakpoint via `UIOptions`, structure the sidebar content with `Sidebar.Header` and nested `Sidebar.Tabs` containing `Sidebar.Tab` elements, define tab navigation using `Sidebar.TabTriggers` and `Sidebar.TabTrigger` buttons, and add a `Sidebar.Trigger` component to a `Footer` to toggle the custom sidebar from outside the main canvas area.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/sidebar.mdx#_snippet_0
+
+LANGUAGE: tsx
+CODE:
+```
+function App() {
+  const [docked, setDocked] = useState(false);
+
+  return (
+    <div style={{ height: "580px" }}>
+      <Excalidraw
+        UIOptions={{
+          // this effectively makes the sidebar dockable on any screen size,
+          // ignoring if it fits or not
+          dockedSidebarBreakpoint: 0,
+        }}
+      >
+        <Sidebar name="custom" docked={docked} onDock={setDocked}>
+          <Sidebar.Header />
+          <Sidebar.Tabs style={{ padding: "0.5rem" }}>
+            <Sidebar.Tab tab="one">Tab one!</Sidebar.Tab>
+            <Sidebar.Tab tab="two">Tab two!</Sidebar.Tab>
+            <Sidebar.TabTriggers>
+              <Sidebar.TabTrigger tab="one">One</Sidebar.TabTrigger>
+              <Sidebar.TabTrigger tab="two">Two</Sidebar.TabTrigger>
+            </Sidebar.TabTriggers>
+          </Sidebar.Tabs>
+        </Sidebar>
+
+        <Footer>
+          <Sidebar.Trigger
+            name="custom"
+            tab="one"
+            style={{
+              marginLeft: "0.5rem",
+              background: "#70b1ec",
+              color: "white",
+            }}
+          >
+            Toggle Custom Sidebar
+          </Sidebar.Trigger>
+        </Footer>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Rendering/Export Callback Signature (JavaScript/TypeScript)
+DESCRIPTION: Specifies a function signature that receives an array of `exportedElements` (non-deleted elements), the current `appState`, and the `HTMLCanvasElement` of the scene, returning `void`. This signature is typically used for callbacks related to rendering or exporting the scene, providing access to the renderable elements and the canvas itself.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_3
+
+LANGUAGE: JavaScript
+CODE:
+```
+(exportedElements, appState, canvas) => void
+```
+
+----------------------------------------
+
+TITLE: Importing and Using restoreLibraryItems JS
+DESCRIPTION: Imports the `restoreLibraryItems` function and shows an example of its usage. This function normalizes imported library items by adding missing values and requires a default status ("published" or "unpublished").
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/restore.mdx#_snippet_3
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { restoreLibraryItems } from "@excalidraw/excalidraw";
+
+restoreLibraryItems(libraryItems, "unpublished");
+```
+
+----------------------------------------
+
+TITLE: Importing THEME Constant | Excalidraw | JavaScript
+DESCRIPTION: Shows how to import the `THEME` constant from `@excalidraw/excalidraw`. This constant allows access to the supported color themes, primarily 'LIGHT' and 'DARK', which can be used to control the application's appearance or read the current theme setting.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/constants.mdx#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { THEME } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Adding Custom HTML Items to MainMenu in React/JSX
+DESCRIPTION: This snippet illustrates how to embed arbitrary custom HTML elements within the Excalidraw MainMenu using MainMenu.ItemCustom. The example shows embedding a button that triggers an alert when clicked.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/main-menu.mdx#_snippet_2
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <MainMenu>
+          <MainMenu.ItemCustom>
+            <button
+              style={{ height: "2rem" }}
+              onClick={() => window.alert("custom menu item")}
+            >
+              custom item
+            </button>
+          </MainMenu.ItemCustom>
+        </MainMenu>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: onScrollChange Callback Signature (TypeScript)
+DESCRIPTION: Specifies the signature for the `onScrollChange` callback function, which is triggered when the canvas is scrolled. The callback receives the current horizontal (`scrollX`) and vertical (`scrollY`) scroll values as numbers, returning `void`. It allows the host application to react to changes in the canvas scroll position.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_4
+
+LANGUAGE: TypeScript
+CODE:
+```
+(scrollX: number, scrollY: number) => void
+```
+
+----------------------------------------
+
+TITLE: Displaying Custom Stats with renderCustomStats Prop (JSX)
+DESCRIPTION: This example shows how to implement the `renderCustomStats` prop of the Excalidraw component. This prop allows for rendering custom statistical information or messages within the Excalidraw "nerd stats" dialog using JSX. Requires the `Excalidraw` component.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/render-props.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw
+        renderCustomStats={() => (
+          <p style={{ color: "#70b1ec", fontWeight: "bold" }}>
+            Dummy stats will be shown here
+          </p>
+        )}
+      />
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Importing Excalidraw Utils (JavaScript)
+DESCRIPTION: Demonstrates how to import specific utility functions (exportToSvg, exportToBlob) from the @excalidraw/utils package using ES6 module syntax. This syntax is typically used with module bundlers.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/utils/README.md#_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+import { exportToSvg, exportToBlob } from "@excalidraw/utils";
+```
+
+----------------------------------------
+
+TITLE: Importing getCommonBounds Utility (JS)
+DESCRIPTION: Imports the `getCommonBounds` utility function from the `@excalidraw/excalidraw` package. This function is used to calculate the minimum and maximum X and Y coordinates (bounding box) that encompass all elements in a provided array of Excalidraw elements. Importing this function is required before it can be called.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_18
+
+LANGUAGE: js
+CODE:
+```
+import { getCommonBounds } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: HTML Setup for Direct Browser Usage (HTML)
+DESCRIPTION: Provides the basic HTML structure needed to load Excalidraw directly in a browser using ESM imports and import maps. It includes linking CSS, setting the asset path, defining dependency mappings, and including the Excalidraw script.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_7
+
+LANGUAGE: html
+CODE:
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Excalidraw in browser</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://esm.sh/@excalidraw/excalidraw@0.18.0/dist/dev/index.css"
+    />
+    <link rel="stylesheet" href="./index.css" />
+    <script>
+    	window.EXCALIDRAW_ASSET_PATH = "https://esm.sh/@excalidraw/excalidraw@0.18.0/dist/prod/";
+		</script>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19.0.0",
+          "react/jsx-runtime": "https://esm.sh/react@19.0.0/jsx-runtime",
+          "react-dom": "https://esm.sh/react-dom@19.0.0"
+          }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Excalidraw Embed Example</h1>
+      <div id="app"></div>
+    </div>
+    <script type="text/javascript" src="packages/excalidraw/index.js"></script>
+  </body>
+</html>
+```
+
+----------------------------------------
+
+TITLE: Customizing MainMenu with Basic Items in React/JSX
+DESCRIPTION: This snippet shows how to replace the default Excalidraw MainMenu content with custom MainMenu.Item components. Each item renders text and triggers a JavaScript alert when selected.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/main-menu.mdx#_snippet_0
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "300px" }}>
+      <Excalidraw>
+        <MainMenu>
+          <MainMenu.Item onSelect={() => window.alert("Item1")}>
+            Item1
+          </MainMenu.Item>
+          <MainMenu.Item onSelect={() => window.alert("Item2")}>
+            Item 2
+          </MainMenu.Item>
+        </MainMenu>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Importing MIME_TYPES Constant | Excalidraw | JavaScript
+DESCRIPTION: Illustrates importing the `MIME_TYPES` constant from `@excalidraw/excalidraw`. This constant lists the various MIME types supported by Excalidraw for operations like importing and exporting drawings, ensuring compatibility with different file formats.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/constants.mdx#_snippet_2
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { MIME_TYPES } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing restoreElements from Excalidraw JS
+DESCRIPTION: Imports the `restoreElements` function from the `@excalidraw/excalidraw` package. This function is used to normalize and restore Excalidraw elements, setting default values for missing properties and offering options for refreshing dimensions, repairing bindings, and normalizing indices.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/restore.mdx#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { restoreElements } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Example Element with Custom Data (JavaScript)
+DESCRIPTION: Demonstrates how to add a `customData` object to an Excalidraw element definition. The `customData` property is an object where arbitrary key-value pairs can be stored, allowing developers to associate custom information with specific elements. This is typically used when providing initial data or updating the scene.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+{
+  type: "rectangle",
+  id: "oDVXy8D6rom3H1-LLH2-f",
+  customData: {customId: '162'},
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring Upstream Git Tracking - Bash
+DESCRIPTION: This snippet provides essential Git commands to configure a local fork's 'master' branch to track the 'upstream/master' branch. This allows contributors to easily update their local master from the main repository while making pull requests from separate feature branches.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/contributing.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git remote add upstream https://github.com/excalidraw/excalidraw.git
+git fetch upstream
+git branch --set-upstream-to=upstream/master master
+```
+
+----------------------------------------
+
+TITLE: Rendering Excalidraw Directly in Browser (JS)
+DESCRIPTION: Shows the JavaScript code required to import and render the Excalidraw component directly in a browser using ESM imports. It utilizes React and ReactDOM loaded via import maps and mounts the component into a specified DOM element.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_8
+
+LANGUAGE: javascript
+CODE:
+```
+// See https://www.npmjs.com/package/@excalidraw/excalidraw documentation.
+import * as ExcalidrawLib from 'https://esm.sh/@excalidraw/excalidraw@0.18.0/dist/dev/index.js?external=react,react-dom';
+import React from "https://esm.sh/react@19.0.0";
+import ReactDOM from "https://esm.sh/react-dom@19.0.0"
+
+window.ExcalidrawLib = ExcalidrawLib;
+console.log("Excalidraw library", ExcalidrawLib);
+
+const App = () => {
+  return React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+      "div",
+      {
+        style: { height: "500px" },
+      },
+      React.createElement(ExcalidrawLib.Excalidraw),
+    ),
+  );
+};
+
+const excalidrawWrapper = document.getElementById("app");
+const root = ReactDOM.createRoot(excalidrawWrapper);
+root.render(React.createElement(App));
+```
+
+----------------------------------------
+
+TITLE: Importing Excalidraw Language Utilities JS
+DESCRIPTION: Shows the standard way to import the `defaultLang` string constant and the `languages` array (containing supported Language objects) directly from the `@excalidraw/excalidraw` package for use in configuring UI language.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_9
+
+LANGUAGE: javascript
+CODE:
+```
+import { defaultLang, languages } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing viewportCoordsToSceneCoords (JS)
+DESCRIPTION: Imports the `viewportCoordsToSceneCoords` function from the `@excalidraw/excalidraw` package. This function is a prerequisite for converting coordinates from the viewport space to the scene space using client coordinates and the current application state.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_14
+
+LANGUAGE: js
+CODE:
+```
+import { viewportCoordsToSceneCoords } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing loadLibraryFromBlob Function in JavaScript
+DESCRIPTION: This snippet shows the import statement for the `loadLibraryFromBlob` function. This utility is designed to load Excalidraw library data from a given Blob object.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_4
+
+LANGUAGE: javascript
+CODE:
+```
+import { loadLibraryFromBlob } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Installing Project Dependencies with Yarn Bash
+DESCRIPTION: This command installs all necessary project dependencies listed in the package.json file using Yarn. It should be run after cloning the repository and navigating into the project directory.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn
+```
+
+----------------------------------------
+
+TITLE: Using useDevice Hook in Excalidraw (JSX)
+DESCRIPTION: This JSX snippet demonstrates how to integrate the `useDevice` hook within a component rendered as a child of `<Excalidraw>`. It shows checking device properties (`device.editor.isMobile`) to conditionally render UI elements, such as a custom footer in the mobile main menu. The component using this hook must be placed as a child within the `<Excalidraw>` component tree.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_15
+
+LANGUAGE: jsx
+CODE:
+```
+const MobileFooter = ({}) => {
+  const device = useDevice();
+  if (device.editor.isMobile) {
+    return (
+      <Footer>
+        <button
+          className="custom-footer"
+          style={{ marginLeft: "20px", height: "2rem" }}
+          onClick={() => alert("This is custom footer in mobile menu")}
+        >
+          custom footer
+        </button>
+      </Footer>
+    );
+  }
+  return null;
+};
+const App = () => (
+  <div style={{ height: "400px" }}>
+    <Excalidraw>
+      <MainMenu>
+        <MainMenu.Item> Item1 </MainMenu.Item>
+        <MainMenu.Item> Item 2 </MainMenu.Item>
+        <MobileFooter />
+      </MainMenu>
+    </Excalidraw>
+  </div>
+);
+
+// Need to render when code is span across multiple components
+// in Live Code blocks editor
+render(<App />);
+```
+
+----------------------------------------
+
+TITLE: Starting the Development Server with Yarn Bash
+DESCRIPTION: This command starts the local development server for Excalidraw. After running this command, the application will typically be accessible in a web browser, often at http://localhost:3000.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+yarn start
+```
+
+----------------------------------------
+
+TITLE: Cloning the Excalidraw Repository Bash
+DESCRIPTION: This command clones the Excalidraw repository from GitHub to your local machine. It is the first step in setting up the project locally for development.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git clone https://github.com/excalidraw/excalidraw.git
+```
+
+----------------------------------------
+
+TITLE: Loading Scene or Library from Blob in JavaScript
+DESCRIPTION: This snippet demonstrates how to import and use `loadSceneOrLibraryFromBlob`. It attempts to load data from a blob, determining if it's a scene or library, and then updates the appropriate part of the Excalidraw instance.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_5
+
+LANGUAGE: javascript
+CODE:
+```
+import { loadSceneOrLibraryFromBlob, MIME_TYPES } from "@excalidraw/excalidraw";
+
+const contents = await loadSceneOrLibraryFromBlob(file, null, null);
+if (contents.type === MIME_TYPES.excalidraw) {
+  excalidrawAPI.updateScene(contents.data);
+} else if (contents.type === MIME_TYPES.excalidrawlib) {
+  excalidrawAPI.updateLibrary(contents.data);
+}
+```
+
+----------------------------------------
+
+TITLE: Importing elementPartiallyOverlapsWithOrContainsBBox Utility (JS)
+DESCRIPTION: Imports the `elementPartiallyOverlapsWithOrContainsBBox` utility function from the `@excalidraw/excalidraw` package. This utility checks if a single Excalidraw element either partially overlaps with or is fully contained within a specified bounding box (`bounds`). This function needs to be imported before it can be utilized in your code.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_21
+
+LANGUAGE: js
+CODE:
+```
+import { elementPartiallyOverlapsWithOrContainsBBox } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Adding Custom Footer (Mobile Menu) - React/JSX
+DESCRIPTION: This example shows how to render a custom footer for mobile devices. It uses the `useDevice` hook to conditionally render the custom footer within the `MainMenu` component, ensuring it appears when the user opens the menu on a mobile device.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/footer.mdx#_snippet_1
+
+LANGUAGE: jsx
+CODE:
+```
+const MobileFooter = ({}) => {
+  const device = useDevice();
+  if (device.editor.isMobile) {
+    return (
+      <Footer>
+        <button
+          className="custom-footer"
+          style= {{ marginLeft: '20px', height: '2rem'}}
+          onClick={() => alert("This is custom footer in mobile menu")}
+        >
+          custom footer
+        </button>
+      </Footer>
+    );
+  }
+  return null;
+};
+
+const App = () => (
+  <div style={{ height: "400px" }}>
+    <Excalidraw>
+      <MainMenu>
+        <MainMenu.Item> Item1 </MainMenu.Item>
+        <MainMenu.Item> Item 2 </MainMenu.Item>
+        <MobileFooter />
+      </MainMenu>
+    </Excalidraw>
+  </div>
+);
+
+// Need to render when code is span across multiple components
+// in Live Code blocks editor
+render(<App />);
+```
+
+----------------------------------------
+
+TITLE: onPointerUpdate Callback Signature (JavaScript/TypeScript)
+DESCRIPTION: Defines the signature for the `onPointerUpdate` callback, triggered when the mouse pointer moves or changes state. It receives the pointer coordinates `{ x, y }`, the `button` state ("down" or "up"), and a map of all active `pointers` on the scene, returning `void`. This allows tracking real-time pointer positions.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_2
+
+LANGUAGE: JavaScript
+CODE:
+```
+({ x, y }, button, pointersMap}) => void;
+```
+
+----------------------------------------
+
+TITLE: Starting Example App (bash)
+DESCRIPTION: Runs a predefined yarn script to start the example application for the `@excalidraw/excalidraw` package. This typically launches a local development server where you can see the package in action, accessible via a web browser.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/development.mdx#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn start:example
+```
+
+----------------------------------------
+
+TITLE: Importing getNonDeletedElements Function in JavaScript
+DESCRIPTION: This snippet shows the import statement for the `getNonDeletedElements` function. This utility filters an array of Excalidraw elements and returns only those that have not been marked as deleted.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_8
+
+LANGUAGE: javascript
+CODE:
+```
+import { getNonDeletedElements } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing serializeAsJSON Function in JavaScript
+DESCRIPTION: This snippet shows how to import the `serializeAsJSON` function from the `@excalidraw/excalidraw` package. This function is used to convert Excalidraw scene elements and application state into a JSON string.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import { serializeAsJSON } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing mergeLibraryItems Function in JavaScript
+DESCRIPTION: This snippet provides the import statement for the `mergeLibraryItems` function. This utility is used to merge two arrays of Excalidraw library items, prioritizing unique items from the second array.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_9
+
+LANGUAGE: javascript
+CODE:
+```
+import { mergeLibraryItems } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Using useI18n Hook for Translation (JSX)
+DESCRIPTION: This JSX snippet shows how to use the `useI18n` hook within a component rendered as a child of `<Excalidraw>`. It retrieves the translation function `t()` which is then used to translate predefined language keys like `labels.madeWithExcalidraw` and `buttons.confirm` for displaying localized text in the UI. The component must be a child of `<Excalidraw>`. This requires the Excalidraw component to be rendered and potentially configured with a specific language.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_17
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  const { t } = useI18n();
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <button
+          style={{ position: "absolute", zIndex: 10, height: "2rem" }}
+          onClick={() => window.alert(t("labels.madeWithExcalidraw"))}
+        >
+          {t("buttons.confirm")}
+        </button>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: generateLinkForSelection Signature (TypeScript)
+DESCRIPTION: Defines the signature for the `generateLinkForSelection` prop, a function used to override how links are generated for selected elements or groups. It receives the `id` of the selection and its `type` ("element" or "group") and must return a string representing the generated URL for that selection.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx#_snippet_7
+
+LANGUAGE: TypeScript
+CODE:
+```
+(id: string, type: "element" | "group") => string;
+```
+
+----------------------------------------
+
+TITLE: Importing getSceneVersion Function in JavaScript
+DESCRIPTION: This snippet provides the import statement for the `getSceneVersion` function. This utility calculates and returns a version string based on the provided array of Excalidraw elements.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_12
+
+LANGUAGE: javascript
+CODE:
+```
+import { getSceneVersion } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing serializeLibraryAsJSON Function in JavaScript
+DESCRIPTION: This snippet demonstrates how to import the `serializeLibraryAsJSON` function from the `@excalidraw/excalidraw` package. This function serializes Excalidraw library items into a JSON string.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+import { serializeLibraryAsJSON } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing parseLibraryTokensFromUrl Function in JavaScript
+DESCRIPTION: This snippet shows how to import the `parseLibraryTokensFromUrl` function. This utility parses the current URL hash for library-related parameters (specifically `#addLibrary`).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_10
+
+LANGUAGE: javascript
+CODE:
+```
+import { parseLibraryTokensFromUrl } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Customizing Excalidraw WelcomeScreen Hints (JSX)
+DESCRIPTION: This snippet demonstrates how to customize the hint messages displayed in the Excalidraw `WelcomeScreen` using the `WelcomeScreen.Hints` component and its children like `ToolbarHint`, `MenuHint`, and `HelpHint`. It shows how to provide custom content (e.g., a paragraph) for specific hints. Requires Excalidraw and React.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/welcome-screen.mdx#_snippet_2
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw>
+        <WelcomeScreen>
+          <WelcomeScreen.Hints.ToolbarHint>
+            <p> ToolBar Hints </p>
+          </WelcomeScreen.Hints.ToolbarHint>
+          <WelcomeScreen.Hints.MenuHint />
+          <WelcomeScreen.Hints.HelpHint />
+        </WelcomeScreen>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Installing @excalidraw/common using npm
+DESCRIPTION: Command to install the `@excalidraw/common` package using the npm package manager. This command adds the package as a dependency to the project.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/common/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install @excalidraw/common
+```
+
+----------------------------------------
+
+TITLE: Defining Flowchart Shapes that Fallback to Rectangle in Mermaid
+DESCRIPTION: This Mermaid syntax snippet provides examples of shapes like Subroutine, Cylindrical, Asymmetric, Hexagon, Parallelogram, and Trapezoid. These shapes are not natively supported in Excalidraw and will be rendered as rectangles after conversion.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_4
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart LR
+  id1[[Subroutine fallback to Rectangle]]
+  id2[(Cylindrical fallback to Rectangle)]
+  id3>Asymmetric fallback to Rectangle]
+  id4{{Hexagon fallback to Rectangle}}
+  id5[/Parallelogram fallback to Rectangle /]
+  id6[/Trapezoid fallback to Rectangle\]
+```
+
+----------------------------------------
+
+TITLE: Installing Excalidraw Utils with npm (Bash)
+DESCRIPTION: Command to install the @excalidraw/utils package using the npm package manager. This is required to use the library in a Node.js project or with a module bundler.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/utils/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install @excalidraw/utils
+```
+
+----------------------------------------
+
+TITLE: Installing @excalidraw/common using Yarn
+DESCRIPTION: Command to install the `@excalidraw/common` package using the Yarn package manager. This command adds the package as a dependency to the project.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/common/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn add @excalidraw/common
+```
+
+----------------------------------------
+
+TITLE: Loading Excalidraw Utils in Browser (HTML/JS)
+DESCRIPTION: Shows how to include the @excalidraw/utils library directly in a browser using a script tag and access its functions via the global ExcalidrawUtils variable. Useful for simple browser-based usage without a bundler.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/utils/README.md#_snippet_3
+
+LANGUAGE: html
+CODE:
+```
+<script src="https://unpkg.com/@excalidraw/utils@0.1.0/dist/excalidraw-utils.min.js"></script>
+<script>
+  // ExcalidrawUtils is a global variable defined by excalidraw.min.js
+  const { exportToSvg, exportToBlob } = ExcalidrawUtils;
+</script>
+```
+
+----------------------------------------
+
+TITLE: Defining Circle Shape in Mermaid Flowchart
+DESCRIPTION: This Mermaid syntax snippet demonstrates how to define a circle shape in a flowchart using double parentheses `(())`. It's a specific example of a supported shape for the `parseMermaidToExcalidraw` function.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_2
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart LR
+  id1((Hello from Circle))
+```
+
+----------------------------------------
+
+TITLE: Using Cross Arrowheads in Mermaid Flowcharts
+DESCRIPTION: This Mermaid syntax snippet demonstrates the use of `x--x` for defining a cross arrowhead on a link. In the conversion to Excalidraw, this specific arrowhead type is not supported and falls back to a bar arrowhead.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_7
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart LR
+  Start x--x Stop
+```
+
+----------------------------------------
+
+TITLE: Passing process.env.IS_PREACT in Vite Config
+DESCRIPTION: This Vite configuration snippet within the `define` option passes the actual value of `process.env.IS_PREACT` from the build environment into the application code. This ensures that Excalidraw, when integrated with Preact using Vite, can access the necessary environment variable to determine which build to use.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/CHANGELOG.md#_snippet_2
+
+LANGUAGE: JavaScript
+CODE:
+```
+define: {
+  "process.env.IS_PREACT": process.env.IS_PREACT,
+},
+```
+
+----------------------------------------
+
+TITLE: Importing isElementInsideBBox Utility (JS)
+DESCRIPTION: Imports the `isElementInsideBBox` utility function from the `@excalidraw/excalidraw` package. This is a lower-level utility compared to `elementsOverlappingBBox` that checks if a single Excalidraw element is fully contained within a specified bounding box (`bounds`), with an option (`eitherDirection`) to check for containment in either direction. Importing this function is required before use.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_20
+
+LANGUAGE: js
+CODE:
+```
+import { isElementInsideBBox } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Defining an Entity Relationship Diagram in Mermaid
+DESCRIPTION: This Mermaid syntax snippet shows the definition of an Entity Relationship Diagram (ER Diagram). This diagram type is currently not directly supported for conversion into editable Excalidraw elements and will be rendered as an image instead.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_8
+
+LANGUAGE: Mermaid
+CODE:
+```
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE-ITEM : contains
+  CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+```
+
+----------------------------------------
+
+TITLE: Setting Excalidraw Asset Path to Root (JavaScript)
+DESCRIPTION: Configures the `window.EXCALIDRAW_ASSET_PATH` variable in JavaScript to specify the base path where Excalidraw should look for self-hosted assets, like fonts. This example sets the path to the root directory `/`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/installation.mdx#_snippet_1
+
+LANGUAGE: js
+CODE:
+```
+window.EXCALIDRAW_ASSET_PATH = "/";
+```
+
+----------------------------------------
+
+TITLE: Setting Docked Sidebar Breakpoint in Excalidraw (TSX)
+DESCRIPTION: Configure the behavior of the sidebar layout in Excalidraw by setting a `dockedSidebarBreakpoint`. When the container width exceeds this value (in pixels), the sidebar becomes dockable, allowing it to occupy space alongside the canvas. This requires integrating the Excalidraw component within a React application.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/props/ui-options.mdx#_snippet_1
+
+LANGUAGE: tsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px" }}>
+      <Excalidraw UIOptions={{dockedSidebarBreakpoint: 200}}/>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Importing isLinearElement Function in JavaScript
+DESCRIPTION: This snippet provides the import statement for the `isLinearElement` function. This function checks if a given Excalidraw element or element type is a linear type (arrow or line).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_7
+
+LANGUAGE: javascript
+CODE:
+```
+import { isLinearElement } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Defining Restore API Options Object - JavaScript
+DESCRIPTION: This code snippet illustrates the structure of the optional 'opts' parameter introduced in the `restoreElements` and `restore` API functions. It specifies potential boolean flags that can be used to configure the restoration process, such as refreshing dimensions or repairing bindings.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/CHANGELOG.md#_snippet_3
+
+LANGUAGE: javascript
+CODE:
+```
+{ refreshDimensions?: boolean, repairBindings?: boolean }
+```
+
+----------------------------------------
+
+TITLE: Excalidraw File Schema Example JSON
+DESCRIPTION: This snippet provides a complete example of the JSON structure used for saving Excalidraw scenes to local `.excalidraw` files. It demonstrates the top-level attributes like type, version, source, elements array, appState object, and files object, illustrating the overall schema organization.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/codebase/json-schema.mdx#_snippet_0
+
+LANGUAGE: json
+CODE:
+```
+{
+  // schema information
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+
+  // elements on canvas
+  "elements": [
+    // example element
+    {
+      "id": "pologsyG-tAraPgiN9xP9b",
+      "type": "rectangle",
+      "x": 928,
+      "y": 319,
+      "width": 134,
+      "height": 90
+      /* ...other element properties */
+    }
+    /* other elements */
+  ],
+
+  // editor state (canvas config, preferences, ...)
+  "appState": {
+    "gridSize": 20,
+    "viewBackgroundColor": "#ffffff"
+  },
+
+  // files data for "image" elements, using format `{ [fileId]: fileData }`
+  "files": {
+    // example of an image data object
+    "3cebd7720911620a3938ce77243696149da03861": {
+      "mimeType": "image/png",
+      "id": "3cebd7720911620a3938c.77243626149da03861",
+      "dataURL": "data:image/png;base64,iVBOROKGgoAAAANSUhEUgA=",
+      "created": 1690295874454,
+      "lastRetrieved": 1690295874454
+    }
+    /* ...other image data objects */
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Importing getFreeDrawSvgPath Function in JavaScript
+DESCRIPTION: This snippet shows how to import the `getFreeDrawSvgPath` function. This utility is specifically used to retrieve the SVG path data for an Excalidraw free draw element.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_6
+
+LANGUAGE: javascript
+CODE:
+```
+import { getFreeDrawSvgPath } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing sceneCoordsToViewportCoords Function in JavaScript
+DESCRIPTION: This snippet shows how to import the `sceneCoordsToViewportCoords` function. This utility converts coordinates from the scene's absolute coordinate system to the visible viewport's coordinate system.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_13
+
+LANGUAGE: javascript
+CODE:
+```
+import { sceneCoordsToViewportCoords } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing restore from Excalidraw JS
+DESCRIPTION: Imports the main `restore` function from the `@excalidraw/excalidraw` package. This function is a combined utility that restores both elements and application state, leveraging the functionality of `restoreElements` and `restoreAppState`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/restore.mdx#_snippet_2
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { restore } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Importing i18n Utilities (JS)
+DESCRIPTION: Imports `defaultLang`, `languages`, and `useI18n` from the `@excalidraw/excalidraw` package. These exports provide access to Excalidraw's internationalization features, including the default language code, a list of supported languages, and a React hook for accessing the current language and translation function. This import is necessary to use Excalidraw's built-in i18n support.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_16
+
+LANGUAGE: js
+CODE:
+```
+import { defaultLang, languages, useI18n } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Installing Mermaid to Excalidraw Library via npm (Bash)
+DESCRIPTION: This command installs the @excalidraw/mermaid-to-excalidraw package using the npm package manager. It is a prerequisite for using the library in a Node.js or frontend project.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/installation.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install @excalidraw/mermaid-to-excalidraw
+```
+
+----------------------------------------
+
+TITLE: Using FontAwesome Icons in Mermaid Flowcharts
+DESCRIPTION: This Mermaid syntax snippet illustrates the inclusion of FontAwesome icons within node labels using the `fa:fa-icon` syntax. When converting to Excalidraw, these icons are not supported and will not be rendered.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_6
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart TD
+  B["fab:fa-twitter for peace"]
+  B-->C[fa:fa-ban forbidden]
+  B-->E(A fa:fa-camera-retro perhaps?)
+```
+
+----------------------------------------
+
+TITLE: Using Markdown Strings in Mermaid Flowcharts
+DESCRIPTION: This Mermaid syntax snippet shows the use of Markdown strings within node labels, enclosed in backticks. In the context of Excalidraw conversion, the Markdown formatting is not supported, and the text will appear as plain text.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_5
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart LR
+  A("`Hello **World**`") --> B("`Whats **up** ?`")
+```
+
+----------------------------------------
+
+TITLE: Importing isInvisiblySmallElement Function in JavaScript
+DESCRIPTION: This snippet provides the import statement for the `isInvisiblySmallElement` function. This utility is used to check if an Excalidraw element is considered invisibly small (e.g., zero width and height).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+import { isInvisiblySmallElement } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Defining a Git Graph in Mermaid
+DESCRIPTION: This Mermaid syntax snippet demonstrates the definition of a Git Graph, illustrating commit history and branching. Like other non-flowchart types, this diagram type is not directly convertible to editable Excalidraw elements and will be rendered as an image.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_9
+
+LANGUAGE: Mermaid
+CODE:
+```
+gitGraph
+  commit
+  commit
+  branch develop
+  checkout develop
+  commit
+  commit
+  checkout main
+  merge develop
+  commit
+  commit
+
+```
+
+----------------------------------------
+
+TITLE: Install package with npm - bash
+DESCRIPTION: Command to install the @excalidraw/math package using the npm package manager. Requires npm to be installed and configured in the project directory.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/math/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install @excalidraw/math
+```
+
+----------------------------------------
+
+TITLE: Install package with pnpm - bash
+DESCRIPTION: Command to install the @excalidraw/math package using the pnpm package manager. Requires pnpm to be installed and configured in the project directory.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/math/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+pnpm add @excalidraw/math
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies (bash)
+DESCRIPTION: Installs the project dependencies for the `@excalidraw/excalidraw` package using the yarn package manager. This is the first step required before running or building the package.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/development.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+yarn
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies with npm - Bash
+DESCRIPTION: Use this command after cloning the repository to install all necessary project dependencies using the npm package manager. Ensure you are in the root directory of the cloned repository when running this command.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/development.mdx#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+npm install @excalidraw/mermaid-to-excalidraw
+```
+
+----------------------------------------
+
+TITLE: Starting Development Server - Next.js - bash
+DESCRIPTION: This snippet provides commands to start the Next.js development server locally. It lists common alternatives using different Node.js package managers: npm, yarn, pnpm, and bun. Running any of these commands will launch the server, typically accessible at http://localhost:3000.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/examples/with-nextjs/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+----------------------------------------
+
+TITLE: Preparing Production Release (bash)
+DESCRIPTION: Executes a yarn script that performs necessary preparation steps for a production release of the `@excalidraw/excalidraw` package. This includes updating version numbers in `package.json` and potentially generating changelog entries.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/development.mdx#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+yarn prerelease:excalidraw
+```
+
+----------------------------------------
+
+TITLE: Testing Code Formatting with Prettier using Yarn Bash
+DESCRIPTION: This command checks if the code formatting adheres to the Prettier rules without actually reformatting the files. It's useful for CI/CD pipelines to ensure code style consistency.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+yarn test:code
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies with yarn - Bash
+DESCRIPTION: Alternatively, you can use this command to install all necessary project dependencies using the yarn package manager. Ensure you are in the root directory of the cloned repository before execution.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/development.mdx#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+yarn add @excalidraw/mermaid-to-excalidraw
+```
+
+----------------------------------------
+
+TITLE: Build Static Website (bash)
+DESCRIPTION: Generates the static files for the website into the `build` directory using Yarn. This command prepares the website for deployment to any static hosting service. Requires dependencies to be installed first (`yarn`).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+yarn build
+```
+
+----------------------------------------
+
+TITLE: Starting Playground Server - Bash
+DESCRIPTION: This command starts the local development server for the playground component of the `mermaid-to-excalidraw` project, making it accessible for testing new diagram types. It typically runs on port 1234.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/new-diagram-type.mdx#_snippet_0
+
+LANGUAGE: Bash
+CODE:
+```
+yarn start
+```
+
+----------------------------------------
+
+TITLE: Running Project Tests with Yarn Bash
+DESCRIPTION: This command runs the test suite for the Excalidraw project. It is used to verify that changes haven't introduced regressions and that existing functionality works as expected.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+yarn test
+```
+
+----------------------------------------
+
+TITLE: Reformatting Files with Prettier using Yarn Bash
+DESCRIPTION: This command executes Prettier via Yarn to automatically reformat all project files according to predefined code style rules. It helps maintain consistent formatting across the codebase.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+yarn fix
+```
+
+----------------------------------------
+
+TITLE: Install Website Dependencies (bash)
+DESCRIPTION: Installs all required dependencies for the website project using the Yarn package manager. This command should be run after cloning the repository to set up the development environment. Requires Node.js and Yarn to be installed.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+yarn
+```
+
+----------------------------------------
+
+TITLE: Configuring process.env.IS_PREACT in Vite (String Literal)
+DESCRIPTION: This configuration snippet for Vite's `define` option sets the `process.env.IS_PREACT` environment variable to the string literal `"true"`. This is necessary when using Excalidraw with Preact via Vite, ensuring that the correct environment variable is available to the library, as Vite removes environment variables by default.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/excalidraw/CHANGELOG.md#_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+define: {
+  "process.env.IS_PREACT": JSON.stringify("true"),
+}
+```
+
+----------------------------------------
+
+TITLE: Start Local Development Server (bash)
+DESCRIPTION: Starts a local development server for the website using Yarn. This command builds the website and serves it, automatically refreshing the browser on changes for a live development experience. Requires dependencies to be installed first (`yarn`).
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn start
+```
+
+----------------------------------------
+
+TITLE: Installing Mermaid to Excalidraw Library via yarn (Bash)
+DESCRIPTION: This command adds the @excalidraw/mermaid-to-excalidraw package as a dependency using the yarn package manager. It is an alternative installation method to npm.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/installation.mdx#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn add @excalidraw/mermaid-to-excalidraw
+```
+
+----------------------------------------
+
+TITLE: Installing Excalidraw Utils with Yarn (Bash)
+DESCRIPTION: Command to install the @excalidraw/utils package using the Yarn package manager. Provides an alternative installation method to npm.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/utils/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn add @excalidraw/utils
+```
+
+----------------------------------------
+
+TITLE: Parsing Mermaid Syntax using mermaidAPI.getDiagramFromText - JavaScript
+DESCRIPTION: This snippet demonstrates how to use the `mermaidAPI.getDiagramFromText` function from the Mermaid library to parse a complete Mermaid diagram definition string. It takes the processed definition (including directives) as input and returns a structured JavaScript object representing the parsed diagram, which is then used by a custom parser.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/parser.mdx#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+const diagram = await mermaid.mermaidAPI.getDiagramFromText(fullDefinition);
+```
+
+----------------------------------------
+
+TITLE: Installing @excalidraw/common using PNPM
+DESCRIPTION: Command to install the `@excalidraw/common` package using the PNPM package manager. This command adds the package as a dependency to the project.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/common/README.md#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+pnpm add @excalidraw/common
+```
+
+----------------------------------------
+
+TITLE: Mermaid getEdges API Raw Output (JSON)
+DESCRIPTION: This JSON snippet shows the raw data structure returned by the Mermaid `diagram.parser.yy.getEdges` API for a simple flowchart. It defines connections between nodes using start and end IDs, type (e.g., arrow_point), label, and stroke style but lacks precise positional data for the line or curve.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/flowchart.mdx#_snippet_2
+
+LANGUAGE: JSON
+CODE:
+```
+[
+	{
+		"start": "start",
+		"end": "stop",
+		"type": "arrow_point",
+		"text": "",
+		"labelType": "text",
+		"stroke": "normal",
+		"length": 1
+	}
+]
+```
+
+----------------------------------------
+
+TITLE: Install package with Yarn - bash
+DESCRIPTION: Command to install the @excalidraw/math package using the Yarn package manager. Requires Yarn to be installed and configured in the project directory.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/packages/math/README.md#_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+yarn add @excalidraw/math
+```
+
+----------------------------------------
+
+TITLE: Mermaid Vertex Data After Custom Parsing (JSON)
+DESCRIPTION: This JSON snippet illustrates the vertex data after processing by the custom `parseVertex` function. It combines the raw data from `getVertices` with layout information extracted from the generated SVG, adding fields like `x`, `y`, `width`, and `height`, making the data suitable for conversion to Excalidraw elements.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/flowchart.mdx#_snippet_1
+
+LANGUAGE: JSON
+CODE:
+```
+{
+	"start": {
+		"id": "start",
+		"labelType": "text",
+		"text": "start",
+		"x": 0,
+		"y": 0,
+		"width": 67.796875,
+		"height": 44,
+		"containerStyle": {},
+		"labelStyle": {}
+	},
+	"stop": {
+		"id": "stop",
+		"labelType": "text",
+		"text": "stop",
+		"x": 117.796875,
+		"y": 0,
+		"width": 62.3828125,
+		"height": 44,
+		"containerStyle": {},
+		"labelStyle": {}
+	}
+}
+```
+
+----------------------------------------
+
+TITLE: Mermaid Subgraph Data After Custom Parsing (JSON)
+DESCRIPTION: This JSON snippet illustrates the subgraph data after processing by the custom `parseSubgraph` function. It augments the raw subgraph data from `getSubgraphs` with layout information derived from the SVG, adding fields for position (`x`, `y`) and dimensions (`width`, `height`), along with normalized node IDs, preparing the data for conversion to Excalidraw grouping elements.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/flowchart.mdx#_snippet_5
+
+LANGUAGE: JSON
+CODE:
+```
+[
+	{
+		"id": "one",
+		"nodes": [
+				"flowchart-a2-1399",
+				"flowchart-a1-1400"
+		],
+		"title": "one",
+		"labelType": "text",
+		"nodeIds": [
+				"a2",
+				"a1"
+		],
+		"x": 75.4921875,
+		"y": 0,
+		"width": 121.25,
+		"height": 188,
+		"text": "one"
+	}
+]
+```
+
+----------------------------------------
+
+TITLE: Mermaid getSubgraphs API Raw Output (JSON)
+DESCRIPTION: This JSON snippet shows the raw data structure returned by the Mermaid `diagram.parser.yy.getSubgraphs` API. It identifies subgraph boundaries, lists the DOM IDs of contained nodes, and provides a title and basic style information but lacks the overall dimensions or coordinates of the subgraph boundary.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/flowchart.mdx#_snippet_4
+
+LANGUAGE: JSON
+CODE:
+```
+[
+	{
+		"id": "one",
+		"nodes": [
+				"flowchart-a2-1399",
+				"flowchart-a1-1400"
+		],
+		"title": "one",
+		"classes": [],
+		"labelType": "text"
+	}
+]
+```
+
+----------------------------------------
+
+TITLE: Cloning Repository - Bash
+DESCRIPTION: This command clones the source code repository for the @excalidraw/mermaid-to-excalidraw package from GitHub to your local machine. It is the first step required to begin local development on the library.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/development.mdx#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git clone git@github.com:excalidraw/mermaid-to-excalidraw.git
+```
+
+----------------------------------------
+
+TITLE: Running Playground Server - Bash
+DESCRIPTION: Execute this command to start the local development playground server. This server typically runs on port 1234 and allows you to interactively test changes made to the @excalidraw/mermaid-to-excalidraw library.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/development.mdx#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+yarn start
+```
+
+----------------------------------------
+
+TITLE: Mermaid Edge Data After Custom Parsing (JSON)
+DESCRIPTION: This JSON snippet illustrates the edge data after processing by the custom `parseEdge` function. It supplements the raw edge data from `getEdges` with computed positional information, including start/end coordinates (`startX`, `startY`, `endX`, `endY`) and intermediate `reflectionPoints`, derived from the SVG path, making the data ready for Excalidraw conversion.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/flowchart.mdx#_snippet_3
+
+LANGUAGE: JSON
+CODE:
+```
+[
+	{
+		"start": "start",
+		"end": "stop",
+		"type": "arrow_point",
+		"text": "",
+		"labelType": "text",
+		"stroke": "normal",
+		"startX": 67.797,
+		"startY": 22,
+		"endX": 117.797,
+		"endY": 22,
+		"reflectionPoints": [
+			{
+				"x": 67.797,
+				"y": 22
+			},
+			{
+				"x": 117.797,
+				"y": 22
+			}
+		]
+	}
+]
+```
+
+----------------------------------------
+
+TITLE: Deploy Website via SSH (bash)
+DESCRIPTION: Deploys the built website using Yarn, specifically configuring the deployment process to use SSH for authentication. This is suitable for hosting services like GitHub Pages when using SSH keys. Requires the website to be built (`yarn build`) and SSH authentication to be set up.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/README.md#_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+USE_SSH=true yarn deploy
+```
+
+----------------------------------------
+
+TITLE: Mermaid getVertices API Raw Output (JSON)
+DESCRIPTION: This JSON snippet shows the raw data structure returned by the Mermaid `diagram.parser.yy.getVertices` API for a simple flowchart. It provides identification and basic text/style information for vertices but lacks critical layout data like position and dimensions required for rendering.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/codebase/parser/flowchart.mdx#_snippet_0
+
+LANGUAGE: JSON
+CODE:
+```
+{
+	"start": {
+		"id": "start",
+		"labelType": "text",
+		"domId": "flowchart-start-1414",
+		"styles": [],
+		"classes": [],
+		"text": "start",
+		"props": {}
+	},
+	"stop": {
+		"id": "stop",
+		"labelType": "text",
+		"domId": "flowchart-stop-1415",
+		"styles": [],
+		"classes": [],
+		"text": "stop",
+		"props": {}
+	}
+}
+```
+
+----------------------------------------
+
+TITLE: Building Docker Image for Self-Hosting Bash
+DESCRIPTION: This command builds a Docker image for the Excalidraw client using the Dockerfile in the current directory and tags it as excalidraw/excalidraw. This image can then be used for self-hosting.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+docker build -t excalidraw/excalidraw .
+```
+
+----------------------------------------
+
+TITLE: Running Docker Image for Self-Hosting Bash
+DESCRIPTION: This command runs the previously built Docker image in detached, interactive mode, removes the container on exit, names it 'excalidraw', maps host port 5000 to container port 80, and uses the 'latest' tag.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+docker run --rm -dit --name excalidraw -p 5000:80 excalidraw/excalidraw:latest
+```
+
+----------------------------------------
+
+TITLE: Building Package - Bash
+DESCRIPTION: This command compiles the library's source code and generates the distributable build files, typically located in a 'dist' folder. Running the build is a prerequisite before publishing a new version of the package.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/development.mdx#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+yarn build
+```
+
+----------------------------------------
+
+TITLE: Triggering Test Release via Bot Command (bash)
+DESCRIPTION: This command, posted as a comment in a pull request, instructs the `@excalibot` bot to trigger a test release build. This allows developers to test the release process and generated package before a full production release.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/development.mdx#_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+@excalibot trigger release
+```
+
+----------------------------------------
+
+TITLE: Publishing Production Release (bash)
+DESCRIPTION: Runs a yarn script to publish the prepared `@excalidraw/excalidraw` package. This step makes the new version available in the configured package registry (e.g., npm) for public use.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/development.mdx#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+yarn release:excalidraw
+```
+
+----------------------------------------
+
+TITLE: Updating Test Snapshots with Yarn Bash
+DESCRIPTION: This command updates test snapshots used by the testing framework. It's typically run when intended changes affect component rendering or output that is validated via snapshots.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+yarn test:update
+```
+
+----------------------------------------
+
+TITLE: Publishing Package - Bash
+DESCRIPTION: Use this command to publish the built package. Before publishing, ensure the package name and version in the package.json file are correctly updated according to your release strategy. This command uploads the package to the configured npm registry.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/development.mdx#_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+yarn publish
+```
+
+----------------------------------------
+
+TITLE: Importing Excalidraw in Module Bundlers (JS)
+DESCRIPTION: Demonstrates the standard ES6 import statement for integrating Excalidraw when using module bundlers like Webpack. This is the most common method for modern JavaScript projects.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import { Excalidraw } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Adding Custom Footer (Desktop) - React/JSX
+DESCRIPTION: This snippet demonstrates how to add a custom footer specifically for desktop devices. The custom UI element (a button) is wrapped within the `Footer` component, which is placed directly inside the `Excalidraw` component. This method replaces the older `renderFooter` prop.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/children-components/footer.mdx#_snippet_0
+
+LANGUAGE: jsx
+CODE:
+```
+function App() {
+  return (
+    <div style={{ height: "500px"}}>
+      <Excalidraw>
+        <Footer>
+          <button
+            className="custom-footer"
+            onClick={() => alert("This is dummy footer")}
+          >
+            custom footer
+          </button>
+        </Footer>
+      </Excalidraw>
+    </div>
+  );
+}
+```
+
+----------------------------------------
+
+TITLE: Defining Basic Flowchart Shapes in Mermaid
+DESCRIPTION: This Mermaid syntax snippet illustrates the definition of basic flowchart elements including rectangles, circles, diamonds, and arrows with labels using standard Mermaid syntax. It serves as an input example for the `parseMermaidToExcalidraw` function, showing supported shapes.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_1
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart TD
+  A[Christmas] -->|Get money| B(Go shopping)
+  B --> C{Let me think}
+  C -->|One| D[Laptop]
+  C -->|Two| E[iPhone]
+  C -->|Three| F[Car]
+```
+
+----------------------------------------
+
+TITLE: Defining Flowchart Subgraphs in Mermaid
+DESCRIPTION: This Mermaid syntax snippet shows how to define subgraphs within a flowchart using the `subgraph` and `end` keywords. This structure is supported and reflected in the resulting Excalidraw elements.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/mermaid-to-excalidraw/api.mdx#_snippet_3
+
+LANGUAGE: Mermaid
+CODE:
+```
+flowchart TB
+  c1-->a2
+  subgraph one
+  a1-->a2
+  end
+  subgraph two
+  b1-->b2
+  end
+  subgraph three
+  c1-->c2
+  end
+```
+
+----------------------------------------
+
+TITLE: Configuring Vite to Define Process Environment Variable (JavaScript)
+DESCRIPTION: This configuration snippet demonstrates how to add a definition for `process.env.IS_PREACT` within your Vite build configuration. This is essential for the Excalidraw package when used with Vite because Vite typically removes environment variables by default, and Excalidraw needs this variable to conditionally use the Preact build. Add this `define` block within your `vite.config.js` or similar configuration file.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/faq.mdx#_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+ define: {
+    "process.env.IS_PREACT": JSON.stringify("true"),
+  },
+```
+
+----------------------------------------
+
+TITLE: Using useHandleLibrary Hook in React/JavaScript
+DESCRIPTION: This snippet shows how to import and use the `useHandleLibrary` React hook within a functional component. This hook manages the loading and importing of libraries based on URL parameters or initial library sources.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_11
+
+LANGUAGE: javascript
+CODE:
+```
+import { useHandleLibrary } from "@excalidraw/excalidraw";
+
+export const App = () => {
+  // ...
+  useHandleLibrary({ excalidrawAPI });
+};
+```
+
+----------------------------------------
+
+TITLE: Configuring Vite for Preact with Excalidraw (JS)
+DESCRIPTION: Illustrates how to configure Vite's build settings to define `process.env.IS_PREACT`. This environment variable is required by Excalidraw to use its specific build optimized for Preact.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/integration.mdx#_snippet_6
+
+LANGUAGE: javascript
+CODE:
+```
+ define: {
+    "process.env.IS_PREACT": JSON.stringify("true"),
+  },
+
+```
+
+----------------------------------------
+
+TITLE: Creating Text Elements with ExcalidrawElementSkeleton (JavaScript)
+DESCRIPTION: This JavaScript snippet demonstrates creating text elements using `convertToExcalidrawElements`. It shows examples of a basic text element requiring `type`, `x`, `y`, and `text`, as well as a styled text element with additional properties like `fontSize` and `strokeColor`.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_4
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "text",
+    x: 100,
+    y: 100,
+    text: "HELLO WORLD!",
+  },
+  {
+    type: "text",
+    x: 100,
+    y: 150,
+    text: "STYLED HELLO WORLD!",
+    fontSize: 20,
+    strokeColor: "#5f3dc4",
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Importing elementsOverlappingBBox Utility (JS)
+DESCRIPTION: Imports the `elementsOverlappingBBox` utility function from the `@excalidraw/excalidraw` package. This function is used to filter a list of Excalidraw elements, returning only those that overlap with, are contained within, or contain a specified bounding box (`bounds`) based on the provided `type` parameter. This import is necessary to use the filtering logic.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/utils/utils-intro.md#_snippet_19
+
+LANGUAGE: js
+CODE:
+```
+import { elementsOverlappingBBox } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Setting Excalidraw Asset Path via Script Tag (HTML/JS)
+DESCRIPTION: Demonstrates setting the `window.EXCALIDRAW_ASSET_PATH` variable using a `<script>` tag directly in the HTML `<head>`. This method is suitable for vanilla JavaScript projects or integration without a build tool, pointing to a CDN asset path.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/installation.mdx#_snippet_2
+
+LANGUAGE: html
+CODE:
+```
+<head>
+    <script>
+        window.EXCALIDRAW_ASSET_PATH = "https://my.cdn.com/assets/";
+    </script>    
+</head>
+```
+
+----------------------------------------
+
+TITLE: Creating Text Containers with Labels (JavaScript)
+DESCRIPTION: This JavaScript example shows how to create shape elements (rectangle, ellipse, diamond) that act as text containers using `convertToExcalidrawElements`. It requires the `label` property in the skeleton object, which itself needs a `text` property, allowing text to be placed within the shape.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_7
+
+LANGUAGE: JavaScript
+CODE:
+```
+convertToExcalidrawElements([
+  {
+    type: "rectangle",
+    x: 300,
+    y: 290,
+    label: {
+      text: "RECTANGLE TEXT CONTAINER",
+    },
+  },
+  {
+    type: "ellipse",
+    x: 500,
+    y: 100,
+    label: {
+      text: "ELLIPSE\n TEXT CONTAINER",
+    },
+  },
+  {
+    type: "diamond",
+    x: 100,
+    y: 100,
+    label: {
+      text: "DIAMOND\nTEXT CONTAINER",
+    },
+  },
+]);
+```
+
+----------------------------------------
+
+TITLE: Deploy Website with Git User (bash)
+DESCRIPTION: Deploys the built website using Yarn, specifying the Git username for authentication instead of SSH. This command is useful for deploying to services like GitHub Pages when using HTTPS authentication. Requires the website to be built (`yarn build`) and replacement of <Your GitHub username>.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/README.md#_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+GIT_USER=<Your GitHub username> yarn deploy
+```
+
+----------------------------------------
+
+TITLE: Importing convertToExcalidrawElements Function (JavaScript)
+DESCRIPTION: This JavaScript snippet shows the standard way to import the `convertToExcalidrawElements` utility function from the `@excalidraw/excalidraw` package, making it available for use in your application code.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton.mdx#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { convertToExcalidrawElements } from "@excalidraw/excalidraw";
+```
+
+----------------------------------------
+
+TITLE: Starting Development Environment with Docker Compose Bash
+DESCRIPTION: This command uses Docker Compose to build and start the services defined in the docker-compose.yml file in detached mode. It provides an alternative to setting up a local Node.js environment.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/introduction/development.mdx#_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose up --build -d
+```
+
+----------------------------------------
+
+TITLE: Importing FONT_FAMILY Constant | Excalidraw | JavaScript
+DESCRIPTION: Demonstrates how to import the `FONT_FAMILY` constant from the `@excalidraw/excalidraw` library. This constant provides access to the predefined font families available for text elements, such as Hand-drawn, Normal, and Code fonts, and is used to configure or query the current font setting.
+SOURCE: https://github.com/excalidraw/excalidraw/blob/master/dev-docs/docs/@excalidraw/excalidraw/api/constants.mdx#_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+import { FONT_FAMILY } from "@excalidraw/excalidraw";
+```

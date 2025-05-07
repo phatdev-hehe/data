@@ -1,0 +1,1220 @@
+TITLE: Running Tesseract OCR from Command Line
+DESCRIPTION: This snippet shows the basic command-line syntax for running the Tesseract OCR engine. It requires the input image file name and a base name for the output files. Optional arguments allow specifying the language, OCR engine mode, page segmentation mode, and additional configuration files. The output results will be generated in files named based on the provided output base name.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+tesseract imagename outputbase [-l lang] [--oem ocrenginemode] [--psm pagesegmode] [configfiles...]
+```
+
+----------------------------------------
+
+TITLE: Listing Available Languages Tesseract CLI
+DESCRIPTION: This command-line snippet is used to verify which trained language data files Tesseract can find and load. It helps users confirm that the required language data (like 'eng' and 'osd') have been installed correctly. The output is a list of detected language codes.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CONTRIBUTING.md#_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+tesseract --list-langs
+```
+
+----------------------------------------
+
+TITLE: Building Tesseract with CMake (Linux)
+DESCRIPTION: Outlines the steps for building and installing Tesseract using the CMake build system on Linux. This involves creating a build directory, configuring the project with cmake within that directory, compiling with make, and then installing.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/INSTALL.GIT.md#_snippet_4
+
+LANGUAGE: Shell
+CODE:
+```
+mkdir build
+```
+
+LANGUAGE: Shell
+CODE:
+```
+cd build && cmake .. && make
+```
+
+LANGUAGE: Shell
+CODE:
+```
+sudo make install
+```
+
+----------------------------------------
+
+TITLE: Running Tesseract Unit Tests - Shell Script
+DESCRIPTION: This shell script sequence details the steps to prepare the Tesseract source tree, fetch unit test data and fonts, set the TESSDATA_PREFIX environment variable, and finally execute the test suite using 'make check'. Prerequisites include having git, autoreconf, and make installed.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/unittest/README.md#_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+autoreconf -fiv
+git submodule update --init
+git clone https://github.com/egorpugin/tessdata tessdata_unittest --depth 1
+cp tessdata_unittest/fonts/* test/testing/
+mv tessdata_unittest/* ../
+export TESSDATA_PREFIX=/prefix/to/path/to/tessdata
+make check
+```
+
+----------------------------------------
+
+TITLE: Installing Targets - CMake
+DESCRIPTION: Installs the `tesseract` executable to the `bin` directory and the `libtesseract` library to `CMAKE_INSTALL_LIBDIR`, handling optional PDB files for MSVC builds.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/tesseract_$<CONFIG>.pc
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+  RENAME tesseract.pc)
+install(TARGETS tesseract DESTINATION bin)
+if (MSVC)
+  install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION bin OPTIONAL)
+endif()
+install(
+  TARGETS libtesseract
+  EXPORT TesseractTargets
+  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+if (MSVC AND BUILD_SHARED_LIBS)
+  install(FILES $<TARGET_PDB_FILE:libtesseract> DESTINATION bin OPTIONAL)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Building Tesseract with Autotools (Linux/Unix)
+DESCRIPTION: Provides the standard sequence of shell commands required to build and install Tesseract OCR from source using the autotools build system on Linux or Unix. It assumes that dependencies like Leptonica, Pango, Cairo, and ICU are already installed and a C++17 compatible compiler is available.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/INSTALL.GIT.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+./autogen.sh
+```
+
+LANGUAGE: Shell
+CODE:
+```
+./configure
+```
+
+LANGUAGE: Make
+CODE:
+```
+make
+```
+
+LANGUAGE: Shell
+CODE:
+```
+sudo make install
+```
+
+LANGUAGE: Shell
+CODE:
+```
+sudo ldconfig
+```
+
+----------------------------------------
+
+TITLE: Configuring lstmtraining Executable CMake
+DESCRIPTION: Defines the `lstmtraining` executable target, links it to `unicharset_training` and the pthread library, assigns it to the 'Training Tools' group, and specifies installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_20
+
+LANGUAGE: CMake
+CODE:
+```
+# ############################################################################
+  # EXECUTABLE lstmtraining
+  # ############################################################################
+
+  add_executable(lstmtraining lstmtraining.cpp)
+  target_link_libraries(lstmtraining unicharset_training ${LIB_pthread})
+  project_group(lstmtraining "Training Tools")
+  install(
+    TARGETS lstmtraining
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:lstmtraining> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure combine_tessdata Executable
+DESCRIPTION: Defines the `combine_tessdata` executable target. It links the executable to the `common_training` library and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_10
+
+LANGUAGE: CMake
+CODE:
+```
+add_executable(combine_tessdata combine_tessdata.cpp)
+target_link_libraries(combine_tessdata common_training)
+project_group(combine_tessdata "Training Tools")
+install(
+  TARGETS combine_tessdata
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
+if (MSVC)
+  install(FILES $<TARGET_PDB_FILE:combine_tessdata> DESTINATION bin OPTIONAL)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Building Tesseract Training Tools (Autotools, Linux/Unix)
+DESCRIPTION: Lists the make commands needed to compile and install the Tesseract training tools after the main Tesseract engine has been built and installed using autotools. Requires additional dependencies listed in the document.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/INSTALL.GIT.md#_snippet_1
+
+LANGUAGE: Make
+CODE:
+```
+make training
+```
+
+LANGUAGE: Shell
+CODE:
+```
+sudo make training-install
+```
+
+----------------------------------------
+
+TITLE: Installing Header Files - CMake
+DESCRIPTION: Installs the specified public header files from the source and binary directories to the `include/tesseract` directory in the installation prefix.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_9
+
+LANGUAGE: CMake
+CODE:
+```
+install(
+  FILES include/tesseract/baseapi.h
+        include/tesseract/capi.h
+        include/tesseract/renderer.h
+        ${CMAKE_CURRENT_BINARY_DIR}/include/tesseract/version.h
+        include/tesseract/ltrresultiterator.h
+        include/tesseract/pageiterator.h
+        include/tesseract/resultiterator.h
+        include/tesseract/osdetect.h
+        include/tesseract/publictypes.h
+        include/tesseract/ocrclass.h
+        include/tesseract/export.h
+        include/tesseract/unichar.h
+        # ${CMAKE_CURRENT_BINARY_DIR}/src/endianness.h
+  DESTINATION include/tesseract)
+```
+
+----------------------------------------
+
+TITLE: Building and Linking Tesseract Executable - CMake
+DESCRIPTION: Defines the main tesseract executable target, links it with the core libtesseract library, and conditionally links additional libraries (TIFF for Windows, pthread for Unix with OpenMP) based on build options and platform.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+add_executable(tesseract src/tesseract.cpp)
+target_link_libraries(tesseract libtesseract)
+if(HAVE_TIFFIO_H AND WIN32)
+  target_link_libraries(tesseract ${TIFF_LIBRARIES})
+endif()
+
+if(OPENMP_BUILD AND UNIX)
+  target_link_libraries(tesseract pthread)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring Pkgconfig File - CMake
+DESCRIPTION: Uses `configure_file` to generate a template `.pc` file for pkg-config in the binary directory, substituting CMake variables, and then uses `file(GENERATE)` to process generator expressions like build configuration (`$<CONFIG>`) for the final file name.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+configure_file(tesseract.pc.cmake ${CMAKE_CURRENT_BINARY_DIR}/tesseract.pc.in
+               @ONLY)
+# to resolve generator expression in OUTPUT_NAME
+file(
+  GENERATE
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/tesseract_$<CONFIG>.pc
+  INPUT ${CMAKE_CURRENT_BINARY_DIR}/tesseract.pc.in)
+```
+
+----------------------------------------
+
+TITLE: Configuring CMake Package Files - CMake
+DESCRIPTION: Configures the `TesseractConfig.cmake` and `TesseractConfigVersion.cmake` files using templates, setting installation destinations and version information for use when Tesseract is consumed by other CMake projects.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+configure_package_config_file(
+  cmake/templates/TesseractConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/tesseract/TesseractConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tesseract
+  PATH_VARS INCLUDE_DIR LIBRARY_DIRS)
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/tesseract/TesseractConfigVersion.cmake
+  VERSION ${PACKAGE_VERSION}
+  COMPATIBILITY SameMajorVersion)
+```
+
+----------------------------------------
+
+TITLE: Cloning Tesseract Training Data Repository (Git)
+DESCRIPTION: Provides the Git command to clone the entire repository containing all Tesseract language training data files. This is primarily useful for packagers and note that the repository size is over 1.2 GB, so individual files might be preferable for most users.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/INSTALL.GIT.md#_snippet_2
+
+LANGUAGE: Git
+CODE:
+```
+git clone https://github.com/tesseract-ocr/tessdata.git tesseract-ocr.tessdata
+```
+
+----------------------------------------
+
+TITLE: Tesseract Unit Test File Structure
+DESCRIPTION: This snippet visualizes the expected directory structure and key files needed for the Tesseract unit tests, including language data, trained data, and test directories.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/unittest/README.md#_snippet_0
+
+LANGUAGE: text
+CODE:
+```
+├── langdata_lstm
+│   ├── common.punc
+│   ├── common.unicharambigs
+│   ├── desired_bigrams.txt
+│   ├── eng
+│   │   ├── desired_characters
+│   │   ├── eng.config
+│   │   ├── eng.numbers
+│   │   ├── eng.punc
+│   │   ├── eng.singles_text
+│   │   ├── eng.training_text
+│   │   ├── eng.unicharambigs
+│   │   ├── eng.wordlist
+│   │   └── okfonts.txt
+│   ├── extended
+│   │   └── extended.config
+│   ├── extendedhin
+│   │   └── extendedhin.config
+│   ├── font_properties
+│   ├── forbidden_characters_default
+│   ├── hin
+│   │   ├── hin.config
+│   │   ├── hin.numbers
+│   │   ├── hin.punc
+│   │   └── hin.wordlist
+│   ├── kan
+│   │   └── kan.config
+│   ├── kor
+│   │   └── kor.config
+│   ├── osd
+│   │   └── osd.unicharset
+│   └── radical-stroke.txt
+├── tessdata
+│   ├── ara.traineddata
+│   ├── chi_tra.traineddata
+│   ├── eng.traineddata
+│   ├── heb.traineddata
+│   ├── hin.traineddata
+│   ├── jpn.traineddata
+│   ├── kmr.traineddata
+│   ├── osd.traineddata
+│   └── vie.traineddata
+├── tessdata_best
+│   ├── eng.traineddata
+│   ├── fra.traineddata
+│   ├── kmr.traineddata
+│   └── osd.traineddata
+├── tessdata_fast
+│   ├── eng.traineddata
+│   ├── kmr.traineddata
+│   ├── osd.traineddata
+│   └── script
+│       └── Latin.traineddata
+└── tesseract
+    ...
+    ├── test
+    ├── unittest
+    │   └── third_party/googletest
+    └── VERSION
+```
+
+----------------------------------------
+
+TITLE: Add and Configure common_training Library
+DESCRIPTION: Defines the `common_training` static or shared library target using the collected source files. It sets public include directories, links to `libtesseract`, configures installation paths, generates an export header for API visibility, and groups the project.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_7
+
+LANGUAGE: CMake
+CODE:
+```
+add_library(common_training ${COMMON_TRAINING_SRC})
+target_include_directories(common_training PUBLIC common
+                                                  ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(common_training PUBLIC libtesseract)
+install(
+  TARGETS common_training
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+generate_export_header(common_training EXPORT_MACRO_NAME
+                       TESS_COMMON_TRAINING_API)
+if (MSVC AND BUILD_SHARED_LIBS)
+  install(FILES $<TARGET_PDB_FILE:common_training> DESTINATION bin OPTIONAL)
+endif()
+project_group(common_training "Training Tools")
+```
+
+----------------------------------------
+
+TITLE: Configuring and Enabling Tests - CMake
+DESCRIPTION: Conditionally enables testing and adds subdirectories for googletest (if it exists) and the project's unit tests, provided the `BUILD_TESTS` option is enabled and the googletest CMakeLists.txt file is present.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+if(BUILD_TESTS
+   AND EXISTS
+       ${CMAKE_CURRENT_SOURCE_DIR}/unittest/third_party/googletest/CMakeLists.txt
+)
+  enable_testing()
+  add_subdirectory(unittest/third_party/googletest)
+  add_subdirectory(unittest)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Creating Uninstall Target - CMake
+DESCRIPTION: Configures an uninstall script template to a binary directory file and adds a custom CMake target named `uninstall` that executes this script using the CMake executable.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_11
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT TARGET uninstall)
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake" IMMEDIATE @ONLY)
+
+  add_custom_target(
+    uninstall
+    COMMENT "Uninstall installed files"
+    COMMAND ${CMAKE_COMMAND} -P
+            ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Building ScrollView.jar Viewer (Make)
+DESCRIPTION: Provides the make command to build the ScrollView.jar viewer tool. This process requires an active internet connection as it automatically downloads necessary Java dependencies like Piccolo2D and JAXB from Maven repositories.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/INSTALL.GIT.md#_snippet_3
+
+LANGUAGE: Make
+CODE:
+```
+make ScrollView.jar
+```
+
+----------------------------------------
+
+TITLE: Adding Training Tools Subdirectory - CMake
+DESCRIPTION: Includes the subdirectory containing the training tools build configuration, but only if the `BUILD_TRAINING_TOOLS` CMake option is enabled.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+if(BUILD_TRAINING_TOOLS)
+  add_subdirectory(src/training)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring wordlist2dawg Executable CMake
+DESCRIPTION: Defines and configures the `wordlist2dawg` executable target. It specifies the source file, links the necessary `common_training` library, assigns it to the 'Training Tools' project group, and defines installation rules for runtime binaries, libraries, and archives.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_15
+
+LANGUAGE: CMake
+CODE:
+```
+add_executable(wordlist2dawg wordlist2dawg.cpp)
+target_link_libraries(wordlist2dawg common_training)
+project_group(wordlist2dawg "Training Tools")
+install(
+  TARGETS wordlist2dawg
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+  install(FILES $<TARGET_PDB_FILE:wordlist2dawg> DESTINATION bin OPTIONAL)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring Pango Training Dependencies CMake
+DESCRIPTION: This block configures dependencies and targets that rely on Pango, executed only if PKG_CONFIG or SW_BUILD is found. It checks for Pango via PkgConfig and defines the `pango_training` library and the `text2image` executable.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_24
+
+LANGUAGE: CMake
+CODE:
+```
+if(PKG_CONFIG_FOUND OR SW_BUILD)
+
+    if(PKG_CONFIG_FOUND)
+      pkg_check_modules(
+        PANGO
+        REQUIRED
+        IMPORTED_TARGET
+        pango>=1.38.0
+        cairo
+        pangoft2
+        pangocairo
+        fontconfig)
+    endif()
+
+    # ##########################################################################
+    # LIBRARY pango_training
+    # ##########################################################################
+
+    file(GLOB pango_training_src pango/*)
+
+    add_library(pango_training ${pango_training_src})
+    target_link_libraries(pango_training PUBLIC unicharset_training)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if(SW_BUILD)
+      target_link_libraries(pango_training
+                            PUBLIC org.sw.demo.gnome.pango.pangocairo)
+    else()
+      if(PKG_CONFIG_FOUND)
+        target_include_directories(pango_training BEFORE
+                                   PUBLIC ${PANGO_INCLUDE_DIRS})
+        target_compile_definitions(pango_training PUBLIC -DPANGO_ENABLE_ENGINE)
+        target_link_libraries(pango_training PUBLIC PkgConfig::PANGO)
+      endif()
+    endif()
+```
+
+LANGUAGE: CMake
+CODE:
+```
+target_include_directories(pango_training
+                               PUBLIC pango ${CMAKE_CURRENT_BINARY_DIR})
+```
+
+LANGUAGE: CMake
+CODE:
+```
+generate_export_header(pango_training EXPORT_MACRO_NAME
+                           TESS_PANGO_TRAINING_API)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+project_group(pango_training "Training Tools")
+```
+
+LANGUAGE: CMake
+CODE:
+```
+# ##########################################################################
+    # EXECUTABLE text2image
+    # ##########################################################################
+
+    set(TEXT2IMAGE_SRC text2image.cpp degradeimage.cpp degradeimage.h)
+
+    add_executable(text2image ${TEXT2IMAGE_SRC})
+    target_link_libraries(text2image pango_training)
+    project_group(text2image "Training Tools")
+    install(
+      TARGETS text2image
+      RUNTIME DESTINATION bin
+      LIBRARY DESTINATION lib
+      ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+      install(FILES $<TARGET_PDB_FILE:text2image> DESTINATION bin OPTIONAL)
+    endif()
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring set_unicharset_properties Executable CMake
+DESCRIPTION: Defines the `set_unicharset_properties` executable target, links it to the `unicharset_training` library, assigns it to the 'Training Tools' group, and specifies installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_22
+
+LANGUAGE: CMake
+CODE:
+```
+# ############################################################################
+  # EXECUTABLE set_unicharset_properties
+  # ############################################################################
+
+  add_executable(set_unicharset_properties set_unicharset_properties.cpp)
+  target_link_libraries(set_unicharset_properties unicharset_training)
+  project_group(set_unicharset_properties "Training Tools")
+  install(
+    TARGETS set_unicharset_properties
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:set_unicharset_properties> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring merge_unicharsets Executable CMake
+DESCRIPTION: Defines the `merge_unicharsets` executable target, links it to the `common_training` library, assigns it to the 'Training Tools' group, and specifies installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_21
+
+LANGUAGE: CMake
+CODE:
+```
+# ############################################################################
+  # EXECUTABLE merge_unicharsets
+  # ############################################################################
+
+  add_executable(merge_unicharsets merge_unicharsets.cpp)
+  target_link_libraries(merge_unicharsets common_training)
+  project_group(merge_unicharsets "Training Tools")
+  install(
+    TARGETS merge_unicharsets
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:merge_unicharsets> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring combine_lang_model Executable CMake
+DESCRIPTION: Defines the `combine_lang_model` executable target, links it to the `unicharset_training` library, assigns it to the 'Training Tools' group, and specifies installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_18
+
+LANGUAGE: CMake
+CODE:
+```
+# ############################################################################
+  # EXECUTABLE combine_lang_model
+  # ############################################################################
+
+  add_executable(combine_lang_model combine_lang_model.cpp)
+  target_link_libraries(combine_lang_model unicharset_training)
+  project_group(combine_lang_model "Training Tools")
+  install(
+    TARGETS combine_lang_model
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:combine_lang_model> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Find System ICU Library
+DESCRIPTION: Attempts to find the system-installed ICU library unless `SW_BUILD` is enabled. It uses PkgConfig if available, otherwise it uses CMake's built-in `find_package`. Messages report the outcome.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT SW_BUILD)
+  if(PKG_CONFIG_FOUND)
+    pkg_check_modules(ICU REQUIRED IMPORTED_TARGET icu-uc icu-i18n)
+  else()
+    find_package(ICU 52.1 COMPONENTS uc i18n)
+  endif()
+  if(ICU_FOUND)
+    message(">> ICU_FOUND ${ICU_FOUND} ${ICU_VERSION} ${ICU_LIBRARIES} ${ICU_INCLUDE_DIRS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ICU_CXX_FLAGS}")
+  else()
+    message(">> ICU not found!")
+  endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring unicharset_training Library CMake
+DESCRIPTION: Defines and configures the `unicharset_training` library. It finds source files in the `unicharset` directory, links required libraries (`common_training`, ICU variants based on build type/availability), adds public include directories, generates an export header, groups the target, and sets installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_17
+
+LANGUAGE: CMake
+CODE:
+```
+file(GLOB unicharset_training_src unicharset/*)
+
+add_library(unicharset_training ${unicharset_training_src})
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if(SW_BUILD)
+    target_link_libraries(unicharset_training
+                          PUBLIC common_training org.sw.demo.unicode.icu.i18n)
+  else()
+    if(PKG_CONFIG_FOUND)
+      target_link_libraries(unicharset_training PUBLIC common_training PkgConfig::ICU)
+    else()
+      target_link_libraries(unicharset_training PUBLIC common_training ${ICU_LIBRARIES})
+    endif()
+  endif()
+```
+
+LANGUAGE: CMake
+CODE:
+```
+target_include_directories(unicharset_training
+                             PUBLIC unicharset ${CMAKE_CURRENT_BINARY_DIR})
+```
+
+LANGUAGE: CMake
+CODE:
+```
+install(
+    TARGETS unicharset_training
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC AND BUILD_SHARED_LIBS)
+    install(FILES $<TARGET_PDB_FILE:unicharset_training> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+LANGUAGE: CMake
+CODE:
+```
+generate_export_header(unicharset_training EXPORT_MACRO_NAME
+                         TESS_UNICHARSET_TRAINING_API)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+project_group(unicharset_training "Training Tools")
+```
+
+----------------------------------------
+
+TITLE: Installing Exported Targets - CMake
+DESCRIPTION: Installs the CMake export file (`TesseractTargets`) which lists the targets for consumption by other projects, placing it in the CMake configuration directory.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_7
+
+LANGUAGE: CMake
+CODE:
+```
+install(
+  EXPORT TesseractTargets
+  NAMESPACE Tesseract::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tesseract)
+```
+
+----------------------------------------
+
+TITLE: Getting Target Properties - CMake
+DESCRIPTION: Retrieves various properties (NAME, VERSION, OUTPUT_NAME) from the `libtesseract` target and stores them in variables for later use in configuring package files.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+get_target_property(tesseract_NAME libtesseract NAME)
+get_target_property(tesseract_VERSION libtesseract VERSION)
+get_target_property(tesseract_OUTPUT_NAME libtesseract OUTPUT_NAME)
+```
+
+----------------------------------------
+
+TITLE: Installing CMake Directory - CMake
+DESCRIPTION: Installs the entire CMake configuration directory generated in the binary location to the installation prefix, allowing external projects to find the Tesseract CMake configuration files.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_8
+
+LANGUAGE: CMake
+CODE:
+```
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR})
+```
+
+----------------------------------------
+
+TITLE: Installing Config and Tessconfig Files - CMake
+DESCRIPTION: Conditionally installs configuration files (`.configs` and `.tessconfigs`) to the tessdata directory if the `INSTALL_CONFIGS` option is enabled.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/CMakeLists.txt#_snippet_10
+
+LANGUAGE: CMake
+CODE:
+```
+if(INSTALL_CONFIGS)
+  install(FILES ${TESSERACT_CONFIGS}
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/tessdata/configs)
+  install(FILES ${TESSERACT_TESSCONFIGS}
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/tessdata/tessconfigs)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring lstmeval Executable CMake
+DESCRIPTION: Defines the `lstmeval` executable target, links it to `unicharset_training` and the pthread library, assigns it to the 'Training Tools' group, and specifies installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_19
+
+LANGUAGE: CMake
+CODE:
+```
+# ############################################################################
+  # EXECUTABLE lstmeval
+  # ############################################################################
+
+  add_executable(lstmeval lstmeval.cpp)
+  target_link_libraries(lstmeval unicharset_training ${LIB_pthread})
+  project_group(lstmeval "Training Tools")
+  install(
+    TARGETS lstmeval
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:lstmeval> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring unicharset_extractor Executable CMake
+DESCRIPTION: Defines the `unicharset_extractor` executable target. It sets the required C++ standard to C++17, links it to `unicharset_training`, assigns it to the 'Training Tools' group, and specifies installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_23
+
+LANGUAGE: CMake
+CODE:
+```
+# ############################################################################
+  # EXECUTABLE unicharset_extractor
+  # ############################################################################
+
+  add_executable(unicharset_extractor unicharset_extractor.cpp)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+target_compile_features(unicharset_extractor PRIVATE cxx_std_17)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+target_link_libraries(unicharset_extractor unicharset_training)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+project_group(unicharset_extractor "Training Tools")
+```
+
+LANGUAGE: CMake
+CODE:
+```
+install(
+    TARGETS unicharset_extractor
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+```
+
+LANGUAGE: CMake
+CODE:
+```
+if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:unicharset_extractor> DESTINATION bin OPTIONAL)
+  endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure dawg2wordlist Executable
+DESCRIPTION: Defines the `dawg2wordlist` executable target. It links the executable to the `common_training` library and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_12
+
+LANGUAGE: CMake
+CODE:
+```
+add_executable(dawg2wordlist dawg2wordlist.cpp)
+target_link_libraries(dawg2wordlist common_training)
+project_group(dawg2wordlist "Training Tools")
+install(
+  TARGETS dawg2wordlist
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
+if (MSVC)
+  install(FILES $<TARGET_PDB_FILE:dawg2wordlist> DESTINATION bin OPTIONAL)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure ambiguous_words Executable
+DESCRIPTION: Defines the `ambiguous_words` executable target if `DISABLED_LEGACY_ENGINE` is not set. It links the executable to the `common_training` library and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_8
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT DISABLED_LEGACY_ENGINE)
+  add_executable(ambiguous_words ambiguous_words.cpp)
+  target_link_libraries(ambiguous_words common_training)
+  project_group(ambiguous_words "Training Tools")
+  install(
+    TARGETS ambiguous_words
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+  if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:ambiguous_words> DESTINATION bin OPTIONAL)
+  endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure cntraining Executable
+DESCRIPTION: Defines the `cntraining` executable target if `DISABLED_LEGACY_ENGINE` is not set. It links the executable to the `common_training` library and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_11
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT DISABLED_LEGACY_ENGINE)
+  add_executable(cntraining cntraining.cpp)
+  target_link_libraries(cntraining common_training)
+  project_group(cntraining "Training Tools")
+  install(
+    TARGETS cntraining
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+  if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:cntraining> DESTINATION bin OPTIONAL)
+  endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure shapeclustering Executable
+DESCRIPTION: Defines the `shapeclustering` executable target if `DISABLED_LEGACY_ENGINE` is not set. It links the executable to the `common_training` library and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_14
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT DISABLED_LEGACY_ENGINE)
+  add_executable(shapeclustering shapeclustering.cpp)
+  target_link_libraries(shapeclustering common_training)
+  project_group(shapeclustering "Training Tools")
+  install(
+    TARGETS shapeclustering
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+  if (MSVC)
+     install(FILES $<TARGET_PDB_FILE:shapeclustering> DESTINATION bin OPTIONAL)
+  endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure classifier_tester Executable
+DESCRIPTION: Defines the `classifier_tester` executable target if `DISABLED_LEGACY_ENGINE` is not set. It links the executable to the `common_training` library and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_9
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT DISABLED_LEGACY_ENGINE)
+  add_executable(classifier_tester classifier_tester.cpp)
+  target_link_libraries(classifier_tester common_training)
+  project_group(classifier_tester "Training Tools")
+  install(
+    TARGETS classifier_tester
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+  if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:classifier_tester> DESTINATION bin OPTIONAL)
+  endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Add and Configure mftraining Executable
+DESCRIPTION: Defines the `mftraining` executable target if `DISABLED_LEGACY_ENGINE` is not set. It includes `mergenf.cpp` and `mergenf.h` as source files, links the executable to the `common_training` library, and sets up installation rules.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_13
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT DISABLED_LEGACY_ENGINE)
+  add_executable(mftraining mftraining.cpp mergenf.cpp mergenf.h)
+  target_link_libraries(mftraining common_training)
+  project_group(mftraining "Training Tools")
+  install(
+    TARGETS mftraining
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+  if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:mftraining> DESTINATION bin OPTIONAL)
+  endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Conditionally Add Legacy Training Source Files
+DESCRIPTION: Appends source files related to the legacy training engine to the `COMMON_TRAINING_SRC` list if the `DISABLED_LEGACY_ENGINE` flag is not set.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT DISABLED_LEGACY_ENGINE)
+  list(
+    APPEND
+    COMMON_TRAINING_SRC
+    common/errorcounter.cpp
+    common/errorcounter.h
+    common/intfeaturedist.cpp
+    common/intfeaturedist.h
+    common/intfeaturemap.cpp
+    common/intfeaturemap.h
+    common/mastertrainer.cpp
+    common/mastertrainer.h
+    common/sampleiterator.cpp
+    common/sampleiterator.h
+    common/trainingsampleset.cpp
+    common/trainingsampleset.h)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Define Common Training Source Files
+DESCRIPTION: Sets the `COMMON_TRAINING_SRC` variable to a list of source files for the `common_training` library target.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+set(COMMON_TRAINING_SRC
+    common/commandlineflags.cpp
+    common/commandlineflags.h
+    common/commontraining.cpp
+    common/commontraining.h
+    common/ctc.cpp
+    common/ctc.h
+    common/networkbuilder.cpp
+    common/networkbuilder.h)
+```
+
+----------------------------------------
+
+TITLE: Download and Extract ICU Binaries for MSVC
+DESCRIPTION: This block handles downloading and extracting pre-built ICU binaries specifically for MSVC builds when PkgConfig is found, not using SW_BUILD, and not using a system-installed ICU. It determines the architecture (x86 or x64), calculates file paths and expected hashes, downloads the zip archive, and extracts it.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+if(MSVC
+   AND PKG_CONFIG_FOUND
+   AND NOT SW_BUILD
+   AND NOT USE_SYSTEM_ICU)
+  include(CheckTypeSize)
+  check_type_size("void *" SIZEOF_VOID_P)
+
+  if(SIZEOF_VOID_P EQUAL 8)
+    set(X64 1)
+    set(ARCH_NAME 64)
+  elseif(SIZEOF_VOID_P EQUAL 4)
+    set(X86 1)
+    set(ARCH_NAME 32)
+  else()
+    message(FATAL_ERROR "Cannot determine target architecture")
+  endif()
+
+  set(ICU_DIR "${CMAKE_CURRENT_BINARY_DIR}/icu")
+  set(ICU_ARCHIVE "${ICU_DIR}/icu${ARCH_NAME}.zip")
+
+  if(X86)
+    set(ICU_HASH 45167a240b60e36b59a87eda23490ce4)
+  else()
+    set(ICU_HASH 480c72491576c048de1218c3c5519399)
+  endif()
+
+  message(STATUS "Downloading latest ICU binaries")
+  set(COMPILER "msvc10")
+  set(ICU_URL "https://github.com/unicode-org/icu/releases/download")
+  set(ICU_R "56-1")
+  set(ICU_V "56_1")
+  file(
+    DOWNLOAD
+    "${ICU_URL}/release-${ICU_R}/icu4c-${ICU_V}-Win${ARCH_NAME}-${COMPILER}.zip"
+    "${ICU_ARCHIVE}"
+    SHOW_PROGRESS
+    INACTIVITY_TIMEOUT 300 # seconds
+    EXPECTED_HASH MD5=${ICU_HASH})
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E tar xz "${ICU_ARCHIVE}"
+    WORKING_DIRECTORY "${ICU_DIR}"
+    RESULT_VARIABLE __result)
+  if(NOT __result EQUAL 0)
+    message(FATAL_ERROR "error ${__result}")
+  endif()
+
+  set(ICU_ROOT ${ICU_DIR}/icu)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Including ICU Directories Conditionally CMake
+DESCRIPTION: Includes the necessary directories for the ICU library if ICU is found and the build is not an SW_BUILD. This is required for compiling parts of the training tools that depend on ICU.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_16
+
+LANGUAGE: CMake
+CODE:
+```
+if(ICU_FOUND)
+  if(NOT SW_BUILD)
+    include_directories(${ICU_INCLUDE_DIRS})
+  endif()
+
+  # ############################################################################
+  # LIBRARY unicharset_training
+  # ############################################################################
+```
+
+----------------------------------------
+
+TITLE: Handle ICU Dependency Based on SW_BUILD
+DESCRIPTION: Determines how to handle the ICU dependency based on the `SW_BUILD` flag. If `SW_BUILD` is true, ICU is assumed to be found; otherwise, it attempts to find PkgConfig.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+if(SW_BUILD)
+  set(ICU_FOUND 1)
+else() # NOT SW_BUILD
+  find_package(PkgConfig)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Conditionally Set pthread Library
+DESCRIPTION: Sets the `LIB_pthread` variable to 'pthread' if the target system is UNIX and not Android. This variable is likely used later for linking the POSIX threads library.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+if(UNIX AND NOT ANDROID)
+  set(LIB_pthread pthread)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Set CMake Policy CMP0074
+DESCRIPTION: Sets the CMake policy CMP0074 to NEW if the CMake version is 3.12.0 or newer. This policy relates to finding packages with `find_package` and imported targets.
+SOURCE: https://github.com/tesseract-ocr/tesseract/blob/main/src/training/CMakeLists.txt#_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0")
+  cmake_policy(SET CMP0074 NEW)
+endif()
+```

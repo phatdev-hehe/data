@@ -1,0 +1,1 @@
+Library /tauri-apps/tauri has been redirected to this library: /tauri-apps/tauri-docs.

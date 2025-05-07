@@ -1,0 +1,4369 @@
+TITLE: Running Llama 3.2 Model with Ollama
+DESCRIPTION: Basic command to download and run the Llama 3.2 model using Ollama.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+ollama run llama3.2
+```
+
+----------------------------------------
+
+TITLE: Making a Raw Mode Chat Completion Request with Ollama API
+DESCRIPTION: Demonstrates how to make a chat completion request in raw mode, bypassing the templating system and providing a full prompt.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "mistral",
+  "prompt": "[INST] why is the sky blue? [/INST]",
+  "raw": true,
+  "stream": false
+}'
+```
+
+----------------------------------------
+
+TITLE: Starting Ollama Service on Linux
+DESCRIPTION: Command to start the Ollama service after installation. This launches the Ollama server that will handle model loading and inference requests.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+ollama serve
+```
+
+----------------------------------------
+
+TITLE: Streaming Chat Request Example
+DESCRIPTION: Example of sending a chat message with streaming response enabled using curl to the Ollama API.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_16
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "why is the sky blue?"
+    }
+  ]
+}'
+```
+
+----------------------------------------
+
+TITLE: Creating Chat Completions with Ollama in Python
+DESCRIPTION: Demonstrates how to create chat completions using Ollama's API. Includes examples for text-only and multimodal (text + image) inputs.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            'role': 'user',
+            'content': 'Say this is a test',
+        }
+    ],
+    model='llama3.2',
+)
+
+response = client.chat.completions.create(
+    model="llava",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "What's in this image?"},
+                {
+                    "type": "image_url",
+                    "image_url": "data:image/png;base64,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",
+                },
+            ],
+        }
+    ],
+    max_tokens=300,
+)
+```
+
+----------------------------------------
+
+TITLE: Configuring and Using OpenAI JavaScript Client with Ollama
+DESCRIPTION: This code demonstrates how to initialize and use the OpenAI JavaScript client with Ollama. It shows examples of chat completions, multimodal interactions, text completions, model listing/retrieval, and embedding generation. The client is configured to use Ollama's local API endpoint at port 11434.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_6
+
+LANGUAGE: javascript
+CODE:
+```
+import OpenAI from 'openai'
+
+const openai = new OpenAI({
+  baseURL: 'http://localhost:11434/v1/',
+
+  // required but ignored
+  apiKey: 'ollama',
+})
+
+const chatCompletion = await openai.chat.completions.create({
+    messages: [{ role: 'user', content: 'Say this is a test' }],
+    model: 'llama3.2',
+})
+
+const response = await openai.chat.completions.create({
+    model: "llava",
+    messages: [
+        {
+        role: "user",
+        content: [
+            { type: "text", text: "What's in this image?" },
+            {
+            type: "image_url",
+            image_url: "data:image/png;base64,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",
+            },
+        ],
+        },
+    ],
+})
+
+const completion = await openai.completions.create({
+    model: "llama3.2",
+    prompt: "Say this is a test.",
+})
+
+const listCompletion = await openai.models.list()
+
+const model = await openai.models.retrieve("llama3.2")
+
+const embedding = await openai.embeddings.create({
+  model: "all-minilm",
+  input: ["why is the sky blue?", "why is the grass green?"],
+})
+```
+
+----------------------------------------
+
+TITLE: Listing Running Models in Ollama
+DESCRIPTION: Command to show which models are currently loaded and running.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_14
+
+LANGUAGE: shell
+CODE:
+```
+ollama ps
+```
+
+----------------------------------------
+
+TITLE: JSON Mode Generation Example
+DESCRIPTION: Example of generating content in JSON format using the format parameter set to json.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "What color is the sky at different times of the day? Respond using JSON",
+  "format": "json",
+  "stream": false
+}'
+```
+
+----------------------------------------
+
+TITLE: Making a Basic Chat Completion Request with Ollama API
+DESCRIPTION: Demonstrates how to make a basic chat completion request to the Ollama API using curl. The request includes a model, prompt, and image data.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llava",
+  "prompt":"What is in this picture?",
+  "stream": false,
+  "images": ["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"]
+}'
+```
+
+----------------------------------------
+
+TITLE: Creating a Custom Model from Modelfile
+DESCRIPTION: Command to create a custom model named 'mymodel' using a Modelfile.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_6
+
+LANGUAGE: shell
+CODE:
+```
+ollama create mymodel -f ./Modelfile
+```
+
+----------------------------------------
+
+TITLE: Chatting with Ollama API
+DESCRIPTION: cURL command showing how to use Ollama's REST API chat endpoint for conversation with a model.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_18
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    { "role": "user", "content": "why is the sky blue?" }
+  ]
+}'
+```
+
+----------------------------------------
+
+TITLE: Generating Structured Outputs with Ollama in Python
+DESCRIPTION: Demonstrates how to use Ollama to generate structured outputs in JSON format, using Pydantic for schema definition and validation.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_5
+
+LANGUAGE: python
+CODE:
+```
+from pydantic import BaseModel
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+
+# Define the schema for the response
+class FriendInfo(BaseModel):
+    name: str
+    age: int 
+    is_available: bool
+
+class FriendList(BaseModel):
+    friends: list[FriendInfo]
+
+try:
+    completion = client.beta.chat.completions.parse(
+        temperature=0,
+        model="llama3.1:8b",
+        messages=[
+            {"role": "user", "content": "I have two friends. The first is Ollama 22 years old busy saving the world, and the second is Alonso 23 years old and wants to hang out. Return a list of friends in JSON format"}
+        ],
+        response_format=FriendList,
+    )
+
+    friends_response = completion.choices[0].message
+    if friends_response.parsed:
+        print(friends_response.parsed)
+    elif friends_response.refusal:
+        print(friends_response.refusal)
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+----------------------------------------
+
+TITLE: Creating and Running a Custom Model in Ollama
+DESCRIPTION: Commands to create and run a custom model in Ollama using a Modelfile.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+ollama create example -f Modelfile
+ollama run example
+```
+
+----------------------------------------
+
+TITLE: Generating Text with Ollama API
+DESCRIPTION: cURL command demonstrating how to use Ollama's REST API to generate a response from a model.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_17
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt":"Why is the sky blue?"
+}'
+```
+
+----------------------------------------
+
+TITLE: Loading a Model with Ollama API
+DESCRIPTION: Shows how to load a model into memory without generating a response by sending an empty prompt.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_12
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2"
+}'
+```
+
+----------------------------------------
+
+TITLE: Chat Request with Conversation History Example
+DESCRIPTION: Example of sending a chat message with previous conversation history included for context.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_19
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "why is the sky blue?"
+    },
+    {
+      "role": "assistant",
+      "content": "due to rayleigh scattering."
+    },
+    {
+      "role": "user",
+      "content": "how is that different than mie scattering?"
+    }
+  ]
+}'
+```
+
+----------------------------------------
+
+TITLE: Listing and Retrieving Models with Ollama in Python
+DESCRIPTION: Demonstrates how to list available models and retrieve information about a specific model using Ollama's API.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+list_completion = client.models.list()
+
+model = client.models.retrieve("llama3.2")
+```
+
+----------------------------------------
+
+TITLE: Stopping a Model in Ollama (Shell)
+DESCRIPTION: This command demonstrates how to immediately unload a model from memory using the 'ollama stop' command.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+ollama stop llama3.2
+```
+
+----------------------------------------
+
+TITLE: Setting System Message in Ollama Modelfile
+DESCRIPTION: This snippet demonstrates how to specify a system message in an Ollama Modelfile. System messages are used to provide high-level instructions or context to guide the model's behavior.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_7
+
+LANGUAGE: text
+CODE:
+```
+SYSTEM """<system message>"""
+```
+
+----------------------------------------
+
+TITLE: Generate Text Completion Request - Streaming Example
+DESCRIPTION: Example of making a streaming request to generate text completion using the Ollama API with the llama3.2 model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "Why is the sky blue?"
+}'
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "llama3.2",
+  "created_at": "2023-08-04T08:52:19.385406455-07:00",
+  "response": "The",
+  "done": false
+}
+```
+
+----------------------------------------
+
+TITLE: Preloading and Keeping a Model in Memory (Shell/cURL)
+DESCRIPTION: This cURL command shows how to preload a model and keep it in memory indefinitely using the 'keep_alive' parameter set to -1.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{"model": "llama3.2", "keep_alive": -1}'
+```
+
+----------------------------------------
+
+TITLE: Structured Output Chat Request Example
+DESCRIPTION: Example of requesting structured JSON output from the chat API using a specific schema format.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_18
+
+LANGUAGE: shell
+CODE:
+```
+curl -X POST http://localhost:11434/api/chat -H "Content-Type: application/json" -d '{
+  "model": "llama3.1",
+  "messages": [{"role": "user", "content": "Ollama is 22 years old and busy saving the world. Return a JSON object with the age and availability."}],
+  "stream": false,
+  "format": {
+    "type": "object",
+    "properties": {
+      "age": {
+        "type": "integer"
+      },
+      "available": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "age",
+      "available"
+    ]
+  },
+  "options": {
+    "temperature": 0
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Chat Request with Tools in Ollama
+DESCRIPTION: Example of using function calling/tools functionality to get weather information using the llama3.2 model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_22
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the weather today in Paris?"
+    }
+  ],
+  "stream": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_current_weather",
+        "description": "Get the current weather for a location",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "The location to get the weather for, e.g. San Francisco, CA"
+            },
+            "format": {
+              "type": "string",
+              "description": "The format to return the weather in, e.g. 'celsius' or 'fahrenheit'",
+              "enum": ["celsius", "fahrenheit"]
+            }
+          },
+          "required": ["location", "format"]
+        }
+      }
+    }
+  ]
+}'
+```
+
+----------------------------------------
+
+TITLE: Generate Text Completion - Non-Streaming Example
+DESCRIPTION: Example of making a non-streaming request to generate text completion using the Ollama API.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "Why is the sky blue?",
+  "stream": false
+}'
+```
+
+----------------------------------------
+
+TITLE: Making a Chat Completion Request with Custom Options using Ollama API
+DESCRIPTION: Demonstrates how to make a chat completion request with custom runtime options, overriding default model parameters.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_10
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "Why is the sky blue?",
+  "stream": false,
+  "options": {
+    "num_keep": 5,
+    "seed": 42,
+    "num_predict": 100,
+    "top_k": 20,
+    "top_p": 0.9,
+    "min_p": 0.0,
+    "typical_p": 0.7,
+    "repeat_last_n": 33,
+    "temperature": 0.8,
+    "repeat_penalty": 1.2,
+    "presence_penalty": 1.5,
+    "frequency_penalty": 1.0,
+    "mirostat": 1,
+    "mirostat_tau": 0.8,
+    "mirostat_eta": 0.6,
+    "penalize_newline": true,
+    "stop": ["\n", "user:"],
+    "numa": false,
+    "num_ctx": 1024,
+    "num_batch": 2,
+    "num_gpu": 1,
+    "main_gpu": 0,
+    "low_vram": false,
+    "vocab_only": false,
+    "use_mmap": true,
+    "use_mlock": false,
+    "num_thread": 8
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Chat Request with Image Processing in Ollama
+DESCRIPTION: Example of sending a chat message with base64 encoded images to the Ollama API using the llava model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_20
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llava",
+  "messages": [
+    {
+      "role": "user",
+      "content": "what is in this image?",
+      "images": ["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"]
+    }
+  ]
+}'
+```
+
+----------------------------------------
+
+TITLE: Installing Ollama on Linux
+DESCRIPTION: Command to install Ollama on Linux systems using a shell script that is downloaded and executed.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+----------------------------------------
+
+TITLE: Creating and Running a Custom Mario Model
+DESCRIPTION: Commands to pull the base model, create a customized version, and run it.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+ollama pull llama3.2
+ollama create mario -f ./Modelfile
+ollama run mario
+```
+
+----------------------------------------
+
+TITLE: Making Standard Completion Request with Ollama API
+DESCRIPTION: This code demonstrates how to make a standard completion request to the Ollama API using curl. It uses the llama3.2 model and provides a simple prompt.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_9
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/v1/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "llama3.2",
+        "prompt": "Say this is a test"
+    }'
+```
+
+----------------------------------------
+
+TITLE: Initializing OpenAI Client for Ollama in Python
+DESCRIPTION: Sets up the OpenAI client to use Ollama's API endpoint. Requires the OpenAI Python library and a local Ollama server running.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+from openai import OpenAI
+
+client = OpenAI(
+    base_url='http://localhost:11434/v1/',
+
+    # required but ignored
+    api_key='ollama',
+)
+```
+
+----------------------------------------
+
+TITLE: Preloading Models in Ollama
+DESCRIPTION: Commands to preload models in Ollama for faster response times using both API and CLI methods.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_6
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{"model": "mistral"}'
+```
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{"model": "mistral"}'
+```
+
+LANGUAGE: shell
+CODE:
+```
+ollama run llama3.2 ""
+```
+
+----------------------------------------
+
+TITLE: Generate Code Completion with Suffix
+DESCRIPTION: Example of generating code completion with a suffix parameter using the CodeLlama model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "codellama:code",
+  "prompt": "def compute_gcd(a, b):",
+  "suffix": "    return result",
+  "options": {
+    "temperature": 0
+  },
+  "stream": false
+}'
+```
+
+----------------------------------------
+
+TITLE: Creating Text Completions with Ollama in Python
+DESCRIPTION: Shows how to generate text completions using Ollama's API. This is a simpler alternative to chat completions for basic text generation tasks.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+completion = client.completions.create(
+    model="llama3.2",
+    prompt="Say this is a test",
+)
+```
+
+----------------------------------------
+
+TITLE: Generating Multiple Embeddings with POST Request
+DESCRIPTION: Example of the API request to generate embeddings for multiple text inputs simultaneously by providing an array of texts to the input parameter.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_41
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/embed -d '{
+  "model": "all-minilm",
+  "input": ["Why is the sky blue?", "Why is the grass green?"]
+}'
+```
+
+----------------------------------------
+
+TITLE: Creating Embeddings with Ollama API
+DESCRIPTION: This code shows how to create embeddings for multiple text inputs using the Ollama API. It uses the all-minilm model and provides two text inputs to be embedded.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_12
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/v1/embeddings \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "all-minilm",
+        "input": ["why is the sky blue?", "why is the grass green?"]
+    }'
+```
+
+----------------------------------------
+
+TITLE: Adding a Template to a Modelfile for Llama 3
+DESCRIPTION: Example of a TEMPLATE command in a Modelfile that configures how Llama 3 processes inputs with appropriate markers and formatting.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/template.md#2025-04-22_snippet_1
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM llama3.2
+
+TEMPLATE """{{- if .System }}<|start_header_id|>system<|end_header_id|>
+
+{{ .System }}<|eot_id|>
+{{- end }}
+{{- range .Messages }}<|start_header_id|>{{ .Role }}<|end_header_id|>
+
+{{ .Content }}<|eot_id|>
+{{- end }}<|start_header_id|>assistant<|end_header_id|>
+
+"""
+```
+
+----------------------------------------
+
+TITLE: Generating Embeddings with POST Request
+DESCRIPTION: Example of the API request to generate embeddings from a model. This endpoint accepts a model name and either single text or a list of texts to generate vector embeddings for.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_39
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/embed -d '{
+  "model": "all-minilm",
+  "input": "Why is the sky blue?"
+}'
+```
+
+----------------------------------------
+
+TITLE: Running Ollama from Source
+DESCRIPTION: Basic command to build and run Ollama directly from the source code using Go. This is the simplest way to start Ollama for development purposes.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+go run . serve
+```
+
+----------------------------------------
+
+TITLE: Creating a New Model from Existing Model in Ollama API
+DESCRIPTION: This snippet demonstrates how to create a new model named 'mario' based on the existing 'llama3.2' model using the Ollama API. It sets a custom system prompt for the new model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_24
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/create -d '{
+  "model": "mario",
+  "from": "llama3.2",
+  "system": "You are Mario from Super Mario Bros."
+}'
+```
+
+----------------------------------------
+
+TITLE: Structured Output Generation Example
+DESCRIPTION: Example of generating structured output using a JSON schema format specification.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d '{
+  "model": "llama3.1:8b",
+  "prompt": "Ollama is 22 years old and is busy saving the world. Respond using JSON",
+  "stream": false,
+  "format": {
+    "type": "object",
+    "properties": {
+      "age": {
+        "type": "integer"
+      },
+      "available": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "age",
+      "available"
+    ]
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Listing Local Models in Ollama API
+DESCRIPTION: This snippet shows how to retrieve a list of models available locally on the Ollama server.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_30
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/tags
+```
+
+----------------------------------------
+
+TITLE: Updating Ollama on Linux
+DESCRIPTION: Commands to update an existing Ollama installation, either using the installation script or by manually downloading and extracting the latest package.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_13
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+LANGUAGE: shell
+CODE:
+```
+curl -L https://ollama.com/download/ollama-linux-amd64.tgz -o ollama-linux-amd64.tgz
+sudo tar -C /usr -xzf ollama-linux-amd64.tgz
+```
+
+----------------------------------------
+
+TITLE: Creating a Model from Safetensors Directory in Ollama API
+DESCRIPTION: This example demonstrates creating a model from multiple Safetensors files. Each file must be pushed to the server beforehand using the /api/blobs/:digest endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_27
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/create -d '{
+  "model": "fred",
+  "files": {
+    "config.json": "sha256:dd3443e529fb2290423a0c65c2d633e67b419d273f170259e27297219828e389",
+    "generation_config.json": "sha256:88effbb63300dbbc7390143fbbdd9d9fa50587b37e8bfd16c8c90d4970a74a36",
+    "special_tokens_map.json": "sha256:b7455f0e8f00539108837bfa586c4fbf424e31f8717819a6798be74bef813d05",
+    "tokenizer.json": "sha256:bbc1904d35169c542dffbe1f7589a5994ec7426d9e5b609d07bab876f32e97ab",
+    "tokenizer_config.json": "sha256:24e8a6dc2547164b7002e3125f10b415105644fcf02bf9ad8b674c87b1eaaed6",
+    "model.safetensors": "sha256:1ff795ff6a07e6a68085d206fb84417da2f083f68391c2843cd2b8ac6df8538f"
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Displaying Modelfile and Model Information in JSON5 Format
+DESCRIPTION: Shows the structure of a model response from the 'show' API endpoint, including modelfile configuration, parameters, template, model details, capabilities, and other technical information.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_32
+
+LANGUAGE: json5
+CODE:
+```
+{
+  "modelfile": "# Modelfile generated by \"ollama show\"\n# To build a new Modelfile based on this one, replace the FROM line with:\n# FROM llava:latest\n\nFROM /Users/matt/.ollama/models/blobs/sha256:200765e1283640ffbd013184bf496e261032fa75b99498a9613be4e94d63ad52\nTEMPLATE \"\"\"{{ .System }}\nUSER: {{ .Prompt }}\nASSISTANT: \"\"\"\nPARAMETER num_ctx 4096\nPARAMETER stop \"\u003c/s\u003e\"\nPARAMETER stop \"USER:\"\nPARAMETER stop \"ASSISTANT:\"",
+  "parameters": "num_keep                       24\nstop                           \"<|start_header_id|>\"\nstop                           \"<|end_header_id|>\"\nstop                           \"<|eot_id|>\"",
+  "template": "{{ if .System }}<|start_header_id|>system<|end_header_id|>\n\n{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>\n\n{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>\n\n{{ .Response }}<|eot_id|>",
+  "details": {
+    "parent_model": "",
+    "format": "gguf",
+    "family": "llama",
+    "families": [
+      "llama"
+    ],
+    "parameter_size": "8.0B",
+    "quantization_level": "Q4_0"
+  },
+  "model_info": {
+    "general.architecture": "llama",
+    "general.file_type": 2,
+    "general.parameter_count": 8030261248,
+    "general.quantization_version": 2,
+    "llama.attention.head_count": 32,
+    "llama.attention.head_count_kv": 8,
+    "llama.attention.layer_norm_rms_epsilon": 0.00001,
+    "llama.block_count": 32,
+    "llama.context_length": 8192,
+    "llama.embedding_length": 4096,
+    "llama.feed_forward_length": 14336,
+    "llama.rope.dimension_count": 128,
+    "llama.rope.freq_base": 500000,
+    "llama.vocab_size": 128256,
+    "tokenizer.ggml.bos_token_id": 128000,
+    "tokenizer.ggml.eos_token_id": 128009,
+    "tokenizer.ggml.merges": [],            // populates if `verbose=true`
+    "tokenizer.ggml.model": "gpt2",
+    "tokenizer.ggml.pre": "llama-bpe",
+    "tokenizer.ggml.token_type": [],        // populates if `verbose=true`
+    "tokenizer.ggml.tokens": []             // populates if `verbose=true`
+  },
+  "capabilities": [
+    "completion",
+    "vision"
+  ],
+}
+```
+
+----------------------------------------
+
+TITLE: Handling Chat Completion Response from Ollama API
+DESCRIPTION: Shows the JSON response structure returned by the Ollama API for a chat completion request, including model details, response text, and performance metrics.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_6
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "llava",
+  "created_at": "2023-11-03T15:36:02.583064Z",
+  "response": "A happy cartoon character, which is cute and cheerful.",
+  "done": true,
+  "context": [1, 2, 3],
+  "total_duration": 2938432250,
+  "load_duration": 2559292,
+  "prompt_eval_count": 1,
+  "prompt_eval_duration": 2195557000,
+  "eval_count": 44,
+  "eval_duration": 736432000
+}
+```
+
+----------------------------------------
+
+TITLE: Making Chat Completion Request with Ollama API
+DESCRIPTION: This code demonstrates how to make a basic chat completion request to the Ollama API using curl. It specifies the llama3.2 model and includes a system message and a user message.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/v1/chat/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "llama3.2",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant."
+            },
+            {
+                "role": "user",
+                "content": "Hello!"
+            }
+        ]
+    }'
+```
+
+----------------------------------------
+
+TITLE: Quantizing a Model in Ollama
+DESCRIPTION: Shell command that demonstrates how to create a quantized model using the --quantize flag with the ollama create command.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+ollama create --quantize q4_K_M mymodel
+```
+
+----------------------------------------
+
+TITLE: Showing Model Information in Ollama API
+DESCRIPTION: This example demonstrates how to retrieve detailed information about a specific model (in this case, 'llava') using the Ollama API.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_31
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/show -d '{
+  "model": "llava"
+}'
+```
+
+----------------------------------------
+
+TITLE: Pulling a Model with Ollama
+DESCRIPTION: Command to download a model from the Ollama library, which can also update an existing local model.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+ollama pull llama3.2
+```
+
+----------------------------------------
+
+TITLE: Running a Multimodal Model in Ollama
+DESCRIPTION: Command to run the LLaVA multimodal model with an image file for analysis.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_10
+
+LANGUAGE: shell
+CODE:
+```
+ollama run llava "What's in this image? /Users/jmorgan/Desktop/smile.png"
+```
+
+----------------------------------------
+
+TITLE: Pulling a Model with POST Request
+DESCRIPTION: Example of the API request to download a model from the Ollama library. The pull operation can be resumed if cancelled and multiple calls will share the same download progress.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_35
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/pull -d '{
+  "model": "llama3.2"
+}'
+```
+
+----------------------------------------
+
+TITLE: Pushing a Model Status Response in JSON
+DESCRIPTION: Sample responses showing the various status messages returned during a model push operation, including manifest retrieval, upload progress, and completion status.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_38
+
+LANGUAGE: json
+CODE:
+```
+{ "status": "retrieving manifest" }
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+  "status": "starting upload",
+  "digest": "sha256:bc07c81de745696fdf5afca05e065818a8149fb0c77266fb584d9b2cba3711ab",
+  "total": 1928429856
+}
+```
+
+LANGUAGE: json
+CODE:
+```
+{"status":"pushing manifest"}
+```
+
+LANGUAGE: json
+CODE:
+```
+{"status":"success"}
+```
+
+----------------------------------------
+
+TITLE: Chat Request with Reproducible Outputs in Ollama
+DESCRIPTION: Example of sending a chat message with seed and temperature parameters to get reproducible outputs from the llama3.2 model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_21
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello!"
+    }
+  ],
+  "options": {
+    "seed": 101,
+    "temperature": 0
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Setting Context Window Size in Ollama
+DESCRIPTION: Various methods to set the context window size in Ollama, including environment variables, CLI commands, and API calls.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+OLLAMA_CONTEXT_LENGTH=8192 ollama serve
+```
+
+LANGUAGE: shell
+CODE:
+```
+/set parameter num_ctx 8192
+```
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "Why is the sky blue?",
+  "options": {
+    "num_ctx": 8192
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Building from GGUF File
+DESCRIPTION: Example showing how to build from a GGUF file using a relative or absolute path.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_5
+
+LANGUAGE: modelfile
+CODE:
+```
+FROM ./ollama-model.gguf
+```
+
+----------------------------------------
+
+TITLE: Generating Embedding with Legacy API Endpoint
+DESCRIPTION: Example of the API request to generate embeddings using the legacy /api/embeddings endpoint, which has been superseded by /api/embed but remains for backward compatibility.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_45
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/embeddings -d '{
+  "model": "all-minilm",
+  "prompt": "Here is an article about llamas..."
+}'
+```
+
+----------------------------------------
+
+TITLE: Creating a Modelfile for Safetensors Adapter
+DESCRIPTION: A Dockerfile snippet showing how to create a Modelfile for importing a fine-tuned Safetensors adapter by specifying the base model and adapter path.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_0
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM <base model name>
+ADAPTER /path/to/safetensors/adapter/directory
+```
+
+----------------------------------------
+
+TITLE: Running a Model in Ollama Docker Container
+DESCRIPTION: Command to execute and run the llama3.2 model inside the Ollama Docker container using docker exec.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+docker exec -it ollama ollama run llama3.2
+```
+
+----------------------------------------
+
+TITLE: Running an Ollama Model
+DESCRIPTION: Shell command to run and test a model after it has been created in Ollama.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+ollama run my-model
+```
+
+----------------------------------------
+
+TITLE: Running Ollama in Docker with CPU Only
+DESCRIPTION: Command to run the Ollama Docker container using only CPU resources. Creates a persistent volume and exposes port 11434.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+```
+
+----------------------------------------
+
+TITLE: Handling Model Load Response from Ollama API
+DESCRIPTION: Shows the JSON response structure when loading a model into memory, confirming the model has been loaded successfully.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_13
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "llama3.2",
+  "created_at": "2023-12-18T19:52:07.071755Z",
+  "response": "",
+  "done": true
+}
+```
+
+----------------------------------------
+
+TITLE: Creating a Modelfile for Quantization
+DESCRIPTION: A Dockerfile snippet showing how to create a Modelfile for a FP16 or FP32 model that will be quantized.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_6
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM /path/to/my/gemma/f16/model
+```
+
+----------------------------------------
+
+TITLE: Creating a Model from GGUF File in Ollama API
+DESCRIPTION: This snippet illustrates how to create a new model from a GGUF file using the Ollama API. It requires the file to be previously pushed to the server using the /api/blobs/:digest endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_26
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/create -d '{
+  "model": "my-gguf-model",
+  "files": {
+    "test.gguf": "sha256:432f310a77f4650a88d0fd59ecdd7cebed8d684bafea53cbff0473542964f0c3"
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Retrieving Available Models with Ollama API
+DESCRIPTION: This code shows how to retrieve a list of all available models using the Ollama API. The endpoint returns information about models that have been pulled locally.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_10
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/v1/models
+```
+
+----------------------------------------
+
+TITLE: Enabling Ollama Systemd Service on Linux
+DESCRIPTION: Commands to reload systemd and enable the Ollama service to start automatically at boot time. This ensures Ollama is always available after system restarts.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+sudo systemctl daemon-reload
+sudo systemctl enable ollama
+```
+
+----------------------------------------
+
+TITLE: Loading and Unloading Models in Ollama
+DESCRIPTION: Examples showing how to load a model into memory and unload it using empty messages array and keep_alive parameter.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_23
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": []
+}'
+```
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [],
+  "keep_alive": 0
+}'
+```
+
+----------------------------------------
+
+TITLE: Listing Running Models with GET Request
+DESCRIPTION: Example of the API request to list models that are currently loaded into memory using the GET /api/ps endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_43
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/ps
+```
+
+----------------------------------------
+
+TITLE: Creating Embeddings with Ollama in Python
+DESCRIPTION: Shows how to generate embeddings for text inputs using Ollama's API. Embeddings are useful for various NLP tasks and similarity comparisons.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+embeddings = client.embeddings.create(
+    model="all-minilm",
+    input=["why is the sky blue?", "why is the grass green?"],
+)
+```
+
+----------------------------------------
+
+TITLE: Handling Reproducible Chat Completion Response from Ollama API
+DESCRIPTION: Shows the JSON response structure for a reproducible chat completion request, including the generated response and performance metrics.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_9
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "mistral",
+  "created_at": "2023-11-03T15:36:02.583064Z",
+  "response": " The sky appears blue because of a phenomenon called Rayleigh scattering.",
+  "done": true,
+  "total_duration": 8493852375,
+  "load_duration": 6589624375,
+  "prompt_eval_count": 14,
+  "prompt_eval_duration": 119039000,
+  "eval_count": 110,
+  "eval_duration": 1779061000
+}
+```
+
+----------------------------------------
+
+TITLE: Running Tests for Ollama
+DESCRIPTION: Command to run the test suite for the Ollama project using Go's test functionality. This verifies that all components are working correctly.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+go test ./...
+```
+
+----------------------------------------
+
+TITLE: Version Response in JSON
+DESCRIPTION: Sample response from the version API endpoint showing the current version of the Ollama software.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_48
+
+LANGUAGE: json
+CODE:
+```
+{
+  "version": "0.5.1"
+}
+```
+
+----------------------------------------
+
+TITLE: Basic Mario Assistant Modelfile Example
+DESCRIPTION: Example Modelfile that creates a Mario-themed assistant with temperature and context window parameters.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_1
+
+LANGUAGE: modelfile
+CODE:
+```
+FROM llama3.2
+# sets the temperature to 1 [higher is more creative, lower is more coherent]
+PARAMETER temperature 1
+# sets the context window size to 4096, this controls how many tokens the LLM can use as context to generate the next token
+PARAMETER num_ctx 4096
+
+# sets a custom system message to specify the behavior of the chat assistant
+SYSTEM You are Mario from super mario bros, acting as an assistant.
+```
+
+----------------------------------------
+
+TITLE: Handling Chat Completion Response with Custom Options from Ollama API
+DESCRIPTION: Shows the JSON response structure for a chat completion request with custom options, including the generated response and performance metrics.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_11
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "llama3.2",
+  "created_at": "2023-08-04T19:22:45.499127Z",
+  "response": "The sky is blue because it is the color of the sky.",
+  "done": true,
+  "context": [1, 2, 3],
+  "total_duration": 4935886791,
+  "load_duration": 534986708,
+  "prompt_eval_count": 26,
+  "prompt_eval_duration": 107345000,
+  "eval_count": 237,
+  "eval_duration": 4289432000
+}
+```
+
+----------------------------------------
+
+TITLE: Passing File Content as a Prompt to Ollama
+DESCRIPTION: Command that reads a file's content and passes it to the model for summarization.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_11
+
+LANGUAGE: shell
+CODE:
+```
+ollama run llama3.2 "Summarize this file: $(cat README.md)"
+```
+
+----------------------------------------
+
+TITLE: Making API Calls to Ollama from PowerShell
+DESCRIPTION: Example of accessing the Ollama API from PowerShell to generate a response from an LLM model. This shows how to send a POST request with a prompt and convert the JSON response to a PowerShell object.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/windows.md#2025-04-22_snippet_1
+
+LANGUAGE: powershell
+CODE:
+```
+(Invoke-WebRequest -method POST -Body '{"model":"llama3.2", "prompt":"Why is the sky blue?", "stream": false}' -uri http://localhost:11434/api/generate ).Content | ConvertFrom-json
+```
+
+----------------------------------------
+
+TITLE: Creating an Ollama Model from a Safetensors Adapter
+DESCRIPTION: Shell command to create an Ollama model from a Modelfile that references a Safetensors adapter.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+ollama create my-model
+```
+
+----------------------------------------
+
+TITLE: Displaying Model Information in Ollama
+DESCRIPTION: Command to show detailed information about a specific model.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_12
+
+LANGUAGE: shell
+CODE:
+```
+ollama show llama3.2
+```
+
+----------------------------------------
+
+TITLE: Pulling a Model Status Response in JSON
+DESCRIPTION: Sample response showing the various status messages returned during a model pull operation, including manifest pulling, download progress, verification, and completion status.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_36
+
+LANGUAGE: json
+CODE:
+```
+{
+  "status": "pulling manifest"
+}
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+  "status": "downloading digestname",
+  "digest": "digestname",
+  "total": 2142590208,
+  "completed": 241970
+}
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+    "status": "verifying sha256 digest"
+}
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+    "status": "writing manifest"
+}
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+    "status": "removing any unused layers"
+}
+```
+
+LANGUAGE: json
+CODE:
+```
+{
+    "status": "success"
+}
+```
+
+----------------------------------------
+
+TITLE: Accessing Ollama Logs on Linux with Systemd
+DESCRIPTION: Command for viewing Ollama logs on Linux systems running systemd. This uses journalctl to follow the Ollama service logs and displays them without pagination.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+journalctl -u ollama --no-pager --follow --pager-end 
+```
+
+----------------------------------------
+
+TITLE: Creating Conversation Example in Ollama Modelfile
+DESCRIPTION: This snippet shows how to create a complete example conversation using multiple MESSAGE instructions in an Ollama Modelfile. This example trains the model on geography questions about Canadian locations.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_12
+
+LANGUAGE: text
+CODE:
+```
+MESSAGE user Is Toronto in Canada?
+MESSAGE assistant yes
+MESSAGE user Is Sacramento in Canada?
+MESSAGE assistant no
+MESSAGE user Is Ontario in Canada?
+MESSAGE assistant yes
+```
+
+----------------------------------------
+
+TITLE: Making a Reproducible Chat Completion Request with Ollama API
+DESCRIPTION: Shows how to make a chat completion request with a fixed seed for reproducible outputs.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "mistral",
+  "prompt": "Why is the sky blue?",
+  "options": {
+    "seed": 123
+  }
+}'
+```
+
+----------------------------------------
+
+TITLE: Accessing Ollama Logs in Docker Container
+DESCRIPTION: Command to view logs for Ollama running in a Docker container. The logs are streamed to stdout/stderr within the container and can be accessed with docker logs.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+docker logs <container-name>
+```
+
+----------------------------------------
+
+TITLE: Customizing a Model with a Prompt in Ollama
+DESCRIPTION: Example Modelfile that customizes the Llama 3.2 model with parameters and a system message to make it respond as Mario.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+FROM llama3.2
+
+# set the temperature to 1 [higher is more creative, lower is more coherent]
+PARAMETER temperature 1
+
+# set the system message
+SYSTEM """
+You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
+"""
+```
+
+----------------------------------------
+
+TITLE: Configuring Docker to Use NVIDIA Driver
+DESCRIPTION: Commands to configure Docker to use the NVIDIA driver and restart the Docker service to apply changes.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+```
+
+----------------------------------------
+
+TITLE: Starting and Checking Ollama Service Status on Linux
+DESCRIPTION: Commands to start the Ollama systemd service and verify its running status. These commands are used after setting up Ollama as a system service.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_10
+
+LANGUAGE: shell
+CODE:
+```
+sudo systemctl start ollama
+sudo systemctl status ollama
+```
+
+----------------------------------------
+
+TITLE: Enabling Debug Logging for Ollama on Windows
+DESCRIPTION: PowerShell command to enable additional debug logging for Ollama on Windows systems. This sets the OLLAMA_DEBUG environment variable before launching the application.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_3
+
+LANGUAGE: powershell
+CODE:
+```
+$env:OLLAMA_DEBUG="1"
+& "ollama app.exe"
+```
+
+----------------------------------------
+
+TITLE: Defining a Template in Ollama Modelfile
+DESCRIPTION: This snippet shows how to define a template in an Ollama Modelfile using template variables to structure model interactions. The template utilizes specialized tokens to mark the beginning and end of different message types.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_6
+
+LANGUAGE: text
+CODE:
+```
+TEMPLATE """{{ if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{ if .Prompt }}<|im_start|>user
+{{ .Prompt }}<|im_end|>
+{{ end }}<|im_start|>assistant
+"""
+```
+
+----------------------------------------
+
+TITLE: Creating Systemd Service File for Ollama on Linux
+DESCRIPTION: Systemd service configuration for Ollama to run as a background service that starts at boot. The configuration defines user permissions, restart behavior, and dependency handling.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_7
+
+LANGUAGE: ini
+CODE:
+```
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=$PATH"
+
+[Install]
+WantedBy=multi-user.target
+```
+
+----------------------------------------
+
+TITLE: Building from Existing Model
+DESCRIPTION: Example showing how to build from an existing model using the FROM instruction.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_4
+
+LANGUAGE: modelfile
+CODE:
+```
+FROM llama3.2
+```
+
+----------------------------------------
+
+TITLE: Implementing Fill-in-Middle for CodeLlama Models
+DESCRIPTION: A template for CodeLlama 7B and 13B code completion models that supports fill-in-middle functionality with prefix and suffix markers.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/template.md#2025-04-22_snippet_4
+
+LANGUAGE: go
+CODE:
+```
+<PRE> {{ .Prompt }} <SUF>{{ .Suffix }} <MID>
+```
+
+----------------------------------------
+
+TITLE: Overriding LLM Library Selection in Ollama
+DESCRIPTION: Command to force Ollama to use a specific LLM library instead of the auto-detected one. This example forces the use of the CPU AVX2 library even when GPU support might be available.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+OLLAMA_LLM_LIBRARY="cpu_avx2" ollama serve
+```
+
+----------------------------------------
+
+TITLE: Basic Modelfile Format
+DESCRIPTION: Shows the basic syntax structure of a Modelfile with comments and instructions.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_0
+
+LANGUAGE: modelfile
+CODE:
+```
+# comment
+INSTRUCTION arguments
+```
+
+----------------------------------------
+
+TITLE: Running Ollama in Docker with AMD GPU
+DESCRIPTION: Command to run Ollama Docker container with AMD GPU support using the rocm tag. Provides access to AMD GPU devices, creates a persistent volume, and exposes port 11434.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_7
+
+LANGUAGE: shell
+CODE:
+```
+docker run -d --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama:rocm
+```
+
+----------------------------------------
+
+TITLE: Non-Streaming Chat Request Example
+DESCRIPTION: Example of sending a chat message with streaming disabled using curl to the Ollama API.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_17
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "why is the sky blue?"
+    }
+  ],
+  "stream": false
+}'
+```
+
+----------------------------------------
+
+TITLE: Installing AMD GPU Support for Ollama on Linux
+DESCRIPTION: Commands to download and install the additional ROCm package for AMD GPU support. This enables hardware acceleration for inference on AMD GPUs.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+curl -L https://ollama.com/download/ollama-linux-amd64-rocm.tgz -o ollama-linux-amd64-rocm.tgz
+sudo tar -C /usr -xzf ollama-linux-amd64-rocm.tgz
+```
+
+----------------------------------------
+
+TITLE: Creating a Custom Model from GGUF File
+DESCRIPTION: Example Modelfile that imports a local GGUF model file for use with Ollama.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+FROM ./vicuna-33b.Q4_0.gguf
+```
+
+----------------------------------------
+
+TITLE: Pushing a Model with POST Request
+DESCRIPTION: Example of the API request to upload a model to a model library. This operation requires registering for ollama.ai and adding a public key first.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_37
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/push -d '{
+  "model": "mattw/pygmalion:latest"
+}'
+```
+
+----------------------------------------
+
+TITLE: Creating a Basic Chat Template with Go Templates
+DESCRIPTION: A simple template that iterates through message objects and displays the role and content of each message in a chat format.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/template.md#2025-04-22_snippet_0
+
+LANGUAGE: go
+CODE:
+```
+{{- range .Messages }}
+{{ .Role }}: {{ .Content }}
+{{- end }}
+```
+
+----------------------------------------
+
+TITLE: Unloading a Model and Freeing Memory (Shell/cURL)
+DESCRIPTION: This cURL command demonstrates how to unload a model and free up memory immediately after generating a response using the 'keep_alive' parameter set to 0.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_9
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{"model": "llama3.2", "keep_alive": 0}'
+```
+
+----------------------------------------
+
+TITLE: Building Ollama on Linux
+DESCRIPTION: Commands to configure and build Ollama on Linux systems using CMake. This sets up the build environment and compiles the project.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+cmake -B build
+cmake --build build
+```
+
+----------------------------------------
+
+TITLE: Example Model Benchmark Command
+DESCRIPTION: Specific example of running benchmarks for the llama3.3 model. Demonstrates practical usage of the benchmark command with a real model name.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/benchmark.md#2025-04-22_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+go test -bench=. ./benchmark/... -m llama3.3
+```
+
+----------------------------------------
+
+TITLE: Listing Installed Models in Ollama
+DESCRIPTION: Command to list all models installed on the local machine.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_13
+
+LANGUAGE: shell
+CODE:
+```
+ollama list
+```
+
+----------------------------------------
+
+TITLE: Quantizing a Model in Ollama API
+DESCRIPTION: This example shows how to quantize a non-quantized model named 'llama3.1:8b-instruct-fp16' to a quantized version 'llama3.1:quantized' using the q4_K_M quantization method.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_25
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/create -d '{
+  "model": "llama3.1:quantized",
+  "from": "llama3.1:8b-instruct-fp16",
+  "quantize": "q4_K_M"
+}'
+```
+
+----------------------------------------
+
+TITLE: Uninstalling Ollama Service on Linux
+DESCRIPTION: Commands to stop, disable, and remove the Ollama systemd service. This is the first step in completely removing Ollama from a Linux system.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_16
+
+LANGUAGE: shell
+CODE:
+```
+sudo systemctl stop ollama
+sudo systemctl disable ollama
+sudo rm /etc/systemd/system/ollama.service
+```
+
+----------------------------------------
+
+TITLE: Viewing Modelfile Command
+DESCRIPTION: Shell command to display the Modelfile of a specific model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+ollama show --modelfile llama3.2
+```
+
+----------------------------------------
+
+TITLE: Copying a Model with POST Request
+DESCRIPTION: Example of the API request to copy a model. Creates a model with another name from an existing model using the POST /api/copy endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_33
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/copy -d '{
+  "source": "llama3.2",
+  "destination": "llama3-backup"
+}'
+```
+
+----------------------------------------
+
+TITLE: Copying a Model in Ollama
+DESCRIPTION: Command to create a copy of an existing model with a new name.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_9
+
+LANGUAGE: shell
+CODE:
+```
+ollama cp llama3.2 my-model
+```
+
+----------------------------------------
+
+TITLE: Starting the Ollama Runner
+DESCRIPTION: Command to start the runner with a specified model binary file.
+SOURCE: https://github.com/ollama/ollama/blob/main/runner/README.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+./runner -model <model binary>
+```
+
+----------------------------------------
+
+TITLE: Installing Ollama using Shell Script on Linux
+DESCRIPTION: Command to download and execute the Ollama installation script for Linux. This is the recommended way to install Ollama with a single command.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+----------------------------------------
+
+TITLE: Docker Build and Run Commands for Ollama
+DESCRIPTION: Commands to build and run Ollama Docker container with custom CA certificates and proxy configuration.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+docker build -t ollama-with-ca .
+docker run -d -e HTTPS_PROXY=https://my.proxy.example.com -p 11434:11434 ollama-with-ca
+```
+
+----------------------------------------
+
+TITLE: Retrieving Specific Model Information with Ollama API
+DESCRIPTION: This code demonstrates how to retrieve information about a specific model (llama3.2) using the Ollama API. The endpoint returns details about the requested model.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_11
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/v1/models/llama3.2
+```
+
+----------------------------------------
+
+TITLE: Building Ollama with Docker
+DESCRIPTION: Command to build an Ollama Docker image from the repository. This creates a containerized version of Ollama that can run on any Docker-supported platform.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+docker build .
+```
+
+----------------------------------------
+
+TITLE: Building Ollama Binary (Shell)
+DESCRIPTION: Commands to navigate to the parent directory and build the Ollama binary using Go.
+SOURCE: https://github.com/ollama/ollama/blob/main/macapp/README.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+cd ..
+go build .
+```
+
+----------------------------------------
+
+TITLE: Manually Installing Ollama on Linux (x86_64)
+DESCRIPTION: Commands to manually download and extract the Ollama package for x86_64 Linux systems. This approach allows more control over the installation process.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+curl -L https://ollama.com/download/ollama-linux-amd64.tgz -o ollama-linux-amd64.tgz
+sudo tar -C /usr -xzf ollama-linux-amd64.tgz
+```
+
+----------------------------------------
+
+TITLE: Unloading a Model with Ollama API
+DESCRIPTION: Demonstrates how to unload a model from memory by sending an empty prompt with the keep_alive parameter set to 0.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_14
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "keep_alive": 0
+}'
+```
+
+----------------------------------------
+
+TITLE: Deleting a Model with DELETE Request
+DESCRIPTION: Example of the API request to delete a model and its data using the DELETE /api/delete endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_34
+
+LANGUAGE: shell
+CODE:
+```
+curl -X DELETE http://localhost:11434/api/delete -d '{
+  "model": "llama3:13b"
+}'
+```
+
+----------------------------------------
+
+TITLE: Configuring NVIDIA Container Toolkit Repository with Apt
+DESCRIPTION: Commands to configure the NVIDIA Container Toolkit repository for Debian-based systems. Adds the GPG key and repository for installing the NVIDIA Container Toolkit.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
+    | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+    | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+    | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt-get update
+```
+
+----------------------------------------
+
+TITLE: Installing Specific Ollama Version on Linux
+DESCRIPTION: Command to install a specific version of Ollama by setting the OLLAMA_VERSION environment variable. This allows pinning to a particular release or trying pre-release versions.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_14
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://ollama.com/install.sh | OLLAMA_VERSION=0.5.7 sh
+```
+
+----------------------------------------
+
+TITLE: Handling Model Unload Response from Ollama API
+DESCRIPTION: Shows the JSON response structure when unloading a model from memory, confirming the model has been unloaded successfully.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_15
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "llama3.2",
+  "created_at": "2024-09-12T03:54:03.516566Z",
+  "response": "",
+  "done": true,
+  "done_reason": "unload"
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring GGUF Adapter in Ollama Modelfile
+DESCRIPTION: This snippet demonstrates how to specify a GGUF format LoRA adapter in an Ollama Modelfile. The example uses a relative path to the adapter file.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_9
+
+LANGUAGE: text
+CODE:
+```
+ADAPTER ./ollama-lora.gguf
+```
+
+----------------------------------------
+
+TITLE: Creating a Modelfile for GGUF Model
+DESCRIPTION: A Dockerfile snippet showing how to create a Modelfile that references a GGUF model file.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_4
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM /path/to/file.gguf
+```
+
+----------------------------------------
+
+TITLE: Running Ollama in Docker with NVIDIA GPU
+DESCRIPTION: Command to run the Ollama Docker container with NVIDIA GPU support. Enables GPU access, creates a persistent volume, and exposes port 11434.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_6
+
+LANGUAGE: shell
+CODE:
+```
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+```
+
+----------------------------------------
+
+TITLE: Creating User and Group for Ollama Service on Linux
+DESCRIPTION: Commands to create a dedicated system user and group for running the Ollama service. This improves security by isolating the service from other system processes.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_6
+
+LANGUAGE: shell
+CODE:
+```
+sudo useradd -r -s /bin/false -U -m -d /usr/share/ollama ollama
+sudo usermod -a -G ollama $(whoami)
+```
+
+----------------------------------------
+
+TITLE: Creating a Modelfile for Safetensors Weights
+DESCRIPTION: A Dockerfile snippet showing how to create a Modelfile that references a directory containing Safetensors weights.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_3
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM /path/to/safetensors/directory
+```
+
+----------------------------------------
+
+TITLE: Setting License Information in Ollama Modelfile
+DESCRIPTION: This snippet shows how to specify the legal license under which a model is shared or distributed in an Ollama Modelfile. The license text is enclosed in triple quotes.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_10
+
+LANGUAGE: text
+CODE:
+```
+LICENSE """
+<license text>
+"""
+```
+
+----------------------------------------
+
+TITLE: Building Ollama with ROCm Support in Docker
+DESCRIPTION: Command to build an Ollama Docker image with AMD ROCm GPU support. This uses a build argument to specify the ROCm flavor.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_6
+
+LANGUAGE: shell
+CODE:
+```
+docker build --build-arg FLAVOR=rocm .
+```
+
+----------------------------------------
+
+TITLE: Installing NVIDIA Container Toolkit with Apt
+DESCRIPTION: Command to install the NVIDIA Container Toolkit packages on Debian-based systems using apt-get.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+sudo apt-get install -y nvidia-container-toolkit
+```
+
+----------------------------------------
+
+TITLE: Creating Systemd Override Configuration for Ollama on Linux
+DESCRIPTION: Example systemd override configuration to customize Ollama's environment variables. This allows adding debug flags and other runtime options without modifying the main service file.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_12
+
+LANGUAGE: ini
+CODE:
+```
+[Service]
+Environment="OLLAMA_DEBUG=1"
+```
+
+----------------------------------------
+
+TITLE: Creating a Modelfile for GGUF Adapter
+DESCRIPTION: A Dockerfile snippet showing how to create a Modelfile that references a base model and a GGUF adapter file.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_5
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM <model name>
+ADAPTER /path/to/file.gguf
+```
+
+----------------------------------------
+
+TITLE: Defining Message History in Ollama Modelfile
+DESCRIPTION: This snippet demonstrates the MESSAGE instruction syntax for specifying a role and message content in an Ollama Modelfile. This instruction is used to build conversation history.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_11
+
+LANGUAGE: text
+CODE:
+```
+MESSAGE <role> <message>
+```
+
+----------------------------------------
+
+TITLE: Starting the Ollama Server
+DESCRIPTION: Commands to start the Ollama server and run a model in a separate shell.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_16
+
+LANGUAGE: shell
+CODE:
+```
+./ollama serve
+
+# In a separate shell
+./ollama run llama3.2
+```
+
+----------------------------------------
+
+TITLE: Systemd Service Configuration for Ollama
+DESCRIPTION: Systemd service configuration to set environment variables for Ollama server.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_4
+
+LANGUAGE: ini
+CODE:
+```
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+```
+
+----------------------------------------
+
+TITLE: Retrieving Ollama Version with GET Request
+DESCRIPTION: Example of the API request to retrieve the current version of Ollama using the GET /api/version endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_47
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/api/version
+```
+
+----------------------------------------
+
+TITLE: Adding Tool Support to Mistral Models
+DESCRIPTION: A template for Mistral v0.3 and Mixtral 8x22B that supports tool calling functionality, handling various message roles and tool interactions.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/template.md#2025-04-22_snippet_3
+
+LANGUAGE: go
+CODE:
+```
+{{- range $index, $_ := .Messages }}
+{{- if eq .Role "user" }}
+{{- if and (le (len (slice $.Messages $index)) 2) $.Tools }}[AVAILABLE_TOOLS] {{ json $.Tools }}[/AVAILABLE_TOOLS]
+{{- end }}[INST] {{ if and (eq (len (slice $.Messages $index)) 1) $.System }}{{ $.System }}
+
+{{ end }}{{ .Content }}[/INST]
+{{- else if eq .Role "assistant" }}
+{{- if .Content }} {{ .Content }}</s>
+{{- else if .ToolCalls }}[TOOL_CALLS] [
+{{- range .ToolCalls }}{{"name": "{{ .Function.Name }}", "arguments": {{ json .Function.Arguments }}}}
+{{- end }}]</s>
+{{- end }}
+{{- else if eq .Role "tool" }}[TOOL_RESULTS] {"content": {{ .Content }}}[/TOOL_RESULTS]
+{{- end }}
+{{- end }}
+```
+
+----------------------------------------
+
+TITLE: Verifying NVIDIA GPU Drivers for Ollama on Linux
+DESCRIPTION: Command to verify that NVIDIA GPU drivers are properly installed by displaying GPU information. This is necessary for hardware acceleration with NVIDIA GPUs.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_9
+
+LANGUAGE: shell
+CODE:
+```
+nvidia-smi
+```
+
+----------------------------------------
+
+TITLE: Installing NVIDIA Container Toolkit with Yum
+DESCRIPTION: Command to install the NVIDIA Container Toolkit packages on RPM-based systems using yum.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+sudo yum install -y nvidia-container-toolkit
+```
+
+----------------------------------------
+
+TITLE: Preparing and Pushing a Model to Ollama.com
+DESCRIPTION: Shell commands showing how to copy a model to give it the correct username prefix and then push it to ollama.com for sharing.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+ollama cp mymodel myuser/mymodel
+ollama push myuser/mymodel
+```
+
+----------------------------------------
+
+TITLE: Legacy Embedding Response in JSON
+DESCRIPTION: Sample response from the legacy embeddings API endpoint showing the generated vector representation of a text prompt. The response format differs from the newer /api/embed endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_46
+
+LANGUAGE: json
+CODE:
+```
+{
+  "embedding": [
+    0.5670403838157654, 0.009260174818336964, 0.23178744316101074, -0.2916173040866852, -0.8924556970596313,
+    0.8785552978515625, -0.34576427936553955, 0.5742510557174683, -0.04222835972905159, -0.137906014919281
+  ]
+}
+```
+
+----------------------------------------
+
+TITLE: Implementing ChatML Template Format for Messages
+DESCRIPTION: A template using the ChatML format with message markers, which is compatible with models like DBRX, Neural Chat, and Orca 2.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/template.md#2025-04-22_snippet_2
+
+LANGUAGE: go
+CODE:
+```
+{{- range .Messages }}<|im_start|>{{ .Role }}
+{{ .Content }}<|im_end|>
+{{ end }}<|im_start|>assistant
+```
+
+----------------------------------------
+
+TITLE: Editing Ollama Service Configuration on Linux
+DESCRIPTION: Command to edit the Ollama systemd service configuration using the built-in systemd editor. This allows customizing service parameters after installation.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_11
+
+LANGUAGE: shell
+CODE:
+```
+sudo systemctl edit ollama
+```
+
+----------------------------------------
+
+TITLE: Running a Shared Ollama Model
+DESCRIPTION: Shell command showing how to run a model that has been shared on ollama.com by another user.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/import.md#2025-04-22_snippet_9
+
+LANGUAGE: shell
+CODE:
+```
+ollama run myuser/mymodel
+```
+
+----------------------------------------
+
+TITLE: Building Ollama with ROCm Support on Windows
+DESCRIPTION: Special CMake command flags for building Ollama with AMD ROCm GPU support on Windows. This requires using Ninja as the build generator and specific compiler settings.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+cmake -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake --build build --config Release
+```
+
+----------------------------------------
+
+TITLE: Implementing Fill-in-Middle for Codestral Models
+DESCRIPTION: A template for Codestral 22B that supports fill-in-middle functionality with prefix and suffix markers in a different format.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/template.md#2025-04-22_snippet_5
+
+LANGUAGE: go
+CODE:
+```
+[SUFFIX]{{ .Suffix }}[PREFIX] {{ .Prompt }}
+```
+
+----------------------------------------
+
+TITLE: Checking CPU Features on Linux for Ollama Compatibility
+DESCRIPTION: Command to view CPU features on Linux to determine which Ollama LLM library is most compatible with your system. This helps identify if your CPU supports AVX or AVX2 instructions.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+cat /proc/cpuinfo| grep flags | head -1
+```
+
+----------------------------------------
+
+TITLE: Configuring NVIDIA Container Toolkit Repository with Yum/Dnf
+DESCRIPTION: Command to configure the NVIDIA Container Toolkit repository for RPM-based systems using yum or dnf.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/docker.md#2025-04-22_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo \
+    | sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+```
+
+----------------------------------------
+
+TITLE: Installing Ollama on ARM64 Linux Systems
+DESCRIPTION: Commands to download and extract the Ollama package specifically for ARM64 architecture Linux systems. This is necessary for installations on ARM-based devices.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_5
+
+LANGUAGE: shell
+CODE:
+```
+curl -L https://ollama.com/download/ollama-linux-arm64.tgz -o ollama-linux-arm64.tgz
+sudo tar -C /usr -xzf ollama-linux-arm64.tgz
+```
+
+----------------------------------------
+
+TITLE: Viewing Ollama Service Logs on Linux
+DESCRIPTION: Command to view Ollama service logs from systemd journal. This helps with debugging issues and monitoring service activity.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_15
+
+LANGUAGE: shell
+CODE:
+```
+journalctl -e -u ollama
+```
+
+----------------------------------------
+
+TITLE: Making Vision-based Chat Completion Request with Ollama API
+DESCRIPTION: This code shows how to make a vision-based chat completion request to the Ollama API using curl. It uses the llava model and includes both text and a base64-encoded image as content in the user message.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/openai.md#2025-04-23_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+curl http://localhost:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llava",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "What\'s in this image?"
+          },
+          {
+            "type": "image_url",
+            "image_url": {
+               "url": "data:image/png;base64,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"
+            }
+          }
+        ]
+      }
+    ],
+    "max_tokens": 300
+  }'
+```
+
+----------------------------------------
+
+TITLE: Installing Ollama Linux Update Script
+DESCRIPTION: Shell command to upgrade Ollama on Linux systems using the official installation script.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+----------------------------------------
+
+TITLE: Verifying Ollama Installation on Linux
+DESCRIPTION: Command to verify that Ollama is correctly installed and running by checking its version. This confirms the installation was successful.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+ollama -v
+```
+
+----------------------------------------
+
+TITLE: Building Ollama on macOS Intel
+DESCRIPTION: Commands to configure and build Ollama on Intel-based macOS systems using CMake. This two-step process creates the necessary build files before compilation.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+cmake -B build
+cmake --build build
+```
+
+----------------------------------------
+
+TITLE: Embeddings Response in JSON for Multiple Inputs
+DESCRIPTION: Sample response from the embeddings API endpoint showing the generated vector representations for multiple text inputs, with each input corresponding to one embedding vector in the response array.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_42
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "all-minilm",
+  "embeddings": [[
+    0.010071029, -0.0017594862, 0.05007221, 0.04692972, 0.054916814,
+    0.008599704, 0.105441414, -0.025878139, 0.12958129, 0.031952348
+  ],[
+    -0.0098027075, 0.06042469, 0.025257962, -0.006364387, 0.07272725,
+    0.017194884, 0.09032035, -0.051705178, 0.09951512, 0.09072481
+  ]]
+}
+```
+
+----------------------------------------
+
+TITLE: Nginx Proxy Configuration for Ollama
+DESCRIPTION: Nginx server configuration to proxy requests to Ollama server.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_2
+
+LANGUAGE: nginx
+CODE:
+```
+server {
+    listen 80;
+    server_name example.com;  # Replace with your domain or IP
+    location / {
+        proxy_pass http://localhost:11434;
+        proxy_set_header Host localhost:11434;
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Basic Benchmark Command
+DESCRIPTION: Basic command syntax for running Ollama benchmarks with a specified model. Executes all benchmark tests in the benchmark directory.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/benchmark.md#2025-04-22_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+go test -bench=. ./benchmark/... -m $MODEL_NAME
+```
+
+----------------------------------------
+
+TITLE: Building Ollama on Windows
+DESCRIPTION: Commands to configure and build Ollama on Windows using CMake. These commands create the necessary build files and compile in Release mode.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+cmake -B build
+cmake --build build --config Release
+```
+
+----------------------------------------
+
+TITLE: Checking Blob Existence in Ollama API
+DESCRIPTION: This snippet shows how to check if a specific blob exists on the Ollama server using its SHA256 digest.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_28
+
+LANGUAGE: shell
+CODE:
+```
+curl -I http://localhost:11434/api/blobs/sha256:29fdb92e57cf0827ded04ae6461b5931d01fa595843f55d36f5b275a52087dd2
+```
+
+----------------------------------------
+
+TITLE: Custom Dockerfile for Ollama with CA Certificate
+DESCRIPTION: Dockerfile configuration to add custom CA certificates for proxy support in Ollama container.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/faq.md#2025-04-23_snippet_3
+
+LANGUAGE: dockerfile
+CODE:
+```
+FROM ollama/ollama
+COPY my-ca.pem /usr/local/share/ca-certificates/my-ca.crt
+RUN update-ca-certificates
+```
+
+----------------------------------------
+
+TITLE: Installing Specific Ollama Version on Linux
+DESCRIPTION: Command to install a specific version of Ollama on Linux systems. This example uses the installation script with an environment variable to specify version 0.5.7.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_6
+
+LANGUAGE: shell
+CODE:
+```
+curl -fsSL https://ollama.com/install.sh | OLLAMA_VERSION=0.5.7 sh
+```
+
+----------------------------------------
+
+TITLE: Accessing Ollama Logs on macOS
+DESCRIPTION: Command to view Ollama server logs on macOS systems. The logs are stored in the user's home directory within the .ollama/logs folder.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+cat ~/.ollama/logs/server.log
+```
+
+----------------------------------------
+
+TITLE: Pushing a Blob to Ollama Server
+DESCRIPTION: This example demonstrates how to push a file (model.gguf) to the Ollama server, creating a blob with a specified SHA256 digest.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_29
+
+LANGUAGE: shell
+CODE:
+```
+curl -T model.gguf -X POST http://localhost:11434/api/blobs/sha256:29fdb92e57cf0827ded04ae6461b5931d01fa595843f55d36f5b275a52087dd2
+```
+
+----------------------------------------
+
+TITLE: Running Integration Tests Command
+DESCRIPTION: Command to run integration tests using Go test with integration tag
+SOURCE: https://github.com/ollama/ollama/blob/main/integration/README.md#2025-04-22_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+go test -tags=integration ./...
+```
+
+----------------------------------------
+
+TITLE: Stopping a Running Model in Ollama
+DESCRIPTION: Command to stop a specific model that is currently running.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_15
+
+LANGUAGE: shell
+CODE:
+```
+ollama stop llama3.2
+```
+
+----------------------------------------
+
+TITLE: Running Ollama API Examples in Go
+DESCRIPTION: Demonstrates how to run any example in the directory using the Go command line tool. The user should replace 'example_name' with the specific directory containing the example they want to run.
+SOURCE: https://github.com/ollama/ollama/blob/main/api/examples/README.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+go run example_name/main.go
+```
+
+----------------------------------------
+
+TITLE: Applying Patches to Vendored llama.cpp Code in Ollama
+DESCRIPTION: This command applies existing patches to the vendored llama.cpp code in the Ollama project. It's used to set up the tracking repo in the ./vendor/ directory with all current modifications.
+SOURCE: https://github.com/ollama/ollama/blob/main/llama/README.md#2025-04-22_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+make -f Makefile.sync apply-patches
+```
+
+----------------------------------------
+
+TITLE: Defining Function for Including GGML Backends
+DESCRIPTION: Creates a function to selectively include backend subdirectories based on configuration options, and sets appropriate compile definitions for statically linked backends.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_8
+
+LANGUAGE: CMake
+CODE:
+```
+function(ggml_add_backend backend)
+    string(TOUPPER "GGML_${backend}" backend_id)
+    if (${backend_id})
+        string(TOLOWER "ggml-${backend}" backend_target)
+        add_subdirectory(${backend_target})
+        message(STATUS "Including ${backend} backend")
+        if (NOT GGML_BACKEND_DL)
+            string(TOUPPER "GGML_USE_${backend}" backend_use)
+            target_compile_definitions(ggml PUBLIC ${backend_use})
+        endif()
+    endif()
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: Removing a Model from Ollama
+DESCRIPTION: Command to delete a model from local storage.
+SOURCE: https://github.com/ollama/ollama/blob/main/README.md#2025-04-22_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+ollama rm llama3.2
+```
+
+----------------------------------------
+
+TITLE: Preparing Vendored llama.cpp Code for Updates in Ollama
+DESCRIPTION: This command cleans the existing vendored code and applies all current patches. It's used as the first step when working on new fixes or features that impact the vendored code.
+SOURCE: https://github.com/ollama/ollama/blob/main/llama/README.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+make -f Makefile.sync clean apply-patches
+```
+
+----------------------------------------
+
+TITLE: Defining Function for Adding CPU Backend Variants
+DESCRIPTION: Creates a function to configure CPU backend variants with different instruction set optimizations (AVX, AVX2, BMI2, etc.), allowing for multiple architecture-specific builds.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_9
+
+LANGUAGE: CMake
+CODE:
+```
+function(ggml_add_cpu_backend_variant tag_name)
+    set(GGML_CPU_TAG_NAME ${tag_name})
+    # other: OPENMP LLAMAFILE CPU_HBM
+    foreach (feat NATIVE
+                  AVX AVX2 BMI2 AVX_VNNI FMA F16C
+                  AVX512 AVX512_VBMI AVX512_VNNI AVX512_BF16
+                  AMX_TILE AMX_INT8 AMX_BF16)
+        set(GGML_${feat} OFF)
+    endforeach()
+
+    foreach (feat ${ARGN})
+        set(GGML_${feat} ON)
+    endforeach()
+
+    ggml_add_cpu_backend_variant_impl(${tag_name})
+    add_dependencies(ggml-cpu ggml-cpu-${tag_name})
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: Removing Ollama Binary from Linux
+DESCRIPTION: Command to remove the Ollama executable from the system binary path. This uses 'which' to automatically locate the binary regardless of installation location.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_17
+
+LANGUAGE: shell
+CODE:
+```
+sudo rm $(which ollama)
+```
+
+----------------------------------------
+
+TITLE: Changing Ollama Installation Directory in Windows
+DESCRIPTION: Command for installing Ollama in a custom directory location instead of the default home directory. This is useful when you need to install Ollama in a location with more available space.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/windows.md#2025-04-22_snippet_0
+
+LANGUAGE: powershell
+CODE:
+```
+OllamaSetup.exe /DIR="d:\some\location"
+```
+
+----------------------------------------
+
+TITLE: Formatting Patches and Syncing Vendored llama.cpp Code in Ollama
+DESCRIPTION: This command generates formatted patches from changes made to the vendored llama.cpp code and syncs them with the main Ollama project. It's used after resolving conflicts and applying all patches successfully.
+SOURCE: https://github.com/ollama/ollama/blob/main/llama/README.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+make -f Makefile.sync format-patches sync
+```
+
+----------------------------------------
+
+TITLE: Adding CPU Backend and Configuring CPU Variants
+DESCRIPTION: Adds the CPU backend and conditionally configures multiple CPU variants (sandybridge, haswell, skylakex, icelake, alderlake) with appropriate instruction set optimizations when GGML_CPU_ALL_VARIANTS is enabled.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_10
+
+LANGUAGE: CMake
+CODE:
+```
+ggml_add_backend(CPU)
+
+if (GGML_CPU_ALL_VARIANTS)
+    if (NOT GGML_BACKEND_DL)
+        message(FATAL_ERROR "GGML_CPU_ALL_VARIANTS requires GGML_BACKEND_DL")
+    endif()
+    add_custom_target(ggml-cpu)
+    ggml_add_cpu_backend_variant(sandybridge    AVX)
+    ggml_add_cpu_backend_variant(haswell        AVX F16C AVX2 BMI2 FMA)
+    ggml_add_cpu_backend_variant(skylakex       AVX F16C AVX2 BMI2 FMA AVX512)
+    ggml_add_cpu_backend_variant(icelake        AVX F16C AVX2 BMI2 FMA AVX512 AVX512_VBMI AVX512_VNNI)
+    ggml_add_cpu_backend_variant(alderlake      AVX F16C AVX2 BMI2 FMA AVX_VNNI)
+elseif (GGML_CPU)
+    ggml_add_cpu_backend_variant_impl("")
+endif()
+```
+
+----------------------------------------
+
+TITLE: Embeddings Response in JSON for Single Input
+DESCRIPTION: Sample response from the embeddings API endpoint showing the generated vector representation of a text input, along with performance metrics like duration and token counts.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_40
+
+LANGUAGE: json
+CODE:
+```
+{
+  "model": "all-minilm",
+  "embeddings": [[
+    0.010071029, -0.0017594862, 0.05007221, 0.04692972, 0.054916814,
+    0.008599704, 0.105441414, -0.025878139, 0.12958129, 0.031952348
+  ]],
+  "total_duration": 14143917,
+  "load_duration": 1019500,
+  "prompt_eval_count": 8
+}
+```
+
+----------------------------------------
+
+TITLE: Docker Image Manifest Structure
+DESCRIPTION: Defines the manifest structure for a Docker container image with custom Ollama model layer. Specifies schema version, media types, content digests and sizes for config and layers.
+SOURCE: https://github.com/ollama/ollama/blob/main/server/internal/registry/testdata/registry.txt#2025-04-22_snippet_0
+
+LANGUAGE: json
+CODE:
+```
+{
+  "schemaVersion": 2,
+  "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+  "config": {
+    "mediaType": "application/vnd.docker.container.image.v1+json",
+    "digest": "sha256:ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "size": 3
+  },
+  "layers": [
+    {
+      "mediaType": "application/vnd.ollama.image.model",
+      "digest": "sha256:68e0ec597aee59d35f8dc44942d7b17d471ade10d3aca07a5bb7177713950312",
+      "size": 5
+    }
+  ]
+}
+```
+
+----------------------------------------
+
+TITLE: Checking GGML Backend Dynamic Loading Compatibility with Shared Libraries
+DESCRIPTION: Verifies that GGML_BACKEND_DL option requires BUILD_SHARED_LIBS to be enabled, otherwise throws a fatal error.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+if (GGML_BACKEND_DL AND NOT BUILD_SHARED_LIBS)
+    message(FATAL_ERROR "GGML_BACKEND_DL requires BUILD_SHARED_LIBS")
+endif()
+```
+
+----------------------------------------
+
+TITLE: Running Models Response in JSON
+DESCRIPTION: Sample response from the list running models API endpoint showing details about models currently loaded into memory, including name, size, digest, model family, parameters, and expiration time.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/api.md#2025-04-23_snippet_44
+
+LANGUAGE: json
+CODE:
+```
+{
+  "models": [
+    {
+      "name": "mistral:latest",
+      "model": "mistral:latest",
+      "size": 5137025024,
+      "digest": "2ae6f6dd7a3dd734790bbbf58b8909a606e0e7e97e94b7604e0aa7ae4490e6d8",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "llama",
+        "families": [
+          "llama"
+        ],
+        "parameter_size": "7.2B",
+        "quantization_level": "Q4_0"
+      },
+      "expires_at": "2024-06-04T14:38:31.83753-07:00",
+      "size_vram": 5137025024
+    }
+  ]
+}
+```
+
+----------------------------------------
+
+TITLE: Running Tests with Synctest in Go 1.24
+DESCRIPTION: Commands for running tests with the 'synctest' package enabled in Go 1.24. This helps identify synchronization issues in the codebase that would be caught by CI.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_8
+
+LANGUAGE: shell
+CODE:
+```
+GOEXPERIMENT=synctest go test ./...
+```
+
+----------------------------------------
+
+TITLE: Configuring GGML Base Target Properties
+DESCRIPTION: Sets include directories for the ggml-base target and conditionally adds the GGML_BACKEND_DL compile definition when dynamic loading is enabled.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+target_include_directories(ggml-base PRIVATE .)
+if (GGML_BACKEND_DL)
+    target_compile_definitions(ggml-base PUBLIC GGML_BACKEND_DL)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring Common Target Properties for GGML Libraries
+DESCRIPTION: Sets common properties for ggml-base and ggml targets, including include directories and C/C++ language standards. Ensures consistent build configuration across all GGML components.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_12
+
+LANGUAGE: CMake
+CODE:
+```
+foreach (target ggml-base ggml)
+    target_include_directories(${target} PUBLIC    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include> $<INSTALL_INTERFACE:include>)
+    target_compile_features   (${target} PRIVATE c_std_11 cxx_std_17) # don't bump
+endforeach()
+```
+
+----------------------------------------
+
+TITLE: Configuring Safetensor Adapter in Ollama Modelfile
+DESCRIPTION: This snippet shows how to specify a fine-tuned LoRA adapter using the Safetensor format in an Ollama Modelfile. The adapter path can be absolute or relative to the Modelfile location.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_8
+
+LANGUAGE: text
+CODE:
+```
+ADAPTER <path to safetensor adapter>
+```
+
+----------------------------------------
+
+TITLE: Finding Required Libraries for Metal Backend in CMake
+DESCRIPTION: Locates the necessary Foundation, Metal, and MetalKit libraries for the Metal backend implementation.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-metal/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+find_library(FOUNDATION_LIBRARY Foundation REQUIRED)
+find_library(METAL_FRAMEWORK    Metal      REQUIRED)
+find_library(METALKIT_FRAMEWORK MetalKit   REQUIRED)
+
+message(STATUS "Metal framework found")
+```
+
+----------------------------------------
+
+TITLE: Embedding Metal Library in CMake for GGML
+DESCRIPTION: Configures the embedding of the Metal library into the GGML binary when GGML_METAL_EMBED_LIBRARY is enabled. This involves merging header files and creating an assembly file.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-metal/CMakeLists.txt#2025-04-22_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+if (GGML_METAL_EMBED_LIBRARY)
+    enable_language(ASM)
+
+    add_compile_definitions(GGML_METAL_EMBED_LIBRARY)
+
+    set(METALLIB_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ggml-metal.metal")
+    set(METALLIB_IMPL   "${CMAKE_CURRENT_SOURCE_DIR}/ggml-metal-impl.h")
+
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/autogenerated")
+
+    set(METALLIB_EMBED_ASM        "${CMAKE_BINARY_DIR}/autogenerated/ggml-metal-embed.s")
+    set(METALLIB_SOURCE_EMBED     "${CMAKE_BINARY_DIR}/autogenerated/ggml-metal-embed.metal")
+    set(METALLIB_SOURCE_EMBED_TMP "${CMAKE_BINARY_DIR}/autogenerated/ggml-metal-embed.metal.tmp")
+
+    add_custom_command(
+        OUTPUT ${METALLIB_EMBED_ASM}
+        COMMAND echo "Embedding Metal library"
+        COMMAND sed -e '/__embed_ggml-common.h__/r         ${METALLIB_COMMON}' -e '/__embed_ggml-common.h__/d'         < ${METALLIB_SOURCE}           > ${METALLIB_SOURCE_EMBED_TMP}
+        COMMAND sed -e '/\#include \"ggml-metal-impl.h\"/r ${METALLIB_IMPL}'   -e '/\#include \"ggml-metal-impl.h\"/d' < ${METALLIB_SOURCE_EMBED_TMP} > ${METALLIB_SOURCE_EMBED}
+        COMMAND echo ".section __DATA,__ggml_metallib"          >  ${METALLIB_EMBED_ASM}
+        COMMAND echo ".globl _ggml_metallib_start"              >> ${METALLIB_EMBED_ASM}
+        COMMAND echo "_ggml_metallib_start:"                    >> ${METALLIB_EMBED_ASM}
+        COMMAND echo ".incbin \"${METALLIB_SOURCE_EMBED}\"" >> ${METALLIB_EMBED_ASM}
+        COMMAND echo ".globl _ggml_metallib_end"                >> ${METALLIB_EMBED_ASM}
+        COMMAND echo "_ggml_metallib_end:"                      >> ${METALLIB_EMBED_ASM}
+        DEPENDS ../ggml-common.h ggml-metal.metal ggml-metal-impl.h
+        COMMENT "Generate assembly for embedded Metal library"
+    )
+
+    target_sources(ggml-metal PRIVATE ${METALLIB_EMBED_ASM})
+else()
+    # ... (code for non-embedded library compilation)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Generated Modelfile Output
+DESCRIPTION: Example output showing a generated Modelfile with template configuration and parameters.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#2025-04-22_snippet_3
+
+LANGUAGE: modelfile
+CODE:
+```
+# Modelfile generated by "ollama show"
+# To build a new Modelfile based on this one, replace the FROM line with:
+# FROM llama3.2:latest
+FROM /Users/pdevine/.ollama/models/blobs/sha256-00e1317cbf74d901080d7100f57580ba8dd8de57203072dc6f668324ba545f29
+TEMPLATE """{{ if .System }}<|start_header_id|>system<|end_header_id|>
+
+{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>
+
+{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>
+
+{{ .Response }}<|eot_id|>"""
+PARAMETER stop "<|start_header_id|>"
+PARAMETER stop "<|end_header_id|>"
+PARAMETER stop "<|eot_id|>"
+PARAMETER stop "<|reserved_special_token"
+```
+
+----------------------------------------
+
+TITLE: Generating Patches for Updated Vendored llama.cpp Code in Ollama
+DESCRIPTION: This command generates patches from changes made to the vendored llama.cpp code. It's used after committing changes in the ./vendor/ directory to create patches for submission to the Ollama project.
+SOURCE: https://github.com/ollama/ollama/blob/main/llama/README.md#2025-04-22_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+make -f Makefile.sync format-patches
+```
+
+----------------------------------------
+
+TITLE: Platform-Specific POSIX Conformance Settings
+DESCRIPTION: Configures POSIX conformance and platform-specific definitions for various operating systems including Linux, BSD variants, and macOS.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_2
+
+LANGUAGE: cmake
+CODE:
+```
+if (CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
+    add_compile_definitions(_XOPEN_SOURCE=700)
+else()
+    add_compile_definitions(_XOPEN_SOURCE=600)
+endif()
+
+if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Android")
+    add_compile_definitions(_GNU_SOURCE)
+endif()
+
+if (
+    CMAKE_SYSTEM_NAME MATCHES "Darwin" OR
+    CMAKE_SYSTEM_NAME MATCHES "iOS"    OR
+    CMAKE_SYSTEM_NAME MATCHES "tvOS"   OR
+    CMAKE_SYSTEM_NAME MATCHES "DragonFly"
+)
+    add_compile_definitions(_DARWIN_C_SOURCE)
+endif()
+
+if (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+    add_compile_definitions(__BSD_VISIBLE)
+endif()
+if (CMAKE_SYSTEM_NAME MATCHES "NetBSD")
+    add_compile_definitions(_NETBSD_SOURCE)
+endif()
+if (CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
+    add_compile_definitions(_BSD_SOURCE)
+endif()
+
+if (WIN32)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Setting CUDA Architectures for GGML Library in CMake
+DESCRIPTION: Configures CUDA architectures based on GGML-specific options and CUDA Toolkit version. It sets different architectures for various GPU capabilities and CUDA features.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cuda/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+if (NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+    if (GGML_NATIVE AND CUDAToolkit_VERSION VERSION_GREATER_EQUAL "11.6" AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
+        set(CMAKE_CUDA_ARCHITECTURES "native")
+    elseif(GGML_CUDA_F16 OR GGML_CUDA_DMMV_F16)
+        set(CMAKE_CUDA_ARCHITECTURES "60;61;70;75;80")
+    else()
+        set(CMAKE_CUDA_ARCHITECTURES "50;61;70;75;80")
+    endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Running Ollama Desktop App (Shell)
+DESCRIPTION: Commands to navigate to the macapp directory, install dependencies, and start the desktop application using npm.
+SOURCE: https://github.com/ollama/ollama/blob/main/macapp/README.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+cd macapp
+npm install
+npm start
+```
+
+----------------------------------------
+
+TITLE: Adding Optional GGML Backends
+DESCRIPTION: Adds various optional backends (BLAS, CUDA, Metal, etc.) to the build configuration when enabled, allowing GGML to utilize different hardware acceleration technologies.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_11
+
+LANGUAGE: CMake
+CODE:
+```
+ggml_add_backend(BLAS)
+ggml_add_backend(CANN)
+ggml_add_backend(CUDA)
+ggml_add_backend(HIP)
+ggml_add_backend(Kompute)
+ggml_add_backend(METAL)
+ggml_add_backend(MUSA)
+ggml_add_backend(RPC)
+ggml_add_backend(SYCL)
+ggml_add_backend(Vulkan)
+ggml_add_backend(OpenCL)
+```
+
+----------------------------------------
+
+TITLE: Configuring ROCm Path Settings in CMake
+DESCRIPTION: Sets up the ROCm installation path based on environment variables or default locations. Checks for ROCm installation in standard locations and configures CMAKE_PREFIX_PATH accordingly.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-hip/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: cmake
+CODE:
+```
+if (NOT EXISTS $ENV{ROCM_PATH})
+    if (NOT EXISTS /opt/rocm)
+        set(ROCM_PATH /usr)
+    else()
+        set(ROCM_PATH /opt/rocm)
+    endif()
+else()
+    set(ROCM_PATH $ENV{ROCM_PATH})
+endif()
+
+list(APPEND CMAKE_PREFIX_PATH  ${ROCM_PATH})
+list(APPEND CMAKE_PREFIX_PATH "${ROCM_PATH}/lib64/cmake")
+```
+
+----------------------------------------
+
+TITLE: Enabling Synctest for All Go Commands
+DESCRIPTION: Command to enable the 'synctest' package for all Go commands by setting a persistent environment variable. This is useful for developers who frequently need to test with synctest enabled.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/development.md#2025-04-22_snippet_9
+
+LANGUAGE: shell
+CODE:
+```
+go env -w GOEXPERIMENT=synctest
+```
+
+----------------------------------------
+
+TITLE: Removing Ollama User Data and System Account on Linux
+DESCRIPTION: Commands to remove Ollama's downloaded models, user data, and system user/group. This cleans up persistent data stored by Ollama.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_18
+
+LANGUAGE: shell
+CODE:
+```
+sudo rm -r /usr/share/ollama
+sudo userdel ollama
+sudo groupdel ollama
+```
+
+----------------------------------------
+
+TITLE: Compiling Metal Shaders for GGML in CMake
+DESCRIPTION: Configures the compilation of Metal shaders when not embedding the library. This includes setting compiler flags and creating custom commands for shader compilation.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-metal/CMakeLists.txt#2025-04-22_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+if (GGML_METAL_SHADER_DEBUG)
+    set(XC_FLAGS -fno-fast-math -fno-inline -g)
+else()
+    set(XC_FLAGS -O3)
+endif()
+
+if (GGML_METAL_MACOSX_VERSION_MIN)
+    message(STATUS "Adding  -mmacosx-version-min=${GGML_METAL_MACOSX_VERSION_MIN} flag to metal compilation")
+    list   (APPEND XC_FLAGS -mmacosx-version-min=${GGML_METAL_MACOSX_VERSION_MIN})
+endif()
+
+if (GGML_METAL_STD)
+    message(STATUS "Adding  -std=${GGML_METAL_STD} flag to metal compilation")
+    list   (APPEND XC_FLAGS -std=${GGML_METAL_STD})
+endif()
+
+add_custom_command(
+    OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/default.metallib
+    COMMAND xcrun -sdk macosx metal ${XC_FLAGS} -c ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-metal.metal -o - |
+        xcrun -sdk macosx metallib - -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/default.metallib
+    COMMAND rm -f ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-common.h
+    COMMAND rm -f ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-metal.metal
+    DEPENDS ggml-metal.metal ${METALLIB_COMMON}
+    COMMENT "Compiling Metal kernels"
+    )
+
+add_custom_target(
+    ggml-metal-lib ALL
+    DEPENDS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/default.metallib
+    )
+```
+
+----------------------------------------
+
+TITLE: Package Dependencies and Version Checking
+DESCRIPTION: Finds required HIP packages and checks version compatibility. Verifies the presence of hip, hipblas, and rocblas packages, with optional rocwmma support.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-hip/CMakeLists.txt#2025-04-22_snippet_2
+
+LANGUAGE: cmake
+CODE:
+```
+find_package(hip     REQUIRED)
+find_package(hipblas REQUIRED)
+find_package(rocblas REQUIRED)
+if (GGML_HIP_ROCWMMA_FATTN)
+    CHECK_INCLUDE_FILE_CXX("rocwmma/rocwmma.hpp" FOUND_ROCWMMA)
+    if (NOT ${FOUND_ROCWMMA})
+        message(FATAL_ERROR "rocwmma has not been found")
+    endif()
+endif()
+
+if (${hip_VERSION} VERSION_LESS 5.5)
+    message(FATAL_ERROR "At least ROCM/HIP V5.5 is required")
+endif()
+
+message(STATUS "HIP and hipBLAS found")
+```
+
+----------------------------------------
+
+TITLE: Configuring Ollama Project with GGML Settings in CMake
+DESCRIPTION: Configures the Ollama project build environment with GGML library settings. Sets CMake variables for building with specific optimizations and backend support for CPU, CUDA, and HIP. Includes paths, runtime options, and detailed configuration for hardware acceleration.
+SOURCE: https://github.com/ollama/ollama/blob/main/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+cmake_minimum_required(VERSION 3.21)
+
+project(Ollama C CXX)
+
+include(CheckLanguage)
+
+find_package(Threads REQUIRED)
+
+set(CMAKE_BUILD_TYPE Release)
+set(BUILD_SHARED_LIBS ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(GGML_BUILD ON)
+set(GGML_SHARED ON)
+set(GGML_CCACHE ON)
+set(GGML_BACKEND_DL ON)
+set(GGML_BACKEND_SHARED ON)
+set(GGML_SCHED_MAX_COPIES 4)
+
+set(GGML_LLAMAFILE ON)
+set(GGML_CUDA_PEER_MAX_BATCH_SIZE 128)
+set(GGML_CUDA_GRAPHS ON)
+set(GGML_CUDA_FA ON)
+set(GGML_CUDA_COMPRESSION_MODE default)
+
+if((CMAKE_OSX_ARCHITECTURES AND NOT CMAKE_OSX_ARCHITECTURES MATCHES "arm64")
+    OR (NOT CMAKE_OSX_ARCHITECTURES AND NOT CMAKE_SYSTEM_PROCESSOR MATCHES "arm|aarch64|ARM64|ARMv[0-9]+"))
+    set(GGML_CPU_ALL_VARIANTS ON)
+endif()
+
+if (CMAKE_OSX_ARCHITECTURES MATCHES "x86_64")
+    set(CMAKE_BUILD_RPATH "@loader_path")
+    set(CMAKE_INSTALL_RPATH "@loader_path")
+endif()
+
+set(OLLAMA_BUILD_DIR ${CMAKE_BINARY_DIR}/lib/ollama)
+set(OLLAMA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib/ollama)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY         ${OLLAMA_BUILD_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${OLLAMA_BUILD_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OLLAMA_BUILD_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY         ${OLLAMA_BUILD_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${OLLAMA_BUILD_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OLLAMA_BUILD_DIR})
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src/ggml-cpu)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src/ggml-cpu/amx)
+
+set(GGML_CPU ON)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src)
+set_property(TARGET ggml PROPERTY EXCLUDE_FROM_ALL TRUE)
+
+get_target_property(CPU_VARIANTS ggml-cpu MANUALLY_ADDED_DEPENDENCIES)
+if(NOT CPU_VARIANTS)
+    set(CPU_VARIANTS "ggml-cpu")
+endif()
+
+install(TARGETS ggml-base ${CPU_VARIANTS}
+    RUNTIME_DEPENDENCIES
+        PRE_EXCLUDE_REGEXES ".*"
+    RUNTIME DESTINATION ${OLLAMA_INSTALL_DIR} COMPONENT CPU
+    LIBRARY DESTINATION ${OLLAMA_INSTALL_DIR} COMPONENT CPU
+    FRAMEWORK DESTINATION ${OLLAMA_INSTALL_DIR} COMPONENT CPU
+)
+
+check_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24" AND NOT CMAKE_CUDA_ARCHITECTURES)
+        set(CMAKE_CUDA_ARCHITECTURES "native")
+    endif()
+
+    find_package(CUDAToolkit)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src/ggml-cuda)
+    set(OLLAMA_CUDA_INSTALL_DIR ${OLLAMA_INSTALL_DIR}/cuda_v${CUDAToolkit_VERSION_MAJOR})
+    install(TARGETS ggml-cuda
+        RUNTIME_DEPENDENCIES
+            DIRECTORIES ${CUDAToolkit_BIN_DIR} ${CUDAToolkit_LIBRARY_DIR}
+            PRE_INCLUDE_REGEXES cublas cublasLt cudart
+            PRE_EXCLUDE_REGEXES ".*"
+        RUNTIME DESTINATION ${OLLAMA_CUDA_INSTALL_DIR} COMPONENT CUDA
+        LIBRARY DESTINATION ${OLLAMA_CUDA_INSTALL_DIR} COMPONENT CUDA
+    )
+endif()
+
+set(WINDOWS_AMDGPU_TARGETS_EXCLUDE_REGEX "^gfx(906|908|90a|1200|1201):xnack[+-]$"
+    CACHE STRING
+    "Regular expression describing AMDGPU_TARGETS not supported on Windows. Override to force building these targets. Default \"^gfx(906|908|90a|1200|1201):xnack[+-]$\"."
+)
+
+check_language(HIP)
+if(CMAKE_HIP_COMPILER)
+    set(HIP_PLATFORM "amd")
+
+    find_package(hip REQUIRED)
+    if(NOT AMDGPU_TARGETS)
+        list(FILTER AMDGPU_TARGETS INCLUDE REGEX "^gfx(900|94[012]|101[02]|1030|110[012]|120[01])$")
+    elseif(WIN32 AND WINDOWS_AMDGPU_TARGETS_EXCLUDE_REGEX)
+        list(FILTER AMDGPU_TARGETS EXCLUDE REGEX ${WINDOWS_AMDGPU_TARGETS_EXCLUDE_REGEX})
+    endif()
+
+    if(AMDGPU_TARGETS)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ml/backend/ggml/ggml/src/ggml-hip)
+
+        if (WIN32)
+            target_compile_definitions(ggml-hip PRIVATE GGML_CUDA_NO_PEER_COPY)
+        endif()
+
+        target_compile_definitions(ggml-hip PRIVATE GGML_HIP_NO_VMM)
+
+        set(OLLAMA_HIP_INSTALL_DIR ${OLLAMA_INSTALL_DIR}/rocm)
+        install(TARGETS ggml-hip
+            RUNTIME_DEPENDENCIES
+                DIRECTORIES ${HIP_BIN_INSTALL_DIR} ${HIP_LIB_INSTALL_DIR}
+                PRE_INCLUDE_REGEXES hipblas rocblas amdhip64 rocsolver amd_comgr hsa-runtime64 rocsparse tinfo rocprofiler-register drm drm_amdgpu numa elf
+                PRE_EXCLUDE_REGEXES ".*"
+                POST_EXCLUDE_REGEXES "system32"
+            RUNTIME DESTINATION ${OLLAMA_HIP_INSTALL_DIR} COMPONENT HIP
+            LIBRARY DESTINATION ${OLLAMA_HIP_INSTALL_DIR} COMPONENT HIP
+        )
+
+        foreach(HIP_LIB_BIN_INSTALL_DIR IN ITEMS ${HIP_BIN_INSTALL_DIR} ${HIP_LIB_INSTALL_DIR})
+            if(EXISTS ${HIP_LIB_BIN_INSTALL_DIR}/rocblas)
+                install(DIRECTORY ${HIP_LIB_BIN_INSTALL_DIR}/rocblas DESTINATION ${OLLAMA_HIP_INSTALL_DIR} COMPONENT HIP)
+                break()
+            endif()
+        endforeach()
+    endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Setting CUDA Compiler Flags for GGML in CMake
+DESCRIPTION: Configures CUDA compiler flags, including optimization flags, warning levels, and compatibility options based on the CUDA Toolkit version and host compiler.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cuda/CMakeLists.txt#2025-04-22_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+set(CUDA_FLAGS -use_fast_math)
+
+if (CUDAToolkit_VERSION VERSION_GREATER_EQUAL "12.8")
+    list(APPEND CUDA_FLAGS -compress-mode=${GGML_CUDA_COMPRESSION_MODE})
+endif()
+
+if (GGML_FATAL_WARNINGS)
+    list(APPEND CUDA_FLAGS -Werror all-warnings)
+endif()
+
+if (GGML_ALL_WARNINGS AND NOT MSVC)
+    # ... (code to detect host compiler and set flags)
+endif()
+
+if (NOT MSVC)
+    list(APPEND CUDA_CXX_FLAGS -Wno-pedantic)
+endif()
+
+list(JOIN   CUDA_CXX_FLAGS " " CUDA_CXX_FLAGS_JOINED)
+
+if (NOT CUDA_CXX_FLAGS_JOINED STREQUAL "")
+    list(APPEND CUDA_FLAGS -Xcompiler ${CUDA_CXX_FLAGS_JOINED})
+endif()
+
+target_compile_options(ggml-cuda PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:${CUDA_FLAGS}>")
+```
+
+----------------------------------------
+
+TITLE: KleidiAI Integration Configuration
+DESCRIPTION: Sets up integration with KleidiAI optimized kernels, including fetching source code, configuring paths, and setting up compilation flags. Handles different ARM instruction sets like dotprod, i8mm, and SME.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cpu/CMakeLists.txt#2025-04-22_snippet_2
+
+LANGUAGE: cmake
+CODE:
+```
+if (GGML_CPU_KLEIDIAI)
+    message(STATUS "Using KleidiAI optimized kernels if applicable")
+    set(KLEIDIAI_BUILD_TESTS OFF)
+    include(FetchContent)
+    set(KLEIDIAI_COMMIT_TAG "v1.5.0")
+    set(KLEIDIAI_DOWNLOAD_URL "https://github.com/ARM-software/kleidiai/archive/refs/tags/${KLEIDIAI_COMMIT_TAG}.tar.gz")
+    set(KLEIDIAI_ARCHIVE_MD5 "ea22e1aefb800e9bc8c74d91633cc58e")
+    # ... additional KleidiAI configuration
+endif()
+```
+
+----------------------------------------
+
+TITLE: Compiler Warnings Configuration
+DESCRIPTION: Sets up compiler warning flags for different compilers (GCC/Clang and MSVC). Includes options for treating warnings as errors and enabling comprehensive warning checks.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_1
+
+LANGUAGE: cmake
+CODE:
+```
+if (GGML_FATAL_WARNINGS)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        list(APPEND C_FLAGS   -Werror)
+        list(APPEND CXX_FLAGS -Werror)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        add_compile_options(/WX)
+    endif()
+endif()
+
+if (GGML_ALL_WARNINGS)
+    if (NOT MSVC)
+        list(APPEND WARNING_FLAGS -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function)
+        list(APPEND C_FLAGS       -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes
+                                  -Werror=implicit-int -Werror=implicit-function-declaration)
+        list(APPEND CXX_FLAGS     -Wmissing-declarations -Wmissing-noreturn)
+
+        list(APPEND C_FLAGS   ${WARNING_FLAGS})
+        list(APPEND CXX_FLAGS ${WARNING_FLAGS})
+
+        ggml_get_flags(${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION})
+
+        add_compile_options("$<$<COMPILE_LANGUAGE:C>:${C_FLAGS};${GF_C_FLAGS}>"
+                            "$<$<COMPILE_LANGUAGE:CXX>:${CXX_FLAGS};${GF_CXX_FLAGS}>")
+    else()
+        set(C_FLAGS   "")
+        set(CXX_FLAGS "")
+    endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Defining GGML Base Library Target
+DESCRIPTION: Creates the ggml-base library target with all core source and header files for the GGML library, including quantization, allocator, backend, and threading components.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_4
+
+LANGUAGE: CMake
+CODE:
+```
+add_library(ggml-base
+            ../include/ggml.h
+            ../include/ggml-alloc.h
+            ../include/ggml-backend.h
+            ../include/ggml-cpp.h
+            ../include/ggml-opt.h
+            ../include/gguf.h
+            ggml.c
+            ggml-alloc.c
+            ggml-backend.cpp
+            ggml-opt.cpp
+            ggml-threading.cpp
+            ggml-threading.h
+            ggml-quants.c
+            ggml-quants.h
+            gguf.cpp)
+```
+
+----------------------------------------
+
+TITLE: Removing Ollama Libraries from Linux
+DESCRIPTION: Command to remove installed Ollama libraries from the system. This is the final step in completely uninstalling Ollama.
+SOURCE: https://github.com/ollama/ollama/blob/main/docs/linux.md#2025-04-22_snippet_19
+
+LANGUAGE: shell
+CODE:
+```
+sudo rm -rf /usr/local/lib/ollama
+```
+
+----------------------------------------
+
+TITLE: Empty Config Blob
+DESCRIPTION: Empty JSON object blob referenced by the config digest in the manifest
+SOURCE: https://github.com/ollama/ollama/blob/main/server/internal/registry/testdata/registry.txt#2025-04-22_snippet_1
+
+LANGUAGE: json
+CODE:
+```
+{}
+```
+
+----------------------------------------
+
+TITLE: Linking CUDA Libraries for GGML in CMake
+DESCRIPTION: Links the appropriate CUDA libraries (static or shared) to the GGML-CUDA target based on build configuration and platform.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cuda/CMakeLists.txt#2025-04-22_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+if (GGML_STATIC)
+    if (WIN32)
+        # As of 12.3.1 CUDA Toolkit for Windows does not offer a static cublas library
+        target_link_libraries(ggml-cuda PRIVATE CUDA::cudart_static CUDA::cublas CUDA::cublasLt)
+    else ()
+        target_link_libraries(ggml-cuda PRIVATE  CUDA::cudart_static CUDA::cublas_static CUDA::cublasLt_static)
+    endif()
+else()
+    target_link_libraries(ggml-cuda PRIVATE CUDA::cudart CUDA::cublas CUDA::cublasLt)
+endif()
+
+if (GGML_CUDA_NO_VMM)
+    # No VMM requested, no need to link directly with the cuda driver lib (libcuda.so)
+else()
+    target_link_libraries(ggml-cuda PRIVATE CUDA::cuda_driver)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring CUDA Sources for GGML Library in CMake
+DESCRIPTION: Collects CUDA source files and headers for the GGML library, including specific template instances based on compilation options.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cuda/CMakeLists.txt#2025-04-22_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+file(GLOB   GGML_HEADERS_CUDA "*.cuh")
+list(APPEND GGML_HEADERS_CUDA "../../include/ggml-cuda.h")
+
+file(GLOB   GGML_SOURCES_CUDA "*.cu")
+file(GLOB   SRCS "template-instances/fattn-mma*.cu")
+list(APPEND GGML_SOURCES_CUDA ${SRCS})
+file(GLOB   SRCS "template-instances/mmq*.cu")
+list(APPEND GGML_SOURCES_CUDA ${SRCS})
+
+if (GGML_CUDA_FA_ALL_QUANTS)
+    file(GLOB   SRCS "template-instances/fattn-vec*.cu")
+    list(APPEND GGML_SOURCES_CUDA ${SRCS})
+    add_compile_definitions(GGML_CUDA_FA_ALL_QUANTS)
+else()
+    file(GLOB   SRCS "template-instances/fattn-vec*q4_0-q4_0.cu")
+    list(APPEND GGML_SOURCES_CUDA ${SRCS})
+    file(GLOB   SRCS "template-instances/fattn-vec*q8_0-q8_0.cu")
+    list(APPEND GGML_SOURCES_CUDA ${SRCS})
+    file(GLOB   SRCS "template-instances/fattn-vec*f16-f16.cu")
+    list(APPEND GGML_SOURCES_CUDA ${SRCS})
+endif()
+```
+
+----------------------------------------
+
+TITLE: Building Ollama CLI, App, and Installer on Windows
+DESCRIPTION: PowerShell command to execute the Windows build script that builds the Ollama CLI, Ollama app, and Ollama installer. The script must be run with ExecutionPolicy Bypass to ensure it executes without restrictions.
+SOURCE: https://github.com/ollama/ollama/blob/main/app/README.md#2025-04-22_snippet_0
+
+LANGUAGE: powershell
+CODE:
+```
+powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
+```
+
+----------------------------------------
+
+TITLE: Configuring CPU Backend Variants in GGML
+DESCRIPTION: This function configures a CPU backend variant with specified sources, architecture flags, and definitions. It handles special cases like Kleidiai sources, dynamic loading support, and Emscripten builds. The function ensures correct compilation options and target properties are set for each backend variant.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cpu/CMakeLists.txt#2025-04-22_snippet_3
+
+LANGUAGE: CMake
+CODE:
+```
+list(APPEND GGML_KLEIDIAI_SOURCES ${KLEIDIAI_SRC}/kai/ukernels/matmul/matmul_clamp_f32_qsi8d32p_qsi4c32p/kai_matmul_clamp_f32_qsi8d32p1x4_qsi4c32p4vlx4_1x4vl_sme2_sdot.c)
+            set(PRIVATE_ARCH_FLAGS "${PRIVATE_ARCH_FLAGS}+sve+sve2")
+        endif()
+
+        set_source_files_properties(${GGML_KLEIDIAI_SOURCES} PROPERTIES COMPILE_OPTIONS "${PRIVATE_ARCH_FLAGS}")
+        list(APPEND GGML_CPU_SOURCES ${GGML_KLEIDIAI_SOURCES})
+    endif()
+
+    message(STATUS "Adding CPU backend variant ${GGML_CPU_NAME}: ${ARCH_FLAGS} ${ARCH_DEFINITIONS}")
+    target_sources(${GGML_CPU_NAME} PRIVATE ${GGML_CPU_SOURCES})
+    target_compile_options(${GGML_CPU_NAME} PRIVATE ${ARCH_FLAGS})
+    target_compile_definitions(${GGML_CPU_NAME} PRIVATE ${ARCH_DEFINITIONS})
+
+    if (GGML_BACKEND_DL)
+        if (GGML_NATIVE)
+            # the feature check relies on ARCH_DEFINITIONS, but it is not set with GGML_NATIVE
+            message(FATAL_ERROR "GGML_NATIVE is not compatible with GGML_BACKEND_DL, consider using GGML_CPU_ALL_VARIANTS")
+        endif()
+
+        # The feature detection code is compiled as a separate target so that
+        # it can be built without the architecture flags
+        # Since multiple variants of the CPU backend may be included in the same
+        # build, using set_source_files_properties() to set the arch flags is not possible
+        set(GGML_CPU_FEATS_NAME ${GGML_CPU_NAME}-feats)
+        add_library(${GGML_CPU_FEATS_NAME} OBJECT ggml-cpu/cpu-feats-x86.cpp)
+        target_include_directories(${GGML_CPU_FEATS_NAME} PRIVATE . .. ../include)
+        target_compile_definitions(${GGML_CPU_FEATS_NAME} PRIVATE ${ARCH_DEFINITIONS})
+        target_compile_definitions(${GGML_CPU_FEATS_NAME} PRIVATE GGML_BACKEND_DL GGML_BACKEND_BUILD GGML_BACKEND_SHARED)
+        set_target_properties(${GGML_CPU_FEATS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+        target_link_libraries(${GGML_CPU_NAME} PRIVATE ${GGML_CPU_FEATS_NAME})
+    endif()
+
+    if (EMSCRIPTEN)
+        set_target_properties(${GGML_CPU_NAME} PROPERTIES COMPILE_FLAGS "-msimd128")
+    endif()
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: Defining Function for Adding GGML Backend Libraries
+DESCRIPTION: Creates a function that configures backend libraries as either module (for dynamic loading) or static libraries (for direct linking). Sets up appropriate compile definitions and target properties based on the build type.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_7
+
+LANGUAGE: CMake
+CODE:
+```
+function(ggml_add_backend_library backend)
+    if (GGML_BACKEND_DL)
+        add_library(${backend} MODULE ${ARGN})
+        # write the shared library to the output directory
+        set_target_properties(${backend} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+        target_compile_definitions(${backend} PRIVATE GGML_BACKEND_DL)
+        add_dependencies(ggml ${backend})
+    else()
+        add_library(${backend} ${ARGN})
+        target_link_libraries(ggml PUBLIC ${backend})
+        install(TARGETS ${backend} LIBRARY)
+    endif()
+
+    target_link_libraries(${backend} PRIVATE ggml-base)
+    target_include_directories(${backend} PRIVATE ..)
+
+    if (${BUILD_SHARED_LIBS})
+        target_compile_definitions(${backend} PRIVATE GGML_BACKEND_BUILD)
+        target_compile_definitions(${backend} PUBLIC  GGML_BACKEND_SHARED)
+    endif()
+
+    if(NOT GGML_AVAILABLE_BACKENDS)
+        set(GGML_AVAILABLE_BACKENDS "${backend}"
+            CACHE INTERNAL "List of backends for cmake package")
+    else()
+        list(FIND GGML_AVAILABLE_BACKENDS "${backend}" has_backend)
+        if(has_backend EQUAL -1)
+            set(GGML_AVAILABLE_BACKENDS "${GGML_AVAILABLE_BACKENDS};${backend}"
+                CACHE INTERNAL "List of backends for cmake package")
+        endif()
+    endif()
+endfunction()
+```
+
+----------------------------------------
+
+TITLE: HIP Compiler Detection and Configuration
+DESCRIPTION: Detects whether hipcc is being used as the C++ compiler and configures appropriate build settings. Includes special handling for Windows systems and warnings for Linux builds.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-hip/CMakeLists.txt#2025-04-22_snippet_1
+
+LANGUAGE: cmake
+CODE:
+```
+if (WIN32)
+    set(CXX_IS_HIPCC TRUE)
+else()
+    string(REGEX MATCH "hipcc(\.bat)?$" CXX_IS_HIPCC "${CMAKE_CXX_COMPILER}")
+endif()
+
+if (CXX_IS_HIPCC)
+    if (LINUX)
+        if (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+            message(WARNING "Only LLVM is supported for HIP, hint: CXX=/opt/rocm/llvm/bin/clang++")
+        endif()
+
+        message(WARNING "Setting hipcc as the C++ compiler is legacy behavior."
+                " Prefer setting the HIP compiler directly. See README for details.")
+    endif()
+else()
+    if (AMDGPU_TARGETS AND NOT CMAKE_HIP_ARCHITECTURES)
+        set(CMAKE_HIP_ARCHITECTURES ${AMDGPU_TARGETS})
+    endif()
+    cmake_minimum_required(VERSION 3.21)
+    enable_language(HIP)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Defining Main GGML Library Target
+DESCRIPTION: Creates the main ggml library target with backend registration functionality, linking it to the ggml-base library and system-specific dependencies.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_6
+
+LANGUAGE: CMake
+CODE:
+```
+add_library(ggml
+            ggml-backend-reg.cpp)
+
+target_link_libraries(ggml PUBLIC ggml-base)
+
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    target_link_libraries(ggml PRIVATE dl stdc++fs)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Basic CMake Setup and Sanitizer Configuration
+DESCRIPTION: Initial CMake setup including common definitions and sanitizer configurations for non-MSVC compilers. Configures thread, address and undefined behavior sanitizers.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: cmake
+CODE:
+```
+include(CheckCXXCompilerFlag)
+include("../cmake/common.cmake")
+
+add_compile_definitions(GGML_SCHED_MAX_COPIES=${GGML_SCHED_MAX_COPIES})
+
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    add_compile_definitions($<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>)
+endif()
+
+if (NOT MSVC)
+    if (GGML_SANITIZE_THREAD)
+        add_compile_options(-fsanitize=thread)
+        link_libraries     (-fsanitize=thread)
+    endif()
+
+    if (GGML_SANITIZE_ADDRESS)
+        add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+        link_libraries     (-fsanitize=address)
+    endif()
+
+    if (GGML_SANITIZE_UNDEFINED)
+        add_compile_options(-fsanitize=undefined)
+        link_libraries     (-fsanitize=undefined)
+    endif()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Running Default Unit Tests Command
+DESCRIPTION: Command to run standard unit tests without integration tests
+SOURCE: https://github.com/ollama/ollama/blob/main/integration/README.md#2025-04-22_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+go test ./...
+```
+
+----------------------------------------
+
+TITLE: Configuring BLAS for GGML in CMake
+DESCRIPTION: This snippet configures BLAS for the GGML library using CMake. It sets up static linking if required, finds the BLAS package, and configures vendor-specific settings. It also handles cases where BLAS include directories are not automatically detected.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-blas/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+if (GGML_STATIC)
+    set(BLA_STATIC ON)
+endif()
+#if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.22)
+#    set(BLA_SIZEOF_INTEGER 8)
+#endif()
+
+set(BLA_VENDOR ${GGML_BLAS_VENDOR})
+find_package(BLAS)
+
+if (BLAS_FOUND)
+    message(STATUS "BLAS found, Libraries: ${BLAS_LIBRARIES}")
+
+    ggml_add_backend_library(ggml-blas
+                             ggml-blas.cpp
+                            )
+
+    if (${GGML_BLAS_VENDOR} MATCHES "Apple")
+        add_compile_definitions(ACCELERATE_NEW_LAPACK)
+        add_compile_definitions(ACCELERATE_LAPACK_ILP64)
+        add_compile_definitions(GGML_BLAS_USE_ACCELERATE)
+    elseif ("${BLAS_INCLUDE_DIRS}" STREQUAL "")
+        # BLAS_INCLUDE_DIRS is missing in FindBLAS.cmake.
+        # see https://gitlab.kitware.com/cmake/cmake/-/issues/20268
+        find_package(PkgConfig REQUIRED)
+        if (${GGML_BLAS_VENDOR} MATCHES "Generic")
+            pkg_check_modules(DepBLAS blas)
+        elseif (${GGML_BLAS_VENDOR} MATCHES "OpenBLAS")
+            # As of openblas v0.3.22, the 64-bit is named openblas64.pc
+            pkg_check_modules(DepBLAS openblas64)
+            if (NOT DepBLAS_FOUND)
+                pkg_check_modules(DepBLAS openblas)
+            endif()
+        elseif (${GGML_BLAS_VENDOR} MATCHES "FLAME")
+            add_compile_definitions(GGML_BLAS_USE_BLIS)
+            pkg_check_modules(DepBLAS blis)
+        elseif (${GGML_BLAS_VENDOR} MATCHES "ATLAS")
+            pkg_check_modules(DepBLAS blas-atlas)
+        elseif (${GGML_BLAS_VENDOR} MATCHES "FlexiBLAS")
+            pkg_check_modules(DepBLAS flexiblas_api)
+        elseif (${GGML_BLAS_VENDOR} MATCHES "Intel")
+            add_compile_definitions(GGML_BLAS_USE_MKL)
+            # all Intel* libraries share the same include path
+            pkg_check_modules(DepBLAS mkl-sdl)
+        elseif (${GGML_BLAS_VENDOR} MATCHES "NVHPC")
+            # this doesn't provide pkg-config
+            # suggest to assign BLAS_INCLUDE_DIRS on your own
+            if ("${NVHPC_VERSION}" STREQUAL "")
+                message(WARNING "Better to set NVHPC_VERSION")
+            else()
+                set(DepBLAS_FOUND ON)
+                set(DepBLAS_INCLUDE_DIRS "/opt/nvidia/hpc_sdk/${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}/${NVHPC_VERSION}/math_libs/include")
+            endif()
+        endif()
+        if (DepBLAS_FOUND)
+            set(BLAS_INCLUDE_DIRS ${DepBLAS_INCLUDE_DIRS})
+        else()
+            message(WARNING "BLAS_INCLUDE_DIRS neither been provided nor been automatically"
+            " detected by pkgconfig, trying to find cblas.h from possible paths...")
+            find_path(BLAS_INCLUDE_DIRS
+                NAMES cblas.h
+                HINTS
+                    /usr/include
+                    /usr/local/include
+                    /usr/include/openblas
+                    /opt/homebrew/opt/openblas/include
+                    /usr/local/opt/openblas/include
+                    /usr/include/x86_64-linux-gnu/openblas/include
+            )
+        endif()
+    endif()
+
+    message(STATUS "BLAS found, Includes: ${BLAS_INCLUDE_DIRS}")
+
+    target_compile_options(ggml-blas PRIVATE ${BLAS_LINKER_FLAGS})
+
+    if (${BLAS_INCLUDE_DIRS} MATCHES "mkl" AND (${GGML_BLAS_VENDOR} MATCHES "Generic" OR ${GGML_BLAS_VENDOR} MATCHES "Intel"))
+        add_compile_definitions(GGML_BLAS_USE_MKL)
+    endif()
+
+    target_link_libraries     (ggml-blas PRIVATE ${BLAS_LIBRARIES})
+    target_include_directories(ggml-blas PRIVATE ${BLAS_INCLUDE_DIRS})
+else()
+    message(ERROR "BLAS not found, please refer to "
+                  "https://cmake.org/cmake/help/latest/module/FindBLAS.html#blas-lapack-vendors"
+                  " to set correct GGML_BLAS_VENDOR")
+endif()
+```
+
+----------------------------------------
+
+TITLE: Adding and Configuring GGML Metal Backend Library in CMake
+DESCRIPTION: Adds the ggml-metal backend library and links it with the required frameworks. Also sets compilation definitions based on configuration options.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-metal/CMakeLists.txt#2025-04-22_snippet_1
+
+LANGUAGE: CMake
+CODE:
+```
+ggml_add_backend_library(ggml-metal
+                         ggml-metal.m
+                        )
+
+target_link_libraries(ggml-metal PRIVATE
+                      ${FOUNDATION_LIBRARY}
+                      ${METAL_FRAMEWORK}
+                      ${METALKIT_FRAMEWORK}
+                      )
+
+if (GGML_METAL_NDEBUG)
+    add_compile_definitions(GGML_METAL_NDEBUG)
+endif()
+
+if (GGML_METAL_USE_BF16)
+    add_compile_definitions(GGML_METAL_USE_BF16)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Copying Metal Files to Binary Directory in CMake
+DESCRIPTION: Copies necessary Metal-related files to the binary output directory for runtime use.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-metal/CMakeLists.txt#2025-04-22_snippet_2
+
+LANGUAGE: CMake
+CODE:
+```
+configure_file(../ggml-common.h  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-common.h     COPYONLY)
+configure_file(ggml-metal.metal  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-metal.metal  COPYONLY)
+configure_file(ggml-metal-impl.h ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-metal-impl.h COPYONLY)
+```
+
+----------------------------------------
+
+TITLE: Installing Metal Files for GGML in CMake
+DESCRIPTION: Configures the installation of Metal-related files when not embedding the library. This includes setting file permissions and specifying installation destinations.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-metal/CMakeLists.txt#2025-04-22_snippet_5
+
+LANGUAGE: CMake
+CODE:
+```
+if (NOT GGML_METAL_EMBED_LIBRARY)
+    install(
+        FILES src/ggml-metal/ggml-metal.metal
+        PERMISSIONS
+            OWNER_READ
+            OWNER_WRITE
+            GROUP_READ
+            WORLD_READ
+        DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+        install(
+            FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/default.metallib
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
+endif()
+```
+
+----------------------------------------
+
+TITLE: Linking System Dependencies for GGML
+DESCRIPTION: Links required system libraries to GGML, including threading libraries, math libraries, and platform-specific libraries. Handles different requirements for each supported platform.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_13
+
+LANGUAGE: CMake
+CODE:
+```
+target_link_libraries(ggml-base PRIVATE Threads::Threads)
+
+find_library(MATH_LIBRARY m)
+if (MATH_LIBRARY)
+    if (NOT WIN32 OR NOT DEFINED ENV{ONEAPI_ROOT})
+        target_link_libraries(ggml-base PRIVATE m)
+    endif()
+endif()
+
+if (CMAKE_SYSTEM_NAME MATCHES "Android")
+    target_link_libraries(ggml-base PRIVATE dl)
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "visionOS")
+    target_compile_definitions(ggml-base PUBLIC _DARWIN_C_SOURCE)
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring Shared Library Build Options for GGML
+DESCRIPTION: Sets specific build options when building GGML as shared libraries, including position-independent code and appropriate compile definitions for export/import symbols.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/CMakeLists.txt#2025-04-22_snippet_14
+
+LANGUAGE: CMake
+CODE:
+```
+if (BUILD_SHARED_LIBS)
+    foreach (target ggml-base ggml)
+        set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+        target_compile_definitions(${target} PRIVATE GGML_BUILD)
+        target_compile_definitions(${target} PUBLIC  GGML_SHARED)
+    endforeach()
+endif()
+```
+
+----------------------------------------
+
+TITLE: Configuring CPU Backend Library for GGML in CMake
+DESCRIPTION: This function sets up the CPU backend library for GGML, including source files, compiler flags, and architecture-specific optimizations. It handles both ARM and x86 architectures, enabling features like SIMD, AVX, and AMX based on the target platform and available CPU instructions.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cpu/CMakeLists.txt#2025-04-22_snippet_0
+
+LANGUAGE: CMake
+CODE:
+```
+function(ggml_add_cpu_backend_variant_impl tag_name)
+    if (tag_name)
+        set(GGML_CPU_NAME ggml-cpu-${tag_name})
+    else()
+        set(GGML_CPU_NAME ggml-cpu)
+    endif()
+
+    ggml_add_backend_library(${GGML_CPU_NAME})
+
+    list (APPEND GGML_CPU_SOURCES
+        ggml-cpu/ggml-cpu.c
+        ggml-cpu/ggml-cpu.cpp
+        ggml-cpu/ggml-cpu-aarch64.cpp
+        ggml-cpu/ggml-cpu-aarch64.h
+        ggml-cpu/ggml-cpu-hbm.cpp
+        ggml-cpu/ggml-cpu-hbm.h
+        ggml-cpu/ggml-cpu-quants.c
+        ggml-cpu/ggml-cpu-quants.h
+        ggml-cpu/ggml-cpu-traits.cpp
+        ggml-cpu/ggml-cpu-traits.h
+        ggml-cpu/amx/amx.cpp
+        ggml-cpu/amx/amx.h
+        ggml-cpu/amx/mmq.cpp
+        ggml-cpu/amx/mmq.h
+        ggml-cpu/ggml-cpu-impl.h
+        ggml-cpu/common.h
+        ggml-cpu/binary-ops.h
+        ggml-cpu/binary-ops.cpp
+        ggml-cpu/unary-ops.h
+        ggml-cpu/unary-ops.cpp
+        ggml-cpu/simd-mappings.h
+        ggml-cpu/vec.h
+        ggml-cpu/vec.cpp
+        ggml-cpu/ops.h
+        ggml-cpu/ops.cpp
+        )
+
+    target_compile_features(${GGML_CPU_NAME} PRIVATE c_std_11 cxx_std_17)
+    target_include_directories(${GGML_CPU_NAME} PRIVATE . ggml-cpu)
+
+    if (APPLE AND GGML_ACCELERATE)
+        find_library(ACCELERATE_FRAMEWORK Accelerate)
+        if (ACCELERATE_FRAMEWORK)
+            message(STATUS "Accelerate framework found")
+
+            target_compile_definitions(${GGML_CPU_NAME} PRIVATE GGML_USE_ACCELERATE)
+            target_compile_definitions(${GGML_CPU_NAME} PRIVATE ACCELERATE_NEW_LAPACK)
+            target_compile_definitions(${GGML_CPU_NAME} PRIVATE ACCELERATE_LAPACK_ILP64)
+
+            target_link_libraries(${GGML_CPU_NAME} PRIVATE ${ACCELERATE_FRAMEWORK})
+        else()
+            message(WARNING "Accelerate framework not found")
+        endif()
+    endif()
+
+    if (GGML_OPENMP)
+        find_package(OpenMP)
+        if (OpenMP_FOUND)
+            target_compile_definitions(${GGML_CPU_NAME} PRIVATE GGML_USE_OPENMP)
+
+            target_link_libraries(${GGML_CPU_NAME} PRIVATE OpenMP::OpenMP_C OpenMP::OpenMP_CXX)
+        else()
+            message(WARNING "OpenMP not found")
+        endif()
+    endif()
+
+    if (GGML_LLAMAFILE)
+        target_compile_definitions(${GGML_CPU_NAME} PRIVATE GGML_USE_LLAMAFILE)
+
+        list(APPEND GGML_CPU_SOURCES
+                    ggml-cpu/llamafile/sgemm.cpp
+                    ggml-cpu/llamafile/sgemm.h)
+    endif()
+
+    if (GGML_CPU_HBM)
+        find_library(memkind memkind REQUIRED)
+
+        message(STATUS "Using memkind for CPU HBM")
+
+        target_compile_definitions(${GGML_CPU_NAME} PRIVATE GGML_USE_CPU_HBM)
+
+        target_link_libraries(${GGML_CPU_NAME} PUBLIC memkind)
+    endif()
+
+    if (CMAKE_OSX_ARCHITECTURES      STREQUAL "arm64" OR
+        CMAKE_GENERATOR_PLATFORM_LWR STREQUAL "arm64" OR
+        (NOT CMAKE_OSX_ARCHITECTURES AND NOT CMAKE_GENERATOR_PLATFORM_LWR AND
+            CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm.*|ARM64)$"))
+
+        message(STATUS "ARM detected")
+
+        if (MSVC AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
+            message(FATAL_ERROR "MSVC is not supported for ARM, use clang")
+        else()
+            check_cxx_compiler_flag(-mfp16-format=ieee GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E)
+            if (NOT "${GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E}" STREQUAL "")
+                list(APPEND ARCH_FLAGS -mfp16-format=ieee)
+            endif()
+
+            if (GGML_NATIVE)
+                # -mcpu=native does not always enable all the features in some compilers,
+                # so we check for them manually and enable them if available
+
+                execute_process(
+                    COMMAND ${CMAKE_C_COMPILER} -mcpu=native -E -v -
+                    INPUT_FILE "/dev/null"
+                    OUTPUT_QUIET
+                    ERROR_VARIABLE ARM_MCPU
+                    RESULT_VARIABLE ARM_MCPU_RESULT
+                )
+                if (NOT ARM_MCPU_RESULT)
+                    string(REGEX MATCH "-mcpu=[^ ']+" ARM_MCPU_FLAG "${ARM_MCPU}")
+                endif()
+                if ("${ARM_MCPU_FLAG}" STREQUAL "")
+                    set(ARM_MCPU_FLAG -mcpu=native)
+                    message(STATUS "ARM -mcpu not found, -mcpu=native will be used")
+                endif()
+
+                include(CheckCXXSourceRuns)
+
+                function(check_arm_feature tag code)
+                    set(CMAKE_REQUIRED_FLAGS_SAVE ${CMAKE_REQUIRED_FLAGS})
+                    set(CMAKE_REQUIRED_FLAGS "${ARM_MCPU_FLAG}+${tag}")
+                    check_cxx_source_runs("${code}" GGML_MACHINE_SUPPORTS_${tag})
+                    if (GGML_MACHINE_SUPPORTS_${tag})
+                        set(ARM_MCPU_FLAG_FIX "${ARM_MCPU_FLAG_FIX}+${tag}" PARENT_SCOPE)
+                    else()
+                        set(CMAKE_REQUIRED_FLAGS "${ARM_MCPU_FLAG}+no${tag}")
+                        check_cxx_source_compiles("int main() { return 0; }" GGML_MACHINE_SUPPORTS_no${tag})
+                        if (GGML_MACHINE_SUPPORTS_no${tag})
+                            set(ARM_MCPU_FLAG_FIX "${ARM_MCPU_FLAG_FIX}+no${tag}" PARENT_SCOPE)
+                        endif()
+                    endif()
+                    set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS_SAVE})
+                endfunction()
+
+                check_arm_feature(dotprod "#include <arm_neon.h>\nint main() { int8x16_t _a, _b; volatile int32x4_t _s = vdotq_s32(_s, _a, _b); return 0; }")
+                check_arm_feature(i8mm    "#include <arm_neon.h>\nint main() { int8x16_t _a, _b; volatile int32x4_t _s = vmmlaq_s32(_s, _a, _b); return 0; }")
+                check_arm_feature(sve     "#include <arm_sve.h>\nint main()  { svfloat32_t _a, _b; volatile svfloat32_t _c = svadd_f32_z(svptrue_b8(), _a, _b); return 0; }")
+                check_arm_feature(sme     "#include <arm_sme.h>\n__arm_locally_streaming int main() { __asm__ volatile(\"smstart; smstop;\"); return 0; }")
+
+                list(APPEND ARCH_FLAGS "${ARM_MCPU_FLAG}${ARM_MCPU_FLAG_FIX}")
+            else()
+                if (GGML_CPU_ARM_ARCH)
+                    list(APPEND ARCH_FLAGS -march=${GGML_CPU_ARM_ARCH})
+                endif()
+            endif()
+
+            # show enabled features
+            if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+                set(FEAT_INPUT_FILE "NUL")
+            else()
+                set(FEAT_INPUT_FILE "/dev/null")
+            endif()
+
+            execute_process(
+                COMMAND ${CMAKE_C_COMPILER} ${ARCH_FLAGS} -dM -E -
+                INPUT_FILE ${FEAT_INPUT_FILE}
+                OUTPUT_VARIABLE ARM_FEATURE
+                RESULT_VARIABLE ARM_FEATURE_RESULT
+            )
+            if (ARM_FEATURE_RESULT)
+                message(WARNING "Failed to get ARM features")
+            else()
+                foreach(feature DOTPROD SVE MATMUL_INT8 FMA FP16_VECTOR_ARITHMETIC SME)
+                    string(FIND "${ARM_FEATURE}" "__ARM_FEATURE_${feature} 1" feature_pos)
+                    if (NOT ${feature_pos} EQUAL -1)
+                        message(STATUS "ARM feature ${feature} enabled")
+                    endif()
+                endforeach()
+            endif()
+        endif()
+    elseif (CMAKE_OSX_ARCHITECTURES STREQUAL "x86_64" OR CMAKE_GENERATOR_PLATFORM_LWR MATCHES "^(x86_64|i686|amd64|x64|win32)$" OR
+            (NOT CMAKE_OSX_ARCHITECTURES AND NOT CMAKE_GENERATOR_PLATFORM_LWR AND
+            CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|i686|AMD64|amd64)$"))
+
+        message(STATUS "x86 detected")
+
+        if (MSVC)
+            # instruction set detection for MSVC only
+            if (GGML_NATIVE)
+                include(ggml-cpu/cmake/FindSIMD.cmake)
+            endif ()
+            if (GGML_AVX512)
+                list(APPEND ARCH_FLAGS /arch:AVX512)
+                # /arch:AVX512 includes: __AVX512F__, __AVX512CD__, __AVX512BW__, __AVX512DQ__, and __AVX512VL__
+                # MSVC has no compile-time flags enabling specific
+                # AVX512 extensions, neither it defines the
+                # macros corresponding to the extensions.
+                # Do it manually.
+                list(APPEND ARCH_DEFINITIONS GGML_AVX512)
+                if (GGML_AVX512_VBMI)
+                    list(APPEND ARCH_DEFINITIONS __AVX512VBMI__)
+                    if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+                        list(APPEND ARCH_FLAGS -mavx512vbmi)
+                    endif()
+                endif()
+                if (GGML_AVX512_VNNI)
+                    list(APPEND ARCH_DEFINITIONS __AVX512VNNI__ GGML_AVX512_VNNI)
+                    if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+                        list(APPEND ARCH_FLAGS -mavx512vnni)
+                    endif()
+                endif()
+                if (GGML_AVX512_BF16)
+                    list(APPEND ARCH_DEFINITIONS __AVX512BF16__ GGML_AVX512_BF16)
+                    if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+                        list(APPEND ARCH_FLAGS -mavx512bf16)
+                    endif()
+                endif()
+                if (GGML_AMX_TILE)
+                    list(APPEND ARCH_DEFINITIONS __AMX_TILE__ GGML_AMX_TILE)
+                endif()
+                if (GGML_AMX_INT8)
+                    list(APPEND ARCH_DEFINITIONS __AMX_INT8__ GGML_AMX_INT8)
+                endif()
+                if (GGML_AMX_BF16)
+                    list(APPEND ARCH_DEFINITIONS __AMX_BF16__ GGML_AMX_BF16)
+                endif()
+            elseif (GGML_AVX2)
+                list(APPEND ARCH_FLAGS /arch:AVX2)
+                list(APPEND ARCH_DEFINITIONS GGML_AVX2 GGML_FMA GGML_F16C)
+            elseif (GGML_AVX)
+                list(APPEND ARCH_FLAGS /arch:AVX)
+                list(APPEND ARCH_DEFINITIONS GGML_AVX)
+            else ()
+                list(APPEND ARCH_FLAGS /arch:SSE4.2)
+                list(APPEND ARCH_DEFINITIONS GGML_SSE42)
+            endif()
+            if (GGML_AVX_VNNI)
+                list(APPEND ARCH_DEFINITIONS __AVXVNNI__ GGML_AVX_VNNI)
+            endif()
+            if (GGML_BMI2)
+```
+
+----------------------------------------
+
+TITLE: CPU Architecture Detection and Flag Configuration
+DESCRIPTION: Configures compiler flags and definitions based on CPU architecture and available instruction sets. Handles multiple architectures including x86 (AVX, SSE), PowerPC, RISC-V, s390x, and ARM. Sets appropriate compiler flags for optimization and CPU-specific features.
+SOURCE: https://github.com/ollama/ollama/blob/main/ml/backend/ggml/ggml/src/ggml-cpu/CMakeLists.txt#2025-04-22_snippet_1
+
+LANGUAGE: cmake
+CODE:
+```
+if (GGML_NATIVE)
+    list(APPEND ARCH_FLAGS -march=native)
+else ()
+    list(APPEND ARCH_FLAGS -msse4.2)
+    list(APPEND ARCH_DEFINITIONS GGML_SSE42)
+    if (GGML_F16C)
+        list(APPEND ARCH_FLAGS -mf16c)
+        list(APPEND ARCH_DEFINITIONS GGML_F16C)
+    endif()
+    # ... additional architecture flags
+endif()
+```
+
+----------------------------------------
+
+TITLE: Making Embedding API Request
+DESCRIPTION: Example cURL command to request text embeddings from the running model via HTTP POST to the /embedding endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/runner/README.md#2025-04-22_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"prompt": "turn me into an embedding"}' http://localhost:8080/embedding
+```
+
+----------------------------------------
+
+TITLE: Making Completion API Request
+DESCRIPTION: Example cURL command to request a completion from the running model via HTTP POST to the /completion endpoint.
+SOURCE: https://github.com/ollama/ollama/blob/main/runner/README.md#2025-04-22_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"prompt": "hi"}' http://localhost:8080/completion
+```

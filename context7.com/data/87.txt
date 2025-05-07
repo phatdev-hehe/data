@@ -1,0 +1,1248 @@
+TITLE: Running NestJS Application
+DESCRIPTION: Commands for running the NestJS application in development, watch, and production modes using npm scripts.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/28-sse/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Application in Different Modes
+DESCRIPTION: These commands demonstrate how to run a NestJS application in different modes: development, watch mode, and production. Each command uses npm scripts defined in the project's package.json file.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/posts-application/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Using NestJS Common Decorators in TypeScript
+DESCRIPTION: Demonstrates the usage of common decorators like @Controller() and @Injectable() provided by the NestJS common package. These decorators are used to define controllers and injectable services in a NestJS application.
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/common/PACKAGE.md#2025-04-23_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+@Controller()
+@Injectable()
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Applications in Different Environments
+DESCRIPTION: Commands for running a NestJS application in development, watch mode, and production environments using npm scripts.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/users-application/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Testing NestJS Application
+DESCRIPTION: Commands for running unit tests, end-to-end tests, and generating test coverage reports using npm scripts.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/28-sse/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands for running different types of tests in a NestJS application, including unit tests, end-to-end tests, and generating test coverage reports. These execute the test scripts defined in package.json.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/26-queues/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Applications in Different Environments
+DESCRIPTION: Commands for running a NestJS application in development, watch, and production modes. Each command triggers a different npm script configured in package.json.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/gateway/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Executing File Upload Example in NestJS
+DESCRIPTION: Instructions for starting the NestJS server and testing file upload functionality using curl. This demonstrates uploading a file (package.json) with additional form data (name parameter) to the /file endpoint.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/29-file-upload/README.md#2025-04-23_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+npm run start # OR npm run start:dev
+# in another terminal
+curl http://localhost:3000/file -F 'file=@./package.json' -F 'name=test'
+```
+
+----------------------------------------
+
+TITLE: Starting the NestJS Development Server
+DESCRIPTION: Command to start the NestJS application in development mode with hot-reloading enabled.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/22-graphql-prisma/README.md#2025-04-23_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+npm run start:dev
+```
+
+----------------------------------------
+
+TITLE: Querying Combined Data in GraphQL Federation
+DESCRIPTION: Example GraphQL query that retrieves a user with their associated posts, demonstrating how the gateway combines data from multiple services. It requires a userId parameter and returns the user's id, name and their posts.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/README.md#2025-04-23_snippet_3
+
+LANGUAGE: gql
+CODE:
+```
+query getUserWithPosts($userId: ID!) {
+  getUser(id: $userId) {
+    id
+    name
+    posts {
+      authorId
+      id
+      title
+    }
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Generating TypeScript Type Definitions from GraphQL Schema
+DESCRIPTION: Command to generate TypeScript type definitions based on the GraphQL schema, enabling type safety in the NestJS application.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/22-graphql-prisma/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+npm run generate:typings
+```
+
+----------------------------------------
+
+TITLE: Configuring Fastify Server for Remote Access in NestJS
+DESCRIPTION: This code snippet shows how to configure the NestJS application to listen on all network interfaces (0.0.0.0) when running on a remote machine. This is necessary to allow external connections to reach the application.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/17-mvc-fastify/README.md#2025-04-23_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+await app.listen(3000, '0.0.0.0')
+```
+
+----------------------------------------
+
+TITLE: Creating SQLite Database with Prisma Schema
+DESCRIPTION: Command to initialize the SQLite database and create tables according to the Prisma schema definition using Prisma's db push feature.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/22-graphql-prisma/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+npx prisma db push
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Application in Different Modes
+DESCRIPTION: Commands for running a NestJS application in development, watch, and production modes. The different modes offer varying levels of optimization and development features.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/gateway/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Starting the GraphQL Federation Gateway in NestJS
+DESCRIPTION: Command to navigate to the gateway directory and start the federation gateway, which combines the schemas from the users and posts sub-graphs.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/README.md#2025-04-23_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+cd gateway && npm run start
+```
+
+----------------------------------------
+
+TITLE: Starting NestJS Application with Sequelize Integration
+DESCRIPTION: Command to start the NestJS application that uses Sequelize for database operations.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/07-sequelize/README.md#2025-04-23_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+npm run start
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: These commands show how to run different types of tests in a NestJS project: unit tests, end-to-end (e2e) tests, and test coverage. Each command uses npm scripts defined in the project's package.json file.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/posts-application/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Configuring Fastify Server Listen Address in NestJS
+DESCRIPTION: Sets up a Fastify server to listen on all network interfaces (0.0.0.0) on port 3000. This configuration is necessary when running the NestJS application on a remote machine to allow external connections.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/10-fastify/README.md#2025-04-23_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+await app.listen(3000, '0.0.0.0')
+```
+
+----------------------------------------
+
+TITLE: Starting the Users Application in NestJS GraphQL Federation
+DESCRIPTION: Command to navigate to the users-application directory and start the users service, which serves as one of the sub-graphs in the federation.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/README.md#2025-04-23_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+cd users-application && npm run start
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies in Bash
+DESCRIPTION: Command for installing all dependencies required for a NestJS project. This should be run after cloning the repository to download all necessary packages specified in package.json.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/26-queues/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands for executing different types of tests in a NestJS application. Includes options for unit tests, end-to-end tests, and generating test coverage reports.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/gateway/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies
+DESCRIPTION: Command to install all required dependencies for a NestJS project using npm.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/users-application/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands for executing different types of tests in a NestJS application. This includes unit tests, end-to-end tests, and generating test coverage reports to ensure code quality.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/25-dynamic-modules/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies
+DESCRIPTION: Command to install all required dependencies for a NestJS project using npm.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/28-sse/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands for running unit tests, end-to-end tests, and generating test coverage reports using npm scripts.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/users-application/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies with npm
+DESCRIPTION: Command to install all required dependencies for a NestJS project. This is typically the first step after cloning a NestJS repository.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/gateway/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies with npm
+DESCRIPTION: This command installs the necessary dependencies for a NestJS project using npm. It should be run in the project's root directory after cloning or setting up the initial project structure.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/posts-application/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Applications in Different Modes
+DESCRIPTION: Commands for running a NestJS application in development, watch, and production modes. Each command serves a different purpose in the development workflow, from basic development to production deployment.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/25-dynamic-modules/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Application in Different Modes
+DESCRIPTION: Commands to run the NestJS application in development, watch, and production modes. These commands use npm scripts defined in the project's package.json.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/27-scheduling/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Applications in Different Modes
+DESCRIPTION: Commands to run a NestJS application in different environments: development mode, watch mode for auto-reloading during development, and production mode for deployment.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/users-application/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Managing Docker Container for MySQL Database
+DESCRIPTION: Commands for starting and stopping the Docker container using docker-compose
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/05-sql-typeorm/README.md#2025-04-23_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+docker-compose up
+```
+
+LANGUAGE: shell
+CODE:
+```
+docker-compose down
+```
+
+----------------------------------------
+
+TITLE: Starting NestJS Application with MongoDB and TypeORM
+DESCRIPTION: Command to start the NestJS application that uses MongoDB with TypeORM. This runs the sample project after all dependencies and the database are set up.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/13-mongo-typeorm/README.md#2025-04-23_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+npm run start
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Application Dependencies with npm
+DESCRIPTION: Command to install all necessary dependencies for a NestJS application using npm package manager. This should be run before attempting to start or test the application.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/gateway/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands to run different types of tests in a NestJS project, including unit tests, end-to-end tests, and test coverage. These use npm scripts defined in the project's package.json.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/27-scheduling/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Starting Docker Container for MongoDB
+DESCRIPTION: Command to start the MongoDB container using docker-compose configuration.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/06-mongoose/README.md#2025-04-23_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+docker-compose up
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands for executing different types of tests in a NestJS application: unit tests, end-to-end (e2e) tests, and test coverage reports.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/users-application/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Starting NestJS Application
+DESCRIPTION: Command to start the NestJS application in development mode
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/14-mongoose-base/README.md#2025-04-23_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+npm run start
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Tests
+DESCRIPTION: Commands to execute unit tests, end-to-end tests, and generate test coverage reports for a NestJS application.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/posts-application/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS Mongoose Project
+DESCRIPTION: Command to install all required npm dependencies for the project
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/14-mongoose-base/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Starting Docker Container for NestJS Sequelize Example
+DESCRIPTION: Command to start the Docker container defined in docker-compose.yml for the NestJS Sequelize example.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/07-sequelize/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose up
+```
+
+----------------------------------------
+
+TITLE: Common NestJS Development Scripts
+DESCRIPTION: Common NPM scripts used for building, testing, and linting NestJS packages.
+SOURCE: https://github.com/nestjs/nest/blob/master/CONTRIBUTING.md#2025-04-23_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+# build all packages and move to "sample" directories
+$ npm run build
+
+# run the full unit tests suite
+$ npm run test
+
+# run integration tests
+# docker is required(!)
+$ sh scripts/run-integration.sh
+
+# run linter
+$ npm run lint
+
+# build all packages and put them near to their source .ts files
+$ npm run build:prod
+```
+
+----------------------------------------
+
+TITLE: Stopping Docker Container for NestJS Sequelize Example
+DESCRIPTION: Command to stop and remove the Docker container after running the NestJS Sequelize example.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/07-sequelize/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose down
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Application in Different Modes
+DESCRIPTION: Commands to run a NestJS application in development, watch, and production modes using npm scripts.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/posts-application/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Starting the Posts Application in NestJS GraphQL Federation
+DESCRIPTION: Command to navigate to the posts-application directory and start the posts service, which serves as another sub-graph in the federation.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/README.md#2025-04-23_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+cd posts-application && npm run start
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS GraphQL Project
+DESCRIPTION: Command to install all required npm dependencies for the NestJS GraphQL project
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/12-graphql-schema-first/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS Prisma GraphQL Project
+DESCRIPTION: Command to install the required npm dependencies for the NestJS Prisma GraphQL sample project.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/22-graphql-prisma/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Starting Posts Application in GraphQL Federation
+DESCRIPTION: Command to start the posts sub-graph application, which should be executed before starting the gateway.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/README.md#2025-04-23_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+cd posts-application && npm run start
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies with npm
+DESCRIPTION: Command to install the necessary dependencies for a NestJS project using npm. This should be run in the project root directory.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/27-scheduling/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS TypeORM Project
+DESCRIPTION: Command to install all required npm dependencies for the project
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/05-sql-typeorm/README.md#2025-04-23_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS MongoDB TypeORM Sample
+DESCRIPTION: Command to install the necessary dependencies for the NestJS MongoDB TypeORM sample project.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/13-mongo-typeorm/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS Mongoose Project
+DESCRIPTION: Command to install project dependencies via npm package manager.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/06-mongoose/README.md#2025-04-23_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Starting Users Application in GraphQL Federation
+DESCRIPTION: Command to start the users sub-graph application, which should be executed first before starting the gateway.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/README.md#2025-04-23_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+cd users-application && npm run start
+```
+
+----------------------------------------
+
+TITLE: Querying Combined User and Posts Data with GraphQL Federation
+DESCRIPTION: Example GraphQL query that demonstrates how to fetch a user by ID along with their associated posts across the federated graph. This showcases the key benefit of federation - querying related data across multiple services in a single request.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/31-graphql-federation-code-first/README.md#2025-04-23_snippet_3
+
+LANGUAGE: gql
+CODE:
+```
+query getUserWithPosts($userId: ID!) {
+  getUser(id: $userId) {
+    id
+    name
+    posts {
+      authorId
+      id
+      title
+    }
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Starting NestJS Application
+DESCRIPTION: Command to start the NestJS application in development mode
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/05-sql-typeorm/README.md#2025-04-23_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+npm run start
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS Swagger Project
+DESCRIPTION: Command to install the required dependencies for the NestJS Swagger sample project using npm.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/11-swagger/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Running NestJS Application in Different Modes
+DESCRIPTION: Commands for starting a NestJS application in development, watch mode, and production environments. These commands execute the corresponding npm scripts defined in the project's package.json file.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/26-queues/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies with npm
+DESCRIPTION: Command to install all necessary dependencies for a NestJS application using npm package manager.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/posts-application/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: NestJS Development Environment Setup
+DESCRIPTION: Commands for setting up the NestJS development environment, including package installation and preparation script.
+SOURCE: https://github.com/nestjs/nest/blob/master/CONTRIBUTING.md#2025-04-23_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+$ npm ci --legacy-peer-deps # (or yarn install)
+```
+
+LANGUAGE: bash
+CODE:
+```
+$ sh scripts/prepare.sh
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies with npm
+DESCRIPTION: Command to install all required dependencies for a NestJS project. This should be run after cloning the NestJS starter repository to set up the development environment.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/25-dynamic-modules/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: Running Tests in NestJS Application
+DESCRIPTION: Commands for running different types of tests in a NestJS application, including unit tests, end-to-end tests, and generating test coverage reports.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/gateway/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+----------------------------------------
+
+TITLE: Starting GraphQL Federation Gateway
+DESCRIPTION: Command to start the gateway application after both sub-graphs are running. The gateway fetches and combines schemas from the sub-graphs.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/README.md#2025-04-23_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+cd gateway && npm run start
+```
+
+----------------------------------------
+
+TITLE: Starting Docker Container for MongoDB in NestJS Sample
+DESCRIPTION: Command to start the Docker container for MongoDB using docker-compose. This sets up the required MongoDB instance for the NestJS application.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/13-mongo-typeorm/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose up
+```
+
+----------------------------------------
+
+TITLE: NestJS with Fastify Platform Performance Metrics
+DESCRIPTION: Benchmark results for NestJS with @nestjs/platform-fastify showing latency averaging 34.41ms and handling 295k requests in 10.17s with 45.1 MB read.
+SOURCE: https://github.com/nestjs/nest/blob/master/benchmarks/all_output.txt#2025-04-23_snippet_3
+
+LANGUAGE: plaintext
+CODE:
+```
+Running 10s test @ http://localhost:3000
+1024 connections
+
+Latency: Avg 34.41 ms, Max 245 ms
+Req/Sec: Avg 29470.4, Min 24907
+Bytes/Sec: Avg 4.51 MB, Min 3.81 MB
+
+295k requests in 10.17s, 45.1 MB read
+```
+
+----------------------------------------
+
+TITLE: Express Performance Metrics
+DESCRIPTION: Benchmark results for Express showing latency averaging 61.88ms and handling 165k requests in 10.17s with 35.4 MB read.
+SOURCE: https://github.com/nestjs/nest/blob/master/benchmarks/all_output.txt#2025-04-23_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+Running 10s test @ http://localhost:3000
+1024 connections
+
+Latency: Avg 61.88 ms, Max 747 ms
+Req/Sec: Avg 16454.41, Min 8402
+Bytes/Sec: Avg 3.54 MB, Min 1.81 MB
+
+165k requests in 10.17s, 35.4 MB read
+```
+
+----------------------------------------
+
+TITLE: Installing NestJS Dependencies with npm
+DESCRIPTION: Command to install all dependencies required for a NestJS project using npm package manager.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/32-graphql-federation-schema-first/users-application/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+$ npm install
+```
+
+----------------------------------------
+
+TITLE: NestJS with Express Platform Performance Metrics
+DESCRIPTION: Benchmark results for NestJS with @nestjs/platform-express showing latency averaging 65.44ms and handling 156k requests in 10.24s with 33.8 MB read.
+SOURCE: https://github.com/nestjs/nest/blob/master/benchmarks/all_output.txt#2025-04-23_snippet_1
+
+LANGUAGE: plaintext
+CODE:
+```
+Running 10s test @ http://localhost:3000
+1024 connections
+
+Latency: Avg 65.44 ms, Max 325 ms
+Req/Sec: Avg 15640, Min 14182
+Bytes/Sec: Avg 3.38 MB, Min 3.06 MB
+
+156k requests in 10.24s, 33.8 MB read
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for NestJS Sequelize Project
+DESCRIPTION: Command to install the necessary dependencies for the NestJS project with Sequelize integration.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/07-sequelize/README.md#2025-04-23_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm install
+```
+
+----------------------------------------
+
+TITLE: Fastify Performance Metrics
+DESCRIPTION: Benchmark results for Fastify showing latency averaging 31.62ms and handling 320k requests in 10.18s with 48.7 MB read.
+SOURCE: https://github.com/nestjs/nest/blob/master/benchmarks/all_output.txt#2025-04-23_snippet_2
+
+LANGUAGE: plaintext
+CODE:
+```
+Running 10s test @ http://localhost:3000
+1024 connections
+
+Latency: Avg 31.62 ms, Max 1232 ms
+Req/Sec: Avg 32030.4, Min 19931
+Bytes/Sec: Avg 4.87 MB, Min 3.03 MB
+
+320k requests in 10.18s, 48.7 MB read
+```
+
+----------------------------------------
+
+TITLE: Git Commit and Push Commands
+DESCRIPTION: Commands for committing changes and pushing the branch to GitHub for NestJS contribution.
+SOURCE: https://github.com/nestjs/nest/blob/master/CONTRIBUTING.md#2025-04-23_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+git commit -a
+```
+
+LANGUAGE: shell
+CODE:
+```
+git push origin my-fix-branch
+```
+
+----------------------------------------
+
+TITLE: Creating Git Branch for NestJS Contribution
+DESCRIPTION: Command to create a new git branch for implementing fixes or features in NestJS.
+SOURCE: https://github.com/nestjs/nest/blob/master/CONTRIBUTING.md#2025-04-23_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+git checkout -b my-fix-branch master
+```
+
+----------------------------------------
+
+TITLE: Displaying Sponsor Logos in HTML Table
+DESCRIPTION: This HTML snippet creates a table to display logos and links for NestJS project sponsors. It uses inline styles for alignment and sizing of sponsor images.
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/common/Readme.md#2025-04-23_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+<table>
+<tr>
+<td align="center" valign="middle"><a href="https://www.swingdev.io" target="_blank"><img src="https://nestjs.com/img/logos/swingdev-logo.svg#1" width="110" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://www.novologic.com/" target="_blank"><img src="https://nestjs.com/img/logos/novologic.png" width="110" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://mantro.net/" target="_blank"><img src="https://nestjs.com/img/logos/mantro-logo.svg" width="95" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://triplebyte.com/" target="_blank"><img src="https://nestjs.com/img/logos/triplebyte.png" width="107" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://nearpod.com/" target="_blank"><img src="https://nestjs.com/img/logos/nearpod-logo.svg" width="100" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://genuinebee.com/" target="_blank"><img src="https://nestjs.com/img/logos/genuinebee.svg" width="97" valign="middle" /></a></td>
+</tr>
+<!-- Additional rows omitted for brevity -->
+</table>
+```
+
+----------------------------------------
+
+TITLE: Displaying Sponsor Logos in HTML Table
+DESCRIPTION: This HTML snippet creates a table to display sponsor logos with links to their respective websites. It organizes the logos in a grid format, providing visual representation of NestJS project sponsors.
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/platform-socket.io/Readme.md#2025-04-23_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+<table>
+<tr>
+<td align="center" valign="middle"><a href="https://www.swingdev.io" target="_blank"><img src="https://nestjs.com/img/logos/swingdev-logo.svg#1" width="110" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://www.novologic.com/" target="_blank"><img src="https://nestjs.com/img/logos/novologic.png" width="110" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://mantro.net/" target="_blank"><img src="https://nestjs.com/img/logos/mantro-logo.svg" width="95" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://triplebyte.com/" target="_blank"><img src="https://nestjs.com/img/logos/triplebyte.png" width="107" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://nearpod.com/" target="_blank"><img src="https://nestjs.com/img/logos/nearpod-logo.svg" width="100" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://genuinebee.com/" target="_blank"><img src="https://nestjs.com/img/logos/genuinebee.svg" width="97" valign="middle" /></a></td>
+</tr>
+<!-- Additional rows omitted for brevity -->
+</table>
+```
+
+----------------------------------------
+
+TITLE: Displaying Backers Using OpenCollective Image in HTML
+DESCRIPTION: This HTML snippet embeds an image from OpenCollective showing the backers of the NestJS project. It uses an anchor tag to link to the OpenCollective page.
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/common/Readme.md#2025-04-23_snippet_1
+
+LANGUAGE: HTML
+CODE:
+```
+<a href="https://opencollective.com/nest" target="_blank"><img src="https://opencollective.com/nest/backers.svg?width=1000"></a>
+```
+
+----------------------------------------
+
+TITLE: Stopping Docker Container for MongoDB in NestJS Sample
+DESCRIPTION: Command to stop and remove the Docker container for MongoDB after running the sample application.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/13-mongo-typeorm/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose down
+```
+
+----------------------------------------
+
+TITLE: Stopping Docker Container
+DESCRIPTION: Command to stop and remove the MongoDB Docker container.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/06-mongoose/README.md#2025-04-23_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+docker-compose down
+```
+
+----------------------------------------
+
+TITLE: Starting NestJS Application
+DESCRIPTION: Command to start the NestJS application in development mode.
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/06-mongoose/README.md#2025-04-23_snippet_3
+
+LANGUAGE: shell
+CODE:
+```
+npm run start
+```
+
+----------------------------------------
+
+TITLE: Starting Docker Container for MongoDB
+DESCRIPTION: Command to start the MongoDB container using Docker Compose
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/14-mongoose-base/README.md#2025-04-23_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose up
+```
+
+----------------------------------------
+
+TITLE: Stopping Docker Container
+DESCRIPTION: Command to stop and remove the Docker container
+SOURCE: https://github.com/nestjs/nest/blob/master/sample/14-mongoose-base/README.md#2025-04-23_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+docker-compose down
+```
+
+----------------------------------------
+
+TITLE: Post-Merge Branch Cleanup Commands
+DESCRIPTION: Series of git commands to clean up after a pull request is merged, including deleting branches and updating master.
+SOURCE: https://github.com/nestjs/nest/blob/master/CONTRIBUTING.md#2025-04-23_snippet_2
+
+LANGUAGE: shell
+CODE:
+```
+git push origin --delete my-fix-branch
+```
+
+LANGUAGE: shell
+CODE:
+```
+git checkout master -f
+```
+
+LANGUAGE: shell
+CODE:
+```
+git branch -D my-fix-branch
+```
+
+LANGUAGE: shell
+CODE:
+```
+git pull --ff upstream master
+```
+
+----------------------------------------
+
+TITLE: Rendering Sponsors Table in HTML/Markdown
+DESCRIPTION: HTML table structure displaying sponsor logos and links in a grid format with centered alignment and consistent image sizing
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/testing/Readme.md#2025-04-23_snippet_0
+
+LANGUAGE: html
+CODE:
+```
+<table>
+<tr>
+<td align="center" valign="middle"><a href="https://www.swingdev.io" target="_blank"><img src="https://nestjs.com/img/logos/swingdev-logo.svg#1" width="110" valign="middle" /></a></td>
+<td align="center" valign="middle"><a href="https://www.novologic.com/" target="_blank"><img src="https://nestjs.com/img/logos/novologic.png" width="110" valign="middle" /></a></td>
+<!-- ... additional table cells ... -->
+</tr>
+</table>
+```
+
+----------------------------------------
+
+TITLE: Rendering OpenCollective Backers in Markdown
+DESCRIPTION: Markdown link with embedded backers image from OpenCollective
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/testing/Readme.md#2025-04-23_snippet_1
+
+LANGUAGE: markdown
+CODE:
+```
+<a href="https://opencollective.com/nest" target="_blank"><img src="https://opencollective.com/nest/backers.svg?width=1000"></a>
+```
+
+----------------------------------------
+
+TITLE: Displaying Backer Information with OpenCollective
+DESCRIPTION: This HTML snippet embeds an image from OpenCollective showing the backers of the NestJS project. It provides a visual representation of individual supporters.
+SOURCE: https://github.com/nestjs/nest/blob/master/packages/platform-socket.io/Readme.md#2025-04-23_snippet_1
+
+LANGUAGE: HTML
+CODE:
+```
+<a href="https://opencollective.com/nest" target="_blank"><img src="https://opencollective.com/nest/backers.svg?width=1000"></a>
+```

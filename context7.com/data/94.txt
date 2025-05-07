@@ -1,0 +1,72 @@
+TITLE: Resolving Strong Reference Cycles with Weak References
+DESCRIPTION: This code defines the Person and Apartment classes with a weak reference in the Apartment class to avoid a reference cycle. The weak keyword indicates that the tenant property doesn't keep a strong hold on the referenced Person instance.
+SOURCE: https://github.com/swiftlang/swift/blob/main/test/remote-run/Inputs/upload/3.txt#2025-04-23_snippet_2
+
+LANGUAGE: swift
+CODE:
+```
+class Person {
+    let name: String
+    var apartment: Apartment?
+    
+    init(name: String) {
+        self.name = name
+    }
+    
+    deinit {
+        print("\(name) is being deinitialized")
+    }
+}
+
+class Apartment {
+    let unit: String
+    weak var tenant: Person?
+    
+    init(unit: String) {
+        self.unit = unit
+    }
+    
+    deinit {
+        print("Apartment \(unit) is being deinitialized")
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Defining a Computed Property with Getter and Setter in Swift
+DESCRIPTION: This snippet defines a `Rect` struct containing stored properties (`x`, `y`, `width`, `height`) and a computed property `maxX`. The `maxX` property calculates its value based on `x` and `width` (getter) and allows updating `x` based on a new maximum value provided via the `newMax` parameter (setter). Computed variables do not allocate storage themselves.
+SOURCE: https://github.com/swiftlang/swift/blob/main/docs/StoredAndComputedVariables.rst#2025-04-23_snippet_4
+
+LANGUAGE: swift
+CODE:
+```
+struct Rect {
+  // Stored member variables
+  var x, y, width, height : Int
+
+  // A computed member variable
+  var maxX : Int {
+    get {
+      return x + width
+    }
+    set(newMax) {
+      x = newMax - width
+    }
+  }
+
+// myRect.maxX = 40
+```
+
+----------------------------------------
+
+TITLE: Creating Protocol Definition in Swift
+DESCRIPTION: Defines an empty protocol that can be implemented by conforming types.
+SOURCE: https://github.com/swiftlang/swift/blob/main/test/IDE/Inputs/print_clang_header/header-to-print.h.module.printed.txt#2025-04-23_snippet_4
+
+LANGUAGE: Swift
+CODE:
+```
+protocol SameNameProtocol {
+}
+```

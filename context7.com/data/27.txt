@@ -1,0 +1,2528 @@
+TITLE: Installing Scrcpy using Chocolatey on Windows
+DESCRIPTION: Commands to install Scrcpy and ADB (if needed) using the Chocolatey package manager on Windows.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/windows.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+choco install scrcpy
+choco install adb    # if you don't have it yet
+```
+
+----------------------------------------
+
+TITLE: Running Scrcpy with H.265 Video Encoding and Custom Settings in Bash
+DESCRIPTION: This command launches scrcpy with H.265 video codec for better quality, limits screen size to 1920, caps frame rate at 60fps, disables audio, and simulates a physical keyboard for device control. Both the full command and a shortened version with equivalent flags are shown.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/README.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-codec=h265 --max-size=1920 --max-fps=60 --no-audio --keyboard=uhid
+scrcpy --video-codec=h265 -m1920 --max-fps=60 --no-audio -K  # short version
+```
+
+----------------------------------------
+
+TITLE: Using Android Camera as a Linux Webcam with Scrcpy in Bash
+DESCRIPTION: This command captures the device's front camera at 1920x1080 resolution and makes it available as a webcam on the Linux system through the V4L2 interface without displaying the video on the computer screen.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/README.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera --camera-size=1920x1080 --camera-facing=front --v4l2-sink=/dev/video2 --no-playback
+```
+
+----------------------------------------
+
+TITLE: Building scrcpy from Source
+DESCRIPTION: Commands to build scrcpy from source using Meson and Ninja. The build must be run as a non-root user for security reasons.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_13
+
+LANGUAGE: bash
+CODE:
+```
+meson setup x --buildtype=release --strip -Db_lto=true
+ninja -Cx  # DO NOT RUN AS ROOT
+```
+
+----------------------------------------
+
+TITLE: Recording Device Camera and Microphone with Scrcpy in Bash
+DESCRIPTION: This command records the device camera using H.265 encoding at 1920x1080 resolution along with microphone audio to an MP4 file.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/README.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera --video-codec=h265 --camera-size=1920x1080 --record=file.mp4
+```
+
+----------------------------------------
+
+TITLE: Controlling Android Device in OTG Mode with Scrcpy in Bash
+DESCRIPTION: This command enables OTG mode, which allows controlling the device without mirroring by simulating a physical keyboard and mouse. This mode doesn't require USB debugging to be enabled on the device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/README.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --otg
+```
+
+----------------------------------------
+
+TITLE: Cloning the scrcpy Repository
+DESCRIPTION: Commands to clone the scrcpy repository from GitHub as a non-root user, which is the first common step for all platforms.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_11
+
+LANGUAGE: bash
+CODE:
+```
+git clone https://github.com/Genymobile/scrcpy
+cd scrcpy
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for Scrcpy on Debian/Ubuntu
+DESCRIPTION: Installs required system packages and development dependencies for building scrcpy on Debian-based systems.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/linux.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt install ffmpeg libsdl2-2.0-0 adb wget \
+                 gcc git pkg-config meson ninja-build libsdl2-dev \
+                 libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
+                 libswresample-dev libusb-1.0-0 libusb-1.0-0-dev
+```
+
+----------------------------------------
+
+TITLE: Installing scrcpy System-Wide
+DESCRIPTION: Command to install scrcpy on the system after building. This installs the binary, server, manpage, icon, and shell completions.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_16
+
+LANGUAGE: bash
+CODE:
+```
+sudo ninja -Cx install    # without sudo on Windows
+```
+
+----------------------------------------
+
+TITLE: Installing Scrcpy via Homebrew on macOS
+DESCRIPTION: Commands to install Scrcpy using the Homebrew package manager on macOS.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/macos.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+brew install scrcpy
+```
+
+----------------------------------------
+
+TITLE: Starting an App in a Virtual Display with Scrcpy in Bash
+DESCRIPTION: This command creates a new virtual display with resolution 1920x1080 and launches the VLC app on this display, separate from the device's physical display.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/README.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --new-display=1920x1080 --start-app=org.videolan.vlc
+```
+
+----------------------------------------
+
+TITLE: Selecting a Device by Serial Number in Bash
+DESCRIPTION: This snippet demonstrates how to select a specific Android device for scrcpy by its serial number or IP address using command-line arguments.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --serial=0123456789abcdef
+scrcpy -s 0123456789abcdef   # short version
+
+# the serial is the ip:port if connected over TCP/IP (same behavior as adb)
+scrcpy --serial=192.168.1.1:5555
+```
+
+----------------------------------------
+
+TITLE: Installing Scrcpy using Scoop on Windows
+DESCRIPTION: Commands to install Scrcpy and ADB (if needed) using the Scoop package manager on Windows.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/windows.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scoop install scrcpy
+scoop install adb    # if you don't have it yet
+```
+
+----------------------------------------
+
+TITLE: Control-Only Mode in Scrcpy
+DESCRIPTION: Commands to control the device without video or audio mirroring, useful for remote control with minimal bandwidth.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/control.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --no-audio
+```
+
+----------------------------------------
+
+TITLE: Executing scrcpy Server on Android Device
+DESCRIPTION: Commands to push the server JAR to the device, set up port forwarding, and execute the server process with the specified classpath and main class.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+adb push scrcpy-server /data/local/tmp/scrcpy-server.jar
+adb forward tcp:27183 localabstract:scrcpy
+adb shell CLASSPATH=/data/local/tmp/scrcpy-server.jar app_process / com.genymobile.scrcpy.Server 2.1
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies on macOS with Homebrew
+DESCRIPTION: Commands to install runtime and build dependencies for scrcpy on macOS using the Homebrew package manager.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+# runtime dependencies
+brew install sdl2 ffmpeg libusb
+
+# client build dependencies
+brew install pkg-config meson
+```
+
+----------------------------------------
+
+TITLE: Basic Video and Audio Recording in Scrcpy
+DESCRIPTION: Commands to record both video and audio streams while mirroring the screen. Supports MP4 and MKV formats.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --record=file.mp4
+scrcpy -r file.mkv
+```
+
+----------------------------------------
+
+TITLE: Installing 32-bit Dependencies in MSYS2
+DESCRIPTION: Commands to install runtime and build dependencies for scrcpy in MSYS2 environment on Windows, targeting 32-bit builds.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+# runtime dependencies
+pacman -S mingw-w64-i686-SDL2 \
+          mingw-w64-i686-ffmpeg \
+          mingw-w64-i686-libusb
+
+# client build dependencies
+pacman -S mingw-w64-i686-make \
+          mingw-w64-i686-gcc \
+          mingw-w64-i686-pkg-config \
+          mingw-w64-i686-meson
+```
+
+----------------------------------------
+
+TITLE: Creating a custom batch file for Scrcpy with specific arguments
+DESCRIPTION: Example of how to create a batch file with custom arguments for Scrcpy, allowing quick launch with preferred settings.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/windows.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --prefer-text --turn-screen-off --stay-awake
+```
+
+----------------------------------------
+
+TITLE: Preventing Device Sleep with scrcpy
+DESCRIPTION: Commands to prevent the device from sleeping when plugged in. The --stay-awake or -w flag modifies the stay_on_while_plugged_in Android setting while scrcpy is running.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --stay-awake
+scrcpy -w
+```
+
+----------------------------------------
+
+TITLE: Powering Off Device on scrcpy Close
+DESCRIPTION: Command to automatically turn off the device screen when closing the scrcpy application.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --power-off-on-close
+```
+
+----------------------------------------
+
+TITLE: Executing scrcpy Server with Custom Options
+DESCRIPTION: Example of executing the scrcpy server with specific options like disabling audio and setting maximum size. The server version and a unique client ID are also provided.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+adb shell CLASSPATH=/data/local/tmp/scrcpy-server.jar app_process / com.genymobile.scrcpy.Server 2.1 scid=12345678 log_level=info audio=false max_size=1920
+```
+
+----------------------------------------
+
+TITLE: Listing and Selecting Video Encoders in scrcpy (Bash)
+DESCRIPTION: Lists available encoders on the device and demonstrates how to select a specific encoder, which can be useful if the default encoder has issues.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --list-encoders
+
+scrcpy --video-codec=h264 --video-encoder=OMX.qcom.video.encoder.avc
+```
+
+----------------------------------------
+
+TITLE: Connecting to Specific IP and Port in Bash
+DESCRIPTION: This snippet demonstrates how to connect scrcpy to a device at a specific IP address and port, with an option to force reconnection.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --tcpip=192.168.1.1       # default port is 5555
+scrcpy --tcpip=192.168.1.1:5555
+
+scrcpy --tcpip=+192.168.1.1
+```
+
+----------------------------------------
+
+TITLE: Manual TCP/IP Connection Steps in Bash
+DESCRIPTION: This snippet outlines the manual steps to enable and use a TCP/IP connection for adb and scrcpy, including enabling the mode, connecting, and disconnecting.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+adb tcpip 5555
+adb connect DEVICE_IP:5555
+scrcpy
+adb disconnect
+```
+
+----------------------------------------
+
+TITLE: Connecting to TCP/IP Device in Bash
+DESCRIPTION: This code demonstrates how to connect to an Android device already listening on a specific IP address and port for TCP/IP connections.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --tcpip=192.168.1.1:5555
+scrcpy --tcpip=192.168.1.1        # default port is 5555
+```
+
+----------------------------------------
+
+TITLE: Using Computer Gamepad Controllers with Scrcpy in Bash
+DESCRIPTION: This command enables control of the Android device using gamepad controllers connected to the computer, simulating HID devices. Both the full command and the shortened version are shown.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/README.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --gamepad=uhid
+scrcpy -G  # short version
+```
+
+----------------------------------------
+
+TITLE: Running scrcpy Without Installing
+DESCRIPTION: Command to run scrcpy directly after building without installing it system-wide, useful for testing or development.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_15
+
+LANGUAGE: bash
+CODE:
+```
+./run x [options]
+```
+
+----------------------------------------
+
+TITLE: Starting Specific Android Apps with scrcpy
+DESCRIPTION: Commands to launch a specific Android application when starting scrcpy, identified by package name or app name.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_12
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --start-app=org.mozilla.firefox
+```
+
+----------------------------------------
+
+TITLE: Basic Camera Source Configuration in Scrcpy
+DESCRIPTION: Basic commands to enable camera capture and configure video/audio sources in Scrcpy. Demonstrates switching between display and camera sources with audio options.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera
+
+scrcpy --video-source=display  # default is --audio-source=output
+scrcpy --video-source=camera   # default is --audio-source=mic
+scrcpy --video-source=display --audio-source=mic    # force display AND microphone
+scrcpy --video-source=camera --audio-source=output  # force camera AND device audio output
+```
+
+----------------------------------------
+
+TITLE: Targeting Specific Device by Serial Number in scrcpy
+DESCRIPTION: Command to connect scrcpy to a specific Android device when multiple devices are connected, using the device serial number.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy -s 0123456789abcdef
+```
+
+----------------------------------------
+
+TITLE: Camera Size and Aspect Ratio Configuration
+DESCRIPTION: Commands showing various ways to configure camera resolution and aspect ratio settings.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera --camera-size=1920x1080
+
+scrcpy --video-source=camera --camera-size=1840x444
+
+scrcpy --video-source=camera                          # use the greatest width and the greatest associated height
+scrcpy --video-source=camera -m1920                   # use the greatest width not above 1920 and the greatest associated height
+scrcpy --video-source=camera --camera-ar=4:3          # use the greatest size with an aspect ratio of 4:3 (+/- 10%)
+scrcpy --video-source=camera --camera-ar=1.6          # use the greatest size with an aspect ratio of 1.6 (+/- 10%)
+scrcpy --video-source=camera --camera-ar=sensor       # use the greatest size with the aspect ratio of the camera sensor (+/- 10%)
+scrcpy --video-source=camera -m1920 --camera-ar=16:9  # use the greatest width not above 1920 and the closest to 16:9 aspect ratio
+
+scrcpy --video-source=camera --camera-size=1920x1080 -m3000  # error
+```
+
+----------------------------------------
+
+TITLE: Selecting Video Codec in scrcpy (Bash)
+DESCRIPTION: Chooses the video codec for encoding. Supports h264 (default), h265, and av1. H265 may provide better quality, while H264 offers lower latency.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-codec=h264  # default
+scrcpy --video-codec=h265
+scrcpy --video-codec=av1
+```
+
+----------------------------------------
+
+TITLE: Running Scrcpy with Custom Arguments
+DESCRIPTION: Example of running scrcpy with specific arguments to disable audio and record to a file.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/linux.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-audio --record=file.mkv
+```
+
+----------------------------------------
+
+TITLE: Configuring Scrcpy Shortcut Modifiers
+DESCRIPTION: Examples showing how to customize the shortcut modifier key in scrcpy using the --shortcut-mod parameter. Demonstrates setting single and multiple modifier keys.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/shortcuts.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+# use RCtrl for shortcuts
+scrcpy --shortcut-mod=rctrl
+
+# use either LCtrl or LSuper for shortcuts
+scrcpy --shortcut-mod=lctrl,lsuper
+```
+
+----------------------------------------
+
+TITLE: Setting Display Orientation in scrcpy (Bash)
+DESCRIPTION: Sets the orientation of the video on the client side. Affects both display and recording. Supports various angles and flipping options.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --orientation=0
+scrcpy --orientation=90       # 90° clockwise
+scrcpy --orientation=180      # 180°
+scrcpy --orientation=270      # 270° clockwise
+scrcpy --orientation=flip0    # hflip
+scrcpy --orientation=flip90   # hflip + 90° clockwise
+scrcpy --orientation=flip180  # vflip (hflip + 180°)
+scrcpy --orientation=flip270  # hflip + 270° clockwise
+```
+
+----------------------------------------
+
+TITLE: Encoder Management Commands
+DESCRIPTION: Commands for listing and selecting specific audio encoders.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --list-encoders
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-codec=opus --audio-encoder='c2.android.opus.encoder'
+```
+
+----------------------------------------
+
+TITLE: Configuring Mouse Button Bindings in scrcpy
+DESCRIPTION: Examples of how to configure mouse button bindings using the --mouse-bind parameter with different configurations for primary and secondary (Shift) clicks.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/mouse.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --mouse-bind=bhsn:++++  # the default mode for SDK mouse
+scrcpy --mouse-bind=++++:bhsn  # the default mode for AOA and UHID
+scrcpy --mouse-bind=++bh:++sn  # forward right and middle clicks,
+                               # use 4th and 5th for BACK and HOME,
+                               # use Shift+4th and Shift+5th for APP_SWITCH
+                               # and expand notification panel
+```
+
+----------------------------------------
+
+TITLE: Enabling UHID Gamepad Mode in scrcpy
+DESCRIPTION: This command enables the UHID gamepad mode in scrcpy, which simulates physical HID gamepads using the UHID kernel module on the device. It can be used with either the long or short version of the command.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/gamepad.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --gamepad=uhid
+scrcpy -G  # short version
+```
+
+----------------------------------------
+
+TITLE: Disabling Audio in Scrcpy
+DESCRIPTION: Command to disable audio forwarding in Scrcpy sessions.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-audio
+```
+
+----------------------------------------
+
+TITLE: Camera Listing Commands
+DESCRIPTION: Commands to list available cameras and their supported sizes/frame rates on the device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --list-cameras
+scrcpy --list-camera-sizes
+```
+
+----------------------------------------
+
+TITLE: Configuring Video Buffering in scrcpy (Bash)
+DESCRIPTION: Adds buffering to delay the video stream and compensate for jitter, resulting in smoother playback. Buffering can be set independently for display, v4l2 sinks, and audio playback.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-buffer=50     # add 50ms buffering for video playback
+scrcpy --audio-buffer=200    # set 200ms buffering for audio playback
+scrcpy --v4l2-buffer=300     # add 300ms buffering for v4l2 sink
+
+scrcpy --video-buffer=50 --v4l2-buffer=300
+```
+
+----------------------------------------
+
+TITLE: Autostarting scrcpy with AutoAdb in Bash
+DESCRIPTION: This code demonstrates how to use AutoAdb to automatically start scrcpy when a new Android device is connected.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_11
+
+LANGUAGE: bash
+CODE:
+```
+autoadb scrcpy -s '{}'
+```
+
+----------------------------------------
+
+TITLE: Listing available v4l2 video devices
+DESCRIPTION: Commands to list all available video devices in the system, either using v4l2-ctl from v4l-utils package or a simple ls command.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+# requires v4l-utils package
+v4l2-ctl --list-devices
+
+# simple but might be sufficient
+ls /dev/video*
+```
+
+----------------------------------------
+
+TITLE: Automatic TCP/IP Connection in Bash
+DESCRIPTION: This code shows how to automatically configure a TCP/IP connection for scrcpy, including finding the device IP and enabling TCP/IP mode if necessary.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --tcpip   # without arguments
+```
+
+----------------------------------------
+
+TITLE: Selecting Display for Mirroring in scrcpy (Bash)
+DESCRIPTION: Selects a specific display to mirror when multiple displays are available on the Android device. Also shows how to list available displays.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --display-id=1
+
+scrcpy --list-displays
+```
+
+----------------------------------------
+
+TITLE: Camera Selection and Facing Configuration
+DESCRIPTION: Commands for selecting specific cameras by ID or facing direction (front/back/external).
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera --camera-id=0
+
+scrcpy --video-source=camera                           # use the first camera
+scrcpy --video-source=camera --camera-facing=front     # use the first front camera
+scrcpy --video-source=camera --camera-facing=back      # use the first back camera
+scrcpy --video-source=camera --camera-facing=external  # use the first external camera
+
+scrcpy --video-source=camera --camera-id=0 --camera-facing=front  # error
+```
+
+----------------------------------------
+
+TITLE: Audio Configuration with Camera Source
+DESCRIPTION: Commands for managing audio settings when using camera capture, including disabling audio and configuring recording options.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# audio not captured at all
+scrcpy --video-source=camera --no-audio
+scrcpy --video-source=camera --no-audio --record=file.mp4
+
+# audio captured and recorded, but not played
+scrcpy --video-source=camera --no-audio-playback --record=file.mp4
+```
+
+----------------------------------------
+
+TITLE: Enabling UHID Keyboard and Mouse in Control-Only Mode
+DESCRIPTION: Commands to use both UHID keyboard and mouse when controlling a device without video mirroring.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/control.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --no-audio --mouse=uhid --keyboard=uhid
+scrcpy --no-video --no-audio -MK  # short version
+```
+
+----------------------------------------
+
+TITLE: Establishing SSH Tunnel
+DESCRIPTION: Command to create an SSH tunnel for secure remote ADB connection with bidirectional port forwarding.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+ssh -CN -L5038:localhost:5037 -R27183:localhost:27183 your_remote_computer
+```
+
+----------------------------------------
+
+TITLE: Audio Codec Selection
+DESCRIPTION: Commands for selecting different audio codecs including opus, aac, flac, and raw.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-codec=opus
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-codec=aac
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-codec=flac
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-codec=raw
+```
+
+----------------------------------------
+
+TITLE: Opening v4l2 video stream with media players
+DESCRIPTION: Commands to open and view the v4l2 video stream using ffplay or VLC media players after scrcpy has been configured as the video source.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+ffplay -i /dev/videoN
+vlc v4l2:///dev/videoN   # VLC might add some buffering delay
+```
+
+----------------------------------------
+
+TITLE: Time-Limited Recording and Mirroring
+DESCRIPTION: Commands to set time limits for recording and mirroring sessions in seconds.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --record=file.mkv --time-limit=20  # in seconds
+
+scrcpy --time-limit=20
+```
+
+----------------------------------------
+
+TITLE: Audio Duplication Configuration
+DESCRIPTION: Commands for enabling audio duplication on Android 13+ devices.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-source=playback --audio-dup
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-dup
+```
+
+----------------------------------------
+
+TITLE: Disabling Device Controls in Scrcpy
+DESCRIPTION: Commands to disable all device controls (input keys, mouse events, file transfers) while still mirroring the screen.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/control.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-control
+scrcpy -n   # short version
+```
+
+----------------------------------------
+
+TITLE: Loading v4l2loopback module with exclusive_caps for WebRTC compatibility
+DESCRIPTION: Command to load the v4l2loopback module with exclusive_caps option enabled, which helps with Chrome/WebRTC device detection.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+sudo modprobe v4l2loopback exclusive_caps=1
+```
+
+----------------------------------------
+
+TITLE: Configuring Video Bit Rate in scrcpy (Bash)
+DESCRIPTION: Sets the video bit rate to 2 Mbps. This can be specified in different formats as shown in the example.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-bit-rate=2M
+scrcpy --video-bit-rate=2000000  # equivalent
+scrcpy -b 2M                     # short version
+```
+
+----------------------------------------
+
+TITLE: Basic Scrcpy Usage Command
+DESCRIPTION: Basic command to run Scrcpy with default settings on macOS.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/macos.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Enabling OTG Mode in scrcpy
+DESCRIPTION: Command to enable OTG mode in scrcpy. It allows specifying a device serial if multiple USB devices are connected.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/otg.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --otg
+# Pass the serial if several USB devices are available
+scrcpy --otg -s 0123456789abcdef
+```
+
+----------------------------------------
+
+TITLE: Enabling AOA Gamepad Mode in scrcpy
+DESCRIPTION: This command enables the AOA gamepad mode in scrcpy, which simulates physical HID gamepads using the AOAv2 protocol. This mode works at the USB level directly and does not require USB debugging.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/gamepad.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --gamepad=aoa
+```
+
+----------------------------------------
+
+TITLE: Turning Device Screen Off at scrcpy Startup
+DESCRIPTION: Commands to start scrcpy with the device screen turned off while still mirroring the content to the computer.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --turn-screen-off
+scrcpy -S   # short version
+```
+
+----------------------------------------
+
+TITLE: Limiting Frame Rate in scrcpy (Bash)
+DESCRIPTION: Limits the capture frame rate to 15 fps. Also shows how to print the actual capture frame rate to the console.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --max-fps=15
+
+scrcpy --print-fps
+```
+
+----------------------------------------
+
+TITLE: Setting Maximum Video Size in scrcpy (Bash)
+DESCRIPTION: Limits both width and height of the mirrored video to a maximum value of 1024 pixels while preserving the aspect ratio.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --max-size=1024
+scrcpy -m 1024   # short version
+```
+
+----------------------------------------
+
+TITLE: Creating New Virtual Displays with Scrcpy
+DESCRIPTION: Examples of creating virtual displays with different size and DPI configurations. Shows various ways to specify display dimensions and density.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/virtual_display.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --new-display=1920x1080
+scrcpy --new-display=1920x1080/420  # force 420 dpi
+scrcpy --new-display         # use the main display size and density
+scrcpy --new-display=/240    # use the main display size and 240 dpi
+```
+
+----------------------------------------
+
+TITLE: Starting scrcpy in Fullscreen Mode (Bash)
+DESCRIPTION: These commands start scrcpy directly in fullscreen mode. The first command uses the full option name, while the second uses a short version.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --fullscreen
+scrcpy -f   # short version
+```
+
+----------------------------------------
+
+TITLE: Audio-Only Recording with Different Codecs
+DESCRIPTION: Commands to record only audio using various codecs including opus, aac, flac, and raw formats.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --record=file.opus
+scrcpy --no-video --audio-codec=aac --record=file.aac
+scrcpy --no-video --audio-codec=flac --record=file.flac
+scrcpy --no-video --audio-codec=raw --record=file.wav
+# .m4a/.mp4 and .mka/.mkv are also supported for opus, aac and flac
+```
+
+----------------------------------------
+
+TITLE: Enabling UHID Mouse in Control-Only Mode
+DESCRIPTION: Commands to enable relative mouse control using UHID mode when video is disabled, allowing for more precise input control.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/control.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --no-audio --mouse=uhid
+scrcpy --no-video --no-audio -M  # short version
+```
+
+----------------------------------------
+
+TITLE: Starting Apps on Virtual Display
+DESCRIPTION: Commands to launch specific Android applications on the virtual display, including examples with VLC and Fossify Launcher.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/virtual_display.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --new-display=1920x1080 --start-app=org.videolan.vlc
+scrcpy --new-display=1920x1080 --no-vd-system-decorations --start-app=org.fossify.home
+```
+
+----------------------------------------
+
+TITLE: Video-Only Recording in Scrcpy
+DESCRIPTION: Command to record only the video stream without audio.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-audio --record=file.mp4
+```
+
+----------------------------------------
+
+TITLE: Running scrcpy with v4l2 sink output
+DESCRIPTION: Commands to start scrcpy with video output directed to a v4l2 loopback device, with options to disable the playback window.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --v4l2-sink=/dev/videoN
+scrcpy --v4l2-sink=/dev/videoN --no-video-playback  # disable playback window
+```
+
+----------------------------------------
+
+TITLE: Using AOA Control Mode Over USB
+DESCRIPTION: Commands to use Android Open Accessory (AOA) protocol for keyboard and mouse control over USB without video mirroring.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/control.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --no-audio --keyboard=aoa --mouse=aoa
+```
+
+----------------------------------------
+
+TITLE: Setting Screen Off Timeout in scrcpy
+DESCRIPTION: Command to change the screen timeout duration while scrcpy is running. The argument is specified in seconds, and the original value is restored upon exit.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --screen-off-timeout=300  # 300 seconds (5 minutes)
+```
+
+----------------------------------------
+
+TITLE: Enabling AOA Mouse Mode in scrcpy
+DESCRIPTION: Command to enable AOA mode, which simulates a physical HID mouse using the AOAv2 protocol at the USB level.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/mouse.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --mouse=aoa
+```
+
+----------------------------------------
+
+TITLE: Configuring IME Display Policy
+DESCRIPTION: Commands to configure where the Input Method Editor (IME) appears, either on the default or local display.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/virtual_display.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --display-id=1 --display-ime-policy=local
+scrcpy --new-display --display-ime-policy=local
+```
+
+----------------------------------------
+
+TITLE: Enabling Gamepads in OTG Mode
+DESCRIPTION: Commands to enable gamepad support in OTG mode when using scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/otg.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --otg --gamepad=aoa
+scrcpy --otg -G  # short version
+```
+
+----------------------------------------
+
+TITLE: Combining Screen Off with Stay Awake
+DESCRIPTION: Commands to turn the screen off while preventing the device from sleeping, useful for background operations.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --turn-screen-off --stay-awake
+scrcpy -Sw   # short version
+```
+
+----------------------------------------
+
+TITLE: Enabling Touch Indicators in scrcpy
+DESCRIPTION: Command to show physical touch points on the device screen during mirroring, useful for presentations or demonstrations.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --show-touches
+scrcpy -t   # short version
+```
+
+----------------------------------------
+
+TITLE: Selecting TCP/IP-Connected Device in Bash
+DESCRIPTION: This snippet illustrates how to select the Android device connected over TCP/IP, assuming there is only one such device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --select-tcpip
+scrcpy -e   # short version
+```
+
+----------------------------------------
+
+TITLE: Camera Orientation and Frame Rate Settings
+DESCRIPTION: Commands for configuring camera rotation, frame rate, and high-speed capture modes.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera --camera-size=1920x1080 --orientation=90
+
+scrcpy --video-source=camera --camera-fps=60
+
+scrcpy --video-source=camera --camera-size=1920x1080 --camera-fps=240
+```
+
+----------------------------------------
+
+TITLE: Cropping Device Screen in scrcpy (Bash)
+DESCRIPTION: Crops the device screen to mirror only a specific part. Values are expressed in the device's natural orientation.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --crop=1224:1440:0:0   # 1224x1440 at offset (0,0)
+```
+
+----------------------------------------
+
+TITLE: Setting Capture Orientation in scrcpy (Bash)
+DESCRIPTION: Configures the orientation of the captured video. Supports various angles and flipping options. Can be locked to prevent changes due to physical device rotation.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --capture-orientation=0
+scrcpy --capture-orientation=90       # 90° clockwise
+scrcpy --capture-orientation=180      # 180°
+scrcpy --capture-orientation=270      # 270° clockwise
+scrcpy --capture-orientation=flip0    # hflip
+scrcpy --capture-orientation=flip90   # hflip + 90° clockwise
+scrcpy --capture-orientation=flip180  # hflip + 180°
+scrcpy --capture-orientation=flip270  # hflip + 270° clockwise
+```
+
+----------------------------------------
+
+TITLE: Buffer Configuration
+DESCRIPTION: Commands for adjusting audio and video buffer settings to optimize playback.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-buffer=200 --audio-buffer=200
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-output-buffer=10
+```
+
+----------------------------------------
+
+TITLE: Microphone Audio Source Configuration
+DESCRIPTION: Commands for capturing and recording audio from device microphone.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-source=mic
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-source=mic --no-video --no-playback --record=file.opus
+```
+
+----------------------------------------
+
+TITLE: Disabling Window for Recording in scrcpy (Bash)
+DESCRIPTION: This command runs scrcpy without displaying a window, which is useful for recording or playing audio only. The recording is saved to 'file.mp4'. Use Ctrl+C to stop the process.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-window --record=file.mp4
+# Ctrl+C to interrupt
+```
+
+----------------------------------------
+
+TITLE: Connecting to Remote ADB Server - Bash
+DESCRIPTION: Bash commands to connect scrcpy to a remote ADB server at 192.168.1.2 by setting the ADB server socket and tunnel host.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+export ADB_SERVER_SOCKET=tcp:192.168.1.2:5037
+scrcpy --tunnel-host=192.168.1.2
+```
+
+----------------------------------------
+
+TITLE: Windowless Recording in Scrcpy
+DESCRIPTION: Command to record without displaying a window, using Ctrl+C to stop recording.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-playback --no-window --record=file.mp4
+# interrupt recording with Ctrl+C
+```
+
+----------------------------------------
+
+TITLE: Selecting USB or TCP/IP Device in scrcpy
+DESCRIPTION: Commands to connect scrcpy to a device by connection type when multiple devices are available. The -d flag selects a USB device while -e selects a TCP/IP device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy -d  # USB device
+scrcpy -e  # TCP/IP device
+```
+
+----------------------------------------
+
+TITLE: Control-Only Configuration with USB Debugging
+DESCRIPTION: Commands to configure scrcpy for device control without mirroring, using UHID or AOA, when USB debugging is enabled.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/otg.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --no-audio --keyboard=uhid --mouse=uhid --gamepad=uhid
+scrcpy --no-video --no-audio -KMG  # short version
+scrcpy --no-video --no-audio --keyboard=aoa --mouse=aoa --gamepad=aoa
+```
+
+----------------------------------------
+
+TITLE: Listing Installed Android Apps
+DESCRIPTION: Command to display a list of all applications installed on the connected Android device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_11
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --list-apps
+```
+
+----------------------------------------
+
+TITLE: Audio Bitrate Configuration
+DESCRIPTION: Commands for setting custom audio bitrates.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-bit-rate=64K
+```
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-bit-rate=64000
+```
+
+----------------------------------------
+
+TITLE: Launching App in Virtual Display
+DESCRIPTION: Command to start an Android application in a virtual display with a specified resolution.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_13
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --new-display=1920x1080 --start-app=org.videolan.vlc
+```
+
+----------------------------------------
+
+TITLE: Enabling UHID Mouse Mode in scrcpy
+DESCRIPTION: Commands to enable UHID mode, which simulates a physical HID mouse using the UHID kernel module on the device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/mouse.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --mouse=uhid
+scrcpy -M  # short version
+```
+
+----------------------------------------
+
+TITLE: Preventing Device Power On at Startup
+DESCRIPTION: Command to prevent scrcpy from automatically turning on the device screen when starting.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-power-on
+```
+
+----------------------------------------
+
+TITLE: Customizing File Push Target Directory
+DESCRIPTION: Command to change the target directory when pushing files to the device via drag and drop, allowing custom file organization.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/control.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --push-target=/sdcard/Movies/
+```
+
+----------------------------------------
+
+TITLE: Specifying Window Position and Size in scrcpy (Bash)
+DESCRIPTION: This command sets the initial position (x and y coordinates) and size (width and height) of the scrcpy window.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --window-x=100 --window-y=100 --window-width=800 --window-height=600
+```
+
+----------------------------------------
+
+TITLE: Selecting USB-Connected Device in Bash
+DESCRIPTION: This code shows how to select the Android device connected via USB, assuming there is only one such device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --select-usb
+scrcpy -d   # short version
+```
+
+----------------------------------------
+
+TITLE: Recording Without Playback and Control
+DESCRIPTION: Commands to record while disabling playback and control features, including options for selective audio/video playback.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-playback --no-control --record=file.mp4
+
+# Record both video and audio, but only play video
+scrcpy --record=file.mkv --no-audio-playback
+```
+
+----------------------------------------
+
+TITLE: Setting ANDROID_SERIAL Environment Variable in PowerShell
+DESCRIPTION: This snippet illustrates how to set the ANDROID_SERIAL environment variable in PowerShell for device selection.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_6
+
+LANGUAGE: powershell
+CODE:
+```
+# in PowerShell
+$env:ANDROID_SERIAL = '0123456789abcdef'
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Disabling Mouse Hover Events in SDK Mode
+DESCRIPTION: Command to disable mouse hover events forwarding to the device when using SDK mouse mode.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/mouse.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-mouse-hover
+```
+
+----------------------------------------
+
+TITLE: Advanced Scrcpy Usage with Arguments
+DESCRIPTION: Example command showing how to run Scrcpy with specific arguments to disable audio and record to a file.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/macos.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-audio --record=file.mkv
+```
+
+----------------------------------------
+
+TITLE: Installing v4l2loopback module on Linux for scrcpy
+DESCRIPTION: Command to install the v4l2loopback DKMS module which is required to create virtual video devices on Linux.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt install v4l2loopback-dkms
+```
+
+----------------------------------------
+
+TITLE: Disabling System Decorations
+DESCRIPTION: Command to create a virtual display without system decorations, useful for devices with UI issues or to disable default launcher UI.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/virtual_display.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --new-display --no-vd-system-decorations
+```
+
+----------------------------------------
+
+TITLE: Managing stay_on_while_plugged_in Settings via ADB
+DESCRIPTION: ADB commands to view and modify the Android stay_on_while_plugged_in setting manually. This controls whether the device stays awake when charging via AC, USB, or wireless.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+# get the current show_touches value
+adb shell settings get global stay_on_while_plugged_in
+# enable for AC/USB/wireless chargers
+adb shell settings put global stay_on_while_plugged_in 7
+# disable
+adb shell settings put global stay_on_while_plugged_in 0
+```
+
+----------------------------------------
+
+TITLE: Running Scrcpy with default settings on Windows
+DESCRIPTION: Basic command to run Scrcpy with default settings from a terminal on Windows.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/windows.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Creating a v4l2 loopback device for scrcpy
+DESCRIPTION: Command to load the v4l2loopback kernel module which creates a virtual video device at /dev/videoN.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+sudo modprobe v4l2loopback
+```
+
+----------------------------------------
+
+TITLE: Managing Touch Indicators via ADB
+DESCRIPTION: ADB commands to view and modify the Android show_touches setting manually.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+# get the current show_touches value
+adb shell settings get system show_touches
+# enable show_touches
+adb shell settings put system show_touches 1
+# disable show_touches
+adb shell settings put system show_touches 0
+```
+
+----------------------------------------
+
+TITLE: Combining App Launch Modifiers
+DESCRIPTION: Command showing how to combine the force-stop and search-by-name modifiers when launching an app.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_16
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --start-app=+?firefox
+```
+
+----------------------------------------
+
+TITLE: Installing Scrcpy via MacPorts on macOS
+DESCRIPTION: Command to install Scrcpy using MacPorts package manager on macOS, which includes ADB setup.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/macos.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+sudo port install scrcpy
+```
+
+----------------------------------------
+
+TITLE: Setting ANDROID_SERIAL Environment Variable in CMD
+DESCRIPTION: This code demonstrates how to set the ANDROID_SERIAL environment variable in Windows Command Prompt for device selection.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_5
+
+LANGUAGE: cmd
+CODE:
+```
+:: in cmd
+set ANDROID_SERIAL=0123456789abcdef
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Explicit Format Selection in Scrcpy
+DESCRIPTION: Command to explicitly specify the container format for recording, independent of the filename extension.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/recording.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --record=file --record-format=mkv
+```
+
+----------------------------------------
+
+TITLE: Initializing Connection Flow with adb Tunneling in scrcpy
+DESCRIPTION: Shows the process of setting up an adb tunnel for communication between the client and server in scrcpy. It creates either a reverse or forward redirection using a random session ID to avoid conflicts when multiple scrcpy instances are running.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# By default, a reverse redirection: the computer listens, the device connects
+adb reverse localabstract:scrcpy_<SCID> tcp:27183
+
+# As a fallback (or if --force-adb forward is set), a forward redirection:
+# the device listens, the computer connects
+adb forward tcp:27183 localabstract:scrcpy_<SCID>
+```
+
+----------------------------------------
+
+TITLE: Enabling Borderless Window in scrcpy (Bash)
+DESCRIPTION: This command starts scrcpy with a borderless window, removing window decorations.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --window-borderless
+```
+
+----------------------------------------
+
+TITLE: Setting ANDROID_SERIAL Environment Variable in Bash
+DESCRIPTION: This snippet shows how to set the ANDROID_SERIAL environment variable in Bash, which scrcpy uses to select a device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+# in bash
+export ANDROID_SERIAL=0123456789abcdef
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Forward-Only SSH Tunnel
+DESCRIPTION: Command to create an SSH tunnel using only forward connections, without remote port forwarding.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+ssh -CN -L5038:localhost:5037 -L27183:localhost:27183 your_remote_computer
+```
+
+----------------------------------------
+
+TITLE: Exposing Raw H.264 Stream via TCP Socket with Scrcpy Server
+DESCRIPTION: This bash snippet demonstrates how to push the scrcpy server to an Android device, set up port forwarding, and launch the server with options configured to expose a raw H.264 video stream through a TCP socket.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+adb push scrcpy-server-v2.1 /data/local/tmp/scrcpy-server-manual.jar
+adb forward tcp:1234 localabstract:scrcpy
+adb shell CLASSPATH=/data/local/tmp/scrcpy-server-manual.jar \
+    app_process / com.genymobile.scrcpy.Server 2.1 \
+    tunnel_forward=true audio=false control=false cleanup=false \
+    raw_stream=true max_size=1920
+```
+
+----------------------------------------
+
+TITLE: Setting Always-on-Top Window in scrcpy (Bash)
+DESCRIPTION: This command keeps the scrcpy window always on top of other windows.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --always-on-top
+```
+
+----------------------------------------
+
+TITLE: Generating Windows Releases from Linux
+DESCRIPTION: Command to generate Windows (win32 and win64) releases of scrcpy from a Linux environment with cross-compilation tools installed.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+./release.sh
+```
+
+----------------------------------------
+
+TITLE: Using Forward-Only SSH Tunnel - Bash
+DESCRIPTION: Bash commands to connect scrcpy using forward-only SSH tunnel configuration.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_11
+
+LANGUAGE: bash
+CODE:
+```
+export ADB_SERVER_SOCKET=tcp:localhost:5038
+scrcpy --force-adb-forward
+```
+
+----------------------------------------
+
+TITLE: Starting Remote ADB Server
+DESCRIPTION: Commands to start an ADB server that listens on all network interfaces. This is the first step for remote device connection.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+adb kill-server
+adb -a nodaemon server start
+```
+
+----------------------------------------
+
+TITLE: Disabling Playback in scrcpy (Bash)
+DESCRIPTION: Captures the Android device without playing video or audio on the computer. Useful for recording or when using v4l2. Also demonstrates how to disable video and audio playback separately.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_11
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --v4l2-sink=/dev/video2 --no-playback
+scrcpy --record=file.mkv --no-playback
+# interrupt with Ctrl+C
+
+# Send video to V4L2 sink without playing it, but keep audio playback
+scrcpy --v4l2-sink=/dev/video2 --no-video-playback
+
+# Record both video and audio, but only play video
+scrcpy --record=file.mkv --no-audio-playback
+```
+
+----------------------------------------
+
+TITLE: Installing JDK for Server Build on Linux
+DESCRIPTION: Command to install OpenJDK 17 on Debian/Ubuntu for building the server component of scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt install openjdk-17-jdk
+```
+
+----------------------------------------
+
+TITLE: Disabling Keyboard or Mouse in OTG Mode
+DESCRIPTION: Commands to disable keyboard or mouse input in OTG mode while using scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/otg.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --otg --keyboard=disabled
+scrcpy --otg --mouse=disabled
+```
+
+----------------------------------------
+
+TITLE: Connecting to Remote ADB Server - PowerShell
+DESCRIPTION: PowerShell commands to connect scrcpy to a remote ADB server at 192.168.1.2.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_3
+
+LANGUAGE: powershell
+CODE:
+```
+$env:ADB_SERVER_SOCKET = 'tcp:192.168.1.2:5037'
+scrcpy --tunnel-host=192.168.1.2
+```
+
+----------------------------------------
+
+TITLE: Audio Buffering Configuration
+DESCRIPTION: Command to set audio buffer size to minimize glitches in audio-only mode.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --audio-buffer=200
+```
+
+----------------------------------------
+
+TITLE: Installing ADB via Homebrew on macOS
+DESCRIPTION: Command to install Android Debug Bridge (ADB) using Homebrew cask on macOS, which is a prerequisite for Scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/macos.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+brew install --cask android-platform-tools
+```
+
+----------------------------------------
+
+TITLE: Force-Stopping App Before Launch
+DESCRIPTION: Command to force-stop an application before launching it with scrcpy, using the + prefix.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_14
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --start-app=+org.mozilla.firefox
+```
+
+----------------------------------------
+
+TITLE: Using SSH Tunnel - Bash
+DESCRIPTION: Bash commands to connect scrcpy through an established SSH tunnel.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+export ADB_SERVER_SOCKET=tcp:localhost:5038
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Connecting to Remote ADB Server - CMD
+DESCRIPTION: Windows CMD commands to connect scrcpy to a remote ADB server at 192.168.1.2.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_2
+
+LANGUAGE: cmd
+CODE:
+```
+set ADB_SERVER_SOCKET=tcp:192.168.1.2:5037
+scrcpy --tunnel-host=192.168.1.2
+```
+
+----------------------------------------
+
+TITLE: Installing Scrcpy from Release Script
+DESCRIPTION: Clone the scrcpy repository and run the installation script to install the latest release.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/linux.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+git clone https://github.com/Genymobile/scrcpy
+cd scrcpy
+./install_release.sh
+```
+
+----------------------------------------
+
+TITLE: Uninstalling scrcpy
+DESCRIPTION: Command to uninstall scrcpy from the system, removing all installed files.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_17
+
+LANGUAGE: bash
+CODE:
+```
+sudo ninja -Cx uninstall  # without sudo on Windows
+```
+
+----------------------------------------
+
+TITLE: FLAC Compression Configuration
+DESCRIPTION: Command to set FLAC compression level using codec options.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --audio-codec=flac --audio-codec-options=flac-compression-level=8
+```
+
+----------------------------------------
+
+TITLE: Disabling Screensaver in scrcpy (Bash)
+DESCRIPTION: This command prevents the computer's screensaver from activating while scrcpy is running.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --disable-screensaver
+```
+
+----------------------------------------
+
+TITLE: Preserving Content on Display Close
+DESCRIPTION: Command to prevent destruction of running apps when closing the virtual display, moving them to the main display instead.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/virtual_display.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --new-display --no-vd-destroy-content
+```
+
+----------------------------------------
+
+TITLE: Setting Custom ADB Path in PowerShell for scrcpy
+DESCRIPTION: PowerShell command to specify a custom ADB binary path for scrcpy using the ADB environment variable. Resolves ADB version conflicts on Windows using PowerShell.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_5
+
+LANGUAGE: powershell
+CODE:
+```
+# in PowerShell
+$env:ADB = 'C:\path\to\your\adb.exe'
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Running Scrcpy Basic Command
+DESCRIPTION: Basic command to launch scrcpy with default settings.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/linux.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Checking ADB Device Detection in Command Line
+DESCRIPTION: Command to verify if Android devices are properly detected by ADB. This is a basic troubleshooting step when devices aren't connecting to scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+adb devices
+```
+
+----------------------------------------
+
+TITLE: Using SSH Tunnel - CMD
+DESCRIPTION: Windows CMD commands to connect scrcpy through an established SSH tunnel.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_8
+
+LANGUAGE: cmd
+CODE:
+```
+set ADB_SERVER_SOCKET=tcp:localhost:5038
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Running Scrcpy with command line arguments on Windows
+DESCRIPTION: Example command showing how to run Scrcpy with specific arguments to disable audio and record to a file.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/windows.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-audio --record=file.mkv
+```
+
+----------------------------------------
+
+TITLE: Configuring v4l2 buffering in scrcpy
+DESCRIPTION: Command to configure buffering for the v4l2 stream in scrcpy to delay the video output, trading latency for smoother playback.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/v4l2.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --v4l2-buffer=300     # add 300ms buffering for v4l2 sink
+```
+
+----------------------------------------
+
+TITLE: Using SSH Tunnel - PowerShell
+DESCRIPTION: PowerShell commands to connect scrcpy through an established SSH tunnel.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_9
+
+LANGUAGE: powershell
+CODE:
+```
+$env:ADB_SERVER_SOCKET = 'tcp:localhost:5038'
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Installing Scrcpy using WinGet on Windows
+DESCRIPTION: Command to install Scrcpy using the WinGet package manager on Windows. This will also install ADB and other dependencies alongside Scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/windows.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+winget install --exact Genymobile.scrcpy
+```
+
+----------------------------------------
+
+TITLE: Using Forward-Only SSH Tunnel - CMD
+DESCRIPTION: Windows CMD commands to connect scrcpy using forward-only SSH tunnel configuration.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_12
+
+LANGUAGE: cmd
+CODE:
+```
+set ADB_SERVER_SOCKET=tcp:localhost:5038
+scrcpy --force-adb-forward
+```
+
+----------------------------------------
+
+TITLE: Windowless Audio Playback
+DESCRIPTION: Command for audio playback without displaying a window interface.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-window
+```
+
+----------------------------------------
+
+TITLE: Setting Custom ADB Path in Bash for scrcpy
+DESCRIPTION: Bash command to specify a custom ADB binary path for scrcpy using the ADB environment variable. Useful when dealing with ADB version conflicts.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+# in bash
+export ADB=/path/to/your/adb
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Setting Up ADB Port Forwarding for Server Debugging (Android < 11)
+DESCRIPTION: This command sets up port forwarding for the scrcpy server debugger on Android devices running versions earlier than Android 11.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+adb forward tcp:5005 tcp:5005
+```
+
+----------------------------------------
+
+TITLE: Audio-Only Streaming Configuration
+DESCRIPTION: Commands for audio-only streaming without video or control functionality.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/audio.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video --no-control
+```
+
+----------------------------------------
+
+TITLE: Setting Custom ADB Path in Windows CMD for scrcpy
+DESCRIPTION: Command Prompt instruction to specify a custom ADB binary path for scrcpy using the ADB environment variable. Helps resolve ADB version conflicts on Windows.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_4
+
+LANGUAGE: cmd
+CODE:
+```
+:: in cmd
+set ADB=C:\path\to\your\adb.exe
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Setting Up ADB Port Forwarding for Server Debugging (Android 11+)
+DESCRIPTION: This command sets up port forwarding for the scrcpy server debugger on Android devices running Android 11 or later, using the JDWP process ID.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+adb forward tcp:5005 jdwp:XXXX  # replace XXXX
+```
+
+----------------------------------------
+
+TITLE: Starting App by Name Instead of Package ID
+DESCRIPTION: Command to start an application by its name rather than package ID, using the ? prefix.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_15
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --start-app=?firefox
+```
+
+----------------------------------------
+
+TITLE: Starting ADB Server for SSH Tunnel
+DESCRIPTION: Command to ensure ADB server is running on the remote computer before establishing SSH tunnel.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+adb start-server
+```
+
+----------------------------------------
+
+TITLE: Finding Device IP Address in Bash
+DESCRIPTION: This code shows how to find the IP address of an Android device using adb shell commands.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/connection.md#2025-04-19_snippet_9
+
+LANGUAGE: bash
+CODE:
+```
+adb shell ip route | awk '{print $9}'
+```
+
+----------------------------------------
+
+TITLE: Managing Screen Timeout Settings via ADB
+DESCRIPTION: ADB commands to view and modify the Android screen timeout settings manually. Note that Android uses milliseconds for this setting.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+# get the current screen_off_timeout value
+adb shell settings get system screen_off_timeout
+# set a new value (in milliseconds)
+adb shell settings put system screen_off_timeout 30000
+```
+
+----------------------------------------
+
+TITLE: Custom Tunnel Port Configuration
+DESCRIPTION: Command to specify a custom tunnel port for scrcpy connection.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --tunnel-port=1234
+```
+
+----------------------------------------
+
+TITLE: Installing 64-bit Dependencies in MSYS2
+DESCRIPTION: Commands to install runtime and build dependencies for scrcpy in MSYS2 environment on Windows, targeting 64-bit builds.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+# runtime dependencies
+pacman -S mingw-w64-x86_64-SDL2 \
+          mingw-w64-x86_64-ffmpeg \
+          mingw-w64-x86_64-libusb
+
+# client build dependencies
+pacman -S mingw-w64-x86_64-make \
+          mingw-w64-x86_64-gcc \
+          mingw-w64-x86_64-pkg-config \
+          mingw-w64-x86_64-meson
+```
+
+----------------------------------------
+
+TITLE: Playing Raw H.264 Stream from Scrcpy Server using VLC
+DESCRIPTION: This command shows how to use VLC to play the raw H.264 video stream exposed by the scrcpy server on the local TCP port.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_5
+
+LANGUAGE: bash
+CODE:
+```
+vlc -Idummy --demux=h264 --network-caching=0 tcp://localhost:1234
+```
+
+----------------------------------------
+
+TITLE: Using Forward-Only SSH Tunnel - PowerShell
+DESCRIPTION: PowerShell commands to connect scrcpy using forward-only SSH tunnel configuration.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/tunnels.md#2025-04-19_snippet_13
+
+LANGUAGE: powershell
+CODE:
+```
+$env:ADB_SERVER_SOCKET = 'tcp:localhost:5038'
+scrcpy --force-adb-forward
+```
+
+----------------------------------------
+
+TITLE: Installing Cross-Compilation Dependencies on Debian
+DESCRIPTION: Commands to install MinGW for cross-compiling scrcpy for Windows from a Linux system, plus JDK for building the server component.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt install mingw-w64 mingw-w64-tools libz-mingw-w64-dev
+```
+
+----------------------------------------
+
+TITLE: Setting Custom Window Title in scrcpy (Bash)
+DESCRIPTION: This command allows you to set a custom title for the scrcpy window instead of using the default device model name.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/window.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --window-title='My device'
+```
+
+----------------------------------------
+
+TITLE: Updating Scrcpy Installation
+DESCRIPTION: Update the local repository and reinstall scrcpy when a new release is available.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/linux.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+git pull
+./install_release.sh
+```
+
+----------------------------------------
+
+TITLE: Controlling Screen Power State via ADB (Android 15+)
+DESCRIPTION: ADB commands to manually turn the device screen on or off for Android 15 and newer versions.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/device.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+# turn screen off (0 for main display)
+adb shell cmd display power-off 0
+# turn screen on
+adb shell cmd display power-on 0
+```
+
+----------------------------------------
+
+TITLE: Applying Custom Rotation Angle in scrcpy (Bash)
+DESCRIPTION: Rotates the video content by a custom angle in degrees, clockwise. The center of rotation is the center of the visible area.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_7
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --angle=23
+```
+
+----------------------------------------
+
+TITLE: Building scrcpy with Prebuilt Server
+DESCRIPTION: Commands to build scrcpy using a prebuilt server instead of building the server from source, useful when you don't need Java or Android SDK.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_14
+
+LANGUAGE: bash
+CODE:
+```
+meson setup x --buildtype=release --strip -Db_lto=true \
+    -Dprebuilt_server=/path/to/scrcpy-server
+ninja -Cx  # DO NOT RUN AS ROOT
+```
+
+----------------------------------------
+
+TITLE: Uninstalling Scrcpy
+DESCRIPTION: Remove the installed scrcpy application using ninja build system.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/linux.md#2025-04-19_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+sudo ninja -Cbuild-auto uninstall
+```
+
+----------------------------------------
+
+TITLE: MinGW Cross-Compilation Configuration
+DESCRIPTION: Meson build system configuration that defines cross-compilation toolchain binaries and target machine specifications for 32-bit Windows builds using MinGW-w64
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/cross_win32.txt#2025-04-19_snippet_1
+
+LANGUAGE: meson
+CODE:
+```
+[binaries]
+name = 'mingw'
+c = 'i686-w64-mingw32-gcc'
+cpp = 'i686-w64-mingw32-g++'
+ar = 'i686-w64-mingw32-ar'
+strip = 'i686-w64-mingw32-strip'
+pkg-config = 'i686-w64-mingw32-pkg-config'
+# backward compatibility
+pkgconfig = 'i686-w64-mingw32-pkg-config'
+windres = 'i686-w64-mingw32-windres'
+
+[host_machine]
+system = 'windows'
+cpu_family = 'x86'
+cpu = 'i686'
+endian = 'little'
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for Debian/Ubuntu
+DESCRIPTION: Commands to install runtime and build dependencies for scrcpy on Debian/Ubuntu. Includes packages needed for the client (FFmpeg, SDL2) and server (Java JDK) components.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+# runtime dependencies
+sudo apt install ffmpeg libsdl2-2.0-0 adb libusb-1.0-0
+
+# client build dependencies
+sudo apt install gcc git pkg-config meson ninja-build libsdl2-dev \
+                 libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
+                 libswresample-dev libusb-1.0-0-dev
+
+# server build dependencies
+sudo apt install openjdk-17-jdk
+```
+
+----------------------------------------
+
+TITLE: Using Simplified Mouse Binding Syntax in scrcpy
+DESCRIPTION: Example showing that when the second sequence of bindings is omitted, it defaults to the same as the first sequence.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/mouse.md#2025-04-19_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --mouse-bind=bhsn
+scrcpy --mouse-bind=bhsn:bhsn  # equivalent
+```
+
+----------------------------------------
+
+TITLE: Disabling Video Forwarding in scrcpy (Bash)
+DESCRIPTION: Completely disables video forwarding, allowing only audio to be forwarded from the Android device.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/video.md#2025-04-19_snippet_12
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --no-video
+```
+
+----------------------------------------
+
+TITLE: Installing Dependencies for Fedora
+DESCRIPTION: Commands to install both runtime and build dependencies for scrcpy on Fedora Linux, including enabling RPM fusion repository for required packages.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+# enable RPM fusion free
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+
+# client build dependencies
+sudo dnf install SDL2-devel ffms2-devel libusb1-devel libavdevice-free-devel meson gcc make
+
+# server build dependencies
+sudo dnf install java-devel
+```
+
+----------------------------------------
+
+TITLE: Installing MinGW-w64 Compiler Toolchain on Debian-based Systems
+DESCRIPTION: Command to install the MinGW-w64 cross-compiler toolchain and related tools for Windows cross-compilation on Debian-based Linux distributions.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/cross_win64.txt#2025-04-19_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+# apt install mingw-w64 mingw-w64-tools
+```
+
+----------------------------------------
+
+TITLE: Finding Debuggable Process ID on Android 11+
+DESCRIPTION: This command helps identify the Java Debugger Wire Protocol (JDWP) process ID needed for debugging on Android 11 and above.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+adb jdwp
+# press Ctrl+C to interrupt
+```
+
+----------------------------------------
+
+TITLE: Setting Android SDK Path on Different Platforms
+DESCRIPTION: Commands to set the ANDROID_SDK_ROOT environment variable on different operating systems when building scrcpy from source.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_12
+
+LANGUAGE: bash
+CODE:
+```
+# Linux
+export ANDROID_SDK_ROOT=~/Android/Sdk
+# Mac
+export ANDROID_SDK_ROOT=~/Library/Android/sdk
+# Windows
+set ANDROID_SDK_ROOT=%LOCALAPPDATA%\Android\sdk
+```
+
+----------------------------------------
+
+TITLE: Specifying Target Windows Platform Configuration in Meson
+DESCRIPTION: Meson build system configuration that defines the target machine properties for cross-compilation. Specifies Windows as the target system with x86_64 architecture and little-endian byte order.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/cross_win64.txt#2025-04-19_snippet_2
+
+LANGUAGE: meson
+CODE:
+```
+[host_machine]
+system = 'windows'
+cpu_family = 'x86'
+cpu = 'x86_64'
+endian = 'little'
+```
+
+----------------------------------------
+
+TITLE: Configuring SDL Video Driver for Wayland Support
+DESCRIPTION: Command to set the SDL video driver to Wayland before running scrcpy. This addresses display issues on Linux systems using Wayland instead of X11.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/FAQ.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+export SDL_VIDEODRIVER=wayland
+scrcpy
+```
+
+----------------------------------------
+
+TITLE: Installing Java on macOS for Server Build
+DESCRIPTION: Commands to install Java 17 on macOS using Homebrew Cask and configure environment variables for building the server component.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_10
+
+LANGUAGE: bash
+CODE:
+```
+brew tap homebrew/cask-versions
+brew install adoptopenjdk/openjdk/adoptopenjdk17
+export JAVA_HOME="$(/usr/libexec/java_home --version 1.17)"
+export PATH="$JAVA_HOME/bin:$PATH"
+```
+
+----------------------------------------
+
+TITLE: Defining Scrcpy Build Options in Meson
+DESCRIPTION: This snippet defines various build options for the Scrcpy project using Meson's option() function. It includes options for compiling the client and server, specifying a prebuilt server, enabling portable mode, static linking, server debugging, and feature toggles for V4L2 and USB support.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/meson_options.txt#2025-04-19_snippet_0
+
+LANGUAGE: meson
+CODE:
+```
+option('compile_app', type: 'boolean', value: true, description: 'Build the client')
+option('compile_server', type: 'boolean', value: true, description: 'Build the server')
+option('prebuilt_server', type: 'string', description: 'Path of the prebuilt server')
+option('portable', type: 'boolean', value: false, description: 'Use scrcpy-server from the same directory as the scrcpy executable')
+option('static', type: 'boolean', value: false, description: 'Use static dependencies')
+option('server_debugger', type: 'boolean', value: false, description: 'Run a server debugger and wait for a client to be attached')
+option('v4l2', type: 'boolean', value: true, description: 'Enable V4L2 feature when supported')
+option('usb', type: 'boolean', value: true, description: 'Enable HID/OTG features when supported')
+```
+
+----------------------------------------
+
+TITLE: Brace Expansion Example for Camera Configuration
+DESCRIPTION: Example showing how to use shell brace expansion to simplify multiple camera configuration options.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/camera.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+scrcpy --video-source=camera --camera-{facing=back,ar=16:9,high-speed,fps=120}
+
+scrcpy --video-source=camera --camera-facing=back --camera-ar=16:9 --camera-high-speed --camera-fps=120
+```
+
+----------------------------------------
+
+TITLE: Configuring Java Path in MSYS2
+DESCRIPTION: Command to add manually installed Java to the PATH environment variable in MSYS2 for building the server component.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_8
+
+LANGUAGE: bash
+CODE:
+```
+export PATH="$JAVA_HOME/bin:$PATH"
+```
+
+----------------------------------------
+
+TITLE: Configuring Scrcpy Server Debugger with Meson
+DESCRIPTION: These commands show how to enable the server debugger during the configuration phase of the build process using meson.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_6
+
+LANGUAGE: bash
+CODE:
+```
+meson setup x -Dserver_debugger=true
+# or, if x is already configured
+meson configure x -Dserver_debugger=true
+```
+
+----------------------------------------
+
+TITLE: Video Frame Header Format in scrcpy Protocol
+DESCRIPTION: Illustrates the structure of the frame header used in the scrcpy protocol for video packets. It shows how the 12-byte header contains flags for config packets and key frames, a 62-bit PTS (Presentation Timestamp), and a 32-bit packet size field.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/develop.md#2025-04-19_snippet_3
+
+LANGUAGE: text
+CODE:
+```
+    [. . . . . . . .|. . . .]. . . . . . . . . . . . . . . ...
+     <-------------> <-----> <-----------------------------...
+           PTS        packet        raw packet
+                       size
+     <--------------------->
+           frame header
+
+The most significant bits of the PTS are used for packet flags:
+
+     byte 7   byte 6   byte 5   byte 4   byte 3   byte 2   byte 1   byte 0
+    CK...... ........ ........ ........ ........ ........ ........ ........
+    ^^<------------------------------------------------------------------->
+    ||                                PTS
+    | `- key frame
+     `-- config packet
+```
+
+----------------------------------------
+
+TITLE: Installing Meson on Older Ubuntu Versions
+DESCRIPTION: Commands to install Meson via pip3 on older Ubuntu versions (like 16.04) where the packaged version is too old for building scrcpy.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/doc/build.md#2025-04-19_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+sudo apt install python3-pip
+pip3 install meson
+```
+
+----------------------------------------
+
+TITLE: Installing MinGW Cross-Compilation Tools
+DESCRIPTION: Shell command to install MinGW-w64 and related tools for cross-compilation
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/cross_win32.txt#2025-04-19_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+apt install mingw-w64 mingw-w64-tools
+```
+
+----------------------------------------
+
+TITLE: Configuring MinGW Cross-Compilation Binaries in Meson
+DESCRIPTION: Meson build system configuration for cross-compilation targeting Windows. Defines the specific MinGW-w64 toolchain executables for C/C++ compilation, archiving, resource compilation, and dependency resolution.
+SOURCE: https://github.com/genymobile/scrcpy/blob/master/cross_win64.txt#2025-04-19_snippet_1
+
+LANGUAGE: meson
+CODE:
+```
+[binaries]
+name = 'mingw'
+c = 'x86_64-w64-mingw32-gcc'
+cpp = 'x86_64-w64-mingw32-g++'
+ar = 'x86_64-w64-mingw32-ar'
+strip = 'x86_64-w64-mingw32-strip'
+pkg-config = 'x86_64-w64-mingw32-pkg-config'
+# backward compatibility
+pkgconfig = 'x86_64-w64-mingw32-pkg-config'
+windres = 'x86_64-w64-mingw32-windres'
+```

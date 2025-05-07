@@ -1,0 +1,1351 @@
+TITLE: Manual Installation of NVM
+DESCRIPTION: A complete shell script for manually installing NVM. It clones the NVM repository into $HOME/.nvm, checks out the latest tagged version, and loads NVM.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_10
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_DIR="$HOME/.nvm" && (
+  git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
+  cd "$NVM_DIR"
+  git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+) && \. "$NVM_DIR/nvm.sh"
+```
+
+----------------------------------------
+
+TITLE: Using nvm to Switch Between Node.js Versions
+DESCRIPTION: Demonstrates how to use nvm to switch between different Node.js versions and verify the active version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_0
+
+LANGUAGE: sh
+CODE:
+```
+$ nvm use 16
+Now using node v16.9.1 (npm v7.21.1)
+$ node -v
+v16.9.1
+$ nvm use 14
+Now using node v14.18.0 (npm v6.14.15)
+$ node -v
+v14.18.0
+$ nvm install 12
+Now using node v12.22.6 (npm v6.14.5)
+$ node -v
+v12.22.6
+```
+
+----------------------------------------
+
+TITLE: Installing Latest Node.js Version with NVM
+DESCRIPTION: Command to download, compile, and install the latest release of Node.js using NVM. The 'node' alias automatically points to the most recent stable version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_12
+
+LANGUAGE: sh
+CODE:
+```
+nvm install node # "node" is an alias for the latest version
+```
+
+----------------------------------------
+
+TITLE: Creating .nvmrc Files for Node Version Management with Shell Commands
+DESCRIPTION: Examples of creating .nvmrc files to specify different Node.js versions using echo command. Shows how to specify an exact version (5.9), the latest LTS version, or the latest node version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_39
+
+LANGUAGE: sh
+CODE:
+```
+$ echo "5.9" > .nvmrc
+
+$ echo "lts/*" > .nvmrc # to default to the latest LTS version
+
+$ echo "node" > .nvmrc # to default to the latest version
+```
+
+----------------------------------------
+
+TITLE: Installing Specific Node.js Version with NVM
+DESCRIPTION: Command to install a particular version of Node.js by specifying the exact version number.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_13
+
+LANGUAGE: sh
+CODE:
+```
+nvm install 14.7.0 # or 16.3.0, 12.22.1, etc
+```
+
+----------------------------------------
+
+TITLE: Switching to a Node.js Version in NVM
+DESCRIPTION: Command to activate and use a specific installed Node.js version in the current shell.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_16
+
+LANGUAGE: sh
+CODE:
+```
+nvm use node
+```
+
+----------------------------------------
+
+TITLE: Installing Node.js with Latest NPM Version in NVM
+DESCRIPTION: Command to install an LTS Node.js version with the latest compatible npm version, while migrating packages from the default version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_23
+
+LANGUAGE: sh
+CODE:
+```
+nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
+```
+
+----------------------------------------
+
+TITLE: Setting Default Node.js Version in NVM
+DESCRIPTION: Commands to set a default Node.js version that will be automatically used in any new shell session.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_35
+
+LANGUAGE: sh
+CODE:
+```
+nvm alias default node # this refers to the latest installed version of node
+nvm alias default 18 # this refers to the latest installed v18.x version of node
+nvm alias default 18.12  # this refers to the latest installed v18.12.x version of node
+```
+
+----------------------------------------
+
+TITLE: Installing nvm Using wget
+DESCRIPTION: Shows how to download and run the nvm installation script using wget.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_2
+
+LANGUAGE: sh
+CODE:
+```
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+```
+
+----------------------------------------
+
+TITLE: Installing nvm Using curl
+DESCRIPTION: Shows how to download and run the nvm installation script using curl.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_1
+
+LANGUAGE: sh
+CODE:
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+```
+
+----------------------------------------
+
+TITLE: Migrating Packages During Node.js Installation in NVM
+DESCRIPTION: Command to install a new Node.js version while migrating npm packages from the current version. This preserves all globally installed packages.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_21
+
+LANGUAGE: sh
+CODE:
+```
+nvm install --reinstall-packages-from=node node
+```
+
+----------------------------------------
+
+TITLE: Using nvm with .nvmrc Files for Automatic Node Version Selection
+DESCRIPTION: Demonstrates using the 'nvm use' command with a .nvmrc file to automatically switch to the specified Node.js version without having to specify it on the command line.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_40
+
+LANGUAGE: sh
+CODE:
+```
+$ nvm use
+Found '/path/to/project/.nvmrc' with version <5.9>
+Now using node v5.9.1 (npm v3.7.3)
+```
+
+----------------------------------------
+
+TITLE: Bash Function for Automatic nvm Use with Directory Changes
+DESCRIPTION: A Bash function that automatically detects .nvmrc files when changing directories and switches to the specified Node.js version. It falls back to the default version if no .nvmrc is found.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_42
+
+LANGUAGE: bash
+CODE:
+```
+cdnvm() {
+    command cd "$@" || return $?
+    nvm_path="$(nvm_find_up .nvmrc | command tr -d '\n')"
+
+    # If there are no .nvmrc file, use the default nvm version
+    if [[ ! $nvm_path = *[^[:space:]]* ]]; then
+
+        declare default_version
+        default_version="$(nvm version default)"
+
+        # If there is no default version, set it to `node`
+        # This will use the latest version on your machine
+        if [ $default_version = 'N/A' ]; then
+            nvm alias default node
+            default_version=$(nvm version default)
+        fi
+
+        # If the current version is not the default version, set it to use the default version
+        if [ "$(nvm current)" != "${default_version}" ]; then
+            nvm use default
+        fi
+    elif [[ -s "${nvm_path}/.nvmrc" && -r "${nvm_path}/.nvmrc" ]]; then
+        declare nvm_version
+        nvm_version=$(<"${nvm_path}"/.nvmrc)
+
+        declare locally_resolved_nvm_version
+        # `nvm ls` will check all locally-available versions
+        # If there are multiple matching versions, take the latest one
+        # Remove the `->` and `*` characters and spaces
+        # `locally_resolved_nvm_version` will be `N/A` if no local versions are found
+        locally_resolved_nvm_version=$(nvm ls --no-colors "${nvm_version}" | command tail -1 | command tr -d '\->*' | command tr -d '[:space:]')
+
+        # If it is not already installed, install it
+        # `nvm install` will implicitly use the newly-installed version
+        if [ "${locally_resolved_nvm_version}" = 'N/A' ]; then
+            nvm install "${nvm_version}";
+        elif [ "$(nvm current)" != "${locally_resolved_nvm_version}" ]; then
+            nvm use "${nvm_version}";
+        fi
+    fi
+}
+
+alias cd='cdnvm'
+cdnvm "$PWD" || exit
+```
+
+----------------------------------------
+
+TITLE: Listing Available Node.js Versions for Installation in NVM
+DESCRIPTION: Command to show all Node.js versions available for installation from the remote repository.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_30
+
+LANGUAGE: sh
+CODE:
+```
+nvm ls-remote
+```
+
+----------------------------------------
+
+TITLE: Zsh Functions for Automatic .nvmrc Detection and Node Version Switching
+DESCRIPTION: Zsh shell functions that automatically detect .nvmrc files and switch to the specified Node version. This implementation uses zsh hooks to trigger when changing directories.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_43
+
+LANGUAGE: zsh
+CODE:
+```
+# place this after nvm initialization!
+autoload -U add-zsh-hook
+
+load-nvmrc() {
+  local nvmrc_path
+  nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version
+    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+      nvm use
+    fi
+  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+```
+
+----------------------------------------
+
+TITLE: Listing Installed Node.js Versions in NVM
+DESCRIPTION: Command to display all Node.js versions currently installed via NVM on the system.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_29
+
+LANGUAGE: sh
+CODE:
+```
+nvm ls
+```
+
+----------------------------------------
+
+TITLE: Updating to Latest Compatible NPM Version in NVM
+DESCRIPTION: Command to update npm to the latest version that's compatible with the currently active Node.js version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_24
+
+LANGUAGE: sh
+CODE:
+```
+nvm install-latest-npm
+```
+
+----------------------------------------
+
+TITLE: Verifying NVM Installation
+DESCRIPTION: A shell command to verify that NVM has been successfully installed. This uses the 'command -v' syntax as 'which' won't work with NVM since it's a sourced shell function, not an executable binary.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_8
+
+LANGUAGE: sh
+CODE:
+```
+command -v nvm
+```
+
+----------------------------------------
+
+TITLE: Executing Command in Subshell with Specific Node.js Version in NVM
+DESCRIPTION: Command to run any arbitrary command in a subshell using a specific Node.js version, useful for testing with different versions.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_18
+
+LANGUAGE: sh
+CODE:
+```
+nvm exec 4.2 node --version
+```
+
+----------------------------------------
+
+TITLE: Adding nvm to Shell Profile
+DESCRIPTION: Code snippet to be added to the shell profile file for loading nvm.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_3
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+```
+
+----------------------------------------
+
+TITLE: Installing LTS Node.js Version with Package Migration in NVM
+DESCRIPTION: Command to install the latest LTS version of Node.js while migrating existing packages from the currently active version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_20
+
+LANGUAGE: sh
+CODE:
+```
+nvm install --reinstall-packages-from=current 'lts/*'
+```
+
+----------------------------------------
+
+TITLE: Installing NVM with Ansible
+DESCRIPTION: An Ansible task that installs NVM using curl. The task includes a check that prevents reinstallation if NVM is already installed in the user's home directory.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_7
+
+LANGUAGE: yaml
+CODE:
+```
+- name: Install nvm
+  ansible.builtin.shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+```
+
+----------------------------------------
+
+TITLE: Installing Node.js Version Specified in .nvmrc Automatically
+DESCRIPTION: Shows how the 'nvm install' command can automatically install the Node.js version specified in a .nvmrc file if it's not already installed.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_41
+
+LANGUAGE: sh
+CODE:
+```
+$ nvm install
+Found '/path/to/project/.nvmrc' with version <5.9>
+Downloading and installing node v5.9.1...
+Downloading https://nodejs.org/dist/v5.9.1/node-v5.9.1-linux-x64.tar.xz...
+#################################################################################### 100.0%
+Computing checksum with sha256sum
+Checksums matched!
+Now using node v5.9.1 (npm v3.7.3)
+```
+
+----------------------------------------
+
+TITLE: Adding NVM to Shell Profile
+DESCRIPTION: Shell commands for adding NVM to your profile file to load it automatically upon login. This should be added to ~/.bashrc, ~/.profile, or ~/.zshrc depending on your shell.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_9
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+```
+
+----------------------------------------
+
+TITLE: Using a Mirror for Node.js Binaries in NVM
+DESCRIPTION: Commands to use a custom mirror for downloading Node.js binaries, which can be set via environment variables or inline with the install command.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_36
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_NODEJS_ORG_MIRROR=https://nodejs.org/dist
+nvm install node
+
+NVM_NODEJS_ORG_MIRROR=https://nodejs.org/dist nvm install 4.2
+```
+
+----------------------------------------
+
+TITLE: Running a Command with Specific Node.js Version in NVM
+DESCRIPTION: Command to run a specific Node.js version with arguments without changing the current active version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_17
+
+LANGUAGE: sh
+CODE:
+```
+nvm run node --version
+```
+
+----------------------------------------
+
+TITLE: Problematic Environment Variables for NVM
+DESCRIPTION: Environment variables that can interfere with nvm's operation by setting custom paths for npm and Node.js installations.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_47
+
+LANGUAGE: sh
+CODE:
+```
+$NPM_CONFIG_PREFIX
+$PREFIX
+```
+
+----------------------------------------
+
+TITLE: Listing Available Remote Node.js Versions in NVM
+DESCRIPTION: Command to display all available Node.js versions that can be installed from the remote repository.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_15
+
+LANGUAGE: sh
+CODE:
+```
+nvm ls-remote
+```
+
+----------------------------------------
+
+TITLE: Using System-Installed Node.js with NVM
+DESCRIPTION: Commands to use the system-installed version of Node.js through NVM using the special 'system' alias.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_28
+
+LANGUAGE: sh
+CODE:
+```
+nvm use system
+nvm run system --version
+```
+
+----------------------------------------
+
+TITLE: Fish Shell Functions for nvm and .nvmrc Integration
+DESCRIPTION: Fish shell functions for integrating nvm with automatic .nvmrc detection. Requires the bass utility to help bridge between bash and fish shell environments.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_44
+
+LANGUAGE: fish
+CODE:
+```
+# ~/.config/fish/functions/nvm.fish
+function nvm
+  bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
+end
+
+# ~/.config/fish/functions/nvm_find_nvmrc.fish
+function nvm_find_nvmrc
+  bass source ~/.nvm/nvm.sh --no-use ';' nvm_find_nvmrc
+end
+
+# ~/.config/fish/functions/load_nvm.fish
+function load_nvm --on-variable="PWD"
+  set -l default_node_version (nvm version default)
+  set -l node_version (nvm version)
+  set -l nvmrc_path (nvm_find_nvmrc)
+  if test -n "$nvmrc_path"
+    set -l nvmrc_node_version (nvm version (cat $nvmrc_path))
+    if test "$nvmrc_node_version" = "N/A"
+      nvm install (cat $nvmrc_path)
+    else if test "$nvmrc_node_version" != "$node_version"
+      nvm use $nvmrc_node_version
+    end
+  else if test "$node_version" != "$default_node_version"
+    echo "Reverting to default Node version"
+    nvm use default
+  end
+end
+
+# ~/.config/fish/config.fish
+# You must call it on initialization or listening to directory switching won't work
+load_nvm > /dev/stderr
+```
+
+----------------------------------------
+
+TITLE: Default Package Configuration Example for NVM
+DESCRIPTION: Example configuration file for specifying default packages to be installed automatically with each new Node.js version. The file supports package names, specific versions, and GitHub repositories.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_25
+
+LANGUAGE: sh
+CODE:
+```
+# $NVM_DIR/default-packages
+
+rimraf
+object-inspect@1.0.2
+stevemao/left-pad
+```
+
+----------------------------------------
+
+TITLE: Migrating Packages Between Specific Node.js Versions in NVM
+DESCRIPTION: Commands to install a new Node.js version while migrating npm packages from a specific previous version, allowing for controlled upgrades.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_22
+
+LANGUAGE: sh
+CODE:
+```
+nvm install --reinstall-packages-from=5 6
+nvm install --reinstall-packages-from=iojs v4.2
+```
+
+----------------------------------------
+
+TITLE: Sourcing nvm Bash Completion in Shell Profile
+DESCRIPTION: Shell command to activate Bash completion for nvm by sourcing the bash_completion file. This should be placed in your shell profile file after nvm is sourced.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_45
+
+LANGUAGE: sh
+CODE:
+```
+[[ -r $NVM_DIR/bash_completion ]] && \. $NVM_DIR/bash_completion
+```
+
+----------------------------------------
+
+TITLE: Manual Upgrade of NVM
+DESCRIPTION: Shell commands for manually upgrading an existing NVM installation using git. This changes to the NVM directory, fetches the latest changes, checks out the latest tagged version, and activates it.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_11
+
+LANGUAGE: sh
+CODE:
+```
+(
+  cd "$NVM_DIR"
+  git fetch --tags origin
+  git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+) && \. "$NVM_DIR/nvm.sh"
+```
+
+----------------------------------------
+
+TITLE: Installing NVM on Alpine Linux 3.5-3.12
+DESCRIPTION: Command sequence for installing nvm on Alpine Linux versions 3.5 to 3.12. Uses python2 instead of python3 and includes all required dependencies.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_50
+
+LANGUAGE: sh
+CODE:
+```
+apk add -U curl bash ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+```
+
+----------------------------------------
+
+TITLE: Adding nvm to Shell Profile Without Auto-use
+DESCRIPTION: Code snippet to add nvm to the shell profile without automatically using the default version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_4
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm, without auto-using the default version
+```
+
+----------------------------------------
+
+TITLE: Installing Node.js from Source with NVM
+DESCRIPTION: Command to force nvm to install Node.js from source code instead of using pre-compiled binaries, useful when binary packages cause compatibility issues.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_56
+
+LANGUAGE: sh
+CODE:
+```
+nvm install -s 0.8.6
+```
+
+----------------------------------------
+
+TITLE: Setting Custom Alias for Node.js Version in NVM
+DESCRIPTION: Command to create a custom alias that points to a specific Node.js version for easier reference.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_14
+
+LANGUAGE: sh
+CODE:
+```
+nvm alias my_alias v14.4.0
+```
+
+----------------------------------------
+
+TITLE: Finding Installation Path of Node.js Version in NVM
+DESCRIPTION: Command to get the full path to a specific Node.js version's executable, showing where it was installed on the system.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_19
+
+LANGUAGE: sh
+CODE:
+```
+nvm which 12.22
+```
+
+----------------------------------------
+
+TITLE: Passing Authentication Header to Mirror URL in NVM
+DESCRIPTION: Command to pass an Authorization header when accessing a mirror URL for Node.js downloads, useful for private or authenticated mirrors.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_38
+
+LANGUAGE: sh
+CODE:
+```
+NVM_AUTH_HEADER="Bearer secret-token" nvm install node
+```
+
+----------------------------------------
+
+TITLE: Deactivating NVM and Restoring Original PATH
+DESCRIPTION: Command to deactivate NVM in the current shell and restore the original PATH environment variable.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_34
+
+LANGUAGE: sh
+CODE:
+```
+nvm deactivate
+```
+
+----------------------------------------
+
+TITLE: Shell Setting Causing NVM Issues
+DESCRIPTION: Shell setting that can cause problems with nvm by causing scripts to exit immediately when a command fails.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_48
+
+LANGUAGE: sh
+CODE:
+```
+set -e
+```
+
+----------------------------------------
+
+TITLE: Manually Uninstalling NVM
+DESCRIPTION: Commands to manually remove nvm from your system. First unloads nvm from the current session, then removes the installation directory.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_51
+
+LANGUAGE: sh
+CODE:
+```
+$ nvm_dir="${NVM_DIR:-~/.nvm}"
+$ nvm unload
+$ rm -rf "$nvm_dir"
+```
+
+----------------------------------------
+
+TITLE: Installing older node version on Apple Silicon Macs
+DESCRIPTION: This command installs an older version of node (12.22.1) on Apple Silicon Macs using the --shared-zlib flag to avoid potential compilation issues.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_62
+
+LANGUAGE: shell
+CODE:
+```
+$ nvm install v12.22.1 --shared-zlib
+```
+
+----------------------------------------
+
+TITLE: Installing nvm in Docker
+DESCRIPTION: Dockerfile instructions for installing nvm in a Docker container.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_5
+
+LANGUAGE: Dockerfile
+CODE:
+```
+# Use bash for the shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Create a script file sourced by both interactive and non-interactive bash shells
+ENV BASH_ENV /home/user/.bash_env
+RUN touch "${BASH_ENV}"
+RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
+
+# Download and install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | PROFILE="${BASH_ENV}" bash
+RUN echo node > .nvmrc
+RUN nvm install
+```
+
+----------------------------------------
+
+TITLE: Checking processor architecture on macOS
+DESCRIPTION: These commands help verify the current processor architecture being used, which is important when switching between native and Rosetta environments.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_63
+
+LANGUAGE: shell
+CODE:
+```
+$ exit
+$ arch
+arm64
+```
+
+----------------------------------------
+
+TITLE: Installing nvm in Docker for CI/CD Jobs
+DESCRIPTION: Dockerfile instructions for installing nvm in a Docker container suitable for CI/CD jobs.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_6
+
+LANGUAGE: Dockerfile
+CODE:
+```
+FROM ubuntu:latest
+ARG NODE_VERSION=20
+
+# install curl
+RUN apt update && apt install curl -y
+
+# install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+
+# set env
+ENV NVM_DIR=/root/.nvm
+
+# install node
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
+
+# set ENTRYPOINT for reloading nvm-environment
+ENTRYPOINT ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
+
+# set cmd to bash
+CMD ["/bin/bash"]
+```
+
+----------------------------------------
+
+TITLE: Verifying node architecture on Apple Silicon Macs
+DESCRIPTION: This command checks the architecture of the installed node version, ensuring it's running under the correct architecture (x64 for Rosetta-enabled older versions).
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_64
+
+LANGUAGE: shell
+CODE:
+```
+$ node -p process.arch
+x64
+```
+
+----------------------------------------
+
+TITLE: NVM Configuration Lines to Remove from Shell Config
+DESCRIPTION: The shell configuration lines that need to be removed from .bashrc or other shell resource files when uninstalling nvm.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_52
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[[ -r $NVM_DIR/bash_completion ]] && \. $NVM_DIR/bash_completion
+```
+
+----------------------------------------
+
+TITLE: Sourcing nvm in Rosetta-enabled shell
+DESCRIPTION: This command sources nvm in the Rosetta-enabled shell, ensuring nvm is available for use.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_61
+
+LANGUAGE: shell
+CODE:
+```
+$ source "${NVM_DIR}/nvm.sh"
+```
+
+----------------------------------------
+
+TITLE: Installing Rosetta 2 for Apple Silicon Macs
+DESCRIPTION: This command installs Rosetta 2, which is necessary for running older versions of node on Apple Silicon Macs.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_59
+
+LANGUAGE: shell
+CODE:
+```
+$ softwareupdate --install-rosetta
+```
+
+----------------------------------------
+
+TITLE: Fixing nvm node version discrepancy in vim shell on macOS
+DESCRIPTION: This command modifies the permissions of the path_helper to resolve issues with node version detection in vim on macOS.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_57
+
+LANGUAGE: shell
+CODE:
+```
+sudo chmod ugo-x /usr/libexec/path_helper
+```
+
+----------------------------------------
+
+TITLE: Opening a Rosetta-enabled shell on Apple Silicon Macs
+DESCRIPTION: This command opens a zsh shell running under Rosetta, allowing installation of older node versions on Apple Silicon Macs.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_60
+
+LANGUAGE: shell
+CODE:
+```
+$ arch -x86_64 zsh
+```
+
+----------------------------------------
+
+TITLE: Fixing DNS resolution issues in WSL
+DESCRIPTION: This series of commands resolves DNS issues in WSL by setting a custom nameserver and preventing automatic regeneration of the resolv.conf file.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_65
+
+LANGUAGE: shell
+CODE:
+```
+sudo rm /etc/resolv.conf
+sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+sudo bash -c 'echo "[network]" > /etc/wsl.conf'
+sudo bash -c 'echo "generateResolvConf = false" >> /etc/wsl.conf'
+sudo chattr +i /etc/resolv.conf
+```
+
+----------------------------------------
+
+TITLE: Installing NVM on Alpine Linux 3.13+
+DESCRIPTION: Command sequence for installing nvm on Alpine Linux version 3.13 or newer. Installs required dependencies and downloads the nvm installation script.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_49
+
+LANGUAGE: sh
+CODE:
+```
+apk add -U curl bash ca-certificates openssl ncurses coreutils python3 make gcc g++ libgcc linux-headers grep util-linux binutils findutils
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+```
+
+----------------------------------------
+
+TITLE: Verifying resolv.conf contents in WSL
+DESCRIPTION: This command displays the contents of the resolv.conf file, allowing you to verify that the DNS settings have been correctly applied.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_66
+
+LANGUAGE: shell
+CODE:
+```
+cat /etc/resolv.conf
+```
+
+----------------------------------------
+
+TITLE: Identifying Problematic NPM Configuration in .npmrc
+DESCRIPTION: Example of NPM configuration in .npmrc that can cause compatibility issues with nvm, specifically setting a custom prefix path.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_46
+
+LANGUAGE: sh
+CODE:
+```
+prefix='some/path'
+```
+
+----------------------------------------
+
+TITLE: Resolving Homebrew-induced zsh security warnings
+DESCRIPTION: This snippet shows the warning message displayed when Homebrew creates insecure zsh directories. It's not an nvm issue, but a Homebrew-related problem.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_58
+
+LANGUAGE: shell
+CODE:
+```
+zsh compinit: insecure directories, run compaudit for list.
+Ignore insecure directories and continue [y] or abort compinit [n]? y
+```
+
+----------------------------------------
+
+TITLE: Setting Custom Output Colors in NVM
+DESCRIPTION: Command to customize the colors used in NVM's output. Five color codes can be specified using a simple color code system.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_31
+
+LANGUAGE: sh
+CODE:
+```
+nvm set-colors rgBcm
+```
+
+----------------------------------------
+
+TITLE: Using a Mirror for io.js Binaries in NVM
+DESCRIPTION: Commands to use a custom mirror for downloading io.js binaries, which can be set via environment variables or inline with the install command.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_37
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_IOJS_ORG_MIRROR=https://iojs.org/dist
+nvm install iojs-v1.0.3
+
+NVM_IOJS_ORG_MIRROR=https://iojs.org/dist nvm install iojs-v1.0.3
+```
+
+----------------------------------------
+
+TITLE: Persisting Custom Colors for NVM in Shell Profile
+DESCRIPTION: Example of setting the NVM_COLORS environment variable to make custom color settings persist across shell sessions.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_32
+
+LANGUAGE: sh
+CODE:
+```
+export NVM_COLORS='cmgRY'
+```
+
+----------------------------------------
+
+TITLE: Building Docker Image for NVM Development
+DESCRIPTION: Command to build a Docker image for nvm development environment based on the Dockerfile in the nvm repository.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_53
+
+LANGUAGE: sh
+CODE:
+```
+$ docker build -t nvm-dev .
+```
+
+----------------------------------------
+
+TITLE: Suppressing Colorized Output in NVM Commands
+DESCRIPTION: Commands to disable colored output in NVM either through command-line flags or environment variables.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_33
+
+LANGUAGE: sh
+CODE:
+```
+nvm ls --no-colors
+nvm help --no-colors
+TERM=dumb nvm ls
+```
+
+----------------------------------------
+
+TITLE: Verifying Docker Image for NVM Development
+DESCRIPTION: Command to verify the built nvm-dev Docker image and its expected output showing image details.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_54
+
+LANGUAGE: sh
+CODE:
+```
+$ docker images
+
+REPOSITORY         TAG                 IMAGE ID            CREATED             SIZE
+nvm-dev            latest              9ca4c57a97d8        7 days ago          650 MB
+```
+
+----------------------------------------
+
+TITLE: Running Docker Container for NVM Development
+DESCRIPTION: Command to start an interactive Docker container using the nvm-dev image for development purposes.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_55
+
+LANGUAGE: sh
+CODE:
+```
+$ docker run -h nvm-dev -it nvm-dev
+
+nvm@nvm-dev:~/.nvm$
+```
+
+----------------------------------------
+
+TITLE: Installing io.js with NVM
+DESCRIPTION: Command to install the latest version of io.js using NVM, an alternative JavaScript runtime.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_26
+
+LANGUAGE: sh
+CODE:
+```
+nvm install iojs
+```
+
+----------------------------------------
+
+TITLE: Feature Roadmap Task List in Markdown
+DESCRIPTION: A markdown checklist showing planned and completed features for the nvm project, including source installation support, release candidate handling, auto-update functionality, and v1.0.0 release plans.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/ROADMAP.md#2025-04-22_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+- [x] Rewriting installation code paths to support installing `io.js` and `node` `v4+` [from source](https://github.com/nvm-sh/nvm/issues/1188).
+  - This will include [reusing previously downloaded tarballs](https://github.com/nvm-sh/nvm/issues/1193) that match checksums, which is a nice performance and bandwidth bonus.
+- [ ] Adding opt-in environment variable support to list, download, and install `node` [release candidates](https://github.com/nvm-sh/nvm/issues/779), and [nightly builds](https://github.com/nvm-sh/nvm/issues/1053).
+- [ ] [`nvm update`](https://github.com/nvm-sh/nvm/issues/400): the ability to autoupdate `nvm` itself
+- [ ] [v1.0.0](https://github.com/nvm-sh/nvm/milestone/1), including updating the [nvm on npm](https://github.com/nvm-sh/nvm/issues/304) to auto-install nvm properly
+```
+
+----------------------------------------
+
+TITLE: Defining Maintainer Role in NVM Project Governance (Markdown)
+DESCRIPTION: This snippet lists the current maintainer of the NVM project and outlines their responsibilities. It includes tasks such as issue and PR triage, feature management, maintenance, security, releases, and repository management.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/GOVERNANCE.md#2025-04-22_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+## Maintainers
+  - [@ljharb](https://github.com/ljharb)
+
+Maintainers are responsible for issue/PR triage, feature additions, maintenance, bugfixes, security fixes, releases, promoting existing contributors to maintainers, managing repo and CI configuration, etc.
+```
+
+----------------------------------------
+
+TITLE: Migrating Packages During io.js Installation in NVM
+DESCRIPTION: Command to install a new io.js version while migrating npm packages from a previous io.js version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/README.md#2025-04-22_snippet_27
+
+LANGUAGE: sh
+CODE:
+```
+nvm install --reinstall-packages-from=iojs iojs
+```
+
+----------------------------------------
+
+TITLE: Pushing Changes to GitHub for a nvm Pull Request
+DESCRIPTION: Shows how to push your local branch changes to your GitHub fork to prepare for creating a pull request.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_4
+
+LANGUAGE: bash
+CODE:
+```
+git push origin issue1234
+```
+
+----------------------------------------
+
+TITLE: Displaying Node.js Version List with LTS Information
+DESCRIPTION: This snippet shows a formatted list of Node.js versions, including LTS (Long Term Support) releases with their codenames. It uses ANSI color codes to highlight the latest LTS versions for each major release.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm ls-remote.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+       v10.14.2  [0;37m (LTS: Dubnium)[0m
+       v10.15.0  [0;37m (LTS: Dubnium)[0m
+       ...
+       v10.24.1  [1;32m (Latest LTS: Dubnium)[0m
+        v11.0.0
+        ...
+       v12.22.12  [1;32m (Latest LTS: Erbium)[0m
+        v13.0.0
+        ...
+       v14.21.3  [1;32m (Latest LTS: Fermium)[0m
+        v15.0.0
+        ...
+       v16.20.2  [1;32m (Latest LTS: Gallium)[0m
+        v17.0.0
+        ...
+       v18.20.4  [1;32m (Latest LTS: Hydrogen)[0m
+        v19.0.0
+        ...
+       v20.18.0  [1;32m (Latest LTS: Iron)[0m
+        v21.0.0
+        ...
+       v22.11.0  [1;32m (Latest LTS: Jod)[0m
+        v23.0.0
+        v23.1.0
+```
+
+----------------------------------------
+
+TITLE: Mapping LTS Codenames to Node.js Versions in NVM
+DESCRIPTION: This snippet provides a list of Node.js LTS releases with their codenames and corresponding version numbers. It's used by NVM to manage and install specific LTS versions of Node.js. Each line represents a mapping between an LTS codename and its Node.js version.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm_make_alias LTS alias calls.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+lts/*|lts/jod
+lts/jod|v22.11.0
+lts/iron|v20.18.0
+lts/hydrogen|v18.20.4
+lts/gallium|v16.20.2
+lts/fermium|v14.21.3
+lts/erbium|v12.22.12
+lts/dubnium|v10.24.1
+lts/carbon|v8.17.0
+lts/boron|v6.17.1
+lts/argon|v4.9.1
+```
+
+----------------------------------------
+
+TITLE: Referencing Node.js LTS Jod Version
+DESCRIPTION: This single line identifies the Node.js Long-Term Support (LTS) version with the codename "Jod". In nvm, these identifiers allow users to install specific LTS versions without needing to know the exact version number.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/lts-star.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+lts/jod
+```
+
+----------------------------------------
+
+TITLE: Displaying Node.js LTS Version History
+DESCRIPTION: Terminal output showing Node.js LTS versions with ANSI color formatting. Each line displays a version number followed by its LTS codename. Latest versions of each LTS line are highlighted in green.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm ls-remote lts.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+         v4.2.0  [0;37m (LTS: Argon)[0m
+         v4.2.1  [0;37m (LTS: Argon)[0m
+         v4.2.2  [0;37m (LTS: Argon)[0m
+         v4.2.3  [0;37m (LTS: Argon)[0m
+         v4.2.4  [0;37m (LTS: Argon)[0m
+         v4.2.5  [0;37m (LTS: Argon)[0m
+         v4.2.6  [0;37m (LTS: Argon)[0m
+         v4.3.0  [0;37m (LTS: Argon)[0m
+         v4.3.1  [0;37m (LTS: Argon)[0m
+         v4.3.2  [0;37m (LTS: Argon)[0m
+         v4.4.0  [0;37m (LTS: Argon)[0m
+         v4.4.1  [0;37m (LTS: Argon)[0m
+         v4.4.2  [0;37m (LTS: Argon)[0m
+         v4.4.3  [0;37m (LTS: Argon)[0m
+         v4.4.4  [0;37m (LTS: Argon)[0m
+         v4.4.5  [0;37m (LTS: Argon)[0m
+         v4.4.6  [0;37m (LTS: Argon)[0m
+         v4.4.7  [0;37m (LTS: Argon)[0m
+         v4.5.0  [0;37m (LTS: Argon)[0m
+         v4.6.0  [0;37m (LTS: Argon)[0m
+         v4.6.1  [0;37m (LTS: Argon)[0m
+         v4.6.2  [0;37m (LTS: Argon)[0m
+         v4.7.0  [0;37m (LTS: Argon)[0m
+         v4.7.1  [0;37m (LTS: Argon)[0m
+         v4.7.2  [0;37m (LTS: Argon)[0m
+         v4.7.3  [0;37m (LTS: Argon)[0m
+         v4.8.0  [0;37m (LTS: Argon)[0m
+         v4.8.1  [0;37m (LTS: Argon)[0m
+         v4.8.2  [0;37m (LTS: Argon)[0m
+         v4.8.3  [0;37m (LTS: Argon)[0m
+         v4.8.4  [0;37m (LTS: Argon)[0m
+         v4.8.5  [0;37m (LTS: Argon)[0m
+         v4.8.6  [0;37m (LTS: Argon)[0m
+         v4.8.7  [0;37m (LTS: Argon)[0m
+         v4.9.0  [0;37m (LTS: Argon)[0m
+         v4.9.1  [1;32m (Latest LTS: Argon)[0m
+```
+
+----------------------------------------
+
+TITLE: Specifying NVM Version Number
+DESCRIPTION: A plain text version number for the NVM (Node Version Manager) project. This version (24.0) indicates a major release with no minor version components.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm_print_implicit_alias remote stable nightly.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+24.0
+```
+
+----------------------------------------
+
+TITLE: Node.js Version List
+DESCRIPTION: Complete version history of Node.js releases, showing the evolution from early v0.x releases through major versions up to v23. Includes LTS (Long Term Support) release codenames marked with their respective versions.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm_ls_remote.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+v0.1.14
+v0.1.15
+...
+v23.0.0
+v23.1.0
+```
+
+----------------------------------------
+
+TITLE: Displaying Node.js Version List with LTS Information
+DESCRIPTION: This snippet shows a list of Node.js versions, including LTS releases with their codenames. The list is formatted with version numbers and LTS information, using ANSI color codes for highlighting.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm ls-remote node.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+v4.2.0  [0;37m (LTS: Argon)[0m
+v4.2.1  [0;37m (LTS: Argon)[0m
+v4.2.2  [0;37m (LTS: Argon)[0m
+...
+v4.9.1  [1;32m (Latest LTS: Argon)[0m
+...
+v6.9.0  [0;37m (LTS: Boron)[0m
+v6.9.1  [0;37m (LTS: Boron)[0m
+...
+v6.17.1  [1;32m (Latest LTS: Boron)[0m
+...
+v8.9.0  [0;37m (LTS: Carbon)[0m
+v8.9.1  [0;37m (LTS: Carbon)[0m
+...
+v8.17.0  [1;32m (Latest LTS: Carbon)[0m
+...
+v10.13.0  [0;37m (LTS: Dubnium)[0m
+v10.14.0  [0;37m (LTS: Dubnium)[0m
+...
+v10.20.1  [0;37m (LTS: Dubnium)[0m
+```
+
+----------------------------------------
+
+TITLE: Displaying Node.js Versions with NVM
+DESCRIPTION: This snippet shows the output of an NVM command listing available Node.js versions. It includes version numbers, LTS release names, and highlights for the latest versions.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm ls-remote lts.txt#2025-04-22_snippet_1
+
+LANGUAGE: plaintext
+CODE:
+```
+       v20.16.0  [0;37m (LTS: Iron)[0m
+       v20.17.0  [0;37m (LTS: Iron)[0m
+       v20.18.0  [1;32m (Latest LTS: Iron)[0m
+       v22.11.0  [1;32m (Latest LTS: Jod)[0m
+```
+
+----------------------------------------
+
+TITLE: Testing nvm Changes Before Submitting a Pull Request
+DESCRIPTION: Demonstrates how to verify your changes by running the test suite before submitting a pull request.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_3
+
+LANGUAGE: bash
+CODE:
+```
+npm test
+```
+
+----------------------------------------
+
+TITLE: Creating a Git Branch for Pull Requests in nvm
+DESCRIPTION: Shows how to create a new Git branch for making changes to the nvm project. This is the first step in the pull request workflow.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+git checkout -b issue1234
+```
+
+----------------------------------------
+
+TITLE: Rebasing a Pull Request Branch in nvm
+DESCRIPTION: Shows how to update your branch with the latest code from the upstream repository before submitting a pull request.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_2
+
+LANGUAGE: bash
+CODE:
+```
+git fetch upstream
+git rebase upstream/main
+```
+
+----------------------------------------
+
+TITLE: Committing Changes to a nvm Pull Request Branch
+DESCRIPTION: Demonstrates how to commit changes to your branch with a proper commit message following the project's standards.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_1
+
+LANGUAGE: bash
+CODE:
+```
+git commit -a
+```
+
+----------------------------------------
+
+TITLE: Example Commit Message Format for nvm Contributions
+DESCRIPTION: Demonstrates the proper format for commit messages in the nvm project, including tag, description, and issue reference.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_5
+
+LANGUAGE: markdown
+CODE:
+```
+[Tag]: Short description of what you did
+
+Longer description here if necessary
+
+Fixes #1234
+```
+
+----------------------------------------
+
+TITLE: Node.js Nightly Build Version Identifier in NVM
+DESCRIPTION: This is a version string identifier for a Node.js nightly build that NVM can use to install this specific version. The identifier follows the format of version number followed by nightly date and commit hash.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/test/fast/Unit tests/mocks/nvm_ls_remote stable nightly.txt#2025-04-22_snippet_0
+
+LANGUAGE: plaintext
+CODE:
+```
+v24.0.0-nightly20241031996708042b
+```
+
+----------------------------------------
+
+TITLE: Adding Co-Authors to Commit Messages in nvm
+DESCRIPTION: Shows how to properly attribute multiple authors in a commit message for the nvm project.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CONTRIBUTING.md#2025-04-22_snippet_6
+
+LANGUAGE: markdown
+CODE:
+```
+Co-authored-by: Name Here <email@here>
+```
+
+----------------------------------------
+
+TITLE: Defining Contributor Role in NVM Project Governance (Markdown)
+DESCRIPTION: This snippet defines the role of contributors in the NVM project. It explains that contributors can participate through various means such as code, content, or time contributions, but do not have additional project permissions.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/GOVERNANCE.md#2025-04-22_snippet_1
+
+LANGUAGE: markdown
+CODE:
+```
+## Contributors
+
+Anyone who contributes code or content or time, via issues or pull requests or otherwise. Contributors do not have any additional permissions on the project.
+```
+
+----------------------------------------
+
+TITLE: Referencing nvm as an OpenJS Foundation Project
+DESCRIPTION: Command showing nvm as a member project of the OpenJS Foundation that uses Contributor Covenant v2.1 as its code of conduct.
+SOURCE: https://github.com/nvm-sh/nvm/blob/master/CODE_OF_CONDUCT.md#2025-04-22_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+nvm
+```

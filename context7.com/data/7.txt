@@ -1,0 +1,94 @@
+TITLE: Importing Composition API Functions in ESM - JavaScript
+DESCRIPTION: This snippet demonstrates the correct way to import Composition API functions like ref when using Vue 2.7 with ESM builds. It shows that these APIs are available as named exports from the 'vue' module, and attempting to access them as properties on the default Vue export will fail. Required dependency is Vue 2.7 or higher.
+SOURCE: https://github.com/vuejs/vue/blob/main/CHANGELOG.md#_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+import Vue, { ref } from 'vue'\n\nVue.ref // undefined, use named export instead
+```
+
+----------------------------------------
+
+TITLE: Accessing Composition API in Vue 2.7 ESM Builds - Javascript
+DESCRIPTION: This snippet illustrates the correct way to import and use Composition API functions like `ref` when using Vue 2.7 with ESM builds. It shows that these APIs are provided as named exports from the 'vue' package and are not accessible via the default `Vue` object.
+SOURCE: https://github.com/vuejs/vue/blob/main/CHANGELOG.md#_snippet_2
+
+LANGUAGE: Javascript
+CODE:
+```
+import Vue, { ref } from 'vue'
+
+Vue.ref // undefined, use named export instead
+```
+
+----------------------------------------
+
+TITLE: Installing vue-template-compiler Bash
+DESCRIPTION: This command demonstrates how to install the vue-template-compiler package using the npm package manager. It is typically installed as a dev dependency in your project.
+SOURCE: https://github.com/vuejs/vue/blob/main/packages/template-compiler/README.md#_snippet_0
+
+LANGUAGE: Bash
+CODE:
+```
+npm install vue-template-compiler
+```
+
+----------------------------------------
+
+TITLE: Configuring Volar with tsconfig.json for Vue 2.7
+DESCRIPTION: This JSON snippet illustrates the required configuration within the `tsconfig.json` file to enable Volar (Vue Language Server) to correctly infer types in Vue 2.7 templates. By setting the `target` within `vueCompilerOptions` to `2.7`, you leverage Vue 2.7's improved type definitions and no longer need `@vue/runtime-dom` for this purpose.
+SOURCE: https://github.com/vuejs/vue/blob/main/CHANGELOG.md#_snippet_1
+
+LANGUAGE: json
+CODE:
+```
+{
+  // ...
+  "vueCompilerOptions": {
+    "target": 2.7
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Importing vue-template-compiler Node.js
+DESCRIPTION: This JavaScript snippet shows how to import the installed vue-template-compiler module into your Node.js or build script environment using the require function.
+SOURCE: https://github.com/vuejs/vue/blob/main/packages/template-compiler/README.md#_snippet_1
+
+LANGUAGE: JavaScript
+CODE:
+```
+const compiler = require('vue-template-compiler')
+```
+
+----------------------------------------
+
+TITLE: Using directives option with compiler.compile JavaScript
+DESCRIPTION: This example shows how to use the `directives` option with the `compiler.compile` method to provide custom compile-time directive transformers. The function receives the AST node and directive metadata for transformation.
+SOURCE: https://github.com/vuejs/vue/blob/main/packages/template-compiler/README.md#_snippet_2
+
+LANGUAGE: JavaScript
+CODE:
+```
+compiler.compile('<div v-test></div>', {
+  directives: {
+    test (node, directiveMeta) {
+      // transform node based on directiveMeta
+    }
+  }
+})
+```
+
+----------------------------------------
+
+TITLE: Running Vue.js SSR Benchmark (Bash)
+DESCRIPTION: This command executes the predefined npm script to run the Vue.js server-side rendering benchmark. It triggers the comparison between `renderToString` and `renderToStream` methods for large rendering tasks. Requires Node.js, npm, and the project dependencies to be installed.
+SOURCE: https://github.com/vuejs/vue/blob/main/benchmarks/ssr/README.md#_snippet_0
+
+LANGUAGE: bash
+CODE:
+```
+npm run bench:ssr
+```

@@ -1,0 +1,1975 @@
+TITLE: Training RandomForestClassifier - Python
+DESCRIPTION: Initializes a `RandomForestClassifier` with 100 trees (`n_estimators=100`) and a fixed `random_state` for consistent results. The model is then trained using the `fit` method on the prepared training data (`x_train`, `y_train`).
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_classifier.py.broken.txt#_snippet_3
+
+LANGUAGE: Python
+CODE:
+```
+# Random Forest Classifier
+    rand_for = RandomForestClassifier(random_state=42, n_estimators=100)
+    rand_for.fit(x_train, y_train)
+```
+
+----------------------------------------
+
+TITLE: Loading and Splitting Iris Dataset - Python
+DESCRIPTION: Loads the built-in Iris dataset from scikit-learn and separates features (`x`) and target (`y`). It then splits the data into 70% for training and 30% for testing using `train_test_split`, ensuring reproducibility with `random_state=1`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_classifier.py.broken.txt#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+# Load Iris dataset
+    iris = load_iris()
+
+    # Split dataset into train and test data
+    x = iris["data"]  # features
+    y = iris["target"]
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.3, random_state=1
+    )
+```
+
+----------------------------------------
+
+TITLE: Implementing Random Forest Regression using Scikit-learn in Python
+DESCRIPTION: This snippet demonstrates the end-to-end process of applying Random Forest Regression. It loads the Boston house price dataset, splits the data into training and testing sets, initializes and trains a RandomForestRegressor model, makes predictions on the test data, and calculates the Mean Absolute Error (MAE) and Mean Squared Error (MSE) to evaluate the model's performance. Required dependencies include `sklearn`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_regressor.py.broken.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+from sklearn.datasets import load_boston
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+
+def main():
+
+    """
+    Random Forest Regressor Example using sklearn function.
+    Boston house price dataset is used to demonstrate the algorithm.
+    """
+
+    # Load Boston house price dataset
+    boston = load_boston()
+    print(boston.keys())
+
+    # Split dataset into train and test data
+    x = boston["data"]  # features
+    y = boston["target"]
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.3, random_state=1
+    )
+
+    # Random Forest Regressor
+    rand_for = RandomForestRegressor(random_state=42, n_estimators=300)
+    rand_for.fit(x_train, y_train)
+
+    # Predict target for test data
+    predictions = rand_for.predict(x_test)
+    predictions = predictions.reshape(len(predictions), 1)
+
+    # Error printing
+    print(f"Mean Absolute Error:\t {mean_absolute_error(y_test, predictions)}")
+    print(f"Mean Square Error  :\t {mean_squared_error(y_test, predictions)}")
+```
+
+----------------------------------------
+
+TITLE: Plotting Confusion Matrix - Matplotlib/Scikit-learn
+DESCRIPTION: Generates and displays a normalized confusion matrix using `plot_confusion_matrix` from scikit-learn, evaluating the trained `rand_for` model on the test data (`x_test`, `y_test`). The matrix is labeled with Iris target names, styled with a 'Blues' colormap, and shown using `matplotlib.pyplot.show()`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_classifier.py.broken.txt#_snippet_4
+
+LANGUAGE: Python
+CODE:
+```
+# Display Confusion Matrix of Classifier
+    plot_confusion_matrix(
+        rand_for,
+        x_test,
+        y_test,
+        display_labels=iris["target_names"],
+        cmap="Blues",
+        normalize="true",
+    )
+    plt.title("Normalized Confusion Matrix - IRIS Dataset")
+    plt.show()
+```
+
+----------------------------------------
+
+TITLE: Example Function with Python Type Hints (Python)
+DESCRIPTION: Demonstrates how to add type hints to function parameters and return values in Python for improved code clarity and static analysis.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_11
+
+LANGUAGE: Python
+CODE:
+```
+def sum_ab(a: int, b: int) -> int:
+    return a + b
+```
+
+----------------------------------------
+
+TITLE: Example of Good Python Docstring (Python)
+DESCRIPTION: Shows the recommended style and indentation for adding a basic docstring to a Python function to explain its purpose.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_6
+
+LANGUAGE: Python
+CODE:
+```
+def sum_ab(a, b):
+    """
+    Return the sum of two integers a and b.
+    """
+    return a + b
+```
+
+----------------------------------------
+
+TITLE: Running Doctests - Python
+DESCRIPTION: This block serves as the standard entry point for the script. It ensures that the `doctest.testmod()` function is called only when the script is executed directly. `doctest` finds and runs tests embedded within the docstrings of the functions in the script, verifying their behavior against the provided examples.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/ripple_adder_classic.py.DISABLED.txt#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()
+```
+
+----------------------------------------
+
+TITLE: Example Function with Python Doctests (Python)
+DESCRIPTION: Demonstrates how to include doctests within a Python function's docstring to show usage examples and provide executable tests for verification.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_7
+
+LANGUAGE: Python
+CODE:
+```
+def sum_ab(a, b):
+    """
+    Return the sum of two integers a and b
+    >>> sum_ab(2, 2)
+    4
+    >>> sum_ab(-2, 3)
+    1
+    >>> sum_ab(4.9, 5.1)
+    10.0
+    """
+    return a + b
+```
+
+----------------------------------------
+
+TITLE: Setting Up and Plotting Prediction vs. Actual Python
+DESCRIPTION: Creates a scatter plot to visualize the relationship between the actual target values (`y_test`) and the model's predicted values (`y_pred`). A diagonal line is plotted representing the ideal scenario where predictions exactly match actual values, providing a visual reference for model performance. Axis labels and a title are added.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_10
+
+LANGUAGE: python
+CODE:
+```
+    # So let's run the model against the test data
+    fig, ax = plt.subplots()
+    ax.scatter(y_test, y_pred, edgecolors=(0, 0, 0))
+    ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], "k--", lw=4)
+    ax.set_xlabel("Actual")
+    ax.set_ylabel("Predicted")
+    ax.set_title("Truth vs Predicted")
+```
+
+----------------------------------------
+
+TITLE: Initializing, Training, and Predicting with GaussianNB - Python
+DESCRIPTION: Initializes a `GaussianNB` model from scikit-learn. The model is trained (fitted) on the training data (`x_train`, `y_train`) using the `fit` method. After training, it makes predictions (`y_pred`) on the unseen test features (`x_test`) using the `predict` method.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gaussian_naive_bayes.py.broken.txt#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+# Gaussian Naive Bayes
+    nb_model = GaussianNB()
+    time.sleep(2.9)
+    model_fit = nb_model.fit(x_train, y_train)
+    y_pred = model_fit.predict(x_test)  # Predictions on the test set
+```
+
+----------------------------------------
+
+TITLE: Plotting Normal Distribution Histogram (Python)
+DESCRIPTION: This Python snippet utilizes `matplotlib.pyplot` and `numpy` to visualize the distribution of random numbers. It generates a histogram of the numbers and overlays the probability density function (PDF) of the standard normal distribution for comparison. Requires `numpy` and `matplotlib.pyplot`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/sorts/normal_distribution_quick_sort.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+>>> mu, sigma = 0, 1 # mean and standard deviation
+>>> s = np.random.normal(mu, sigma, p)
+>>> count, bins, ignored = plt.hist(s, 30, normed=True)
+>>> plt.plot(bins , 1/(sigma * np.sqrt(2 * np.pi)) *np.exp( - (bins - mu)**2 / (2 * sigma**2) ),linewidth=2, color='r')
+>>> plt.show()
+```
+
+----------------------------------------
+
+TITLE: Training the Gradient Boosting Model Python
+DESCRIPTION: Trains the initialized Gradient Boosting Regressor model using the prepared training data (`x_train`, `y_train`). The `fit` method is where the model learns the patterns from the data through an iterative process of building decision trees.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_6
+
+LANGUAGE: python
+CODE:
+```
+    # training the model
+    model.fit(x_train, y_train)
+```
+
+----------------------------------------
+
+TITLE: Initializing Gradient Boosting Regressor Python
+DESCRIPTION: Initializes the GradientBoostingRegressor model with specific hyperparameters. Key parameters include the number of boosting stages (`n_estimators`), the maximum depth of individual trees (`max_depth`), the minimum number of samples required to split an internal node (`min_samples_split`), and the step size shrinkage used in updating the weights (`learning_rate`).
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_5
+
+LANGUAGE: python
+CODE:
+```
+    model = GradientBoostingRegressor(
+        n_estimators=500, max_depth=5, min_samples_split=4, learning_rate=0.01
+    )
+```
+
+----------------------------------------
+
+TITLE: Calculating and Printing Evaluation Metrics Python
+DESCRIPTION: Computes and prints two key regression evaluation metrics: Mean Squared Error (MSE) and R2 Score. MSE measures the average squared difference between the actual and predicted values, while R2 score provides a measure of how well the predictions approximate the real data points (closer to 1 is better).
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_9
+
+LANGUAGE: python
+CODE:
+```
+    # The mean squared error
+    print(f"Mean squared error: {mean_squared_error(y_test, y_pred):.2f}")
+    # Explained variance score: 1 is perfect prediction
+    print(f"Test Variance score: {r2_score(y_test, y_pred):.2f}")
+```
+
+----------------------------------------
+
+TITLE: Loading and Splitting Iris Dataset - Python
+DESCRIPTION: Loads the standard Iris dataset using scikit-learn's `load_iris` function. It then separates the features (`x`) and target labels (`y`) and splits them into training (70%) and testing (30%) sets using `train_test_split`, ensuring a consistent split via `random_state`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gaussian_naive_bayes.py.broken.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+# Load Iris dataset
+    iris = load_iris()
+
+    # Split dataset into train and test data
+    x = iris["data"]  # features
+    y = iris["target"]
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.3, random_state=1
+    )
+```
+
+----------------------------------------
+
+TITLE: Splitting Data into Training and Testing Sets Python
+DESCRIPTION: Divides the feature and target data into training and testing sets. The `train_test_split` function allocates 75% of the data for training the model and reserves 25% for testing its performance on unseen data. Setting `random_state` ensures the split is reproducible.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+    # split the data with 75% train and 25% test sets.
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, random_state=0, test_size=0.25
+    )
+```
+
+----------------------------------------
+
+TITLE: Loading and Preprocessing Boston Dataset Python
+DESCRIPTION: Loads the Boston housing dataset directly from scikit-learn and converts it into a pandas DataFrame for easier manipulation. The target variable (Price) is added as a new column, and the head and descriptive statistics are printed to inspect the data structure and characteristics.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+    # loading the dataset from the sklearn
+    df = load_boston()
+    print(df.keys())
+    # now let construct a data frame
+    df_boston = pd.DataFrame(df.data, columns=df.feature_names)
+    # let add the target to the dataframe
+    df_boston["Price"] = df.target
+    # print the first five rows using the head function
+    print(df_boston.head())
+    # Summary statistics
+    print(df_boston.describe().T)
+```
+
+----------------------------------------
+
+TITLE: Splitting Data into Features and Target Python
+DESCRIPTION: Separates the loaded DataFrame into two parts: the feature matrix `x`, which contains all columns except the target variable, and the target vector `y`, which contains only the house prices. This is a standard step before training a supervised learning model.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+    # Feature selection
+
+    x = df_boston.iloc[:, :-1]
+    y = df_boston.iloc[:, -1]  # target variable
+```
+
+----------------------------------------
+
+TITLE: Installing Cirq Python Library (Shell)
+DESCRIPTION: This command installs the Google Cirq library using pip, invoked via the `python -m` runner, ensuring the correct Python environment's pip is used. Cirq is a Python framework for writing, simulating, and running quantum circuits. It's a necessary dependency for developing quantum algorithms with Google's tools.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/README.md#_snippet_1
+
+LANGUAGE: Shell
+CODE:
+```
+python -m pip install cirq
+```
+
+----------------------------------------
+
+TITLE: Installing Qiskit Python Library (Shell)
+DESCRIPTION: This command uses the pip package installer to install the IBM Qiskit library, which is essential for programming quantum computers using Python with IBM's platform. Running this command makes the qiskit package available for import in Python scripts.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+pip install qiskit
+```
+
+----------------------------------------
+
+TITLE: Calculating and Printing Model Accuracy - Python
+DESCRIPTION: Calculates the overall accuracy of the model's predictions by comparing the true test labels (`y_test`) against the predicted labels (`y_pred`) using `accuracy_score`. The accuracy is converted to a percentage, rounded to two decimal places, and printed to the console.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gaussian_naive_bayes.py.broken.txt#_snippet_4
+
+LANGUAGE: python
+CODE:
+```
+time.sleep(1.8)
+    final_accuracy = 100 * accuracy_score(y_true=y_test, y_pred=y_pred)
+    print(f"The overall accuracy of the model is: {round(final_accuracy, 2)}%")
+```
+
+----------------------------------------
+
+TITLE: Evaluating Model Performance with Scores Python
+DESCRIPTION: Calculates and prints the R2 scores for both the training and test datasets. The R2 score, also known as the coefficient of determination, indicates the proportion of the variance in the dependent variable that is predictable from the independent variables; a score closer to 1 indicates a better fit.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_7
+
+LANGUAGE: python
+CODE:
+```
+    # to see how good the model fit the data
+    training_score = model.score(x_train, y_train).round(3)
+    test_score = model.score(x_test, y_test).round(3)
+    print("Training score of GradientBoosting is :", training_score)
+    print("The test score of GradientBoosting is :", test_score)
+```
+
+----------------------------------------
+
+TITLE: Making Predictions with Trained Model Python
+DESCRIPTION: Uses the trained Gradient Boosting model to make predictions on the unseen test dataset (`x_test`). The resulting predictions are stored in the `y_pred` variable, which will be used for further evaluation and visualization.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_8
+
+LANGUAGE: python
+CODE:
+```
+    # Let us evaluation the model by finding the errors
+    y_pred = model.predict(x_test)
+```
+
+----------------------------------------
+
+TITLE: Linking GitHub Issues via PR Description (Text)
+DESCRIPTION: This snippet shows the syntax to include in a pull request description to automatically close a linked GitHub issue when the PR is merged.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_0
+
+LANGUAGE: Text
+CODE:
+```
+Fixes #10
+```
+
+----------------------------------------
+
+TITLE: Defining Project Euler Solution Function with Doctests Python
+DESCRIPTION: This snippet shows the required structure for the main `solution` function in a Project Euler solution file. It includes type hinting for parameters and return type, a brief docstring, and placeholders for doctests demonstrating how to test the function with various inputs.
+SOURCE: https://github.com/thealgorithms/python/blob/master/project_euler/README.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+def solution(limit: int = 1000):
+    """
+    A brief statement mentioning what the function is about.
+
+    You can have a detailed explanation about the solution method in the
+    module-level docstring.
+
+    >>> solution(1)
+    ...
+    >>> solution(16)
+    ...
+    >>> solution(100)
+    ...
+    """
+```
+
+----------------------------------------
+
+TITLE: Running the Main Function Python
+DESCRIPTION: This standard Python construct ensures that the `main()` function is called and executed only when the script is run directly (not when it's imported as a module into another script).
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_12
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    main()
+```
+
+----------------------------------------
+
+TITLE: Installing Pre-commit Hook (Bash)
+DESCRIPTION: Commands to install the pre-commit tool using pip and set up the Git hook in the current repository to run checks automatically before each commit.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_1
+
+LANGUAGE: Bash
+CODE:
+```
+python3 -m pip install pre-commit  # only required the first time
+pre-commit install
+```
+
+----------------------------------------
+
+TITLE: Defining Main Function - Python
+DESCRIPTION: Defines the `main` function that encapsulates the primary logic of the script. It includes a docstring explaining the example's purpose and the dataset used.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_classifier.py.broken.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+def main():
+
+    """
+    Random Forest Classifier Example using sklearn function.
+    Iris type dataset is used to demonstrate algorithm.
+    """
+```
+
+----------------------------------------
+
+TITLE: Installing and Running Black Formatter (Bash)
+DESCRIPTION: Commands to install the Black Python code formatter via pip and then apply it to format all Python files in the current directory and its subdirectories.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_3
+
+LANGUAGE: Bash
+CODE:
+```
+python3 -m pip install black  # only required the first time
+black .
+```
+
+----------------------------------------
+
+TITLE: Installing and Running Ruff Checks (Bash)
+DESCRIPTION: Commands to install the Ruff linter/formatter using pip and then run its checks on the codebase to identify style issues and potential errors.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_4
+
+LANGUAGE: Bash
+CODE:
+```
+python3 -m pip install ruff  # only required the first time
+ruff check
+```
+
+----------------------------------------
+
+TITLE: Project Euler Solution File Template Python
+DESCRIPTION: This snippet provides a complete template for a Project Euler solution file in Python. It includes placeholders for the module-level docstring (with problem link, description, and optional references), import statements, helper functions, the main `solution` function, and an `if __name__ == "__main__"` block for execution.
+SOURCE: https://github.com/thealgorithms/python/blob/master/project_euler/README.md#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+"""
+Project Euler Problem [problem number]: [link to the original problem]
+
+... [Entire problem statement] ...
+
+... [Solution explanation - Optional] ...
+
+References [Optional]:
+- [Wikipedia link to the topic]
+- [Stackoverflow link]
+...
+
+"""
+import module1
+import module2
+...
+
+def helper1(arg1: [type hint], arg2: [type hint], ...) -> [Return type hint]:
+    """
+    A brief statement explaining what the function is about.
+
+    ... A more elaborate description ... [Optional]
+
+    ...
+    [Doctest]
+    ...
+
+    """
+    ...
+    # calculations
+    ...
+
+    return
+
+
+# You can have multiple helper functions but the solution function should be
+# after all the helper functions ...
+
+
+def solution(arg1: [type hint], arg2: [type hint], ...) -> [Return type hint]:
+    """
+    A brief statement mentioning what the function is about.
+
+    You can have a detailed explanation about the solution in the
+    module-level docstring.
+
+    ...
+    [Doctest as mentioned above]
+    ...
+
+    """
+
+    ...
+    # calculations
+    ...
+
+    return answer
+
+
+if __name__ == "__main__":
+    print(f"{solution() = }")
+```
+
+----------------------------------------
+
+TITLE: Importing Machine Learning Libraries Python
+DESCRIPTION: This section imports all the necessary Python libraries required for the script's functionality. It includes libraries for numerical operations, data manipulation (pandas), plotting (matplotlib), and various machine learning tools (sklearn) for datasets, model building, evaluation metrics, and data splitting.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.datasets import load_boston
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+```
+
+----------------------------------------
+
+TITLE: Importing Libraries for ML Example - Python
+DESCRIPTION: Imports necessary modules from scikit-learn and matplotlib for data handling, model training, evaluation, and plotting. Essential components like dataset loading, classifier, evaluation metrics, and data splitting are included.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_classifier.py.broken.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+from matplotlib import pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.model_selection import train_test_split
+```
+
+----------------------------------------
+
+TITLE: Displaying Normalized Confusion Matrix Plot - Python
+DESCRIPTION: Generates and displays a normalized confusion matrix plot for the model's performance on the test set. It uses `plot_confusion_matrix`, requiring the trained model, test features, test labels, and target class names. The plot is titled and shown using matplotlib.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gaussian_naive_bayes.py.broken.txt#_snippet_3
+
+LANGUAGE: python
+CODE:
+```
+# Display Confusion Matrix
+    plot_confusion_matrix(
+        nb_model,
+        x_test,
+        y_test,
+        display_labels=iris["target_names"],
+        cmap="Blues",  # although, Greys_r has a better contrast...
+        normalize="true",
+    )
+    plt.title("Normalized Confusion Matrix - IRIS Dataset")
+    plt.show()
+```
+
+----------------------------------------
+
+TITLE: Implementing a Quantum Half Adder using Qiskit
+DESCRIPTION: This function constructs and simulates a quantum half-adder circuit for two classical bits. It initializes qubits, applies X gates based on input bits, uses CNOT for the sum (XOR) and Toffoli (CCX) for the carry (AND), measures the results, and runs the simulation 1000 times on Qiskit's Aer simulator.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/half_adder.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+def half_adder(bit0: int, bit1: int) -> qiskit.result.counts.Counts:
+    """
+    >>> half_adder(0, 0)
+    {'00': 1000}
+    >>> half_adder(0, 1)
+    {'01': 1000}
+    >>> half_adder(1, 0)
+    {'01': 1000}
+    >>> half_adder(1, 1)
+    {'10': 1000}
+    """
+    # Use Aer's simulator
+    simulator = qiskit.Aer.get_backend("aer_simulator")
+
+    qc_ha = qiskit.QuantumCircuit(4, 2)
+    # encode inputs in qubits 0 and 1
+    if bit0 == 1:
+        qc_ha.x(0)
+    if bit1 == 1:
+        qc_ha.x(1)
+    qc_ha.barrier()
+
+    # use cnots to write XOR of the inputs on qubit2
+    qc_ha.cx(0, 2)
+    qc_ha.cx(1, 2)
+
+    # use ccx / toffoli gate to write AND of the inputs on qubit3
+    qc_ha.ccx(0, 1, 3)
+    qc_ha.barrier()
+
+    # extract outputs
+    qc_ha.measure(2, 0)  # extract XOR value
+    qc_ha.measure(3, 1)  # extract AND value
+
+    # Execute the circuit on the qasm simulator
+    job = qiskit.execute(qc_ha, simulator, shots=1000)
+
+    # Return the histogram data of the results of the experiment
+    return job.result().get_counts(qc_ha)
+```
+
+----------------------------------------
+
+TITLE: Defining Qiskit Simulation Function Python
+DESCRIPTION: Defines a function to build and simulate a quantum circuit using Qiskit's Aer simulator. It initializes a circuit with specified qubits and classical bits, applies X gates to the first two qubits, measures them onto corresponding classical bits, executes the circuit for 1000 shots, and returns the resulting state counts.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/not_gate.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+import qiskit
+
+
+def single_qubit_measure(
+    qubits: int, classical_bits: int
+) -> qiskit.result.counts.Counts:
+    """
+    >>> single_qubit_measure(2, 2)
+    {'11': 1000}
+    >>> single_qubit_measure(4, 4)
+    {'0011': 1000}
+    """
+    # Use Aer's simulator
+    simulator = qiskit.Aer.get_backend("aer_simulator")
+
+    # Create a Quantum Circuit acting on the q register
+    circuit = qiskit.QuantumCircuit(qubits, classical_bits)
+
+    # Apply X (NOT) Gate to Qubits 0 & 1
+    circuit.x(0)
+    circuit.x(1)
+
+    # Map the quantum measurement to the classical bits
+    circuit.measure([0, 1], [0, 1])
+
+    # Execute the circuit on the qasm simulator
+    job = qiskit.execute(circuit, simulator, shots=1000)
+
+    # Return the histogram data of the results of the experiment.
+    return job.result().get_counts(circuit)
+```
+
+----------------------------------------
+
+TITLE: Implementing Quantum Teleportation Circuit using Qiskit Python
+DESCRIPTION: This Python function constructs a quantum teleportation circuit using the Qiskit library. It initializes the state to be teleported using a U gate, creates an entangled pair, performs CNOT (CX) and Hadamard (H) gates on the sender's side, applies classical control gates (CZ, CX) conditioned on measurements, and simulates the circuit on a quantum simulator, returning the final measurement counts of the receiving qubit.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/quantum_teleportation.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+def quantum_teleportation(
+    theta: float = np.pi / 2, phi: float = np.pi / 2, lam: float = np.pi / 2
+) -> qiskit.result.counts.Counts:
+    """
+    # >>> quantum_teleportation()
+    #{'00': 500, '11': 500} # ideally
+    #      ┌─────────────────┐          ┌───┐
+    #qr_0: ┤  U(π/2,π/2,π/2) ├───────■──┤ H ├─■─────────
+    #      └──────┬───┬──────┘     ┌─┴─┐└───┘ │
+    #qr_1: ───────┤ H ├─────────■──┤ X ├──────┼───■─────
+    #             └───┘       ┌─┴─┐└───┘      │ ┌─┴─┐┌─┐
+    #qr_2: ───────────────────┤ X ├───────────■─┤ X ├┤M├
+    #                         └───┘             └───┘└╥┘
+    #cr: 1/═══════════════════════════════════════════╩═
+    Args:
+        theta (float): Single qubit rotation U Gate theta parameter. Default to np.pi/2
+        phi (float): Single qubit rotation U Gate phi parameter. Default to np.pi/2
+        lam (float): Single qubit rotation U Gate lam parameter. Default to np.pi/2
+    Returns:
+        qiskit.result.counts.Counts: Teleported qubit counts.
+    """
+
+    qr = QuantumRegister(3, "qr")  # Define the number of quantum bits
+    cr = ClassicalRegister(1, "cr")  # Define the number of classical bits
+
+    quantum_circuit = QuantumCircuit(qr, cr)  # Define the quantum circuit.
+
+    # Build the circuit
+    quantum_circuit.u(theta, phi, lam, 0)  # Quantum State to teleport
+    quantum_circuit.h(1)  # add hadamard gate
+    quantum_circuit.cx(
+        1, 2
+    )  # add control gate with qubit 1 as control and 2 as target.
+    quantum_circuit.cx(0, 1)
+    quantum_circuit.h(0)
+    quantum_circuit.cz(0, 2)  # add control z gate.
+    quantum_circuit.cx(1, 2)
+
+    quantum_circuit.measure([2], [0])  # measure the qubit.
+
+    # Simulate the circuit using qasm simulator
+    backend = Aer.get_backend("aer_simulator")
+    job = execute(quantum_circuit, backend, shots=1000)
+
+    return job.result().get_counts(quantum_circuit)
+```
+
+----------------------------------------
+
+TITLE: Building and Simulating Quantum Full Adder - Qiskit Python
+DESCRIPTION: This function constructs and simulates a 4-qubit quantum full adder circuit using Qiskit. It initializes qubits based on integer inputs (0, 1, or 2 for superposition), applies necessary quantum gates (CCX, CX, X, H, I), measures the sum and carry qubits, and runs the circuit on an Aer simulator for 1000 shots. It returns the measurement counts.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/q_full_adder.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+import math
+
+import qiskit
+
+
+def quantum_full_adder(
+    input_1: int = 1, input_2: int = 1, carry_in: int = 1
+) -> qiskit.result.counts.Counts:
+    """
+    # >>> q_full_adder(inp_1, inp_2, cin)
+    # the inputs can be 0/1 for qubits in define
+    # values, or can be in a superposition of both
+    # states with hadamard gate using the input value 2.
+    # result for default values: {11: 1000}
+    qr_0: ──■────■──────────────■──
+            │  ┌─┴─┐          ┌─┴─┐
+    qr_1: ──■──┤ X ├──■────■──┤ X ├
+            │  └───┘  │  ┌─┴─┐└───┘
+    qr_2: ──┼─────────■──┤ X ├─────
+          ┌─┴─┐     ┌─┴─┐└───┘
+    qr_3: ┤ X ├─────┤ X ├──────────
+          └───┘     └───┘
+    cr: 2/═════════════════════════
+    Args:
+        input_1: input 1 for the circuit.
+        input_2: input 2 for the circuit.
+        carry_in: carry in for the circuit.
+    Returns:
+        qiskit.result.counts.Counts: sum result counts.
+    >>> quantum_full_adder(1, 1, 1)
+    {'11': 1000}
+    >>> quantum_full_adder(0, 0, 1)
+    {'01': 1000}
+    >>> quantum_full_adder(1, 0, 1)
+    {'10': 1000}
+    >>> quantum_full_adder(1, -4, 1)
+    Traceback (most recent call last):
+        ...
+    ValueError: inputs must be positive.
+    >>> quantum_full_adder('q', 0, 1)
+    Traceback (most recent call last):
+        ...
+    TypeError: inputs must be integers.
+    >>> quantum_full_adder(0.5, 0, 1)
+    Traceback (most recent call last):
+        ...
+    ValueError: inputs must be exact integers.
+    >>> quantum_full_adder(0, 1, 3)
+    Traceback (most recent call last):
+        ...
+    ValueError: inputs must be less or equal to 2.
+    """
+    if (
+        isinstance(input_1, str)
+        or isinstance(input_2, str)
+        or isinstance(carry_in, str)
+    ):
+        raise TypeError("inputs must be integers.")
+
+    if (input_1 < 0) or (input_2 < 0) or (carry_in < 0):
+        raise ValueError("inputs must be positive.")
+
+    if (
+        (math.floor(input_1) != input_1)
+        or (math.floor(input_2) != input_2)
+        or (math.floor(carry_in) != carry_in)
+    ):
+        raise ValueError("inputs must be exact integers.")
+
+    if (input_1 > 2) or (input_2 > 2) or (carry_in > 2):
+        raise ValueError("inputs must be less or equal to 2.")
+
+    # build registers
+    qr = qiskit.QuantumRegister(4, "qr")
+    cr = qiskit.ClassicalRegister(2, "cr")
+    # list the entries
+    entry = [input_1, input_2, carry_in]
+
+    quantum_circuit = qiskit.QuantumCircuit(qr, cr)
+
+    for i in range(3):
+        if entry[i] == 2:
+            quantum_circuit.h(i)  # for hadamard entries
+        elif entry[i] == 1:
+            quantum_circuit.x(i)  # for 1 entries
+        elif entry[i] == 0:
+            quantum_circuit.i(i)  # for 0 entries
+
+    # build the circuit
+    quantum_circuit.ccx(0, 1, 3)  # ccx = toffoli gate
+    quantum_circuit.cx(0, 1)
+    quantum_circuit.ccx(1, 2, 3)
+    quantum_circuit.cx(1, 2)
+    quantum_circuit.cx(0, 1)
+
+    quantum_circuit.measure([2, 3], cr)  # measure the last two qbits
+
+    backend = qiskit.Aer.get_backend("aer_simulator")
+    job = qiskit.execute(quantum_circuit, backend, shots=1000)
+
+    return job.result().get_counts(quantum_circuit)
+
+```
+
+----------------------------------------
+
+TITLE: Running Mypy on All Python Files (Bash)
+DESCRIPTION: Command to run the Mypy static type checker on all Python files in the current directory and its subdirectories, configured to ignore missing import errors.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_12
+
+LANGUAGE: Bash
+CODE:
+```
+mypy --ignore-missing-imports .
+```
+
+----------------------------------------
+
+TITLE: Implementing Quantum Full Adder Gate - Python/Qiskit
+DESCRIPTION: This function applies the necessary quantum gates (CCX and CX) to implement a single-bit full adder. It operates on specific input and carry qubits within a provided quantum circuit. The CCX gate acts like a 3-way XOR, and CX like a 2-way XOR, performing the logic for sum and carry propagation. Requires the `qiskit` library.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/ripple_adder_classic.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+def full_adder(
+    circuit: qiskit.QuantumCircuit,
+    input1_loc: int,
+    input2_loc: int,
+    carry_in: int,
+    carry_out: int,
+):
+    """
+    Quantum Equivalent of a Full Adder Circuit
+    CX/CCX is like 2-way/3-way XOR
+    """
+    circuit.ccx(input1_loc, input2_loc, carry_out)
+    circuit.cx(input1_loc, input2_loc)
+    circuit.ccx(input2_loc, carry_in, carry_out)
+    circuit.cx(input2_loc, carry_in)
+    circuit.cx(input1_loc, input2_loc)
+```
+
+----------------------------------------
+
+TITLE: Running Python Doctests Locally (Bash)
+DESCRIPTION: Command to execute the doctests embedded in the docstrings of a specific Python file using the built-in `doctest` module with verbose output.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_8
+
+LANGUAGE: Bash
+CODE:
+```
+python3 -m doctest -v my_submission.py
+```
+
+----------------------------------------
+
+TITLE: Building Complete Deutsch-Jozsa Quantum Circuit - Qiskit Python
+DESCRIPTION: This function constructs the full Deutsch-Jozsa quantum circuit. It takes the pre-built oracle gate and the number of qubits as input. It initializes the circuit with input and output registers, applies Hadamard gates to the input qubits and the output qubit (after an initial X-gate), appends the oracle gate, applies final Hadamard gates to the input qubits, and sets up measurements for the input register. It returns the complete Qiskit QuantumCircuit object.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/deutsch_jozsa.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+def dj_algorithm(
+    oracle: qiskit.QuantumCircuit, num_qubits: int
+) -> qiskit.QuantumCircuit:
+    """
+    Returns the complete Deutsch-Jozsa Quantum Circuit,
+    adding Input & Output registers and Hadamard & Measurement Gates,
+    to the Oracle Circuit passed in arguments
+    """
+    dj_circuit = qiskit.QuantumCircuit(num_qubits + 1, num_qubits)
+    # Set up the output qubit:
+    dj_circuit.x(num_qubits)
+    dj_circuit.h(num_qubits)
+    # And set up the input register:
+    for qubit in range(num_qubits):
+        dj_circuit.h(qubit)
+    # Let's append the oracle gate to our circuit:
+    dj_circuit.append(oracle, range(num_qubits + 1))
+    # Finally, perform the H-gates again and measure:
+    for qubit in range(num_qubits):
+        dj_circuit.h(qubit)
+    for i in range(num_qubits):
+        dj_circuit.measure(i, i)
+    return dj_circuit
+```
+
+----------------------------------------
+
+TITLE: Running Mypy on Specific Python File (Bash)
+DESCRIPTION: Command to run the Mypy static type checker on a single specified Python file, configured to ignore missing import errors.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_13
+
+LANGUAGE: Bash
+CODE:
+```
+mypy --ignore-missing-imports path/to/file.py
+```
+
+----------------------------------------
+
+TITLE: Displaying the Prediction Plot Python
+DESCRIPTION: Displays the plot generated by matplotlib, showing the scatter plot of actual vs. predicted values and the line of perfect prediction. This function call renders the plot window for the user to view.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_11
+
+LANGUAGE: python
+CODE:
+```
+    # this show function will display the plotting
+    plt.show()
+```
+
+----------------------------------------
+
+TITLE: Defining Main Execution Function Python
+DESCRIPTION: This defines the main function, `main()`, which encapsulates the core logic of the script. Organizing code within a function is a standard practice for better structure and reusability in Python.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gradient_boosting_regressor.py.broken.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+def main():
+```
+
+----------------------------------------
+
+TITLE: Executing Deutsch-Jozsa Algorithm and Getting Results - Qiskit Python
+DESCRIPTION: This is the main function to run the Deutsch-Jozsa algorithm simulation. It calls the helper functions to create the oracle and the complete circuit. It uses Qiskit's Aer simulator to execute the circuit 1000 times (shots). The function returns the measurement counts from the simulation. According to the Deutsch-Jozsa algorithm, a 'constant' function will result in counts for '000...0', while a 'balanced' function will result in counts for '111...1' (for n qubits).
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/deutsch_jozsa.py.DISABLED.txt#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+def deutsch_jozsa(case: str, num_qubits: int) -> qiskit.result.counts.Counts:
+    """
+    Main function that builds the circuit using other helper functions,
+    runs the experiment 1000 times & returns the resultant qubit counts
+    >>> deutsch_jozsa("constant", 3)
+    {'000': 1000}
+    >>> deutsch_jozsa("balanced", 3)
+    {'111': 1000}
+    """
+    # Use Aer's simulator
+    simulator = qiskit.Aer.get_backend("aer_simulator")
+    oracle_gate = dj_oracle(case, num_qubits)
+    dj_circuit = dj_algorithm(oracle_gate, num_qubits)
+    # Execute the circuit on the simulator
+    job = qiskit.execute(dj_circuit, simulator, shots=1000)
+    # Return the histogram data of the results of the experiment.
+    return job.result().get_counts(dj_circuit)
+```
+
+----------------------------------------
+
+TITLE: Handling Whitespace in Python Input (Python)
+DESCRIPTION: Shows the recommended way to process input from the user using `input()` by calling `.strip()` to remove leading/trailing whitespace before parsing.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_10
+
+LANGUAGE: Python
+CODE:
+```
+starting_value = int(input("Please enter a starting value: ").strip())
+```
+
+----------------------------------------
+
+TITLE: Running Pre-commit Manually (Bash)
+DESCRIPTION: This command executes all configured pre-commit hooks on all files in the repository manually, showing diffs for any suggested changes.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_2
+
+LANGUAGE: Bash
+CODE:
+```
+pre-commit run --all-files --show-diff-on-failure
+```
+
+----------------------------------------
+
+TITLE: Running Deutsch-Jozsa Examples - Python
+DESCRIPTION: This block demonstrates how to use the `deutsch_jozsa` function. It calls the function twice, once with the 'constant' case and once with the 'balanced' case, both for a 3-qubit input. It then prints the returned result counts from the simulation for each case, showing the expected outcome of the algorithm.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/deutsch_jozsa.py.DISABLED.txt#_snippet_3
+
+LANGUAGE: Python
+CODE:
+```
+if __name__ == "__main__":
+    print(f"Deutsch Jozsa - Constant Oracle: {deutsch_jozsa('constant', 3)}")
+    print(f"Deutsch Jozsa - Balanced Oracle: {deutsch_jozsa('balanced', 3)}")
+```
+
+----------------------------------------
+
+TITLE: Running Superdense Coding Example in Python
+DESCRIPTION: This block demonstrates how to execute the `superdense_coding` function when the script is run directly. It calls the function with example input bits (1, 1) and prints the resulting measurement counts, showing the outcome of the simulated quantum communication protocol.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/superdense_coding.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    print(f"Counts for classical state send: {superdense_coding(1,1)}")
+```
+
+----------------------------------------
+
+TITLE: Executing Quantum Entanglement Simulation with Qiskit (Python)
+DESCRIPTION: This block demonstrates how to execute the `quantum_entanglement` function when the script is run directly. It calls the function with 3 qubits and prints the resulting state counts obtained from the simulation.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/quantum_entanglement.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    print(f"Total count for various states are: {quantum_entanglement(3)}")
+```
+
+----------------------------------------
+
+TITLE: Defining Script Entry Point - Python
+DESCRIPTION: Standard Python idiom to ensure the `main` function is executed only when the script is run directly, not when imported as a module.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/random_forest_classifier.py.broken.txt#_snippet_5
+
+LANGUAGE: Python
+CODE:
+```
+if __name__ == "__main__":
+    main()
+```
+
+----------------------------------------
+
+TITLE: Running Main Function Guard - Python
+DESCRIPTION: Standard Python idiom that ensures the `main()` function is called only when the script is executed directly (not imported as a module). This structure organizes the primary execution flow of the script.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gaussian_naive_bayes.py.broken.txt#_snippet_5
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    main()
+```
+
+----------------------------------------
+
+TITLE: Running Quantum Teleportation Simulation in Python
+DESCRIPTION: This standard Python entry point block executes the `quantum_teleportation` function when the script is run directly. It calls the function with default parameters and prints the resulting dictionary of measurement counts to the console, showing the simulated outcome of the teleportation process.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/quantum_teleportation.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+if __name__ == "__main__":
+    print(
+        "Total count for teleported state is: "
+        f"{quantum_teleportation(np.pi/2, np.pi/2, np.pi/2)}"
+    )
+```
+
+----------------------------------------
+
+TITLE: Running BB84 Simulation Example and Doctests - Python
+DESCRIPTION: This block executes when the script is run directly. It demonstrates calling the `bb84` function to generate a key with specific parameters and runs the embedded doctests within the `bb84` function's docstring to verify its behavior against expected outputs.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/bb84.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    print(f"The generated key is : {bb84(8, seed=0)}")
+    from doctest import testmod
+
+    testmod()
+```
+
+----------------------------------------
+
+TITLE: Executing Quantum Full Adder Example - Python
+DESCRIPTION: This standard Python block demonstrates how to call the `quantum_full_adder` function when the script is executed directly. It calls the function with inputs (1, 1, 1) and prints the resulting measurement counts to the console.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/q_full_adder.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+if __name__ == "__main__":
+    print(f"Total sum count for state is: {quantum_full_adder(1, 1, 1)}")
+```
+
+----------------------------------------
+
+TITLE: Demonstrating ProjectQ Random Bit Generation Python
+DESCRIPTION: This block demonstrates the usage of the `get_random_number` function. It first runs the built-in doctests defined in the file. Then, it initializes a ProjectQ quantum engine, generates a list containing 10 random bits by repeatedly calling the `get_random_number` function, flushes the quantum engine to execute queued operations, and finally prints the resulting list of random numbers.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/quantum_random.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    doctest.testmod()
+
+    # initialises a new quantum backend
+    quantum_engine = projectq.MainEngine()
+
+    # Generate a list of 10 random numbers
+    random_numbers_list = [get_random_number(quantum_engine) for _ in range(10)]
+
+    # Flushes the quantum engine from memory
+    quantum_engine.flush()
+
+    print("Random numbers", random_numbers_list)
+```
+
+----------------------------------------
+
+TITLE: Executing Qiskit Simulation and Printing Results Python
+DESCRIPTION: This block serves as the main entry point of the script. It calls the `single_qubit_measure` function with 2 qubits and 2 classical bits to run the quantum simulation and then prints the dictionary containing the total counts of the observed states.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/not_gate.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    counts = single_qubit_measure(2, 2)
+    print(f"Total count for various states are: {counts}")
+```
+
+----------------------------------------
+
+TITLE: Executing Quantum Half Adder Example in Python
+DESCRIPTION: This block demonstrates how to call the `half_adder` function with specific inputs (1, 1) when the script is run directly. It executes the quantum circuit simulation and prints the resulting measurement counts for the sum and carry qubits.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/half_adder.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    counts = half_adder(1, 1)
+    print(f"Half Adder Output Qubit Counts: {counts}")
+```
+
+----------------------------------------
+
+TITLE: Running Quantum Simulation Script with Qiskit Python
+DESCRIPTION: This block serves as the entry point for the script when executed directly. It calls the `single_qubit_measure` function with one quantum bit and one classical bit, and then prints the returned dictionary of state counts, prefixed with an explanatory message. Requires the `single_qubit_measure` function and the `qiskit` library implicitly used by it.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/single_qubit_measure.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: python
+CODE:
+```
+if __name__ == "__main__":
+    print(f"Total count for various states are: {single_qubit_measure(1, 1)}")
+```
+
+----------------------------------------
+
+TITLE: Building Quantum Entanglement Circuit with Qiskit (Python)
+DESCRIPTION: This function creates a quantum circuit to entangle a specified number of qubits using Qiskit. It initializes the circuit, applies a Hadamard gate to the first qubit, and then applies sequential CNOT gates to entangle the subsequent qubits. Finally, it measures all qubits and simulates the circuit execution using the 'aer_simulator' backend.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/quantum_entanglement.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+import qiskit
+
+def quantum_entanglement(qubits: int = 2) -> qiskit.result.counts.Counts:
+    """
+    # >>> quantum_entanglement(2)
+    # {'00': 500, '11': 500}
+    #      ┌───┐     ┌─┐
+    # q_0: ┤ H ├──■──┤M├───
+    #      └───┘┌─┴─┐└╥┘┌─┐
+    # q_1: ─────┤ X ├─╫─┤M├
+    #           └───┘ ║ └╥┘
+    # c: 2/═══════════╩══╩═
+    #                 0  1
+    Args:
+        qubits (int): number of quibits to use. Defaults to 2
+    Returns:
+        qiskit.result.counts.Counts: mapping of states to its counts
+    """
+    classical_bits = qubits
+
+    # Using Aer's simulator
+    simulator = qiskit.Aer.get_backend("aer_simulator")
+
+    # Creating a Quantum Circuit acting on the q register
+    circuit = qiskit.QuantumCircuit(qubits, classical_bits)
+
+    # Adding a H gate on qubit 0 (now q0 in superposition)
+    circuit.h(0)
+
+    for i in range(1, qubits):
+        # Adding CX (CNOT) gate
+        circuit.cx(i - 1, i)
+
+    # Mapping the quantum measurement to the classical bits
+    circuit.measure(list(range(qubits)), list(range(classical_bits)))
+
+    # Now measuring any one qubit would affect other qubits to collapse
+    # their super position and have same state as the measured one.
+
+    # Executing the circuit on the simulator
+    job = qiskit.execute(circuit, simulator, shots=1000)
+
+    return job.result().get_counts(circuit)
+```
+
+----------------------------------------
+
+TITLE: Simulating Quantum Circuit Measurement with Qiskit Python
+DESCRIPTION: This function simulates a basic quantum circuit using Qiskit's Aer simulator. It initializes a circuit with specified quantum and classical bits, measures the first qubit onto the first classical bit, executes the circuit 1000 times on the simulator, and returns a dictionary containing the counts of observed states. Requires the `qiskit` library. Takes the number of quantum and classical bits as input and returns a dictionary of measurement counts.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/single_qubit_measure.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+def single_qubit_measure(
+    qubits: int, classical_bits: int
+) -> qiskit.result.counts.Counts:
+    """
+    >>> single_qubit_measure(1, 1)
+    {'0': 1000}
+    """
+    # Use Aer's simulator
+    simulator = qiskit.Aer.get_backend("aer_simulator")
+
+    # Create a Quantum Circuit acting on the q register
+    circuit = qiskit.QuantumCircuit(qubits, classical_bits)
+
+    # Map the quantum measurement to the classical bits
+    circuit.measure([0], [0])
+
+    # Execute the circuit on the simulator
+    job = qiskit.execute(circuit, simulator, shots=1000)
+
+    # Return the histogram data of the results of the experiment.
+    return job.result().get_counts(circuit)
+```
+
+----------------------------------------
+
+TITLE: Generating Random Bit using ProjectQ Python
+DESCRIPTION: Generates a single random bit (0 or 1) using a quantum engine provided by ProjectQ. It allocates a qubit, applies a Hadamard gate to place it in a superposition state (equal probability of 0 or 1), measures the qubit collapsing its state, and returns the integer outcome (0 or 1). Requires an initialized ProjectQ MainEngine instance.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/quantum_random.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+def get_random_number(quantum_engine: projectq.cengines._main.MainEngine) -> int:
+    """
+    >>> isinstance(get_random_number(projectq.MainEngine()), int)
+    True
+    """
+    qubit = quantum_engine.allocate_qubit()
+    H | qubit
+    Measure | qubit
+    return int(qubit)
+```
+
+----------------------------------------
+
+TITLE: Creating Deutsch-Jozsa Oracle Quantum Circuit - Qiskit Python
+DESCRIPTION: This function generates a Qiskit QuantumCircuit representing the oracle for the Deutsch-Jozsa algorithm. It can be configured as either a 'balanced' or 'constant' function. The circuit includes an output qubit which receives the function's result. For a 'balanced' oracle, it constructs a circuit based on a random binary string using X and CNOT gates. For a 'constant' oracle, it applies an X-gate to the output qubit if the constant output is 1. It returns the circuit as a reusable gate.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/deutsch_jozsa.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+def dj_oracle(case: str, num_qubits: int) -> qiskit.QuantumCircuit:
+    """
+    Returns a Quantum Circuit for the Oracle function.
+    The circuit returned can represent balanced or constant function,
+    according to the arguments passed
+    """
+    # This circuit has num_qubits+1 qubits: the size of the input,
+    # plus one output qubit
+    oracle_qc = qiskit.QuantumCircuit(num_qubits + 1)
+    # First, let's deal with the case in which oracle is balanced
+    if case == "balanced":
+        # First generate a random number that tells us which CNOTs to
+        # wrap in X-gates:
+        b = np.random.randint(1, 2**num_qubits)
+        # Next, format 'b' as a binary string of length 'n', padded with zeros:
+        b_str = format(b, f"0{num_qubits}b")
+        # Next, we place the first X-gates. Each digit in our binary string
+        # corresponds to a qubit, if the digit is 0, we do nothing, if it's 1
+        # we apply an X-gate to that qubit:
+        for index, bit in enumerate(b_str):
+            if bit == "1":
+                oracle_qc.x(index)
+        # Do the controlled-NOT gates for each qubit, using the output qubit
+        # as the target:
+        for index in range(num_qubits):
+            oracle_qc.cx(index, num_qubits)
+        # Next, place the final X-gates
+        for index, bit in enumerate(b_str):
+            if bit == "1":
+                oracle_qc.x(index)
+    # Case in which oracle is constant
+    if case == "constant":
+        # First decide what the fixed output of the oracle will be
+        # (either always 0 or always 1)
+        output = np.random.randint(2)
+        if output == 1:
+            oracle_qc.x(num_qubits)
+    oracle_gate = oracle_qc.to_gate()
+    oracle_gate.name = "Oracle"  # To show when we display the circuit
+    return oracle_gate
+```
+
+----------------------------------------
+
+TITLE: Initializing Quantum State with Classical Integers - Python/Qiskit
+DESCRIPTION: This function prepares a quantum circuit to represent two classical integers. It converts integers to padded binary strings, allocates qubits (3x max bits + 1) and classical registers (max bits + 1), and applies X gates to flip qubits where the corresponding bit in the classical number is 1. It returns the initialized circuit and the padded binary strings. Requires the `qiskit` library.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/ripple_adder_classic.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+import qiskit
+from qiskit.providers import Backend
+
+
+def store_two_classics(val1: int, val2: int) -> tuple[qiskit.QuantumCircuit, str, str]:
+    """
+    Generates a Quantum Circuit which stores two classical integers
+    Returns the circuit and binary representation of the integers
+    """
+    x, y = bin(val1)[2:], bin(val2)[2:]  # Remove leading '0b'
+
+    # Ensure that both strings are of the same length
+    if len(x) > len(y):
+        y = y.zfill(len(x))
+    else:
+        x = x.zfill(len(y))
+
+    # We need (3 * number of bits in the larger number)+1 qBits
+    # The second parameter is the number of classical registers, to measure the result
+    circuit = qiskit.QuantumCircuit((len(x) * 3) + 1, len(x) + 1)
+
+    # We are essentially "not-ing" the bits that are 1
+    # Reversed because it's easier to perform ops on more significant bits
+    for i in range(len(x)):
+        if x[::-1][i] == "1":
+            circuit.x(i)
+    for j in range(len(y)):
+        if y[::-1][j] == "1":
+            circuit.x(len(x) + j)
+
+    return circuit, x, y
+```
+
+----------------------------------------
+
+TITLE: Performing BB84 Protocol Simulation with Qiskit - Python
+DESCRIPTION: This function simulates the BB84 quantum key distribution protocol between Alice and Bob. It generates random bases and states, constructs a quantum circuit using Qiskit, simulates the circuit, and extracts the shared key by comparing Alice's preparation bases with Bob's measurement bases and keeping only the bits where they matched.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/bb84.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+def bb84(key_len: int = 8, seed: int | None = None) -> str:
+    """
+    Performs the BB84 protocol using a key made of `key_len` bits.
+    The two parties in the key distribution are called Alice and Bob.
+    Args:
+        key_len: The length of the generated key in bits. The default is 8.
+
+        seed: Seed for the random number generator.
+        Mostly used for testing. Default is None.
+
+    Returns:
+        key: The key generated using BB84 protocol.
+
+    >>> bb84(16, seed=0)
+    '0111110111010010'
+
+    >>> bb84(8, seed=0)
+    '10110001'
+    """
+    # Set up the random number generator.
+    rng = np.random.default_rng(seed=seed)
+
+    # Roughly 25% of the qubits will contribute to the key.
+    # So we take more than we need.
+    num_qubits = 6 * key_len
+    # Measurement basis for Alice's qubits.
+    alice_basis = rng.integers(2, size=num_qubits)
+    # The set of states Alice will prepare.
+    alice_state = rng.integers(2, size=num_qubits)
+    # Measurement basis for Bob's qubits.
+    bob_basis = rng.integers(2, size=num_qubits)
+
+    # Quantum Circuit to simulate BB84
+    bb84_circ = qiskit.QuantumCircuit(num_qubits, name="BB84")
+
+    # Alice prepares her qubits according to rules above.
+    for index, _ in enumerate(alice_basis):
+        if alice_state[index] == 1:
+            bb84_circ.x(index)
+        if alice_basis[index] == 1:
+            bb84_circ.h(index)
+    bb84_circ.barrier()
+
+    # Bob measures the received qubits according to rules above.
+    for index, _ in enumerate(bob_basis):
+        if bob_basis[index] == 1:
+            bb84_circ.h(index)
+
+    bb84_circ.barrier()
+    bb84_circ.measure_all()
+
+    # Simulate the quantum circuit.
+    sim = qiskit.Aer.get_backend("aer_simulator")
+    # We only need to run one shot because the key is unique.
+    # Multiple shots will produce the same key.
+    job = qiskit.execute(bb84_circ, sim, shots=1, seed_simulator=seed)
+    # Returns the result of measurement.
+    result = job.result().get_counts(bb84_circ).most_frequent()
+
+    # Extracting the generated key from the simulation results.
+    # Only keep measurement results where Alice and Bob chose the same basis.
+    gen_key = "".join(
+        [
+            result_bit
+            for alice_basis_bit, bob_basis_bit, result_bit in zip(
+                alice_basis, bob_basis, result
+            )
+            if alice_basis_bit == bob_basis_bit
+        ]
+    )
+
+    # Get final key. Pad with 0 if too short, otherwise truncate.
+    key = gen_key[:key_len] if len(gen_key) >= key_len else gen_key.ljust(key_len, "0")
+    return key
+```
+
+----------------------------------------
+
+TITLE: Defining Equal Loudness Filter Class (Python)
+DESCRIPTION: This class defines an audio filter that corrects sound based on the human ear's non-linear response by combining a Yule-Walker filter and a Butterworth high-pass filter. The constructor initializes these filters and computes Yule-Walker coefficients from loaded loudness curve data, while the `process` method applies the filters sequentially to a single audio sample.
+SOURCE: https://github.com/thealgorithms/python/blob/master/audio_filters/equal_loudness_filter.py.broken.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+class EqualLoudnessFilter:
+    r"""
+    An equal-loudness filter which compensates for the human ear's non-linear response
+     to sound.
+    This filter corrects this by cascading a yulewalk filter and a butterworth filter.
+
+    Designed for use with samplerate of 44.1kHz and above. If you're using a lower
+     samplerate, use with caution.
+
+    Code based on matlab implementation at https://bit.ly/3eqh2HU
+    (url shortened for ruff)
+
+    Target curve: https://i.imgur.com/3g2VfaM.png
+    Yulewalk response: https://i.imgur.com/J9LnJ4C.png
+    Butterworth and overall response: https://i.imgur.com/3g2VfaM.png
+
+    Images and original matlab implementation by David Robinson, 2001
+    """
+
+    def __init__(self, samplerate: int = 44100) -> None:
+        self.yulewalk_filter = IIRFilter(10)
+        self.butterworth_filter = make_highpass(150, samplerate)
+
+        # pad the data to nyquist
+        curve_freqs = np.array(data["frequencies"] + [max(20000.0, samplerate / 2)])
+        curve_gains = np.array(data["gains"] + [140])
+
+        # Convert to angular frequency
+        freqs_normalized = curve_freqs / samplerate * 2
+        # Invert the curve and normalize to 0dB
+        gains_normalized = np.power(10, (np.min(curve_gains) - curve_gains) / 20)
+
+        # Scipy's `yulewalk` function is a stub, so we're using the
+        #  `yulewalker` library instead.
+        # This function computes the coefficients using a least-squares
+        #  fit to the specified curve.
+        ya, yb = yulewalk(10, freqs_normalized, gains_normalized)
+        self.yulewalk_filter.set_coefficients(ya, yb)
+
+    def process(self, sample: float) -> float:
+        """
+        Process a single sample through both filters
+
+        >>> filt = EqualLoudnessFilter()
+        >>> filt.process(0.0)
+        0.0
+        """
+        tmp = self.yulewalk_filter.process(sample)
+        return self.butterworth_filter.process(tmp)
+```
+
+----------------------------------------
+
+TITLE: Implementing Quantum Ripple-Carry Adder - Python/Qiskit
+DESCRIPTION: This function creates a quantum circuit for adding two positive integers. It first prepares the input state using `store_two_classics`, then applies the `full_adder` logic iteratively for each bit position, chaining the carry-out of one stage to the carry-in of the next. Finally, it measures the output qubits, executes the circuit on a simulator, and returns the result as an integer. Requires `qiskit`. It only supports positive integers.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/ripple_adder_classic.py.DISABLED.txt#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+# The default value for **backend** is the result of a function call which is not
+# normally recommended and causes ruff to raise a B008 error. However, in this case,
+# this is acceptable because `Aer.get_backend()` is called when the function is defined
+# and that same backend is then reused for all function calls.
+
+
+def ripple_adder(
+    val1: int,
+    val2: int,
+    backend: Backend = qiskit.Aer.get_backend("aer_simulator"),  # noqa: B008
+) -> int:
+    """
+    Quantum Equivalent of a Ripple Adder Circuit
+    Uses qasm_simulator backend by default
+
+    Currently only adds 'emulated' Classical Bits
+    but nothing prevents us from doing this with hadamard'd bits :)
+
+    Only supports adding positive integers
+
+    >>> ripple_adder(3, 4)
+    7
+    >>> ripple_adder(10, 4)
+    14
+    >>> ripple_adder(-1, 10)
+    Traceback (most recent call last):
+        ...
+    ValueError: Both Integers must be positive!
+    """
+
+    if val1 < 0 or val2 < 0:
+        raise ValueError("Both Integers must be positive!")
+
+    # Store the Integers
+    circuit, x, y = store_two_classics(val1, val2)
+
+    """
+    We are essentially using each bit of x & y respectively as full_adder's input
+    the carry_input is used from the previous circuit (for circuit num > 1)
+
+    the carry_out is just below carry_input because
+    it will be essentially the carry_input for the next full_adder
+    """
+    for i in range(len(x)):
+        full_adder(circuit, i, len(x) + i, len(x) + len(y) + i, len(x) + len(y) + i + 1)
+        circuit.barrier()  # Optional, just for aesthetics
+
+    # Measure the resultant qBits
+    for i in range(len(x) + 1):
+        circuit.measure([(len(x) * 2) + i], [i])
+
+    res = qiskit.execute(circuit, backend, shots=1).result()
+
+    # The result is in binary. Convert it back to int
+    return int(next(iter(res.get_counts())), 2)
+```
+
+----------------------------------------
+
+TITLE: Defining Fuzzy Sets and Performing Operations with Scikit-fuzzy - Python
+DESCRIPTION: Creates a universe of discourse using `numpy.linspace`, defines two fuzzy sets ('young', 'middle_aged') with triangular membership functions using `skfuzzy.membership.trimf`, and computes various fuzzy set operations (union, intersection, complement, difference, algebraic sum/product, bounded sum/difference) using `scikit-fuzzy` functions. It also imports `matplotlib.pyplot` for subsequent plotting.
+SOURCE: https://github.com/thealgorithms/python/blob/master/fuzzy_logic/fuzzy_operations.py.DISABLED.txt#_snippet_1
+
+LANGUAGE: Python
+CODE:
+```
+if __name__ == "__main__":
+    # Create universe of discourse in Python using linspace ()
+    X = np.linspace(start=0, stop=75, num=75, endpoint=True, retstep=False)
+
+    # Create two fuzzy sets by defining any membership function
+    # (trapmf(), gbellmf(), gaussmf(), etc).
+    abc1 = [0, 25, 50]
+    abc2 = [25, 50, 75]
+    young = fuzz.membership.trimf(X, abc1)
+    middle_aged = fuzz.membership.trimf(X, abc2)
+
+    # Compute the different operations using inbuilt functions.
+    one = np.ones(75)
+    zero = np.zeros((75,))
+    # 1. Union = max(µA(x), µB(x))
+    union = fuzz.fuzzy_or(X, young, X, middle_aged)[1]
+    # 2. Intersection = min(µA(x), µB(x))
+    intersection = fuzz.fuzzy_and(X, young, X, middle_aged)[1]
+    # 3. Complement (A) = (1 - min(µA(x)))
+    complement_a = fuzz.fuzzy_not(young)
+    # 4. Difference (A/B) = min(µA(x),(1- µB(x)))
+    difference = fuzz.fuzzy_and(X, young, X, fuzz.fuzzy_not(middle_aged)[1])[1]
+    # 5. Algebraic Sum = [µA(x) + µB(x) – (µA(x) * µB(x))]
+    alg_sum = young + middle_aged - (young * middle_aged)
+    # 6. Algebraic Product = (µA(x) * µB(x))
+alg_product = young * middle_aged
+    # 7. Bounded Sum = min[1,(µA(x), µB(x))]
+    bdd_sum = fuzz.fuzzy_and(X, one, X, young + middle_aged)[1]
+    # 8. Bounded difference = min[0,(µA(x), µB(x))]
+    bdd_difference = fuzz.fuzzy_or(X, zero, X, young - middle_aged)[1]
+
+    # max-min composition
+    # max-product composition
+
+    # Plot each set A, set B and each operation result using plot() and subplot().
+    from matplotlib import pyplot as plt
+```
+
+----------------------------------------
+
+TITLE: Implementing Superdense Coding with Qiskit in Python
+DESCRIPTION: This function implements the Superdense Coding protocol, allowing two classical bits (0 or 1) to be transmitted using a single qubit. It constructs a quantum circuit using Qiskit, including entanglement, applying gates based on the input bits, and measurement. It validates inputs to ensure they are 0 or 1 integers and simulates the circuit using the 'aer_simulator' backend for 1000 shots.
+SOURCE: https://github.com/thealgorithms/python/blob/master/quantum/superdense_coding.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+import math
+
+import qiskit
+from qiskit import Aer, ClassicalRegister, QuantumCircuit, QuantumRegister, execute
+
+
+def superdense_coding(bit_1: int = 1, bit_2: int = 1) -> qiskit.result.counts.Counts:
+    """
+    The input refer to the classical message
+    that you wants to send. {'00','01','10','11'}
+    result for default values: {11: 1000}
+               ┌───┐          ┌───┐
+    qr_0: ─────┤ X ├──────────┤ X ├─────
+          ┌───┐└─┬─┘┌───┐┌───┐└─┬─┘┌───┐
+    qr_1: ┤ H ├──■──┤ X ├┤ Z ├──■──┤ H ├
+          └───┘     └───┘└───┘     └───┘
+    cr: 2/══════════════════════════════
+    Args:
+        bit_1: bit 1 of classical information to send.
+        bit_2: bit 2 of classical information to send.
+    Returns:
+        qiskit.result.counts.Counts: counts of send state.
+    >>> superdense_coding(0,0)
+    {'00': 1000}
+    >>> superdense_coding(0,1)
+    {'01': 1000}
+    >>> superdense_coding(-1,0)
+    Traceback (most recent call last):
+        ...
+    ValueError: inputs must be positive.
+    >>> superdense_coding(1,'j')
+    Traceback (most recent last):
+        ...
+    TypeError: inputs must be integers.
+    >>> superdense_coding(1,0.5)
+    Traceback (most recent call last):
+        ...
+    ValueError: inputs must be exact integers.
+    >>> superdense_coding(2,1)
+    Traceback (most recent call last):
+        ...
+    ValueError: inputs must be less or equal to 1.
+    """
+    if isinstance(bit_1, str) or isinstance(bit_2, str):
+        raise TypeError("inputs must be integers.")
+    if (bit_1 < 0) or (bit_2 < 0):
+        raise ValueError("inputs must be positive.")
+    if (math.floor(bit_1) != bit_1) or (math.floor(bit_2) != bit_2):
+        raise ValueError("inputs must be exact integers.")
+    if (bit_1 > 1) or (bit_2 > 1):
+        raise ValueError("inputs must be less or equal to 1.")
+
+    # build registers
+    qr = QuantumRegister(2, "qr")
+    cr = ClassicalRegister(2, "cr")
+
+    quantum_circuit = QuantumCircuit(qr, cr)
+
+    # entanglement the qubits
+    quantum_circuit.h(1)
+    quantum_circuit.cx(1, 0)
+
+    # send the information
+    c_information = str(bit_1) + str(bit_2)
+
+    if c_information == "11":
+        quantum_circuit.x(1)
+        quantum_circuit.z(1)
+    elif c_information == "10":
+        quantum_circuit.z(1)
+    elif c_information == "01":
+        quantum_circuit.x(1)
+    else:
+        quantum_circuit.i(1)
+
+    # unentangled the circuit
+    quantum_circuit.cx(1, 0)
+    quantum_circuit.h(1)
+
+    # measure the circuit
+    quantum_circuit.measure(qr, cr)
+
+    backend = Aer.get_backend("aer_simulator")
+    job = execute(quantum_circuit, backend, shots=1000)
+
+    return job.result().get_counts(quantum_circuit)
+```
+
+----------------------------------------
+
+TITLE: Visualizing Fuzzy Sets and Operations with Matplotlib - Python
+DESCRIPTION: Uses `matplotlib.pyplot` to create a figure with multiple subplots, visualizing the initial fuzzy sets ('young', 'middle_aged') and the results of the various fuzzy set operations (union, intersection, complement, difference, algebraic sum/product, bounded sum/difference) computed previously. Finally, it adjusts the layout and displays the plot.
+SOURCE: https://github.com/thealgorithms/python/blob/master/fuzzy_logic/fuzzy_operations.py.DISABLED.txt#_snippet_2
+
+LANGUAGE: Python
+CODE:
+```
+plt.figure()
+
+    plt.subplot(4, 3, 1)
+    plt.plot(X, young)
+    plt.title("Young")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 2)
+    plt.plot(X, middle_aged)
+    plt.title("Middle aged")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 3)
+    plt.plot(X, union)
+    plt.title("union")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 4)
+    plt.plot(X, intersection)
+    plt.title("intersection")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 5)
+    plt.plot(X, complement_a)
+    plt.title("complement_a")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 6)
+    plt.plot(X, difference)
+    plt.title("difference a/b")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 7)
+    plt.plot(X, alg_sum)
+    plt.title("alg_sum")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 8)
+    plt.plot(X, alg_product)
+    plt.title("alg_product")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 9)
+    plt.plot(X, bdd_sum)
+    plt.title("bdd_sum")
+    plt.grid(True)
+
+    plt.subplot(4, 3, 10)
+    plt.plot(X, bdd_difference)
+    plt.title("bdd_difference")
+    plt.grid(True)
+
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()
+```
+
+----------------------------------------
+
+TITLE: Importing Libraries and Loading Data (Python)
+DESCRIPTION: This snippet imports necessary Python libraries and modules, including standard ones like `json` and `pathlib`, numerical processing with `numpy`, a custom `yulewalker` library, and local audio filter components. It then loads audio loudness curve data from a JSON file located relative to the script's path.
+SOURCE: https://github.com/thealgorithms/python/blob/master/audio_filters/equal_loudness_filter.py.broken.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+from json import loads
+from pathlib import Path
+
+import numpy as np
+from yulewalker import yulewalk
+
+from audio_filters.butterworth_filter import make_highpass
+from audio_filters.iir_filter import IIRFilter
+
+data = loads((Path(__file__).resolve().parent / "loudness_curve.json").read_text())
+```
+
+----------------------------------------
+
+TITLE: Comparing QuickSort Comparison Counts Plot (Python)
+DESCRIPTION: This Python snippet uses `matplotlib.pyplot` to create a plot comparing the number of comparisons required by two QuickSort variations (Normal Distribution QuickSort and Ordinary QuickSort) for different array sizes. It plots predefined data points for each algorithm. Requires `matplotlib.pyplot`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/sorts/normal_distribution_quick_sort.md#_snippet_2
+
+LANGUAGE: python
+CODE:
+```
+>>> import matplotlib.pyplot as plt
+
+    # Normal Distribution QuickSort is red
+>>> plt.plot([1,2,4,16,32,64,128,256,512,1024,2048],[1,1,6,15,43,136,340,800,2156,6821,16325],linewidth=2, color='r')
+
+    # Ordinary QuickSort is green
+>>> plt.plot([1,2,4,16,32,64,128,256,512,1024,2048],[1,1,4,16,67,122,362,949,2131,5086,12866],linewidth=2, color='g')
+
+>>> plt.show()
+```
+
+----------------------------------------
+
+TITLE: Generating Normal Distribution Array (Python)
+DESCRIPTION: This Python snippet uses the `numpy` library to create an array of 100 random numbers drawn from a standard normal distribution (mean=0, std=1). It then saves this array to a temporary file and prints the array content. Requires `numpy` and `tempfile`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/sorts/normal_distribution_quick_sort.md#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+>>> import numpy as np
+>>> from tempfile import TemporaryFile
+>>> outfile = TemporaryFile()
+>>> p = 100 # 100 elements are to be sorted
+>>> mu, sigma = 0, 1 # mean and standard deviation
+>>> X = np.random.normal(mu, sigma, p)
+>>> np.save(outfile, X)
+>>> 'The array is'
+>>> X
+```
+
+----------------------------------------
+
+TITLE: Importing Required Libraries - Python
+DESCRIPTION: Imports necessary modules for data handling, machine learning algorithms (Gaussian Naive Bayes), model selection (train_test_split), evaluation metrics (accuracy_score, plot_confusion_matrix), plotting (matplotlib), and timing.
+SOURCE: https://github.com/thealgorithms/python/blob/master/machine_learning/gaussian_naive_bayes.py.broken.txt#_snippet_0
+
+LANGUAGE: python
+CODE:
+```
+import time
+
+from matplotlib import pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.metrics import accuracy_score, plot_confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+```
+
+----------------------------------------
+
+TITLE: Example of Discouraged Python Input (Python)
+DESCRIPTION: Illustrates the use of the built-in `input()` function, which is generally discouraged for core algorithm implementations in this repository, especially when combined with `eval`.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_9
+
+LANGUAGE: Python
+CODE:
+```
+input('Enter your input:')
+# Or even worse...
+input = eval(input("Enter your input: "))
+```
+
+----------------------------------------
+
+TITLE: Importing Libraries for Fuzzy Logic and Numerical Computing - Python
+DESCRIPTION: Imports the necessary libraries: `numpy` for numerical operations and `skfuzzy` for fuzzy logic functionalities, providing the foundation for defining and manipulating fuzzy sets.
+SOURCE: https://github.com/thealgorithms/python/blob/master/fuzzy_logic/fuzzy_operations.py.DISABLED.txt#_snippet_0
+
+LANGUAGE: Python
+CODE:
+```
+import numpy as np
+import skfuzzy as fuzz
+```
+
+----------------------------------------
+
+TITLE: Example of Trivial Python Comment (Python)
+DESCRIPTION: Illustrates an example of a comment that is considered too simple and uninformative, as comments should provide more explanatory context.
+SOURCE: https://github.com/thealgorithms/python/blob/master/CONTRIBUTING.md#_snippet_5
+
+LANGUAGE: Python
+CODE:
+```
+x = x + 2	# increased by 2
+```

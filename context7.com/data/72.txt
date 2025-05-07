@@ -1,0 +1,1 @@
+Library /gohugoio/hugo has been redirected to this library: /gohugoio/hugodocs.
